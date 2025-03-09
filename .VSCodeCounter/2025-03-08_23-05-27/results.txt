@@ -1,0 +1,113 @@
+Date : 2025-03-08 23:05:27
+Directory : d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts
+Total : 66 files,  2163 codes, 227 comments, 376 blanks, all 2766 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C#       |         66 |      2,163 |        227 |        376 |      2,766 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                           | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                              |         66 |      2,163 |        227 |        376 |      2,766 |
+| Game                                                                                                                           |         62 |      2,001 |        222 |        343 |      2,566 |
+| Game (Files)                                                                                                                   |          3 |         69 |         13 |         17 |         99 |
+| Game\Classes                                                                                                                   |          8 |        175 |          6 |         23 |        204 |
+| Game\Classes (Files)                                                                                                           |          5 |        140 |          6 |         20 |        166 |
+| Game\Classes\Data                                                                                                              |          3 |         35 |          0 |          3 |         38 |
+| Game\Commands                                                                                                                  |          1 |         16 |          0 |          3 |         19 |
+| Game\Models                                                                                                                    |          2 |         82 |         13 |         19 |        114 |
+| Game\System                                                                                                                    |          4 |        420 |         63 |         56 |        539 |
+| Game\ViewControllers                                                                                                           |         41 |      1,169 |        126 |        208 |      1,503 |
+| Game\ViewControllers (Files)                                                                                                   |          6 |        273 |         29 |         37 |        339 |
+| Game\ViewControllers\Entities                                                                                                  |         35 |        896 |         97 |        171 |      1,164 |
+| Game\ViewControllers\Entities (Files)                                                                                          |          2 |         74 |          5 |         18 |         97 |
+| Game\ViewControllers\Entities\Plants                                                                                           |         13 |        302 |         43 |         52 |        397 |
+| Game\ViewControllers\Entities\Plants (Files)                                                                                   |         11 |        178 |         12 |         32 |        222 |
+| Game\ViewControllers\Entities\Plants\Base                                                                                      |          2 |        124 |         31 |         20 |        175 |
+| Game\ViewControllers\Entities\Projectiles                                                                                      |          4 |         92 |          4 |         21 |        117 |
+| Game\ViewControllers\Entities\Zombies                                                                                          |         16 |        428 |         45 |         80 |        553 |
+| Game\ViewControllers\Entities\Zombies (Files)                                                                                  |          9 |        276 |         31 |         48 |        355 |
+| Game\ViewControllers\Entities\Zombies\Armor                                                                                    |          7 |        152 |         14 |         32 |        198 |
+| Game\ViewControllers\Entities\Zombies\Armor (Files)                                                                            |          4 |         28 |          1 |          5 |         34 |
+| Game\ViewControllers\Entities\Zombies\Armor\Base                                                                               |          3 |        124 |         13 |         27 |        164 |
+| Game\_Temp                                                                                                                     |          3 |         70 |          1 |         17 |         88 |
+| UI                                                                                                                             |          4 |        162 |          5 |         33 |        200 |
++--------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                                       | language | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Attack.cs                                             | C#       |         31 |          0 |          3 |         34 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Cell.cs                                               | C#       |         22 |          1 |          7 |         30 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Commands.cs                                           | C#       |         20 |          2 |          3 |         25 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Data\ArmorData.cs                                     | C#       |         11 |          0 |          1 |         12 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Data\AttackData.cs                                    | C#       |         11 |          0 |          1 |         12 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Data\CardData.cs                                      | C#       |         13 |          0 |          1 |         14 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Enums.cs                                              | C#       |         26 |          0 |          4 |         30 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Events.cs                                             | C#       |         41 |          3 |          3 |         47 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Commands\PlantDeadCommand.cs                                  | C#       |         16 |          0 |          3 |         19 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\GameManager.cs                                                | C#       |         34 |          0 |          6 |         40 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\GameStarter.cs                                                | C#       |         19 |          0 |          3 |         22 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Models\DaveModel.cs                                           | C#       |         20 |          0 |          3 |         23 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Models\GameModel.cs                                           | C#       |         62 |         13 |         16 |         91 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\PVZRouge.cs                                                   | C#       |         16 |         13 |          8 |         37 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\System\EntityCreateSystem.cs                                  | C#       |        129 |         20 |         32 |        181 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\System\HandSystem.cs                                          | C#       |        151 |         23 |         13 |        187 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\System\InputSystem.cs                                         | C#       |        127 |         20 |         10 |        157 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\System\LevelSystem.cs                                         | C#       |         13 |          0 |          1 |         14 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Card.Designer.cs                              | C#       |         11 |          1 |          6 |         18 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Card.cs                                       | C#       |        137 |         15 |         17 |        169 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Dave.Designer.cs                              | C#       |          7 |          1 |          2 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Dave.cs                                       | C#       |         77 |         11 |          6 |         94 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Entity.cs                            | C#       |         67 |          5 |         18 |         90 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Interfaces.cs                        | C#       |          7 |          0 |          0 |          7 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\Base\PeashooterBase.cs        | C#       |         48 |          9 |          6 |         63 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\Base\Plant.cs                 | C#       |         76 |         22 |         14 |        112 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\CherryBoom.cs                 | C#       |         28 |          1 |          4 |         33 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\Flowerpot.cs                  | C#       |         19 |          0 |          1 |         20 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\PeaShooter.Designer.cs        | C#       |          8 |          1 |          3 |         12 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\PeaShooter.cs                 | C#       |         13 |          0 |          2 |         15 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\PotatoMine.cs                 | C#       |         36 |          1 |          5 |         42 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\SnowPea.Designer.cs           | C#       |          8 |          1 |          3 |         12 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\SnowPea.cs                    | C#       |         13 |          0 |          2 |         15 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\Sunflower.Designer.cs         | C#       |          7 |          1 |          2 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\Sunflower.cs                  | C#       |         26 |          5 |          6 |         37 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\Wallnut.Designer.cs           | C#       |          7 |          1 |          2 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\Wallnut.cs                    | C#       |         13 |          1 |          2 |         16 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Projectiles\IcePea.cs                | C#       |         33 |          1 |          8 |         42 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Projectiles\Interfaces.cs            | C#       |          7 |          0 |          0 |          7 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Projectiles\Pea.cs                   | C#       |         33 |          1 |          8 |         42 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Projectiles\Projectile.cs            | C#       |         19 |          2 |          5 |         26 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\Armor\Base\Armor.cs          | C#       |        107 |         13 |         25 |        145 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\Armor\Base\HealthArmor.cs    | C#       |          8 |          0 |          1 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\Armor\Base\ShieldArmor.cs    | C#       |          9 |          0 |          1 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\Armor\Bucket.Designer.cs     | C#       |          7 |          1 |          2 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\Armor\Bucket.cs              | C#       |          6 |          0 |          1 |          7 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\Armor\Conehead.cs            | C#       |          6 |          0 |          1 |          7 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\Armor\ScreenDoor.cs          | C#       |          9 |          0 |          1 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\BucketZombie.Designer.cs     | C#       |          8 |          1 |          3 |         12 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\BucketZombie.cs              | C#       |         30 |          0 |          4 |         34 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\ConeheadZombie.Designer.cs   | C#       |          8 |          1 |          3 |         12 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\ConeheadZombie.cs            | C#       |         30 |          0 |          4 |         34 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\NormalZombie.Designer.cs     | C#       |          7 |          1 |          2 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\NormalZombie.cs              | C#       |          8 |          0 |          2 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\ScreenDoorZombie.Designer.cs | C#       |          7 |          1 |          2 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\ScreenDoorZombie.cs          | C#       |          8 |          0 |          3 |         11 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Zombies\Zombie.cs                    | C#       |        170 |         27 |         25 |        222 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Sun.Designer.cs                               | C#       |          8 |          1 |          2 |         11 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Sun.cs                                        | C#       |         33 |          0 |          4 |         37 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\_Temp\GameTestManager.cs                                      | C#       |         38 |          0 |         11 |         49 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\_Temp\Global.Designer.cs                                      | C#       |          7 |          1 |          2 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\_Temp\Global.cs                                               | C#       |         25 |          0 |          4 |         29 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UIGamePanel.Designer.cs                                         | C#       |         53 |          1 |          8 |         62 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UIGamePanel.cs                                                  | C#       |         34 |          2 |         10 |         46 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UIGameStartPanel.Designer.cs                                    | C#       |         38 |          1 |          8 |         47 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UIGameStartPanel.cs                                             | C#       |         37 |          1 |          7 |         45 |
+| Total                                                                                                                          |          |      2,163 |        227 |        376 |      2,766 |
++--------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
