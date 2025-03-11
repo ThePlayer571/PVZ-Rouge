@@ -6,6 +6,7 @@ namespace TPL.PVZR.EntityPlant
 {
     public class PotatoMine : Plant
     {
+        private static readonly int Ready = Animator.StringToHash("Ready");
         public AttackData attackData;
         protected Attack attack;
         protected override void Awake()
@@ -17,6 +18,7 @@ namespace TPL.PVZR.EntityPlant
                 .Delay(Global.potatoMineSleepTime)
                 .Callback(() =>
                 {
+                    GetComponent<Animator>().SetTrigger(Ready);
                     OnCollisionStayEvent += (other) =>
                     {
                         if (other.collider.CompareTag("Zombie"))

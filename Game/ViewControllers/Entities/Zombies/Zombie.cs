@@ -140,7 +140,7 @@ namespace TPL.PVZR.EntityZombie
         // 寻路中(跟随戴夫)
         {
             // 走路
-            if (_GameModel.Dave.transform.position.x > transform.position.x)
+            if (_LevelModel.Dave.transform.position.x > transform.position.x)
             {
                 transform.LocalScaleX(-1);
             }

@@ -5,11 +5,16 @@ using UnityEngine.UI;
 
 namespace TPL.PVZR
 {
-    public class InputSystem : AbstractSystem
+    public interface IInLevelSystem
+    {
+        public void OnEnterLevel();
+        public void OnExitLevel();
+    }
+    public class InputSystem : AbstractSystem, IInLevelSystem
     {
         // Model
         IDaveModel _DaveModel;
-        IGameModel _GameModel;
+        ILevelModel _LevelModel;
         IHandSystem _HandSystem;
 
 
@@ -17,18 +22,17 @@ namespace TPL.PVZR
         protected override void OnInit()
         {
             _DaveModel = this.GetModel<IDaveModel>();
-            _GameModel = this.GetModel<IGameModel>();
+            _LevelModel = this.GetModel<ILevelModel>();
             _HandSystem = this.GetSystem<IHandSystem>();
             //
             inputActions = new();
-            //
-            this.RegisterEvent<EnterGameSceneInitEvent>(@event => OnEnterGameSceneInit());
-
+            BindInputActions_1();
         }
 
-        private void OnEnterGameSceneInit()
+        private void BindInputActions_1()
+        // 与inputActions直接相关的内容
         {
-            inputActions.Gameplay.Enable();
+            
             // 移动
             inputActions.Gameplay.Jump.performed += (context) =>
             {
@@ -38,7 +42,7 @@ namespace TPL.PVZR
             {
                 var val = inputActions.Gameplay.Move.ReadValue<float>();
                 
-                    this.SendEvent<InputMoveEvent>(new InputMoveEvent {speed = val});
+                this.SendEvent<InputMoveEvent>(new InputMoveEvent {speed = val});
                 
             });
             
@@ -83,20 +87,6 @@ namespace TPL.PVZR
             {
                 SendSelectForceEventByIndex(9);
             };
-            foreach (Card card in _GameModel.cards)
-            {
-                card.Btn.onClick.AddListener(() =>
-                {
-                    if (_HandSystem.handState == HandSystem.HandState.Empty)
-                    {
-                        this.SendEvent<InputSelectEvent>(new() { card = card });
-                    }
-                    else if (_HandSystem.handState is HandSystem.HandState.HavePlant or HandSystem.HandState.HaveShovel)
-                    {
-                        this.SendEvent<InputDeselectEvent>();
-                    }
-                });
-            }
             // 使用手持物品
             inputActions.Gameplay.PlacePlant.performed += (context) =>
             {
@@ -114,8 +104,27 @@ namespace TPL.PVZR
                     this.SendEvent<InputUseShovelEvent>(new());
                 }
             };
+        }
 
-            _GameModel.shovel.GetComponent<Button>().onClick.AddListener(() =>
+        private void BindInputActions_2()
+        // 场景内ui触发的Input事件
+        {
+            foreach (Card card in _LevelModel.cards)
+            {
+                card.Btn.onClick.AddListener(() =>
+                {
+                    if (_HandSystem.handState == HandSystem.HandState.Empty)
+                    {
+                        this.SendEvent<InputSelectEvent>(new InputSelectEvent { card = card });
+                    }
+                    else if (_HandSystem.handState is HandSystem.HandState.HavePlant or HandSystem.HandState.HaveShovel)
+                    {
+                        this.SendEvent<InputDeselectEvent>();
+                    }
+                });
+            }
+
+            _LevelModel.shovel.GetComponent<Button>().onClick.AddListener(() =>
             {
                 
                 if (_HandSystem.handState == HandSystem.HandState.Empty)
@@ -127,29 +136,38 @@ namespace TPL.PVZR
                     this.SendEvent<InputDeselectEvent>(new());
                 }
             });
-            // 点击阳光 弃用
-            // inputActions.Gameplay.Click.performed += (context) =>
-            // {
-            //     if (!_HandSystem.handIsOnUI && _HandSystem.handState == HandSystem.HandState.Empty)
-            //     {
-            //         var hit = Physics2D.Raycast(_HandSystem.handWorldPos, Vector2.zero, Mathf.Infinity,
-            //             LayerMask.GetMask("Sun"));
-            //         if (hit.collider)
-            //         {
-            //             this.SendEvent<InputPickSun>(new() { target = hit.collider.gameObject.GetComponent<Sun>() });
-            //         }
-            //     }
-            // };
+        }
+
+        private void UnBindInputActions_2()
+        {
+            foreach (Card card in _LevelModel.cards)
+            {
+                card.Btn.onClick.RemoveAllListeners();
+            }
+            _LevelModel.shovel.GetComponent<Button>().onClick.RemoveAllListeners();
+            
+        }
+        public void OnEnterLevel()
+        {
+            inputActions.Gameplay.Enable();
+            BindInputActions_2();
+        }
+
+        public void OnExitLevel()
+        {
+            inputActions.Gameplay.Disable();
+            UnBindInputActions_2();
+
         }
         // 函数
         private void SendSelectForceEventByIndex(int index)
         {
-            foreach (var card in _GameModel.cards)
+            foreach (var card in _LevelModel.cards)
             {
                 if (card.cardIndex == index)
                 {
                     this.SendEvent<InputSelectForceEvent>(new InputSelectForceEvent { card = card });
-                    break;
+                    return;
                 }
             }
         }

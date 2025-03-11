@@ -23,7 +23,7 @@ namespace TPL.PVZR
             return PVZRouge.Interface;
         }
         // Model|System
-        private IGameModel _GameModel;
+        private ILevelModel _LevelModel;
         private IHandSystem _HandSystem;
         // 数据
         public CardData cardData;
@@ -39,10 +39,10 @@ namespace TPL.PVZR
         // 初始化
         private void Awake()
         {
-            _GameModel = this.GetModel<IGameModel>();
+            _LevelModel = this.GetModel<ILevelModel>();
             _HandSystem = this.GetSystem<IHandSystem>();
             // 阳光变化
-            _GameModel.sunpoint.RegisterWithInitValue(val =>
+            _LevelModel.sunpoint.RegisterWithInitValue(val =>
             {
                 if (cardData.sunpointCost <= val)
                 {

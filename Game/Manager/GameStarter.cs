@@ -14,9 +14,10 @@ namespace TPL.PVZR
             var gm  =_.LoadSync<GameObject>("GameManager").Instantiate();
             DontDestroyOnLoad(gm);
 
+            // 初始ui
             UIKit.Root.SetResolution(1920, 1080, 0);
             UIKit.OpenPanel<UIGameStartPanel>();
-            
+            // 过渡脚本
         }
     }
 }

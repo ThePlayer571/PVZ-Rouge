@@ -8,7 +8,7 @@ using static TPL.PVZR.HandSystem;
 
 namespace TPL.PVZR
 {
-    public interface IHandSystem : ISystem
+    public interface IHandSystem : ISystem, IInLevelSystem
     {
         HandState handState { get; }
         bool handIsOnUI { get; }
@@ -22,7 +22,7 @@ namespace TPL.PVZR
             Empty, HavePlant, HaveShovel
         }
         // Model
-        private IGameModel _GameModel;
+        private ILevelModel _LevelModel;
         private IEntityCreateSystem _EntityCreateSystem;
         // 节点
         private GameObject SelectFramebox;
@@ -34,18 +34,18 @@ namespace TPL.PVZR
         // 属性
         public HandState handState => _handState;
         public Vector3 handWorldPos => Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        private Vector3Int handCellPos => _GameModel.Grid.WorldToCell(handWorldPos);
+        private Vector3Int handCellPos => _LevelModel.Grid.WorldToCell(handWorldPos);
         private Vector2Int handCellPos2 => new Vector2Int(handCellPos.x, handCellPos.y); // 有些时候计算需要用到vector3 所以有handCellPos 2D 3D
 
-        private Cell handOnCell => _GameModel.CellGrid[handCellPos2.x, handCellPos2.y];
+        private Cell handOnCell => _LevelModel.CellGrid[handCellPos2.x, handCellPos2.y];
 
-        private Cell handDownCell => _GameModel.CellGrid[handCellPos2.x, handCellPos2.y-1];
+        private Cell handDownCell => _LevelModel.CellGrid[handCellPos2.x, handCellPos2.y-1];
 
         public bool handIsOnUI => EventSystem.current.IsPointerOverGameObject();
         // 初始化
         protected override void OnInit()
         {
-            _GameModel = this.GetModel<IGameModel>();
+            _LevelModel = this.GetModel<ILevelModel>();
             _EntityCreateSystem = this.GetSystem<IEntityCreateSystem>();
             //
             this.RegisterEvent<EnterGameSceneInitEvent>(@event => OnEnterGameSceneInit());
@@ -63,14 +63,25 @@ namespace TPL.PVZR
             //
         }
 
-        void OnEnterGameSceneInit()
+
+        public void OnEnterLevel()
         {
             ResLoader _ResLoader = ResLoader.Allocate();
             FollowingSprite = _ResLoader.LoadSync<GameObject>("FollowingSprite").Instantiate();
             SelectFramebox = _ResLoader.LoadSync<GameObject>("SelectFramebox").Instantiate();
             FollowingSprite.Hide();
             ActionKit.DelayFrame(1, () => GameManager.ExecuteOnUpdate(Update)).Start(GameManager.Instance);
+
         }
+
+        public void OnExitLevel()
+        {
+            FollowingSprite = null;
+            SelectFramebox = null;
+        }
+        void OnEnterGameSceneInit()
+        {
+           }
         // == 逻辑
         private void Update()
         {
@@ -78,7 +89,7 @@ namespace TPL.PVZR
             {
                 FollowingSprite.Position2D(handWorldPos);
             }
-            SelectFramebox.Position2D(_GameModel.Grid.CellToWorld(handCellPos) + _GameModel.Grid.cellSize * 0.5f);
+            SelectFramebox.Position2D(_LevelModel.Grid.CellToWorld(handCellPos) + _LevelModel.Grid.cellSize * 0.5f);
         }
         // 操作
         public void TrySelect(Card card)
@@ -112,7 +123,7 @@ namespace TPL.PVZR
             _handState = HandState.HaveShovel;
             
             //
-            FollowingSprite.GetComponent<SpriteRenderer>().sprite = _GameModel.shovel.GetComponent<Image>().sprite;
+            FollowingSprite.GetComponent<SpriteRenderer>().sprite = _LevelModel.shovel.GetComponent<Image>().sprite;
             FollowingSprite.Show();
         }
         private void TryDeselect()
@@ -162,7 +173,7 @@ namespace TPL.PVZR
             // 图片跟随
             FollowingSprite.Hide();
             // 阳光
-            _GameModel.sunpoint.Value -= _temp_selectedCard.sunpointCost;
+            _LevelModel.sunpoint.Value -= _temp_selectedCard.sunpointCost;
             // 事件
             this.SendEvent<OnPlacePlant>(new OnPlacePlant { card = _temp_selectedCard , plant = go.GetComponent<PeaShooter>() });
         }
@@ -182,6 +193,5 @@ namespace TPL.PVZR
             _handState = HandState.Empty;
             FollowingSprite.Hide();
         }
-
     }
 }

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace TPL.PVZR
 {
-    public partial class Global : ViewController,IController
+    public static class Global
     {
         public static float peaSpeed = 4f;
         public static float zombieJumpSpeed = 7f;
@@ -17,11 +17,6 @@ namespace TPL.PVZR
         public static float cherryBoomRange = 1f;
         public static float potatoMineSleepTime = 10f;
         public static float potatoMineRange = 0.5f;
-        public IArchitecture GetArchitecture()
-        {
-            return PVZRouge.Interface;
-        }
-        
         
         public static float Direction2ToFloat(Direction2 dir)
         {

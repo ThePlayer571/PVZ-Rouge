@@ -28,14 +28,14 @@ namespace TPL.PVZR
     public class EntityCreateSystem : AbstractSystem, IEntityCreateSystem
     {
         // Model|System
-        private IGameModel _GameModel;
+        private ILevelModel _LevelModel;
 
         
 
         // 初始化
         protected override void OnInit()
         {
-            _GameModel = this.GetModel<IGameModel>();
+            _LevelModel = this.GetModel<ILevelModel>();
             //
             ResLoader _ResLoader = ResLoader.Allocate();
             // Projectile
@@ -77,12 +77,12 @@ namespace TPL.PVZR
         {
             // 创建并初始化植物
             GameObject go = GetPrefab(plantIdentifier)
-                .Instantiate(new Vector3(position.x, position.y) + _GameModel.Grid.cellSize * 0.5f,
+                .Instantiate(new Vector3(position.x, position.y) + _LevelModel.Grid.cellSize * 0.5f,
                     Quaternion.identity);
             Plant plant = go.GetComponent<Plant>();
             plant.Initialize(direction);
             // 更改CellGrid
-            Cell targetCell = _GameModel.CellGrid[plant.gridPos2.x, plant.gridPos2.y];
+            Cell targetCell = _LevelModel.CellGrid[plant.gridPos2.x, plant.gridPos2.y];
             if (plantIdentifier == PlantIdentifier.Flowerpot)
             {
 

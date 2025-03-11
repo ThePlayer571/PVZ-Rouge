@@ -9,7 +9,7 @@ namespace TPL.PVZR.EntityPlant
 
         protected override void Dead()
         {
-            var upCell = _GameModel.CellGrid[gridPos2.x, gridPos2.y + 1];
+            var upCell = _LevelModel.CellGrid[gridPos2.x, gridPos2.y + 1];
             if (upCell.HavePlant)
             {
                 upCell.plant.Kill();

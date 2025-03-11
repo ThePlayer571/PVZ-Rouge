@@ -15,8 +15,8 @@ namespace TPL.PVZR
 			// please add init code here
 			
 			//
-			IGameModel _GameModel = this.GetModel<IGameModel>();
-			_GameModel.sunpoint.RegisterWithInitValue(val => { SunpointText.text = _GameModel.sunpoint.ToString(); });
+			ILevelModel _LevelModel = this.GetModel<ILevelModel>();
+			_LevelModel.sunpoint.RegisterWithInitValue(val => { SunpointText.text = _LevelModel.sunpoint.ToString(); });
 
 
 		}

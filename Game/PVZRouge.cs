@@ -9,13 +9,14 @@ namespace TPL.PVZR
         {
             // Model
             
-            this.RegisterModel<IGameModel>(new GameModel());
+            this.RegisterModel<ILevelModel>(new LevelModel());
             this.RegisterModel<IDaveModel>(new DaveModel());
 
             // System
-            this.RegisterSystem<InputSystem>(new());
+            this.RegisterSystem<InputSystem>(new InputSystem());
             this.RegisterSystem<IHandSystem>(new HandSystem());
             this.RegisterSystem<IEntityCreateSystem>(new EntityCreateSystem());
+            this.RegisterSystem<LevelSystem>(new LevelSystem());
 
             // Utility
             

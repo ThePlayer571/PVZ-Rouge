@@ -22,11 +22,11 @@ namespace TPL.PVZR
         // 属性(对内外都可用)
         public new GameObject gameObject => this.transform.gameObject;
         
-        public Vector3Int gridPos => _GameModel.Grid.WorldToCell(transform.position);
+        public Vector3Int gridPos => _LevelModel.Grid.WorldToCell(transform.position);
 
         public Vector2Int gridPos2 => new Vector2Int(gridPos.x, gridPos.y);
 
-        public Cell currentCell => _GameModel.CellGrid[gridPos.x, gridPos.y];
+        public Cell currentCell => _LevelModel.CellGrid[gridPos.x, gridPos.y];
         // 方法
         public virtual void Kill()
         {
@@ -79,12 +79,12 @@ namespace TPL.PVZR
 
         // 引用
         protected IEntityCreateSystem _EntityCreateSystem;
-        protected IGameModel _GameModel;
+        protected ILevelModel _LevelModel;
 
         protected virtual void Awake()
         {
             _EntityCreateSystem = this.GetSystem<IEntityCreateSystem>();
-            _GameModel = this.GetModel<IGameModel>();
+            _LevelModel = this.GetModel<ILevelModel>();
         }
     }
 }

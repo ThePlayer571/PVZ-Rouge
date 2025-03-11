@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 
 namespace TPL.PVZR
 {
-    public interface IGameModel : IModel
+    public interface ILevelModel : IModel,IInLevelSystem
     {
         // 引用
         public Dave Dave { get; }
@@ -12,24 +12,17 @@ namespace TPL.PVZR
         public Tilemap GroundTilemap { get; }
         public Tilemap BoundTilemap { get; }
         public DynaGrid<Cell> CellGrid { get; }
-        public Vector2Int levelStartConner { get; }
-        public Vector2Int levelEndConner { get; }
         public Card[] cards { get; }
         public GameObject shovel { get; }
-        public BindableProperty<int> sunpoint { get; set; }
-        // public Vector3 SunpointTextPos { get; }
-        
-
-        //
-        public void OnEnterGameSceneInit();
+        public BindableProperty<int> sunpoint { get;}
+        public Level level { get; }
+        public void SetLevel(Level level);
     }
-    public class GameModel : AbstractModel, IGameModel
+    public class LevelModel : AbstractModel, ILevelModel
     {
         /// <summary>
         /// 实现接口
         /// </summary>
-        public Dave Dave { get; private set; }
-        public Grid Grid { get; private set; }
 
         /// <summary>
         /// 数据
@@ -37,27 +30,35 @@ namespace TPL.PVZR
 
         // 数据
 
-        public BindableProperty<int> sunpoint { get; set; } = new();
-        public Vector2Int levelStartConner { get; private set; }
-        public Vector2Int levelEndConner { get; private set; }
-        // 引用
+        public BindableProperty<int> sunpoint { get; private set; }
+        public DynaGrid<Cell> CellGrid { get; private set; }
+        public Level level { get; private set; }
+        // 游戏引用
+        public Dave Dave { get; private set; }
+        public Grid Grid { get; private set; }
+        // 编程引用
         public Tilemap GroundTilemap { get; private set; }
 
         public Tilemap BoundTilemap { get; private set; }
+        // UI引用
 
         public Card[] cards { get; private set; }
         public GameObject shovel { get; private set; }
 
-        public DynaGrid<Cell> CellGrid { get; private set; } = new DynaGrid<Cell>();
 
 
 
         protected override void OnInit()
         {
-            
+            sunpoint = new BindableProperty<int>();
+            CellGrid = new DynaGrid<Cell>();
         }
 
-        public void OnEnterGameSceneInit()
+        public void SetLevel(Level level)
+        {
+            this.level = level;
+        }
+        public void OnEnterLevel()
         {
             sunpoint.Value = 100000;
             // 引用
@@ -69,11 +70,9 @@ namespace TPL.PVZR
             shovel = GameObject.Find("Shovel");
                 
             // 网格数据
-            levelStartConner = new Vector2Int(0, 0);
-            levelEndConner = new Vector2Int(22, 10);
-            for (int x = this.levelStartConner.x; x <= this.levelEndConner.x; ++x)
+            for (int x = 0; x <= level.size.x; ++x)
             {
-                for (int y = this.levelStartConner.y; y <= this.levelEndConner.y; ++y)
+                for (int y = 0; y <= level.size.y; ++y)
                 {
                     if (GroundTilemap.HasTile(new Vector3Int(x, y, 0)) || BoundTilemap.HasTile(new Vector3Int(x, y, 0)))
                     {
@@ -87,5 +86,17 @@ namespace TPL.PVZR
             }
         }
 
+        public void OnExitLevel()
+        {
+            Dave = null;
+            Grid = null;
+            GroundTilemap = null;
+            BoundTilemap = null;
+            cards = null;
+            shovel = null;
+            CellGrid = new DynaGrid<Cell>();
+            sunpoint = new BindableProperty<int>();
+
+        }
     }
 }

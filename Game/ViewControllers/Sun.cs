@@ -23,7 +23,7 @@ namespace TPL.PVZR
 				gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 				transform.DOMoveY(transform.position.y + 1f, 1f);
 				GetComponent<SpriteRenderer>().DOFade(0f, 1f);
-				this.GetModel<IGameModel>().sunpoint.Value += 25;
+				this.GetModel<ILevelModel>().sunpoint.Value += 25;
 				ActionKit.Delay(1.1f,gameObject.DestroySelf).Start(this);
 			}
 		}

@@ -37,8 +37,8 @@ namespace TPL.PVZR.EntityPlant
 
         protected virtual void Dead()
         {
-            _GameModel.CellGrid[gridPos2.x, gridPos2.y].cellState = Cell.CellState.Empty;
-            _GameModel.CellGrid[gridPos2.x, gridPos2.y].plant = null;
+            _LevelModel.CellGrid[gridPos2.x, gridPos2.y].cellState = Cell.CellState.Empty;
+            _LevelModel.CellGrid[gridPos2.x, gridPos2.y].plant = null;
             gameObject.DestroySelf();
         }
         
