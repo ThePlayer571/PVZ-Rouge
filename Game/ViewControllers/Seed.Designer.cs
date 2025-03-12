@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TPL.PVZR
 {
-	public partial class Card
+	public partial class Seed
 	{
 		public UnityEngine.UI.Image Normal;
 		

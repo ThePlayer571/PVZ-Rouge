@@ -13,19 +13,17 @@ namespace TPL.PVZR
     public class InputSystem : AbstractSystem, IInLevelSystem
     {
         // Model
-        IDaveModel _DaveModel;
-        ILevelModel _LevelModel;
-        IHandSystem _HandSystem;
+        private ILevelModel _LevelModel;
+        private IHandSystem _HandSystem;
 
 
         private PlayerInputControl inputActions;
         protected override void OnInit()
         {
-            _DaveModel = this.GetModel<IDaveModel>();
             _LevelModel = this.GetModel<ILevelModel>();
             _HandSystem = this.GetSystem<IHandSystem>();
             //
-            inputActions = new();
+            inputActions = new PlayerInputControl();
             BindInputActions_1();
         }
 
@@ -51,39 +49,39 @@ namespace TPL.PVZR
             {
                 this.SendEvent<InputDeselectEvent>(new());
             };
-            inputActions.Gameplay.ChooseCard_1.performed += (context) =>
+            inputActions.Gameplay.ChooseSeed_1.performed += (context) =>
             {
                 SendSelectForceEventByIndex(1);
             };
-            inputActions.Gameplay.ChooseCard_2.performed += (context) =>
+            inputActions.Gameplay.ChooseSeed_2.performed += (context) =>
             {
                 SendSelectForceEventByIndex(2);
             };
-            inputActions.Gameplay.ChooseCard_3.performed += (context) =>
+            inputActions.Gameplay.ChooseSeed_3.performed += (context) =>
             {
                 SendSelectForceEventByIndex(3);
             };
-            inputActions.Gameplay.ChooseCard_4.performed += (context) =>
+            inputActions.Gameplay.ChooseSeed_4.performed += (context) =>
             {
                 SendSelectForceEventByIndex(4);
             };
-            inputActions.Gameplay.ChooseCard_5.performed += (context) =>
+            inputActions.Gameplay.ChooseSeed_5.performed += (context) =>
             {
                 SendSelectForceEventByIndex(5);
             };
-            inputActions.Gameplay.ChooseCard_6.performed += (context) =>
+            inputActions.Gameplay.ChooseSeed_6.performed += (context) =>
             {
                 SendSelectForceEventByIndex(6);
             };
-            inputActions.Gameplay.ChooseCard_7.performed += (context) =>
+            inputActions.Gameplay.ChooseSeed_7.performed += (context) =>
             {
                 SendSelectForceEventByIndex(7);
             };
-            inputActions.Gameplay.ChooseCard_8.performed += (context) =>
+            inputActions.Gameplay.ChooseSeed_8.performed += (context) =>
             {
                 SendSelectForceEventByIndex(8);
             };
-            inputActions.Gameplay.ChooseCard_9.performed += (context) =>
+            inputActions.Gameplay.ChooseSeed_9.performed += (context) =>
             {
                 SendSelectForceEventByIndex(9);
             };
@@ -109,13 +107,13 @@ namespace TPL.PVZR
         private void BindInputActions_2()
         // 场景内ui触发的Input事件
         {
-            foreach (Card card in _LevelModel.cards)
+            foreach (Seed seed in _LevelModel.seeds)
             {
-                card.Btn.onClick.AddListener(() =>
+                seed.Btn.onClick.AddListener(() =>
                 {
                     if (_HandSystem.handState == HandSystem.HandState.Empty)
                     {
-                        this.SendEvent<InputSelectEvent>(new InputSelectEvent { card = card });
+                        this.SendEvent<InputSelectEvent>(new InputSelectEvent { seed = seed });
                     }
                     else if (_HandSystem.handState is HandSystem.HandState.HavePlant or HandSystem.HandState.HaveShovel)
                     {
@@ -140,9 +138,9 @@ namespace TPL.PVZR
 
         private void UnBindInputActions_2()
         {
-            foreach (Card card in _LevelModel.cards)
+            foreach (Seed seed in _LevelModel.seeds)
             {
-                card.Btn.onClick.RemoveAllListeners();
+                seed.Btn.onClick.RemoveAllListeners();
             }
             _LevelModel.shovel.GetComponent<Button>().onClick.RemoveAllListeners();
             
@@ -162,11 +160,11 @@ namespace TPL.PVZR
         // 函数
         private void SendSelectForceEventByIndex(int index)
         {
-            foreach (var card in _LevelModel.cards)
+            foreach (var card in _LevelModel.seeds)
             {
-                if (card.cardIndex == index)
+                if (card.seedIndex == index)
                 {
-                    this.SendEvent<InputSelectForceEvent>(new InputSelectForceEvent { card = card });
+                    this.SendEvent<InputSelectForceEvent>(new InputSelectForceEvent { seed = card });
                     return;
                 }
             }

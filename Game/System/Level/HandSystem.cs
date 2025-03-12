@@ -13,7 +13,7 @@ namespace TPL.PVZR
         HandState handState { get; }
         bool handIsOnUI { get; }
         Vector3 handWorldPos { get; }
-        void TrySelect(Card card);
+        void TrySelect(Seed seed);
     }
     public class HandSystem : AbstractSystem, IHandSystem
     {
@@ -24,13 +24,14 @@ namespace TPL.PVZR
         // Model
         private ILevelModel _LevelModel;
         private IEntityCreateSystem _EntityCreateSystem;
+        private LevelSystem _LevelSystem;
         // 节点
         private GameObject SelectFramebox;
         private GameObject FollowingSprite;
         // 变量
         [SerializeField]
         private HandState _handState = HandState.Empty;
-        private Card _selectedCard = null;
+        private Seed _selectedSeed = null;
         // 属性
         public HandState handState => _handState;
         public Vector3 handWorldPos => Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -47,16 +48,17 @@ namespace TPL.PVZR
         {
             _LevelModel = this.GetModel<ILevelModel>();
             _EntityCreateSystem = this.GetSystem<IEntityCreateSystem>();
+            _LevelSystem = this.GetSystem<LevelSystem>();
             //
             this.RegisterEvent<EnterGameSceneInitEvent>(@event => OnEnterGameSceneInit());
             //
             this.RegisterEvent<InputDeselectEvent>(@event => TryDeselect());
             this.RegisterEvent<InputPlacePlantEvent>(@event => TryPlacePlant(@event.direction));
-            this.RegisterEvent<InputSelectEvent>(@event => TrySelect(@event.card));
+            this.RegisterEvent<InputSelectEvent>(@event => TrySelect(@event.seed));
             this.RegisterEvent<InputSelectForceEvent>(@event =>
             {
                 TryDeselect();
-                TrySelect(@event.card);
+                TrySelect(@event.seed);
             });
             this.RegisterEvent<InputPickShovelEvent>(@event => TryPickShovel());
             this.RegisterEvent<InputUseShovelEvent>(@event => TryUseShovel());
@@ -89,26 +91,29 @@ namespace TPL.PVZR
             {
                 FollowingSprite.Position2D(handWorldPos);
             }
-            SelectFramebox.Position2D(_LevelModel.Grid.CellToWorld(handCellPos) + _LevelModel.Grid.cellSize * 0.5f);
-        }
-        // 操作
-        public void TrySelect(Card card)
-        {
-            if (card.isSelectable && _handState == HandState.Empty)
+            if (_LevelSystem.levelState.CurrentStateId == LevelSystem.LevelState.Gameplay)
             {
-                Select(card);
+                SelectFramebox.Position2D(_LevelModel.Grid.CellToWorld(handCellPos) + _LevelModel.Grid.cellSize * 0.5f);
             }
         }
-        private void Select(Card card)
+        // 操作
+        public void TrySelect(Seed seed)
+        {
+            if (seed.isSelectable && _handState == HandState.Empty)
+            {
+                Select(seed);
+            }
+        }
+        private void Select(Seed seed)
         {
             //
-            _selectedCard = card;
+            _selectedSeed = seed;
             _handState = HandState.HavePlant;
             //
-            FollowingSprite.GetComponent<SpriteRenderer>().sprite = card.cardData.followingSprite;
+            FollowingSprite.GetComponent<SpriteRenderer>().sprite = seed.cardSO.followingSprite;
             FollowingSprite.Show();
             //
-            this.SendEvent<OnSelectCard>(new() { card = card });
+            this.SendEvent<OnSelectSeed>(new OnSelectSeed { seed = seed });
         }
 
         public void TryPickShovel()
@@ -137,14 +142,14 @@ namespace TPL.PVZR
         {
             if (_handState == HandState.HavePlant)
             {
-                Card _temp_selectedCard = _selectedCard;
+                Seed tempSelectedSeed = _selectedSeed;
                 //
-                _selectedCard = null;
+                _selectedSeed = null;
                 _handState = HandState.Empty;
                 //
                 FollowingSprite.Hide();
                 //
-                this.SendEvent<OnDeselectCard>(new() { card = _temp_selectedCard });
+                this.SendEvent<OnDeselectSeed>(new() { seed = tempSelectedSeed });
             } else if (_handState == HandState.HaveShovel)
             {
                 
@@ -164,18 +169,18 @@ namespace TPL.PVZR
 
         private void PlacePlant(Direction2 direction)
         {
-            Card _temp_selectedCard = _selectedCard;
+            Seed tempSelectedSeed = _selectedSeed;
             // 新建植物对象
-            GameObject go = _EntityCreateSystem.CreatePlant(_selectedCard.cardData.plantIdentifier, handCellPos2, direction);
+            GameObject go = _EntityCreateSystem.CreatePlant(_selectedSeed.cardSO.plantIdentifier, handCellPos2, direction);
             // 处理手持卡牌
-            _selectedCard = null;
+            _selectedSeed = null;
             _handState = HandState.Empty;
             // 图片跟随
             FollowingSprite.Hide();
             // 阳光
-            _LevelModel.sunpoint.Value -= _temp_selectedCard.sunpointCost;
+            _LevelModel.sunpoint.Value -= tempSelectedSeed.sunpointCost;
             // 事件
-            this.SendEvent<OnPlacePlant>(new OnPlacePlant { card = _temp_selectedCard , plant = go.GetComponent<PeaShooter>() });
+            this.SendEvent<OnPlacePlant>(new OnPlacePlant { seed = tempSelectedSeed , plant = go.GetComponent<PeaShooter>() });
         }
 
         private void TryUseShovel()

@@ -17,6 +17,8 @@ namespace TPL.PVZR
             this.RegisterSystem<IHandSystem>(new HandSystem());
             this.RegisterSystem<IEntityCreateSystem>(new EntityCreateSystem());
             this.RegisterSystem<LevelSystem>(new LevelSystem());
+            this.RegisterSystem<InventorySystem>(new InventorySystem());
+            this.RegisterSystem<GameSystem>(new GameSystem());
 
             // Utility
             

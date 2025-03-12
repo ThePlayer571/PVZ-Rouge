@@ -4,17 +4,20 @@ using UnityEngine.Tilemaps;
 
 namespace TPL.PVZR
 {
-    public interface ILevelModel : IModel,IInLevelSystem
+    public interface ILevelModel : IModel, IInLevelSystem
     {
-        // 引用
+        // ChooseCards
+        public int maxCards { get; }
+
+        // Gameplay
         public Dave Dave { get; }
         public Grid Grid { get; }
         public Tilemap GroundTilemap { get; }
         public Tilemap BoundTilemap { get; }
         public DynaGrid<Cell> CellGrid { get; }
-        public Card[] cards { get; }
+        public Seed[] seeds { get; }
         public GameObject shovel { get; }
-        public BindableProperty<int> sunpoint { get;}
+        public BindableProperty<int> sunpoint { get; }
         public Level level { get; }
         public void SetLevel(Level level);
     }
@@ -27,12 +30,14 @@ namespace TPL.PVZR
         /// <summary>
         /// 数据
         /// </summary>
-
-        // 数据
-
+// == Level
+        public Level level { get; private set; }
+        // == ChooseCard
+        public int maxCards { get; private set; } = 2;
+        // == Gameplay
+        // 游戏数据
         public BindableProperty<int> sunpoint { get; private set; }
         public DynaGrid<Cell> CellGrid { get; private set; }
-        public Level level { get; private set; }
         // 游戏引用
         public Dave Dave { get; private set; }
         public Grid Grid { get; private set; }
@@ -42,7 +47,7 @@ namespace TPL.PVZR
         public Tilemap BoundTilemap { get; private set; }
         // UI引用
 
-        public Card[] cards { get; private set; }
+        public Seed[] seeds { get; private set; }
         public GameObject shovel { get; private set; }
 
 
@@ -66,9 +71,9 @@ namespace TPL.PVZR
             Grid = Object.FindAnyObjectByType<Grid>();
             GroundTilemap = GameObject.Find("Ground").GetComponent<Tilemap>();
             BoundTilemap = GameObject.Find("Bound").GetComponent<Tilemap>();
-            cards = Object.FindObjectsByType<Card>(FindObjectsSortMode.None);
+            seeds = Object.FindObjectsByType<Seed>(FindObjectsSortMode.None);
             shovel = GameObject.Find("Shovel");
-                
+
             // 网格数据
             for (int x = 0; x <= level.size.x; ++x)
             {
@@ -92,7 +97,7 @@ namespace TPL.PVZR
             Grid = null;
             GroundTilemap = null;
             BoundTilemap = null;
-            cards = null;
+            seeds = null;
             shovel = null;
             CellGrid = new DynaGrid<Cell>();
             sunpoint = new BindableProperty<int>();

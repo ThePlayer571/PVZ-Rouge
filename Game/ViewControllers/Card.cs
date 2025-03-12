@@ -1,168 +1,51 @@
+using System;
 using UnityEngine;
 using QFramework;
-using Unity.VisualScripting;
-using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace TPL.PVZR
 {
-    public partial class Card : ViewController,IController
+    public class Card : ViewController, IController
     {
-        private enum ColdState
-        {
-            InCold, Ready
-        }
-
-        private enum SunNeedState
-        {
-            Enough, NotEnough
-        }
-
-        // ¿ò¼Ü½Ó¿Ú
-        public IArchitecture GetArchitecture()
-        {
-            return PVZRouge.Interface;
-        }
-        // Model|System
-        private ILevelModel _LevelModel;
-        private IHandSystem _HandSystem;
-        // Êý¾Ý
-        public CardData cardData;
-        [SerializeField] public int cardIndex = 1;
-        // ±äÁ¿
-        private bool _isSelected;
-        private float _coldTimeTimer;
-        private ColdState _coldState;
-        private SunNeedState _sunNeedState;
-        // ÊôÐÔ
-        public int sunpointCost => cardData.sunpointCost;
-        public bool isSelectable => _coldState == ColdState.Ready && _sunNeedState == SunNeedState.Enough;
-        // ³õÊ¼»¯
+        private Button Btn;
+        private LevelSystem _LevelSystem;
         private void Awake()
         {
-            _LevelModel = this.GetModel<ILevelModel>();
-            _HandSystem = this.GetSystem<IHandSystem>();
-            // Ñô¹â±ä»¯
-            _LevelModel.sunpoint.RegisterWithInitValue(val =>
-            {
-                if (cardData.sunpointCost <= val)
-                {
-                    _sunNeedState = SunNeedState.Enough;
-                }
-                else
-                {
-                    _sunNeedState = SunNeedState.NotEnough;
-                }
-            }).UnRegisterWhenGameObjectDestroyed(gameObject);
-            // 
-
-            // Ñ¡Ôñ¿¨ÅÆ
-            this.RegisterEvent<OnSelectCard>((@event) => {
-                if (@event.card == this)
-                {
-                    OnSelected();
-                } }).UnRegisterWhenGameObjectDestroyed(gameObject);
-            
-            // È¡ÏûÑ¡Ôñ¿¨ÅÆ
-            this.RegisterEvent<OnDeselectCard>((@event) => {
-                if (@event.card == this)
-                {
-                    OnDeselected();
-                } }).UnRegisterWhenGameObjectDestroyed(gameObject);
-            // ·ÅÖÃ¿¨ÅÆ
-            this.RegisterEvent<OnPlacePlant>((@event) =>
-            {
-                if (@event.card == this)
-                {
-                    OnPlanted();
-                }
-            }).UnRegisterWhenGameObjectDestroyed(gameObject);
-            // ³õÊ¼»¯Êý¾Ý
-            if (cardData.haveInitialColdTime)
-            {
-                _coldTimeTimer = cardData.coldTime;
-                _coldState = ColdState.InCold;
-            }
-            else
-            {
-                _coldTimeTimer = 0;
-                _coldState = ColdState.Ready;
-            }
-            _isSelected = false;
-        }
-        private void Start()
-        {
-        }
-        // == Âß¼­
-        private void Update()
-        {
-            if (_coldState == ColdState.InCold)
-            {
-                _coldTimeTimer -= Time.deltaTime;
-                if (_coldTimeTimer < 0)
-                {
-                    _coldTimeTimer = 0;
-                    _coldState = ColdState.Ready;
-                }
-            }
-            UIUpdate();
-        }
-        // ²Ù×÷
-        private void OnSelected()
-        {
-            _isSelected = true;
-        }
-        private void OnDeselected()
-        {
-            _isSelected = false;
+            _LevelSystem = this.GetSystem<LevelSystem>();
+            Btn = GetComponent<Button>();
+            Btn.LogInfo();
+            Btn.onClick.AddListener(OnClick);
         }
 
-        private void OnPlanted()
-        {
-            _isSelected = false;
-            _coldTimeTimer = cardData.coldTime;
-            _coldState = ColdState.InCold;
-        }
-        // º¯Êý
-        private void UIUpdate()
-        {
-            if (_isSelected == true)
-            {
-                Normal.Hide();
-                Gray.Show();
-                Mask.Hide();
-            }
-            else if (_coldState == ColdState.InCold)
-            {
-                Normal.Hide();
-                Gray.Show();
-                Mask.Show();
-                Mask.fillAmount = _coldTimeTimer / cardData.coldTime;
-            }
-            else if (_coldState == ColdState.Ready)
-            {
-                if (_sunNeedState == SunNeedState.Enough)
-                {
+        private bool isSelected = false;
 
-                    Normal.Show();
-                    Gray.Hide();
-                    Mask.Hide();
-                }
-                else if (_sunNeedState == SunNeedState.NotEnough)
+        private void OnClick()
+        {
+            if (!isSelected) // åœ¨Inventoryé‡Œ
+            {
+                if (_LevelSystem.canAddCard)
                 {
-                    Normal.Hide();
-                    Gray.Show();
-                    Mask.Hide();
+                    transform.SetParent(transform.parent.parent.Find("ChosenCards"));
+                    isSelected = true;
+                    _LevelSystem.AddCard(this);
                 }
+            }
+            else // åœ¨Chosené‡Œ
+            {
+                transform.SetParent(transform.parent.parent.Find("Inventory"));
+                isSelected = false;
+                _LevelSystem.RemoveCard(this);
             }
         }
 
+        public IArchitecture GetArchitecture()
+        {
+           return PVZRouge.Interface;
+        }
+
+        private void OnDestroy()
+        {
+            Btn.onClick.RemoveListener(OnClick);
+        }
     }
 }
-
-
-
-
-
-
-
-

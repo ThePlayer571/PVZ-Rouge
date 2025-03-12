@@ -16,8 +16,8 @@ namespace TPL.PVZR
     {
         public float speed;
     }
-    public struct InputSelectEvent { public Card card; }
-    public struct InputSelectForceEvent { public Card card; }
+    public struct InputSelectEvent { public Seed seed; }
+    public struct InputSelectForceEvent { public Seed seed; }
     public struct InputPickShovelEvent { }
     public struct InputDeselectEvent { }
     public struct InputPlacePlantEvent
@@ -31,17 +31,17 @@ namespace TPL.PVZR
         public Sun target;
     }
     // 卡牌相关
-    public struct OnSelectCard
+    public struct OnSelectSeed
     {
-        public Card card;
+        public Seed seed;
     }
-    public struct OnDeselectCard
+    public struct OnDeselectSeed
     {
-        public Card card;
+        public Seed seed;
     }
     public struct OnPlacePlant
     {
-        public Card card;
+        public Seed seed;
         public Plant plant;
     }
 }
