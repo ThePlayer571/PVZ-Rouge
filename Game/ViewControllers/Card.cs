@@ -5,15 +5,17 @@ using UnityEngine.UI;
 
 namespace TPL.PVZR
 {
-    public class Card : ViewController, IController
+    public partial class Card : ViewController, IController
     {
         private Button Btn;
+        //
         private LevelSystem _LevelSystem;
+        private IChooseCardSystem _ChooseCardSystem;
         private void Awake()
         {
             _LevelSystem = this.GetSystem<LevelSystem>();
+            _ChooseCardSystem = this.GetSystem<IChooseCardSystem>();
             Btn = GetComponent<Button>();
-            Btn.LogInfo();
             Btn.onClick.AddListener(OnClick);
         }
 
@@ -23,18 +25,18 @@ namespace TPL.PVZR
         {
             if (!isSelected) // 在Inventory里
             {
-                if (_LevelSystem.canAddCard)
+                if (_ChooseCardSystem.canAddCard)
                 {
                     transform.SetParent(transform.parent.parent.Find("ChosenCards"));
                     isSelected = true;
-                    _LevelSystem.AddCard(this);
+                    _ChooseCardSystem.AddCard(this);
                 }
             }
             else // 在Chosen里
             {
                 transform.SetParent(transform.parent.parent.Find("Inventory"));
                 isSelected = false;
-                _LevelSystem.RemoveCard(this);
+                _ChooseCardSystem.RemoveCard(this);
             }
         }
 
@@ -47,5 +49,17 @@ namespace TPL.PVZR
         {
             Btn.onClick.RemoveListener(OnClick);
         }
+        
+        
+        // 数据
+        
+        public CardDataSO cardData;
+        public void Init(CardDataSO cardDataSO)
+        {
+            cardData = cardDataSO;
+            Plant.sprite = cardData.seedData.plantSprite;
+            SunText.text = cardData.seedData.sunpointCost.ToString();
+        }
+        
     }
 }

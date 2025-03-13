@@ -46,7 +46,6 @@ namespace TPL.PVZR
 
         protected void OnCollisionEnter2D(Collision2D other)
         {
-            "collison".LogInfo();
             OnCollisionEnterEvent?.Invoke(other);
         }
 

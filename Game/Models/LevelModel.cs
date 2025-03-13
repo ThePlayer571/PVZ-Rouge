@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using QFramework;
 using UnityEngine.Tilemaps;
@@ -6,8 +7,10 @@ namespace TPL.PVZR
 {
     public interface ILevelModel : IModel, IInLevelSystem
     {
+        // TODO: 史山, 要优化关卡初始化逻辑(每个阶段都有个用于初始化的函数，接口写virtual默认实现)
+        public void OnEnterLevel2();
         // ChooseCards
-        public int maxCards { get; }
+        public int maxCardCount { get; }
 
         // Gameplay
         public Dave Dave { get; }
@@ -33,7 +36,7 @@ namespace TPL.PVZR
 // == Level
         public Level level { get; private set; }
         // == ChooseCard
-        public int maxCards { get; private set; } = 2;
+        public int maxCardCount { get; private set; } = 2;
         // == Gameplay
         // 游戏数据
         public BindableProperty<int> sunpoint { get; private set; }
@@ -71,8 +74,6 @@ namespace TPL.PVZR
             Grid = Object.FindAnyObjectByType<Grid>();
             GroundTilemap = GameObject.Find("Ground").GetComponent<Tilemap>();
             BoundTilemap = GameObject.Find("Bound").GetComponent<Tilemap>();
-            seeds = Object.FindObjectsByType<Seed>(FindObjectsSortMode.None);
-            shovel = GameObject.Find("Shovel");
 
             // 网格数据
             for (int x = 0; x <= level.size.x; ++x)
@@ -89,6 +90,12 @@ namespace TPL.PVZR
                     }
                 }
             }
+        }
+
+        public void OnEnterLevel2()
+        {
+            seeds = Object.FindObjectsByType<Seed>(FindObjectsSortMode.None);
+            shovel = GameObject.Find("Shovel");
         }
 
         public void OnExitLevel()

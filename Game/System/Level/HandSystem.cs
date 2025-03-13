@@ -110,7 +110,7 @@ namespace TPL.PVZR
             _selectedSeed = seed;
             _handState = HandState.HavePlant;
             //
-            FollowingSprite.GetComponent<SpriteRenderer>().sprite = seed.cardSO.followingSprite;
+            FollowingSprite.GetComponent<SpriteRenderer>().sprite = seed.seedData.followingSprite;
             FollowingSprite.Show();
             //
             this.SendEvent<OnSelectSeed>(new OnSelectSeed { seed = seed });
@@ -149,7 +149,7 @@ namespace TPL.PVZR
                 //
                 FollowingSprite.Hide();
                 //
-                this.SendEvent<OnDeselectSeed>(new() { seed = tempSelectedSeed });
+                this.SendEvent<OnDeselectSeed>(new OnDeselectSeed { seed = tempSelectedSeed });
             } else if (_handState == HandState.HaveShovel)
             {
                 
@@ -171,7 +171,7 @@ namespace TPL.PVZR
         {
             Seed tempSelectedSeed = _selectedSeed;
             // 新建植物对象
-            GameObject go = _EntityCreateSystem.CreatePlant(_selectedSeed.cardSO.plantIdentifier, handCellPos2, direction);
+            GameObject go = _EntityCreateSystem.CreatePlant(_selectedSeed.seedData.plantIdentifier, handCellPos2, direction);
             // 处理手持卡牌
             _selectedSeed = null;
             _handState = HandState.Empty;
@@ -180,7 +180,7 @@ namespace TPL.PVZR
             // 阳光
             _LevelModel.sunpoint.Value -= tempSelectedSeed.sunpointCost;
             // 事件
-            this.SendEvent<OnPlacePlant>(new OnPlacePlant { seed = tempSelectedSeed , plant = go.GetComponent<PeaShooter>() });
+            this.SendEvent<OnPlacePlant>(new OnPlacePlant { seed = tempSelectedSeed , plant = go.GetComponent<Plant>() });
         }
 
         private void TryUseShovel()

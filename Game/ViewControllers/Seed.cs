@@ -1,5 +1,6 @@
 using UnityEngine;
 using QFramework;
+using Unity.VisualScripting;
 
 namespace TPL.PVZR
 {
@@ -23,26 +24,31 @@ namespace TPL.PVZR
         // Model|System
         private ILevelModel _LevelModel;
         private IHandSystem _HandSystem;
+        private InputSystem _InputSystem;
         // 数据
-        public CardSO cardSO;
-        [SerializeField] public int seedIndex = 1;
+        public SeedDataSO seedData;
+        public int seedIndex = 1;
         // 变量
         private bool _isSelected;
         private float _coldTimeTimer;
         private ColdState _coldState;
         private SunNeedState _sunNeedState;
         // 属性
-        public int sunpointCost => cardSO.sunpointCost;
+        public int sunpointCost => seedData.sunpointCost;
         public bool isSelectable => _coldState == ColdState.Ready && _sunNeedState == SunNeedState.Enough;
         // 初始化
-        private void Awake()
+
+        public void Init(CardDataSO cardData)
         {
-            _LevelModel = this.GetModel<ILevelModel>();
-            _HandSystem = this.GetSystem<IHandSystem>();
+            // 设置数据
+            seedData = cardData.seedData;
+            Plant.sprite = seedData.plantSprite;
+            SunText.text = seedData.sunpointCost.ToString();
+            // == 接受事件
             // 阳光变化
             _LevelModel.sunpoint.RegisterWithInitValue(val =>
             {
-                if (cardSO.sunpointCost <= val)
+                if (seedData.sunpointCost <= val)
                 {
                     _sunNeedState = SunNeedState.Enough;
                 }
@@ -51,33 +57,10 @@ namespace TPL.PVZR
                     _sunNeedState = SunNeedState.NotEnough;
                 }
             }).UnRegisterWhenGameObjectDestroyed(gameObject);
-            // 
-
-            // 选择卡牌
-            this.RegisterEvent<OnSelectSeed>((@event) => {
-                if (@event.seed == this)
-                {
-                    OnSelected();
-                } }).UnRegisterWhenGameObjectDestroyed(gameObject);
-            
-            // 取消选择卡牌
-            this.RegisterEvent<OnDeselectSeed>((@event) => {
-                if (@event.seed == this)
-                {
-                    OnDeselected();
-                } }).UnRegisterWhenGameObjectDestroyed(gameObject);
-            // 放置卡牌
-            this.RegisterEvent<OnPlacePlant>((@event) =>
-            {
-                if (@event.seed == this)
-                {
-                    OnPlanted();
-                }
-            }).UnRegisterWhenGameObjectDestroyed(gameObject);
             // 初始化数据
-            if (cardSO.haveInitialColdTime)
+            if (seedData.haveInitialColdTime)
             {
-                _coldTimeTimer = cardSO.coldTime;
+                _coldTimeTimer = seedData.coldTime;
                 _coldState = ColdState.InCold;
             }
             else
@@ -86,9 +69,39 @@ namespace TPL.PVZR
                 _coldState = ColdState.Ready;
             }
             _isSelected = false;
+            
         }
-        private void Start()
+        private void Awake()
         {
+            _LevelModel = this.GetModel<ILevelModel>();
+            _HandSystem = this.GetSystem<IHandSystem>();
+            _InputSystem = this.GetSystem<InputSystem>();
+            Btn.onClick.AddListener(() =>
+            {
+                _InputSystem.TriggerOnSeedButtonClick(this);
+            });
+            
+            // 选择卡牌
+            this.RegisterEvent<OnSelectSeed>((@event) => {
+                if (ReferenceEquals(@event.seed,this))
+                {
+                    OnSelected();
+                } }).UnRegisterWhenGameObjectDestroyed(gameObject);
+            
+            // 取消选择卡牌
+            this.RegisterEvent<OnDeselectSeed>((@event) => {
+                if (ReferenceEquals(@event.seed,this))
+                {
+                    OnDeselected();
+                } }).UnRegisterWhenGameObjectDestroyed(gameObject);
+            // 放置卡牌
+            this.RegisterEvent<OnPlacePlant>((@event) =>
+            {
+                if (ReferenceEquals(@event.seed,this))
+                {
+                    OnPlanted();
+                }
+            }).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
         // == 逻辑
         private void Update()
@@ -117,39 +130,38 @@ namespace TPL.PVZR
         private void OnPlanted()
         {
             _isSelected = false;
-            _coldTimeTimer = cardSO.coldTime;
+            _coldTimeTimer = seedData.coldTime;
             _coldState = ColdState.InCold;
         }
         // 函数
         private void UIUpdate()
         {
-            if (_isSelected == true)
+            if (_isSelected)
             {
-                Normal.Hide();
-                Gray.Show();
-                Mask.Hide();
+                Plant.Hide();
+                GrayMask.Show();
+                BlackMask.Hide();
             }
             else if (_coldState == ColdState.InCold)
             {
-                Normal.Hide();
-                Gray.Show();
-                Mask.Show();
-                Mask.fillAmount = _coldTimeTimer / cardSO.coldTime;
+                Plant.Show();
+                GrayMask.Show();
+                BlackMask.Show();
+                BlackMask.fillAmount = _coldTimeTimer / seedData.coldTime;
             }
             else if (_coldState == ColdState.Ready)
             {
                 if (_sunNeedState == SunNeedState.Enough)
                 {
-
-                    Normal.Show();
-                    Gray.Hide();
-                    Mask.Hide();
+                    Plant.Show();
+                    GrayMask.Hide();
+                    BlackMask.Hide();
                 }
                 else if (_sunNeedState == SunNeedState.NotEnough)
                 {
-                    Normal.Hide();
-                    Gray.Show();
-                    Mask.Hide();
+                    Plant.Show();
+                    GrayMask.Show();
+                    BlackMask.Hide();
                 }
             }
         }

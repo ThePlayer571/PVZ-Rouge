@@ -14,6 +14,8 @@ namespace TPL.PVZR
 		{
 			mData = uiData as UILevelChooseCardPanelData ?? new UILevelChooseCardPanelData();
 			// please add init code here
+			
+			// 观察世界按钮
 			BtnViewWorld.onClick.AddListener(() =>
 			{
 				if (isHiding)
@@ -25,23 +27,11 @@ namespace TPL.PVZR
 					Hide();
 				}
 			});
+			// 开始游戏按钮
 			BtnStartGame.onClick.AddListener(() =>
 			{
-				"call func".LogInfo();
 				this.GetSystem<LevelSystem>().levelState.ChangeState(LevelSystem.LevelState.Gameplay);
 			});
-		}
-		
-		protected override void OnOpen(IUIData uiData = null)
-		{
-		}
-		
-		protected override void OnShow()
-		{
-		}
-		
-		protected override void OnHide()
-		{
 		}
 		
 		protected override void OnClose()
@@ -64,9 +54,49 @@ namespace TPL.PVZR
 			isHiding = true;
 		}
 
+		public void Init()
+		{
+			var _InventorySystem = this.GetSystem<InventorySystem>();
+			var _ChooseCardSystem = this.GetSystem<IChooseCardSystem>();
+			foreach (CardDataSO cardData in _InventorySystem.cardsInInventory)
+			{
+				var go = _ChooseCardSystem.CreateCard(cardData);
+				go.transform.SetParent(Inventory);
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		// 没用的
+
 		public IArchitecture GetArchitecture()
 		{
 			return PVZRouge.Interface;
+		}
+		
+		
+		
+		protected override void OnOpen(IUIData uiData = null)
+		{
+		}
+		
+		protected override void OnShow()
+		{
+		}
+		
+		protected override void OnHide()
+		{
 		}
 	}
 }

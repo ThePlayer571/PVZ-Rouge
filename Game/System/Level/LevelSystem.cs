@@ -11,7 +11,6 @@ namespace TPL.PVZR
     public interface ILevelSystem
     {
         public FSM<LevelSystem.LevelState> levelState { get; }
-        public bool canAddCard { get; }
     }
     
     
@@ -28,6 +27,7 @@ namespace TPL.PVZR
         private ILevelModel _LevelModel;
         private InputSystem _InputSystem;
         private IHandSystem _HandSystem;
+        private IChooseCardSystem _ChooseCardSystem;
         
         // 为方便调用而存的变量
         private UILevelChooseCardPanel _UILevelChooseCardPanel;
@@ -35,13 +35,10 @@ namespace TPL.PVZR
         
         protected override void OnInit()
         {
-            // Temp
-            "this init".LogInfo();
-            cards = new List<Card>();
-            //
             _LevelModel = this.GetModel<ILevelModel>();
             _InputSystem = this.GetSystem<InputSystem>();
             _HandSystem = this.GetSystem<IHandSystem>();
+            _ChooseCardSystem = this.GetSystem<IChooseCardSystem>();
             //
             levelState = new FSM<LevelState>();
             //
@@ -88,9 +85,6 @@ namespace TPL.PVZR
                             _VirtualCamera.Follow = _Dave.transform;
                             // UI
                             UIKit.ClosePanel<UIGameStartPanel>();
-                            // TODO: Temp
-                            _UIGamePanel = UIKit.OpenPanel<UIGamePanel>();
-                            _UIGamePanel.GetComponent<RectTransform>().DOAnchorPosY(200,0);
                         })
                         .DelayFrame(1) // 确保UIKit成功打开UI
                         .Callback(() => // 配置Framework
@@ -113,33 +107,42 @@ namespace TPL.PVZR
             levelState.State(LevelState.ChoosingCards)
                 .OnEnter(() =>
                 {
+                    _ChooseCardSystem.OnEnterLevel();
                     _UILevelChooseCardPanel = UIKit.OpenPanel<UILevelChooseCardPanel>();
+                    _UILevelChooseCardPanel.Init();
                 });
             //
             levelState.State(LevelState.Gameplay)
                 .OnEnter(() =>
                 {
                     ActionKit.Sequence()
-                        .Callback(() => // 退出上一个状态
+                        .Callback(() => 
                         {
+                            // 将Card转移成为Seed
+                            _UIGamePanel = UIKit.OpenPanel<UIGamePanel>();
+                            _UIGamePanel.GetComponent<RectTransform>().anchoredPosition += new Vector2(0, 200);
+                            _UIGamePanel.Init();
+                            // 初始化InputSystem In Level
+                            _LevelModel.OnEnterLevel2();
+                            _InputSystem.OnEnterLevel2();
+                            
+                            // 隐藏菜单
                             _UILevelChooseCardPanel.Hide();
-                            _UILevelChooseCardPanel = null;
                         })
                         .Delay(0.3f) // 等待UI移出摄像机
                         .Callback(() =>
                         {
+                            // 移除选卡UI
+                            _UILevelChooseCardPanel = null;
                             UIKit.ClosePanel<UILevelChooseCardPanel>();
-                            //
+                            // 显示准备安放植物
                             "显示准备安放植物界面".LogInfo();
                         })
                         .Delay(1f)
                         .Callback(() =>
                         {
-                        })
-                        .DelayFrame(1)
-                        .Callback(() =>
-                        {
                             _UIGamePanel.Show();
+                            // 测试
                         })
                         .Delay(1f)
                         .Start(GameManager.Instance);
@@ -153,39 +156,13 @@ namespace TPL.PVZR
         {
             _levelToBuild = level;
             levelState.ChangeState(LevelState.BuildingLevel);
-            //
-            cards = new List<Card>();
 
         }
 
         public void ExitLevel()
         {
-            cards = null;
         }
         #endregion
         
-        // ChoosingCard
-
-        private List<Card> cards;
-        public bool canAddCard => cards.Count < _LevelModel.maxCards;
-
-        public void AddCard(Card card)
-        {
-            if (!canAddCard)  return;
-            
-            cards.Add(card);
-        }
-
-        public void RemoveCard(Card card)
-        {
-            foreach (var eachCard in cards)
-            {
-                if (ReferenceEquals(eachCard,card))
-                {
-                    cards.Remove(eachCard);
-                    break;
-                }
-            }
-        }
     }
 }

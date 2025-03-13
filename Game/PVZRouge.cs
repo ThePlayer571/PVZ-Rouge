@@ -13,12 +13,14 @@ namespace TPL.PVZR
             this.RegisterModel<IDaveModel>(new DaveModel());
 
             // System
-            this.RegisterSystem<InputSystem>(new InputSystem());
-            this.RegisterSystem<IHandSystem>(new HandSystem());
             this.RegisterSystem<IEntityCreateSystem>(new EntityCreateSystem());
-            this.RegisterSystem<LevelSystem>(new LevelSystem());
             this.RegisterSystem<InventorySystem>(new InventorySystem());
             this.RegisterSystem<GameSystem>(new GameSystem());
+            this.RegisterSystem<InputSystem>(new InputSystem());
+            // 关卡内
+            this.RegisterSystem<IHandSystem>(new HandSystem());
+            this.RegisterSystem<LevelSystem>(new LevelSystem());
+            this.RegisterSystem<IChooseCardSystem>(new ChooseCardSystem());
 
             // Utility
             

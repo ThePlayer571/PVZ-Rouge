@@ -5,19 +5,13 @@ using QFramework;
 
 namespace TPL.PVZR
 {
-	// Generate Id:19588810-68c8-4da2-9fc0-bc8c520ef49e
+	// Generate Id:2c1dea9f-b940-4a6a-9ac6-fe6579f4d2fb
 	public partial class UIGamePanel
 	{
 		public const string Name = "UIGamePanel";
 		
 		[SerializeField]
-		public UnityEngine.UI.Image Normal;
-		[SerializeField]
-		public UnityEngine.UI.Image Gray;
-		[SerializeField]
-		public UnityEngine.UI.Image Mask;
-		[SerializeField]
-		public UnityEngine.UI.Button Btn;
+		public RectTransform Seeds;
 		[SerializeField]
 		public TMPro.TextMeshProUGUI SunpointText;
 		[SerializeField]
@@ -27,10 +21,7 @@ namespace TPL.PVZR
 		
 		protected override void ClearUIComponents()
 		{
-			Normal = null;
-			Gray = null;
-			Mask = null;
-			Btn = null;
+			Seeds = null;
 			SunpointText = null;
 			Shovel = null;
 			

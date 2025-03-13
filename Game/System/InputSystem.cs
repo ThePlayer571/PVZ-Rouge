@@ -104,24 +104,21 @@ namespace TPL.PVZR
             };
         }
 
+
+        public void TriggerOnSeedButtonClick(Seed seed)
+        {
+            if (_HandSystem.handState == HandSystem.HandState.Empty)
+            {
+                this.SendEvent<InputSelectEvent>(new InputSelectEvent { seed = seed });
+            }
+            else if (_HandSystem.handState is HandSystem.HandState.HavePlant or HandSystem.HandState.HaveShovel)
+            {
+                this.SendEvent<InputDeselectEvent>();
+            }
+        }
         private void BindInputActions_2()
         // 场景内ui触发的Input事件
         {
-            foreach (Seed seed in _LevelModel.seeds)
-            {
-                seed.Btn.onClick.AddListener(() =>
-                {
-                    if (_HandSystem.handState == HandSystem.HandState.Empty)
-                    {
-                        this.SendEvent<InputSelectEvent>(new InputSelectEvent { seed = seed });
-                    }
-                    else if (_HandSystem.handState is HandSystem.HandState.HavePlant or HandSystem.HandState.HaveShovel)
-                    {
-                        this.SendEvent<InputDeselectEvent>();
-                    }
-                });
-            }
-
             _LevelModel.shovel.GetComponent<Button>().onClick.AddListener(() =>
             {
                 
@@ -138,16 +135,15 @@ namespace TPL.PVZR
 
         private void UnBindInputActions_2()
         {
-            foreach (Seed seed in _LevelModel.seeds)
-            {
-                seed.Btn.onClick.RemoveAllListeners();
-            }
             _LevelModel.shovel.GetComponent<Button>().onClick.RemoveAllListeners();
             
         }
         public void OnEnterLevel()
         {
             inputActions.Gameplay.Enable();
+        }
+        public void OnEnterLevel2()
+        {
             BindInputActions_2();
         }
 
