@@ -37,9 +37,11 @@ namespace TPL.PVZR
 		public void Init()
 		{
 			var _ChooseCardSystem = this.GetSystem<IChooseCardSystem>();
+			int i = 1;
 			foreach (var eachChosenCard in _ChooseCardSystem.chosenCards)
 			{
 				var go = _ChooseCardSystem.CreateSeed(eachChosenCard.cardData).Instantiate();
+				go.GetComponent<Seed>().seedIndex = i++;
 				go.transform.SetParent(Seeds);
 			}
 		}

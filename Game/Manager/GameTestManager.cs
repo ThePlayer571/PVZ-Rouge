@@ -24,10 +24,6 @@ namespace TPL.PVZR
                 ActionKit.Repeat(1)
                     .Callback(() =>
                     {
-                        this.GetSystem<IEntityCreateSystem>()
-                            .CreateZombie(ZombieIdentifier.BucketZombie, new(6, 6));
-                        this.GetSystem<IEntityCreateSystem>()
-                            .CreateZombie(ZombieIdentifier.ScreenDoorZombie, new(6, 8));
                     })
                     .Delay(2f)
                     .Start(this);

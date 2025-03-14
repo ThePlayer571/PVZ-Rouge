@@ -13,5 +13,6 @@ namespace TPL.PVZR
         // 显示
         public Sprite followingSprite;
         public Sprite plantSprite;
+        public bool isGolden;
     }
 }

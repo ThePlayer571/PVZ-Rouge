@@ -9,11 +9,11 @@ namespace TPL.PVZR
 
     public enum PlantIdentifier
     {
-        Peashooter,
+        PeaShooter,
         Sunflower,
         Wallnut,
         Flowerpot,
-        Snowpea,
+        SnowPea,
         CherryBoom,
         PotatoMine
     }

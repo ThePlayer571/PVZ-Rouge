@@ -27,7 +27,7 @@ namespace TPL.PVZR
         private InputSystem _InputSystem;
         // 数据
         public SeedDataSO seedData;
-        public int seedIndex = 1;
+        public int seedIndex;
         // 变量
         private bool _isSelected;
         private float _coldTimeTimer;

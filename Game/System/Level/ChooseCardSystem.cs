@@ -72,12 +72,12 @@ namespace TPL.PVZR
         }
 
         // 闭环
-        public void OnEnterLevel()
+        public void OnChoosingCard()
         {
             chosenCards = new List<Card>();
         }
 
-        public void OnExitLevel()
+        public void OnEnd()
         {
             chosenCards = null;
         }

@@ -7,8 +7,9 @@ namespace TPL.PVZR
 {
     public interface ILevelModel : IModel, IInLevelSystem
     {
-        // TODO: 史山, 要优化关卡初始化逻辑(每个阶段都有个用于初始化的函数，接口写virtual默认实现)
-        public void OnEnterLevel2();
+        // Build
+        public ILevel level { get; }
+        public void SetLevel(ILevel level);
         // ChooseCards
         public int maxCardCount { get; }
 
@@ -21,8 +22,6 @@ namespace TPL.PVZR
         public Seed[] seeds { get; }
         public GameObject shovel { get; }
         public BindableProperty<int> sunpoint { get; }
-        public Level level { get; }
-        public void SetLevel(Level level);
     }
     public class LevelModel : AbstractModel, ILevelModel
     {
@@ -34,7 +33,7 @@ namespace TPL.PVZR
         /// 数据
         /// </summary>
 // == Level
-        public Level level { get; private set; }
+        public ILevel level { get; private set; }
         // == ChooseCard
         public int maxCardCount { get; private set; } = 2;
         // == Gameplay
@@ -62,11 +61,11 @@ namespace TPL.PVZR
             CellGrid = new DynaGrid<Cell>();
         }
 
-        public void SetLevel(Level level)
+        public void SetLevel(ILevel level)
         {
             this.level = level;
         }
-        public void OnEnterLevel()
+        public void OnBuildingLevel()
         {
             sunpoint.Value = 100000;
             // 引用
@@ -92,7 +91,7 @@ namespace TPL.PVZR
             }
         }
 
-        public void OnEnterLevel2()
+        public void OnGameplay()
         {
             seeds = Object.FindObjectsByType<Seed>(FindObjectsSortMode.None);
             shovel = GameObject.Find("Shovel");

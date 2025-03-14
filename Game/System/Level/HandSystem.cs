@@ -66,7 +66,7 @@ namespace TPL.PVZR
         }
 
 
-        public void OnEnterLevel()
+        public void OnBuildingLevel()
         {
             ResLoader _ResLoader = ResLoader.Allocate();
             FollowingSprite = _ResLoader.LoadSync<GameObject>("FollowingSprite").Instantiate();
@@ -76,7 +76,7 @@ namespace TPL.PVZR
 
         }
 
-        public void OnExitLevel()
+        public void OnEnd()
         {
             FollowingSprite = null;
             SelectFramebox = null;

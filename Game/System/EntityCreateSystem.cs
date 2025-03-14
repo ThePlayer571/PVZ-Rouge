@@ -47,11 +47,11 @@ namespace TPL.PVZR
             // Plant
             plantPrefabDict = new Dictionary<PlantIdentifier, GameObject>
             {
-                [PlantIdentifier.Peashooter] = _ResLoader.LoadSync<GameObject>("PeaShooter"),
+                [PlantIdentifier.PeaShooter] = _ResLoader.LoadSync<GameObject>("PeaShooter"),
                 [PlantIdentifier.Sunflower] = _ResLoader.LoadSync<GameObject>("Sunflower"),
                 [PlantIdentifier.Wallnut] = _ResLoader.LoadSync<GameObject>("Wallnut"),
                 [PlantIdentifier.Flowerpot] = _ResLoader.LoadSync<GameObject>("Flowerpot"),
-                [PlantIdentifier.Snowpea] = _ResLoader.LoadSync<GameObject>("SnowPea"),
+                [PlantIdentifier.SnowPea] = _ResLoader.LoadSync<GameObject>("SnowPea"),
                 [PlantIdentifier.CherryBoom] = _ResLoader.LoadSync<GameObject>("CherryBoom"),
                 [PlantIdentifier.PotatoMine] = _ResLoader.LoadSync<GameObject>("PotatoMine"),
 
@@ -104,7 +104,7 @@ namespace TPL.PVZR
                 return plantPrefabDict[plantIdentifier];
             }
 
-            return plantPrefabDict[PlantIdentifier.Peashooter];
+            return plantPrefabDict[PlantIdentifier.PeaShooter];
 
 
         }

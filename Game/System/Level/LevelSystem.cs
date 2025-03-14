@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using Cinemachine;
-using DG.Tweening;
+﻿using Cinemachine;
 using UnityEngine;
 using QFramework;
 using UnityEngine.SceneManagement;
-using Debug = System.Diagnostics.Debug;
 
 namespace TPL.PVZR
 {
@@ -12,8 +9,8 @@ namespace TPL.PVZR
     {
         public FSM<LevelSystem.LevelState> levelState { get; }
     }
-    
-    
+
+
     // 构建关卡/管理关卡进程
     public class LevelSystem : AbstractSystem,ILevelSystem
     {
@@ -45,7 +42,7 @@ namespace TPL.PVZR
             SetUpState();
         }
 
-        private Level _levelToBuild;
+        private ILevel _levelToBuild;
 
         private void SetUpState()
         {
@@ -90,10 +87,10 @@ namespace TPL.PVZR
                         .Callback(() => // 配置Framework
                         {
                             // 所有数据
-                            _LevelModel.OnEnterLevel();
+                            _LevelModel.OnBuildingLevel();
                             // 系统
-                            _InputSystem.OnEnterLevel();
-                            _HandSystem.OnEnterLevel();
+                            _InputSystem.OnBuildingLevel();
+                            _HandSystem.OnBuildingLevel();
                         })
                         .Callback(() => // 结尾
                         {
@@ -107,7 +104,7 @@ namespace TPL.PVZR
             levelState.State(LevelState.ChoosingCards)
                 .OnEnter(() =>
                 {
-                    _ChooseCardSystem.OnEnterLevel();
+                    _ChooseCardSystem.OnChoosingCard();
                     _UILevelChooseCardPanel = UIKit.OpenPanel<UILevelChooseCardPanel>();
                     _UILevelChooseCardPanel.Init();
                 });
@@ -123,8 +120,8 @@ namespace TPL.PVZR
                             _UIGamePanel.GetComponent<RectTransform>().anchoredPosition += new Vector2(0, 200);
                             _UIGamePanel.Init();
                             // 初始化InputSystem In Level
-                            _LevelModel.OnEnterLevel2();
-                            _InputSystem.OnEnterLevel2();
+                            _LevelModel.OnGameplay();
+                            _InputSystem.OnGameplay();
                             
                             // 隐藏菜单
                             _UILevelChooseCardPanel.Hide();
@@ -152,15 +149,11 @@ namespace TPL.PVZR
             levelState.StartState(LevelState.OutOfLevel);
         }
 
-        public void EnterLevel(Level level)
+        public void EnterLevel(ILevel level)
         {
             _levelToBuild = level;
             levelState.ChangeState(LevelState.BuildingLevel);
 
-        }
-
-        public void ExitLevel()
-        {
         }
         #endregion
         

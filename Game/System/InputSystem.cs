@@ -5,11 +5,7 @@ using UnityEngine.UI;
 
 namespace TPL.PVZR
 {
-    public interface IInLevelSystem
-    {
-        public void OnEnterLevel();
-        public void OnExitLevel();
-    }
+    
     public class InputSystem : AbstractSystem, IInLevelSystem
     {
         // Model
@@ -138,16 +134,16 @@ namespace TPL.PVZR
             _LevelModel.shovel.GetComponent<Button>().onClick.RemoveAllListeners();
             
         }
-        public void OnEnterLevel()
+        public void OnBuildingLevel()
         {
             inputActions.Gameplay.Enable();
         }
-        public void OnEnterLevel2()
+        public void OnGameplay()
         {
             BindInputActions_2();
         }
 
-        public void OnExitLevel()
+        public void OnEnd()
         {
             inputActions.Gameplay.Disable();
             UnBindInputActions_2();
