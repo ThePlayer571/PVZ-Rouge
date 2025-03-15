@@ -21,7 +21,10 @@ namespace TPL.PVZR
             cardsInInventory.Add(Card.GetCardData(PlantIdentifier.Sunflower));
             cardsInInventory.Add(Card.GetCardData(PlantIdentifier.PotatoMine));
             cardsInInventory.Add(Card.GetCardData(PlantIdentifier.SnowPea));
+            cardsInInventory.Add(Card.GetCardData(PlantIdentifier.Flowerpot));
             cardsInInventory.Add(Card.GetCardData(PlantIdentifier.Wallnut));
+            cardsInInventory.Add(Card.GetCardData(PlantIdentifier.CherryBoom));
+            cardsInInventory.Add(Card.GetCardData(PlantIdentifier.Flowerpot));
             
             
         }

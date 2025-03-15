@@ -95,7 +95,7 @@ namespace TPL.PVZR
             {
                 if (_HandSystem.handState == HandSystem.HandState.HaveShovel)
                 {
-                    this.SendEvent<InputUseShovelEvent>(new());
+                    this.SendEvent<InputUseShovelEvent>(new InputUseShovelEvent());
                 }
             };
         }
@@ -105,7 +105,7 @@ namespace TPL.PVZR
         {
             if (_HandSystem.handState == HandSystem.HandState.Empty)
             {
-                this.SendEvent<InputSelectEvent>(new InputSelectEvent { seed = seed });
+                this.SendEvent<InputSelectEvent>(new InputSelectEvent { seedIndex = seed.seedIndex });
             }
             else if (_HandSystem.handState is HandSystem.HandState.HavePlant or HandSystem.HandState.HaveShovel)
             {
@@ -150,13 +150,19 @@ namespace TPL.PVZR
 
         }
         // 函数
-        private void SendSelectForceEventByIndex(int index)
-        {
-            foreach (var card in _LevelModel.seeds)
+        private void SendSelectForceEventByIndex(int index){
+            $"index:{index}".LogInfo();
+            foreach (var VARIABLE in _LevelModel.seeds)
             {
-                if (card.seedIndex == index)
+                VARIABLE.LogInfo();
+            }
+            foreach (var seed in _LevelModel.seeds)
+            {
+                $"foreach :{seed.seedIndex}".LogInfo();
+                if (seed.seedIndex == index)
                 {
-                    this.SendEvent<InputSelectForceEvent>(new InputSelectForceEvent { seed = card });
+                    $"select: {seed.seedIndex},{seed.seedData.plantIdentifier}".LogInfo();
+                    this.SendEvent<InputSelectForceEvent>(new InputSelectForceEvent { seedIndex = seed.seedIndex });
                     return;
                 }
             }

@@ -28,19 +28,37 @@ namespace TPL.PVZR
         // 节点
         private GameObject SelectFramebox;
         private GameObject FollowingSprite;
+        private Image ShovelImage;
         // 变量
-        [SerializeField]
-        private HandState _handState = HandState.Empty;
         private Seed _selectedSeed = null;
         // 属性
-        public HandState handState => _handState;
+        public HandState handState { get; private set; } = HandState.Empty; 
         public Vector3 handWorldPos => Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         private Vector3Int handCellPos => _LevelModel.Grid.WorldToCell(handWorldPos);
         private Vector2Int handCellPos2 => new Vector2Int(handCellPos.x, handCellPos.y); // 有些时候计算需要用到vector3 所以有handCellPos 2D 3D
 
-        private Cell handOnCell => _LevelModel.CellGrid[handCellPos2.x, handCellPos2.y];
+        private Cell HandOnCell => _LevelModel.CellGrid[handCellPos2.x, handCellPos2.y];
 
-        private Cell handDownCell => _LevelModel.CellGrid[handCellPos2.x, handCellPos2.y-1];
+        private Cell HandDownCell => _LevelModel.CellGrid[handCellPos2.x, handCellPos2.y-1];
+
+        private bool daveHandCanReachMousePos =>
+            Vector2.Distance(_LevelModel.Dave.transform.position, handWorldPos) < 5f;
+
+        private bool selectedPlantCanPlaceOnMousePos  {
+            get
+            {
+                if (!_selectedSeed) return false;
+                //
+                if (_selectedSeed.seedData.plantIdentifier is PlantIdentifier.Flowerpot) // 花盆
+                {
+                    return HandOnCell.CanPlantHere && HandDownCell.CanPotAbove && daveHandCanReachMousePos;
+                }
+                else // 其他植物
+                {
+                    return HandOnCell.CanPlantHere && HandDownCell.CanPlantAbove && daveHandCanReachMousePos;
+                }
+            }
+        }
 
         public bool handIsOnUI => EventSystem.current.IsPointerOverGameObject();
         // 初始化
@@ -54,11 +72,11 @@ namespace TPL.PVZR
             //
             this.RegisterEvent<InputDeselectEvent>(@event => TryDeselect());
             this.RegisterEvent<InputPlacePlantEvent>(@event => TryPlacePlant(@event.direction));
-            this.RegisterEvent<InputSelectEvent>(@event => TrySelect(@event.seed));
+            this.RegisterEvent<InputSelectEvent>(@event => TrySelect(_LevelModel.GetSeed(@event.seedIndex)));
             this.RegisterEvent<InputSelectForceEvent>(@event =>
             {
                 TryDeselect();
-                TrySelect(@event.seed);
+                TrySelect(@_LevelModel.GetSeed(@event.seedIndex));
             });
             this.RegisterEvent<InputPickShovelEvent>(@event => TryPickShovel());
             this.RegisterEvent<InputUseShovelEvent>(@event => TryUseShovel());
@@ -70,16 +88,24 @@ namespace TPL.PVZR
         {
             ResLoader _ResLoader = ResLoader.Allocate();
             FollowingSprite = _ResLoader.LoadSync<GameObject>("FollowingSprite").Instantiate();
-            SelectFramebox = _ResLoader.LoadSync<GameObject>("SelectFramebox").Instantiate();
+            FollowingSprite.GetComponent<SpriteRenderer>().sortingLayerName = "HandItem";
             FollowingSprite.Hide();
+            SelectFramebox = _ResLoader.LoadSync<GameObject>("SelectFramebox").Instantiate();
+            SelectFramebox.GetComponent<SpriteRenderer>().sortingLayerName = "SelectFramebox";
+            SelectFramebox.Hide();
             ActionKit.DelayFrame(1, () => GameManager.ExecuteOnUpdate(Update)).Start(GameManager.Instance);
+        }
 
+        public void OnGameplay()
+        {
+            ShovelImage = GameObject.Find("ShovelImage").GetComponent<Image>();
         }
 
         public void OnEnd()
         {
             FollowingSprite = null;
             SelectFramebox = null;
+            ShovelImage = null;
         }
         void OnEnterGameSceneInit()
         {
@@ -87,19 +113,59 @@ namespace TPL.PVZR
         // == 逻辑
         private void Update()
         {
-            if (_handState is  HandState.HavePlant or HandState.HaveShovel)
+            if (handState is  HandState.HavePlant or HandState.HaveShovel)
             {
                 FollowingSprite.Position2D(handWorldPos);
             }
+            // 跟随图片
             if (_LevelSystem.levelState.CurrentStateId == LevelSystem.LevelState.Gameplay)
             {
-                SelectFramebox.Position2D(_LevelModel.Grid.CellToWorld(handCellPos) + _LevelModel.Grid.cellSize * 0.5f);
+                if (handState is HandState.HavePlant)
+                {
+                    if (selectedPlantCanPlaceOnMousePos)
+                    {
+                        SelectFramebox.Show();
+                        SelectFramebox.Position2D(_LevelModel.Grid.CellToWorld(handCellPos) +
+                                                  _LevelModel.Grid.cellSize * 0.5f);
+                    }
+                    else
+                    {
+                        SelectFramebox.Hide();
+                    }
+                }
+                else if ( handState is HandState.Empty)
+                {
+                    if (HandOnCell.CanPlantHere && HandDownCell.CanPotAbove && daveHandCanReachMousePos)
+                    {
+                        SelectFramebox.Show();
+                        SelectFramebox.Position2D(_LevelModel.Grid.CellToWorld(handCellPos) +
+                                                  _LevelModel.Grid.cellSize * 0.5f);
+                    }
+                    else
+                    {
+                        SelectFramebox.Hide();
+                    }
+                }
+                else if (handState is HandState.HaveShovel)
+                {
+                    if (HandOnCell.HavePlant)
+                    {
+                        SelectFramebox.Show();
+                        SelectFramebox.Position2D(_LevelModel.Grid.CellToWorld(handCellPos) +
+                                                  _LevelModel.Grid.cellSize * 0.5f);
+                    }
+                    else
+                    {
+                        SelectFramebox.Hide();
+
+                    }
+                }
             }
         }
         // 操作
         public void TrySelect(Seed seed)
         {
-            if (seed.isSelectable && _handState == HandState.Empty)
+            if (seed.isSelectable && handState == HandState.Empty)
             {
                 Select(seed);
             }
@@ -108,60 +174,59 @@ namespace TPL.PVZR
         {
             //
             _selectedSeed = seed;
-            _handState = HandState.HavePlant;
+            handState = HandState.HavePlant;
             //
             FollowingSprite.GetComponent<SpriteRenderer>().sprite = seed.seedData.followingSprite;
             FollowingSprite.Show();
             //
-            this.SendEvent<OnSelectSeed>(new OnSelectSeed { seed = seed });
+            seed.OnSelected();
         }
 
         public void TryPickShovel()
         {
-            if (_handState == HandState.Empty)
+            if (handState == HandState.Empty)
             {
                 PickShovel();
             }
         }
         private void PickShovel()
         {
-            _handState = HandState.HaveShovel;
-            
+            handState = HandState.HaveShovel;
             //
-            FollowingSprite.GetComponent<SpriteRenderer>().sprite = _LevelModel.shovel.GetComponent<Image>().sprite;
+            FollowingSprite.GetComponent<SpriteRenderer>().sprite = ShovelImage.sprite;
             FollowingSprite.Show();
+            ShovelImage.Hide();
         }
         private void TryDeselect()
         {
-            if (_handState is HandState.HavePlant or HandState.HaveShovel)
+            if (handState is HandState.HavePlant or HandState.HaveShovel)
             {
                 Deselect();
             }
         }
         private void Deselect()
         {
-            if (_handState == HandState.HavePlant)
+            if (handState == HandState.HavePlant)
             {
-                Seed tempSelectedSeed = _selectedSeed;
+                _selectedSeed.OnDeselected();
                 //
                 _selectedSeed = null;
-                _handState = HandState.Empty;
+                handState = HandState.Empty;
                 //
                 FollowingSprite.Hide();
-                //
-                this.SendEvent<OnDeselectSeed>(new OnDeselectSeed { seed = tempSelectedSeed });
-            } else if (_handState == HandState.HaveShovel)
+            } else if (handState == HandState.HaveShovel)
             {
                 
-                _handState = HandState.Empty;
+                handState = HandState.Empty;
                 //
                 FollowingSprite.Hide();
+                ShovelImage.Show();
             }
 
         }
         private void TryPlacePlant(Direction2 direction)
         {
-            if (_handState == HandState.HavePlant && handOnCell.IsEmpty && handDownCell.CanPlantOn)
+            if (selectedPlantCanPlaceOnMousePos)
             {
                 PlacePlant(direction);
             }
@@ -169,24 +234,22 @@ namespace TPL.PVZR
 
         private void PlacePlant(Direction2 direction)
         {
-            Seed tempSelectedSeed = _selectedSeed;
+            _selectedSeed.OnPlanted();
             // 新建植物对象
             GameObject go = _EntityCreateSystem.CreatePlant(_selectedSeed.seedData.plantIdentifier, handCellPos2, direction);
+            // 阳光
+            _LevelModel.sunpoint.Value -= _selectedSeed.sunpointCost;
             // 处理手持卡牌
             _selectedSeed = null;
-            _handState = HandState.Empty;
+            handState = HandState.Empty;
             // 图片跟随
             FollowingSprite.Hide();
-            // 阳光
-            _LevelModel.sunpoint.Value -= tempSelectedSeed.sunpointCost;
-            // 事件
-            this.SendEvent<OnPlacePlant>(new OnPlacePlant { seed = tempSelectedSeed , plant = go.GetComponent<Plant>() });
         }
 
         private void TryUseShovel()
         {
-            if (_handState == HandState.HaveShovel &&
-                handOnCell.HavePlant)
+            if (handState == HandState.HaveShovel &&
+                HandOnCell.HavePlant)
             {
                 UseShovel();
             }
@@ -194,9 +257,10 @@ namespace TPL.PVZR
 
         private void UseShovel()
         {
-            handOnCell.plant.Kill();
-            _handState = HandState.Empty;
+            HandOnCell.plant.Kill();
+            handState = HandState.Empty;
             FollowingSprite.Hide();
+            ShovelImage.Show();
         }
     }
 }

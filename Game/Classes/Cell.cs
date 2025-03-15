@@ -11,7 +11,7 @@ namespace TPL.PVZR
     {
         public enum CellState
         {
-            Empty,HavePlant, HaveTile, HaveFlowerpot
+            Empty, HavePlant, HaveStone,HaveDirt, HaveFlowerpot
         }
 
         public CellState cellState { set; private get; }
@@ -21,8 +21,10 @@ namespace TPL.PVZR
         public bool IsEmpty => cellState is CellState.Empty;
         public bool HaveFlowerpot => cellState is CellState.HaveFlowerpot;
         public bool HavePlant => cellState is CellState.HavePlant or CellState.HaveFlowerpot;
-        public bool CanPlantOn => cellState is CellState.HaveTile or CellState.HaveFlowerpot;
-        public bool CanPotOn => cellState is CellState.HaveTile or CellState.HaveFlowerpot;
+        // 种植植物
+        public bool CanPlantHere => cellState is CellState.Empty;
+        public bool CanPlantAbove => cellState is CellState.HaveDirt or CellState.HaveFlowerpot;
+        public bool CanPotAbove => cellState is CellState.HaveDirt or CellState.HaveStone or CellState.HaveFlowerpot;
     }
 
 

@@ -10,7 +10,7 @@ namespace TPL.PVZR
 	{
         public enum JumpState
         {
-           A,NotTwiceJumped,B, TwiceJumped
+           NotTwiceJumped, TwiceJumped
         }
         // 框架接口
         public IArchitecture GetArchitecture()
@@ -55,7 +55,7 @@ namespace TPL.PVZR
         private FSM<JumpState> jumpState = new FSM<JumpState>();
         // 属性
         private bool isOnGround => Physics2D.OverlapArea(jumpDetectRegionMin, jumpDetectRegionMax, LayerMask.GetMask("Barrier"));
-        private Vector3 jumpDetectRegionMin => _Collider2D.bounds.min - new Vector3(0.1f,-0.1f); // 左下
+        private Vector3 jumpDetectRegionMin => _Collider2D.bounds.min + new Vector3(0.1f,-0.1f); // 左下
         private Vector3 jumpDetectRegionMax => _Collider2D.bounds.min + new Vector3(_Collider2D.bounds.extents.x-0.1f,0); // 右上
         // == 逻辑
         private void Update()

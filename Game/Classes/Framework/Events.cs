@@ -9,39 +9,46 @@ namespace TPL.PVZR
     {
 
     }
+
     // 输入
-    public struct InputJumpEvent{
+    public struct InputJumpEvent
+    {
     }
+
     public struct InputMoveEvent
     {
         public float speed;
     }
-    public struct InputSelectEvent { public Seed seed; }
-    public struct InputSelectForceEvent { public Seed seed; }
-    public struct InputPickShovelEvent { }
-    public struct InputDeselectEvent { }
+
+    public struct InputSelectEvent
+    {
+        public int seedIndex;
+    }
+
+    public struct InputSelectForceEvent
+    {
+        public int seedIndex;
+    }
+
+    public struct InputPickShovelEvent
+    {
+    }
+
+    public struct InputDeselectEvent
+    {
+    }
+
     public struct InputPlacePlantEvent
     {
         public Direction2 direction;
     }
-    public struct InputUseShovelEvent {}
+
+    public struct InputUseShovelEvent
+    {
+    }
 
     public struct InputPickSun
     {
         public Sun target;
-    }
-    // 卡牌相关
-    public struct OnSelectSeed
-    {
-        public Seed seed;
-    }
-    public struct OnDeselectSeed
-    {
-        public Seed seed;
-    }
-    public struct OnPlacePlant
-    {
-        public Seed seed;
-        public Plant plant;
     }
 }

@@ -45,7 +45,7 @@ namespace TPL.PVZR
                     cumulativeValue += zombieToSpawn.value;
                     // 在随机位置生成zombieToSpawn
                     Vector2 spawnPosition =
-                        _LevelModel.level.GetZombieSpawnPosition(_LevelModel.level.GetRandomSpawnPositionId(wave));
+                        _LevelModel.level.ToSpawnPosition(_LevelModel.level.GetRandomSpawnPositionId(wave));
                     _EntityCreateSystem.CreateZombie(zombieToSpawn.zombieIdentifier, spawnPosition);
                 })
                 .Delay(0.5f).Start(GameManager.Instance);

@@ -21,6 +21,8 @@ namespace TPL.PVZR
             this.RegisterSystem<IHandSystem>(new HandSystem());
             this.RegisterSystem<LevelSystem>(new LevelSystem());
             this.RegisterSystem<IChooseCardSystem>(new ChooseCardSystem());
+            this.RegisterSystem<IWaveSystem>(new WaveSystem());
+            this.RegisterSystem<IZombieSpawnSystem>(new ZombieSpawnSystem());
 
             // Utility
             

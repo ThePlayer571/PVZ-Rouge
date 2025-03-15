@@ -63,6 +63,9 @@ namespace TPL.PVZR
 				var go = _ChooseCardSystem.CreateCard(cardData);
 				go.transform.SetParent(Inventory);
 			}
+			// 设置选卡栏的长度
+			ChosenCards.offsetMax = new Vector2(this.GetModel<ILevelModel>().maxCardCount * 100 + 25 * 2,ChosenCards.offsetMax.y)     ;
+
 		}
 		
 		

@@ -24,6 +24,7 @@ namespace TPL.PVZR
 
         private void StartWave()
         {
+            "开始波次".LogInfo();
             GameManager.ExecuteOnUpdate(Update);
         }
 
@@ -33,6 +34,8 @@ namespace TPL.PVZR
             if (waveTimer >= _LevelModel.level.timeOfWave(currentWave))
             {
                 waveTimer = 0;
+                _ZombieSpawnSystem.SpawnWaveOfZombie(_LevelModel.level.valueOfWave(currentWave),currentWave);
+                currentWave++;
             }
         }
 

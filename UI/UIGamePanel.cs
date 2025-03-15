@@ -34,13 +34,13 @@ namespace TPL.PVZR
 			rectTransform.DOAnchorPosY(0, 0.2f);
 		}
 
-		public void Init()
+		public void SetUp()
 		{
 			var _ChooseCardSystem = this.GetSystem<IChooseCardSystem>();
 			int i = 1;
 			foreach (var eachChosenCard in _ChooseCardSystem.chosenCards)
 			{
-				var go = _ChooseCardSystem.CreateSeed(eachChosenCard.cardData).Instantiate();
+				var go = _ChooseCardSystem.CreateSeed(eachChosenCard.cardData);
 				go.GetComponent<Seed>().seedIndex = i++;
 				go.transform.SetParent(Seeds);
 			}

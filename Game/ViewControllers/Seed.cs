@@ -80,28 +80,6 @@ namespace TPL.PVZR
             {
                 _InputSystem.TriggerOnSeedButtonClick(this);
             });
-            
-            // Ñ¡Ôñ¿¨ÅÆ
-            this.RegisterEvent<OnSelectSeed>((@event) => {
-                if (ReferenceEquals(@event.seed,this))
-                {
-                    OnSelected();
-                } }).UnRegisterWhenGameObjectDestroyed(gameObject);
-            
-            // È¡ÏûÑ¡Ôñ¿¨ÅÆ
-            this.RegisterEvent<OnDeselectSeed>((@event) => {
-                if (ReferenceEquals(@event.seed,this))
-                {
-                    OnDeselected();
-                } }).UnRegisterWhenGameObjectDestroyed(gameObject);
-            // ·ÅÖÃ¿¨ÅÆ
-            this.RegisterEvent<OnPlacePlant>((@event) =>
-            {
-                if (ReferenceEquals(@event.seed,this))
-                {
-                    OnPlanted();
-                }
-            }).UnRegisterWhenGameObjectDestroyed(gameObject);
         }
         // == Âß¼­
         private void Update()
@@ -118,16 +96,16 @@ namespace TPL.PVZR
             UIUpdate();
         }
         // ²Ù×÷
-        private void OnSelected()
+        public void OnSelected()
         {
             _isSelected = true;
         }
-        private void OnDeselected()
+        public void OnDeselected()
         {
             _isSelected = false;
         }
 
-        private void OnPlanted()
+        public void OnPlanted()
         {
             _isSelected = false;
             _coldTimeTimer = seedData.coldTime;

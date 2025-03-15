@@ -25,6 +25,7 @@ namespace TPL.PVZR
         private InputSystem _InputSystem;
         private IHandSystem _HandSystem;
         private IChooseCardSystem _ChooseCardSystem;
+        private IWaveSystem _WaveSystem;
         
         // 为方便调用而存的变量
         private UILevelChooseCardPanel _UILevelChooseCardPanel;
@@ -36,6 +37,7 @@ namespace TPL.PVZR
             _InputSystem = this.GetSystem<InputSystem>();
             _HandSystem = this.GetSystem<IHandSystem>();
             _ChooseCardSystem = this.GetSystem<IChooseCardSystem>();
+            _WaveSystem = this.GetSystem<IWaveSystem>();
             //
             levelState = new FSM<LevelState>();
             //
@@ -66,19 +68,12 @@ namespace TPL.PVZR
                         .Condition(() => ao.isDone) // 成功构建场景
                         .Callback(() => // 配置关卡GameObject
                         {
+                            _levelToBuild.GetLevelSceneSet().Instantiate();
                             // Dave
                             var _Dave = _ResLoader.LoadSync<Dave>("Dave")
                                 .Instantiate(_levelToBuild.daveInitialPos, Quaternion.identity);
-                            // VirtualCamara Confiner
-                            var _ConfinerPolygonCollider =
-                                GameObject.Find("Confiner").GetComponent<PolygonCollider2D>();
-                            _ConfinerPolygonCollider.points[1] = new Vector2(_levelToBuild.size.x, 0);
-                            _ConfinerPolygonCollider.points[2] =
-                                new Vector2(_levelToBuild.size.x, _levelToBuild.size.y);
-                            _ConfinerPolygonCollider.points[3] = new Vector2(0, _levelToBuild.size.y);
                             // VirtualCamara
                             var _VirtualCamera = Object.FindObjectOfType<CinemachineVirtualCamera>();
-                            _VirtualCamera.transform.position = _Dave.transform.position;
                             _VirtualCamera.Follow = _Dave.transform;
                             // UI
                             UIKit.ClosePanel<UIGameStartPanel>();
@@ -118,10 +113,11 @@ namespace TPL.PVZR
                             // 将Card转移成为Seed
                             _UIGamePanel = UIKit.OpenPanel<UIGamePanel>();
                             _UIGamePanel.GetComponent<RectTransform>().anchoredPosition += new Vector2(0, 200);
-                            _UIGamePanel.Init();
+                            _UIGamePanel.SetUp();
                             // 初始化InputSystem In Level
                             _LevelModel.OnGameplay();
                             _InputSystem.OnGameplay();
+                            _HandSystem.OnGameplay();
                             
                             // 隐藏菜单
                             _UILevelChooseCardPanel.Hide();
@@ -139,7 +135,7 @@ namespace TPL.PVZR
                         .Callback(() =>
                         {
                             _UIGamePanel.Show();
-                            // 测试
+                            _WaveSystem.OnGameplay();
                         })
                         .Delay(1f)
                         .Start(GameManager.Instance);
