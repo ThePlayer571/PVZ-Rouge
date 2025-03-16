@@ -9,11 +9,11 @@ namespace TPL.PVZR
     {
         private Button Btn;
         //
-        private LevelSystem _LevelSystem;
+        private ILevelSystem _LevelSystem;
         private IChooseCardSystem _ChooseCardSystem;
         private void Awake()
         {
-            _LevelSystem = this.GetSystem<LevelSystem>();
+            _LevelSystem = this.GetSystem<ILevelSystem>();
             _ChooseCardSystem = this.GetSystem<IChooseCardSystem>();
             Btn = GetComponent<Button>();
             Btn.onClick.AddListener(OnClick);

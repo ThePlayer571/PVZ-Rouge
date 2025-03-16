@@ -41,8 +41,17 @@ namespace TPL.PVZR
         public float timeOfWave(int wave); // 第n波的时长
         public float valueOfWave(int wave); // 第n波的强度
         public int totalWaveCount { get; } // 总波数
-        public int[] hugeWave { get; } // 大波的波次
+        public int[] hugeWaves { get; } // 大波的波次
         public int finalWave => totalWaveCount; // 最终波波次
+
+        public List<int> specialWaves {
+            get
+            {
+                var result = new List<int>(hugeWaves) { finalWave };
+                return result;
+            }
+
+        }
         public float totalWeight
         {
             get

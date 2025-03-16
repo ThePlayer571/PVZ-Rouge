@@ -54,7 +54,9 @@ namespace TPL.PVZR.EntityZombie
         protected virtual void Dead()
         {
             DOTween.Kill(_Rigidbody2D);
+            
             gameObject.DestroySelf();
+            _EntitySystem.DestroyZombie(this);
         }
         protected virtual void Jump()
         {

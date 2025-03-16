@@ -40,7 +40,7 @@ namespace TPL.PVZR
             {
                 return (wave - 1) * 10f + 10;
             }
-            else if (hugeWave.Contains(wave)) // 大波
+            else if (hugeWaves.Contains(wave)) // 大波
             {
                 return (wave - 1) * 7f + 10;
             }
@@ -51,10 +51,10 @@ namespace TPL.PVZR
         }
         public float timeOfWave(int wave)
         {
-            return 10;
+            return 10f;
         }
         public int totalWaveCount { get; } = 8;
-        public int[] hugeWave { get; } = new int[] { 4 };
+        public int[] hugeWaves { get; } = new int[] { 4 };
         public ZombieSpawnPositionId GetRandomSpawnPositionId(int wave)
         {
             if (wave <= 3)

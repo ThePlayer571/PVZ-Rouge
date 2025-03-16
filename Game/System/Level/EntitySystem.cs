@@ -9,10 +9,18 @@ using TPL.PVZR.EntityZombie;
 namespace TPL.PVZR
 {
 
-    public interface IEntityCreateSystem : ISystem
+    public interface IEntitySystem : ISystem, IInLevelSystem
     {
+        #region 实体记录
+
+        public HashSet<Zombie> ZombieSet { get; }
+
+        #endregion
+
+        #region 创建实体
+
         // Projectile
-        GameObject CreatePea(ProjectileIdentifier projectileIdentifier,Vector2 position, Direction2 direction);
+        GameObject CreatePea(ProjectileIdentifier projectileIdentifier, Vector2 position, Direction2 direction);
 
         // Plant
         GameObject CreatePlant(PlantIdentifier plantIdentifier, Vector2Int position,
@@ -23,26 +31,43 @@ namespace TPL.PVZR
 
         // Others
         GameObject CreateSunBySunflower(Vector2 position);
+
+        #endregion
+
+        #region 删除实体
+
+        void DestroyZombie(Zombie zombie);
+
+        #endregion
     }
 
-    public class EntityCreateSystem : AbstractSystem, IEntityCreateSystem
+    public partial class EntitySystem : AbstractSystem, IEntitySystem
     {
         // Model|System
         private ILevelModel _LevelModel;
+        private ILevelSystem _LevelSystem;
 
-        
+        // 数据
+        public HashSet<Zombie> ZombieSet { get; private set; } = new();
+
 
         // 初始化
         protected override void OnInit()
         {
             _LevelModel = this.GetModel<ILevelModel>();
-            //
-            ResLoader _ResLoader = ResLoader.Allocate();
+            _LevelSystem = this.GetSystem<ILevelSystem>();
+            // 初始化字典
+            SetPrefabDict();
+        }
+# region 管理Prefab
+        private void SetPrefabDict()
+        {
+            var _ResLoader = ResLoader.Allocate();
             // Projectile
             projectilePrefabDict = new Dictionary<ProjectileIdentifier, GameObject>()
             {
-                [ProjectileIdentifier.Pea] =_ResLoader.LoadSync<GameObject>("Pea"),
-                [ProjectileIdentifier.IcePea] =_ResLoader.LoadSync<GameObject>("IcePea"),
+                [ProjectileIdentifier.Pea] = _ResLoader.LoadSync<GameObject>("Pea"),
+                [ProjectileIdentifier.IcePea] = _ResLoader.LoadSync<GameObject>("IcePea"),
             };
             // Plant
             plantPrefabDict = new Dictionary<PlantIdentifier, GameObject>
@@ -68,35 +93,12 @@ namespace TPL.PVZR
             sunPrefab = _ResLoader.LoadSync<GameObject>("Sun");
         }
 
-        #region - 植物
         // 数据
         private Dictionary<PlantIdentifier, GameObject> plantPrefabDict;
+        private Dictionary<ZombieIdentifier, GameObject> zombiePrefabDict;
+        private Dictionary<ProjectileIdentifier, GameObject> projectilePrefabDict;
+        private GameObject sunPrefab;
         // 函数
-        public GameObject CreatePlant(PlantIdentifier plantIdentifier, Vector2Int position,
-            Direction2 direction = Direction2.Right)
-        {
-            // 创建并初始化植物
-            GameObject go = GetPrefab(plantIdentifier)
-                .Instantiate(new Vector3(position.x, position.y) + _LevelModel.Grid.cellSize * 0.5f,
-                    Quaternion.identity);
-            Plant plant = go.GetComponent<Plant>();
-            plant.Initialize(direction);
-            // 更改CellGrid
-            Cell targetCell = _LevelModel.CellGrid[plant.gridPos2.x, plant.gridPos2.y];
-            if (plantIdentifier == PlantIdentifier.Flowerpot)
-            {
-
-                targetCell.cellState = Cell.CellState.HaveFlowerpot;
-            }
-            else
-            {
-                targetCell.cellState = Cell.CellState.HavePlant;
-            }
-            targetCell.plant = plant;
-
-            //
-            return go;
-        }
         private GameObject GetPrefab(PlantIdentifier plantIdentifier)
         {
             if (plantPrefabDict.ContainsKey(plantIdentifier))
@@ -105,23 +107,7 @@ namespace TPL.PVZR
             }
 
             return plantPrefabDict[PlantIdentifier.PeaShooter];
-
-
         }
-        #endregion
-
-        #region - 僵尸
-        // 数据
-        private Dictionary<ZombieIdentifier, GameObject> zombiePrefabDict;
-        // 函数
-        public GameObject CreateZombie(ZombieIdentifier zombieIdentifier, Vector2 position)
-        {
-            GameObject go = GetPrefab(zombieIdentifier)
-                .Instantiate(new Vector3(position.x, position.y), Quaternion.identity);
-            go.GetComponent<Zombie>().Initialize();
-            return go;
-        }
-        
         private GameObject GetPrefab(ZombieIdentifier zombieIdentifier)
         {
             if (zombiePrefabDict.ContainsKey(zombieIdentifier))
@@ -130,23 +116,7 @@ namespace TPL.PVZR
             }
 
             return zombiePrefabDict[ZombieIdentifier.NormalZombie];
-
-
         }
-        #endregion
-        
-        #region - 投射物
-        // 数据
-        private Dictionary<ProjectileIdentifier, GameObject> projectilePrefabDict;
-        // 函数
-        
-        public GameObject CreatePea(ProjectileIdentifier projectileIdentifier,Vector2 position, Direction2 direction)
-        {
-            GameObject go = GetPrefab(projectileIdentifier).Instantiate(new Vector3(position.x, position.y), Quaternion.identity);
-            go.GetComponent<IPea>().Initialize(direction);
-            return go;
-        }
-
         private GameObject GetPrefab(ProjectileIdentifier projectileIdentifier)
         {
             if (projectilePrefabDict.ContainsKey(projectileIdentifier))
@@ -156,26 +126,16 @@ namespace TPL.PVZR
 
             return projectilePrefabDict[ProjectileIdentifier.Pea];
         }
+
         #endregion
-        
-        
-        private GameObject sunPrefab;
-        public GameObject CreateSunBySunflower(Vector2 position)
+        public void DestroyZombie(Zombie zombie)
         {
-            var go = sunPrefab.Instantiate(position, Quaternion.identity);
-            go.transform.DOJump(go.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(0, 0.3f)),
-                0.5f, 1, 0.5f);
-            return go;
+            ZombieSet.Remove(zombie);
+            // 触发一些事件
+            _LevelSystem.TryEndLevel();
+
         }
 
-        public GameObject CreateSunByFall(Vector2 position)
-        {
-            var go = sunPrefab.Instantiate(position, Quaternion.identity);
-            return go;
-        }
-
-
-
-        
     }
+    
 }

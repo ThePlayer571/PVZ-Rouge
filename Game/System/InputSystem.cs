@@ -151,17 +151,11 @@ namespace TPL.PVZR
         }
         // 函数
         private void SendSelectForceEventByIndex(int index){
-            $"index:{index}".LogInfo();
-            foreach (var VARIABLE in _LevelModel.seeds)
-            {
-                VARIABLE.LogInfo();
-            }
+           
             foreach (var seed in _LevelModel.seeds)
             {
-                $"foreach :{seed.seedIndex}".LogInfo();
                 if (seed.seedIndex == index)
                 {
-                    $"select: {seed.seedIndex},{seed.seedData.plantIdentifier}".LogInfo();
                     this.SendEvent<InputSelectForceEvent>(new InputSelectForceEvent { seedIndex = seed.seedIndex });
                     return;
                 }

@@ -30,7 +30,7 @@ namespace TPL.PVZR
 			// 开始游戏按钮
 			BtnStartGame.onClick.AddListener(() =>
 			{
-				this.GetSystem<LevelSystem>().levelState.ChangeState(LevelSystem.LevelState.Gameplay);
+				this.GetSystem<ILevelSystem>().levelState.ChangeState(LevelSystem.LevelState.Gameplay);
 			});
 		}
 		

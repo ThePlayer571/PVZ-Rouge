@@ -21,7 +21,7 @@ namespace TPL.PVZR.EntityPlant
 			if (timer > coldTime)
 			{
 				timer -= coldTime;
-				_EntityCreateSystem.CreateSunBySunflower(transform.position);
+				_EntitySystem.CreateSunBySunflower(transform.position);
 			}
 		}
 

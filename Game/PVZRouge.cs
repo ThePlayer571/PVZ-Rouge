@@ -7,24 +7,27 @@ namespace TPL.PVZR
     {
         protected override void Init()
         {
-            // Model
+            // == Model
             
             this.RegisterModel<ILevelModel>(new LevelModel());
             this.RegisterModel<IDaveModel>(new DaveModel());
 
-            // System
-            this.RegisterSystem<IEntityCreateSystem>(new EntityCreateSystem());
-            this.RegisterSystem<InventorySystem>(new InventorySystem());
-            this.RegisterSystem<GameSystem>(new GameSystem());
+            // == System
+            // = 整个游戏进程
             this.RegisterSystem<InputSystem>(new InputSystem());
+            // = 一局游戏内
+            this.RegisterSystem<GameSystem>(new GameSystem());
+            this.RegisterSystem<InventorySystem>(new InventorySystem());
+            // = 一个关卡内
+            this.RegisterSystem<ILevelSystem>(new LevelSystem()); // 管理关卡进程
+            this.RegisterSystem<IEntitySystem>(new EntitySystem()); // 负责实体的记录与创建
+            this.RegisterSystem<IHandSystem>(new HandSystem()); // 管理手部动作
+            this.RegisterSystem<IChooseCardSystem>(new ChooseCardSystem()); // 选择卡片时起作用
+            this.RegisterSystem<IWaveSystem>(new WaveSystem()); // 管理记录波次
+            this.RegisterSystem<IZombieSpawnSystem>(new ZombieSpawnSystem()); // 管理一波僵尸的生成
             // 关卡内
-            this.RegisterSystem<IHandSystem>(new HandSystem());
-            this.RegisterSystem<LevelSystem>(new LevelSystem());
-            this.RegisterSystem<IChooseCardSystem>(new ChooseCardSystem());
-            this.RegisterSystem<IWaveSystem>(new WaveSystem());
-            this.RegisterSystem<IZombieSpawnSystem>(new ZombieSpawnSystem());
 
-            // Utility
+            // == Utility
             
 
         }

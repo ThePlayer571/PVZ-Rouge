@@ -51,4 +51,9 @@ namespace TPL.PVZR
     {
         public Sun target;
     }
+
+    public struct WaveStartEvent
+    {
+        public int wave;
+    }
 }

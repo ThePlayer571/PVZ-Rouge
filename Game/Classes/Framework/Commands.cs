@@ -9,13 +9,21 @@ namespace TPL.PVZR
     {
         protected override void OnExecute()
         {
-            this.GetSystem<LevelSystem>().EnterLevel(new LevelDaveHouse());
+            this.GetSystem<ILevelSystem>().EnterLevel(new LevelDaveHouse());
             // ActionKit.DelayFrame(1, () =>
             // {
             //     this.GetModel<IGameModel>().OnEnterGameSceneInit();
             //     this.SendEvent<EnterGameSceneInitEvent>();
             //
             // }).Start(GameManager.Instance);
+        }
+    }
+
+    public class ZombieDeadCommand : AbstractCommand
+    {
+        protected override void OnExecute()
+        {
+            
         }
     }
 }

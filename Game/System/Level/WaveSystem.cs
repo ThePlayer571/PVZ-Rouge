@@ -1,19 +1,20 @@
 using QFramework;
 using UnityEngine;
+using DG.Tweening;
 
 namespace TPL.PVZR
 {
-    public interface IWaveSystem:ISystem,IInLevelSystem
+    public interface IWaveSystem : ISystem, IInLevelSystem
     {
-        
-    }
+        int currentWave { get; } // 已经生成了第n波怪时，currentWave = n
+}
     public class WaveSystem:AbstractSystem,IWaveSystem
     {
         // 
         private ILevelModel _LevelModel;
         private IZombieSpawnSystem _ZombieSpawnSystem;
         // 运行时变量
-        public int currentWave { get;private set; }
+        public int currentWave { get; private set; } = 0;
         private float waveTimer = 0;
 
 
@@ -24,19 +25,30 @@ namespace TPL.PVZR
 
         private void StartWave()
         {
-            "开始波次".LogInfo();
             GameManager.ExecuteOnUpdate(Update);
         }
 
         private void Update()
         {
+            // 在刷新第1波怪之前的时间叫做第0波
             waveTimer += Time.deltaTime;
             if (waveTimer >= _LevelModel.level.timeOfWave(currentWave))
             {
-                waveTimer = 0;
-                _ZombieSpawnSystem.SpawnWaveOfZombie(_LevelModel.level.valueOfWave(currentWave),currentWave);
-                currentWave++;
+                StartNextWave();}
+
+            if (currentWave == _LevelModel.level.totalWaveCount)
+            {
+                GameManager.StopOnUpdate(Update);
             }
+        }
+
+        private void StartNextWave()
+        {
+            waveTimer = 0;
+            currentWave++;
+            _ZombieSpawnSystem.SpawnWaveOfZombie(_LevelModel.level.valueOfWave(currentWave),currentWave);
+            this.SendEvent<WaveStartEvent>(new WaveStartEvent { wave = currentWave });
+
         }
 
 

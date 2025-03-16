@@ -7,7 +7,7 @@ namespace TPL.PVZR.EntityPlant
 	{
 		protected override void Shoot()
 		{
-			_EntityCreateSystem.CreatePea(ProjectileIdentifier.Pea,FirePoint.position, direction);
+			_EntitySystem.CreatePea(ProjectileIdentifier.Pea,FirePoint.position, direction);
 			base.Shoot();
 		}
 	}

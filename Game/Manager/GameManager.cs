@@ -13,6 +13,11 @@ namespace TPL.PVZR
         {
             OnUpdate += func;
         }
+
+        public static void StopOnUpdate(Action func)
+        {
+            OnUpdate -= func;
+        }
         public static void ExecuteOnFixedUpdate(Action func)
         {
             OnFixedUpdate += func;

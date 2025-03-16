@@ -23,8 +23,8 @@ namespace TPL.PVZR
         }
         // Model
         private ILevelModel _LevelModel;
-        private IEntityCreateSystem _EntityCreateSystem;
-        private LevelSystem _LevelSystem;
+        private IEntitySystem _EntitySystem;
+        private ILevelSystem _LevelSystem;
         // 节点
         private GameObject SelectFramebox;
         private GameObject FollowingSprite;
@@ -65,8 +65,8 @@ namespace TPL.PVZR
         protected override void OnInit()
         {
             _LevelModel = this.GetModel<ILevelModel>();
-            _EntityCreateSystem = this.GetSystem<IEntityCreateSystem>();
-            _LevelSystem = this.GetSystem<LevelSystem>();
+            _EntitySystem = this.GetSystem<IEntitySystem>();
+            _LevelSystem = this.GetSystem<ILevelSystem>();
             //
             this.RegisterEvent<EnterGameSceneInitEvent>(@event => OnEnterGameSceneInit());
             //
@@ -236,7 +236,7 @@ namespace TPL.PVZR
         {
             _selectedSeed.OnPlanted();
             // 新建植物对象
-            GameObject go = _EntityCreateSystem.CreatePlant(_selectedSeed.seedData.plantIdentifier, handCellPos2, direction);
+            GameObject go = _EntitySystem.CreatePlant(_selectedSeed.seedData.plantIdentifier, handCellPos2, direction);
             // 阳光
             _LevelModel.sunpoint.Value -= _selectedSeed.sunpointCost;
             // 处理手持卡牌

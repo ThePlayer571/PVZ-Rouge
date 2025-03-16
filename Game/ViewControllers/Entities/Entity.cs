@@ -77,12 +77,12 @@ namespace TPL.PVZR
         #endregion
 
         // 引用
-        protected IEntityCreateSystem _EntityCreateSystem;
+        protected IEntitySystem _EntitySystem;
         protected ILevelModel _LevelModel;
 
         protected virtual void Awake()
         {
-            _EntityCreateSystem = this.GetSystem<IEntityCreateSystem>();
+            _EntitySystem = this.GetSystem<IEntitySystem>();
             _LevelModel = this.GetModel<ILevelModel>();
         }
     }

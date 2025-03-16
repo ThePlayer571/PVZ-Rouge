@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using QFramework;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 namespace TPL.PVZR
 {
@@ -13,17 +14,22 @@ namespace TPL.PVZR
         // ChooseCards
         public int maxCardCount { get; }
 
-        // Gameplay
+        // = Gameplay
+        // 
         public Dave Dave { get; }
+        //
         public Grid Grid { get; }
         public Tilemap GroundTilemap { get; }
         public Tilemap BoundTilemap { get; }
         public Tilemap DirtTilemap { get; }
         public DynaGrid<Cell> CellGrid { get; }
+        //
         public Seed[] seeds { get; }
         public Seed GetSeed(int seedIndex);
         public GameObject shovel { get; }
         public BindableProperty<int> sunpoint { get; }
+        //
+        public Slider LevelStageBar { get; }
     }
     public class LevelModel : AbstractModel, ILevelModel
     {
@@ -64,10 +70,11 @@ namespace TPL.PVZR
         }
 
         public GameObject shovel { get; private set; }
+        public Slider LevelStageBar { get; private set; }
 
 
 
-
+//
         protected override void OnInit()
         {
             sunpoint = new BindableProperty<int>();
@@ -87,7 +94,7 @@ namespace TPL.PVZR
             GroundTilemap = GameObject.Find("Ground").GetComponent<Tilemap>();
             BoundTilemap = GameObject.Find("Bound").GetComponent<Tilemap>();
             DirtTilemap = GameObject.Find("DirtNotice").GetComponent<Tilemap>();
-
+           
             // 网格数据
             for (int x = -1; x <= level.size.x; ++x)
             {
@@ -116,7 +123,8 @@ namespace TPL.PVZR
         public void OnGameplay()
         {
             seeds = Object.FindObjectsByType<Seed>(FindObjectsSortMode.None);
-            shovel = GameObject.Find("Shovel");
+            shovel = GameObject.Find("Shovel"); LevelStageBar = GameObject.Find("LevelStageBar").GetComponent<Slider>();
+
         }
 
         public void OnExitLevel()
@@ -129,6 +137,7 @@ namespace TPL.PVZR
             shovel = null;
             CellGrid = new DynaGrid<Cell>();
             sunpoint = new BindableProperty<int>();
+            LevelStageBar = null;
 
         }
     }
