@@ -95,8 +95,12 @@ namespace TPL.PVZR
             {
                 if (_HandSystem.handState == HandSystem.HandState.HaveShovel)
                 {
-                    this.SendEvent<InputUseShovelEvent>(new InputUseShovelEvent());
+                    this.SendEvent<InputUseShovelEvent>();
                 }
+            };
+            inputActions.Gameplay.Interact.performed += (context) =>
+            {
+                this.SendEvent<InputInteractEvent>();
             };
         }
 

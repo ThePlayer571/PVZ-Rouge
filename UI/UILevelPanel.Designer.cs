@@ -5,15 +5,19 @@ using QFramework;
 
 namespace TPL.PVZR
 {
-	// Generate Id:7ba32422-4367-4812-8b89-8338530d79b9
+	// Generate Id:a1dde997-63d8-4034-8f34-132933c86579
 	public partial class UILevelPanel
 	{
 		public const string Name = "UILevelPanel";
 		
 		[SerializeField]
+		public UnityEngine.RectTransform SeedPanel;
+		[SerializeField]
 		public RectTransform Seeds;
 		[SerializeField]
 		public TMPro.TextMeshProUGUI SunpointText;
+		[SerializeField]
+		public UnityEngine.RectTransform ShovelSlot;
 		[SerializeField]
 		public UnityEngine.UI.Button Shovel;
 		[SerializeField]
@@ -29,8 +33,10 @@ namespace TPL.PVZR
 		
 		protected override void ClearUIComponents()
 		{
+			SeedPanel = null;
 			Seeds = null;
 			SunpointText = null;
+			ShovelSlot = null;
 			Shovel = null;
 			LevelStageBar = null;
 			Flags = null;

@@ -17,7 +17,10 @@ namespace TPL.PVZR.EntityPlant
             ActionKit.Sequence()
                 .Callback(() =>
                 {
-                    transform.DOScale(1.5f, 0.5f).OnComplete(() => { Boom(); });
+                    transform.DOScale(1.5f, 0.5f).OnComplete(() =>
+                    {
+                        Boom();
+                    });
                 }).Start(this);
         }
 
@@ -29,8 +32,7 @@ namespace TPL.PVZR.EntityPlant
             {
                 hit.GetComponent<IDealAttack>()?.DealAttack(attack);
             }
-
-            gameObject.DestroySelf();
+            Kill();
         }
 
     }

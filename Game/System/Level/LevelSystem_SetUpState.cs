@@ -73,9 +73,9 @@ namespace TPL.PVZR
                         {
                             // 将Card转移成为Seed
                             _uiLevelPanel = UIKit.OpenPanel<UILevelPanel>();
-                            _uiLevelPanel.GetComponent<RectTransform>().anchoredPosition += new Vector2(0, 200);
+                            _uiLevelPanel.HideQuick();
                             _uiLevelPanel.SetUp();
-                            // 初始化InputSystem In Level
+                            // 初始化 InputSystem In Level
                             _LevelModel.OnGameplay();
                             _InputSystem.OnGameplay();
                             _HandSystem.OnGameplay();

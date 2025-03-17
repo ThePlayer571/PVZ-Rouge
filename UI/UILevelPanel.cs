@@ -36,14 +36,25 @@ namespace TPL.PVZR
 
 		}
 		private RectTransform rectTransform;
+
+		public void HideQuick()
+		{
+			SeedPanel.DOAnchorPosY(100, 0f);
+			ShovelSlot.DOAnchorPosY(100, 0f);
+			LevelStageBar.GetComponent<RectTransform>().DOAnchorPosY(-100, 0f);
+		}
 		public new void Hide()
 		{
-			rectTransform.DOAnchorPosY(-200, 0.2f);
+			SeedPanel.DOAnchorPosY(100, 0.2f);
+			ShovelSlot.DOAnchorPosY(100, 0.2f);
+			LevelStageBar.GetComponent<RectTransform>().DOAnchorPosY(-100, 0f);
 		}
 
 		public new void Show()
 		{
-			rectTransform.DOAnchorPosY(0, 0.2f);
+			SeedPanel.DOAnchorPosY(-100, 0.2f);
+			ShovelSlot.DOAnchorPosY(-100, 0.2f);
+			LevelStageBar.GetComponent<RectTransform>().DOAnchorPosY(40, 0f);
 		}
 
 		public void SetUp()

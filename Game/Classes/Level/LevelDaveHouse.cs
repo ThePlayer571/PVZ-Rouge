@@ -51,7 +51,7 @@ namespace TPL.PVZR
         }
         public float timeOfWave(int wave)
         {
-            return 10f;
+            return 2;
         }
         public int totalWaveCount { get; } = 8;
         public int[] hugeWaves { get; } = new int[] { 4 };

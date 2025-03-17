@@ -47,9 +47,9 @@ namespace TPL.PVZR
     {
     }
 
-    public struct InputPickSun
+    public struct InputInteractEvent
     {
-        public Sun target;
+        
     }
 
     public struct WaveStartEvent

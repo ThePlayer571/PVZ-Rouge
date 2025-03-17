@@ -1,4 +1,5 @@
-﻿using QFramework;
+﻿using DG.Tweening;
+using QFramework;
 using UnityEngine;
 
 namespace TPL.PVZR.EntityPlant
@@ -32,6 +33,7 @@ namespace TPL.PVZR.EntityPlant
 
         public override void Kill()
         {
+            DOTween.Kill(transform);
             healthPoint.Value = 0;
         }
 
