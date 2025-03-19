@@ -43,14 +43,14 @@ namespace TPL.PVZR
                     // = 生成僵尸
                     // 获取随机zombieToSpawn
                     ZombieSpawnData zombieToSpawn =
-                        _LevelModel.level.GetRandomZombieData(wave);
+                        _LevelModel.ZombieSpawnConfig.GetRandomZombieData(wave);
                     // 防止过于离谱的僵尸出现
                     if (cumulativeValue + zombieToSpawn.value > value * 1.3f) continue;
                     // 累计value
                     cumulativeValue += zombieToSpawn.value;
                     // 在随机位置生成zombieToSpawn
                     Vector2 spawnPosition =
-                        _LevelModel.level.ToSpawnPosition(_LevelModel.level.GetRandomSpawnPositionId(wave));
+                        _LevelModel.ZombieSpawnConfig.ToSpawnPosition(_LevelModel.ZombieSpawnConfig.GetRandomSpawnPositionId(wave));
                     _EntitySystem.CreateZombie(zombieToSpawn.zombieIdentifier, spawnPosition);
 
                     //

@@ -24,8 +24,8 @@ namespace TPL.PVZR
 //
 			this.RegisterEvent<WaveStartEvent>(@event =>
 			{
-				LevelStageBar.DOValue((float)@event.wave / _LevelModel.level.totalWaveCount, 1f).SetEase(Ease.OutQuad);
-				if (_LevelModel.level.specialWaves.Contains(@event.wave))
+				LevelStageBar.DOValue((float)@event.wave / _LevelModel.WaveConfig.totalWaveCount, 1f).SetEase(Ease.OutQuad);
+				if (_LevelModel.WaveConfig.flaggedWaves.Contains(@event.wave))
 				{
 					if (FlagDict.TryGetValue(@event.wave, out var flag))
 					{
@@ -69,9 +69,9 @@ namespace TPL.PVZR
 				go.transform.SetParent(Seeds);
 			}
 			// 旗子
-			foreach (var flaggedWave in _LevelModel.level.specialWaves)
+			foreach (var flaggedWave in _LevelModel.WaveConfig.flaggedWaves)
 			{
-				var ratio = (float)flaggedWave / _LevelModel.level.totalWaveCount;
+				var ratio = (float)flaggedWave / _LevelModel.WaveConfig.totalWaveCount;
 				var barLength = Flags.rect.width;
 				var newFlag =  FlagTemplate.Instantiate().Parent(FlagMask).GetComponent<RectTransform>();
 				newFlag.anchoredPosition = new Vector2(-barLength * ratio, 0);

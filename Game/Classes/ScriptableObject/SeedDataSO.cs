@@ -2,6 +2,11 @@ using UnityEngine;
 
 namespace TPL.PVZR
 {
+
+    public enum CardQuality
+    {
+        White, Green,Blue,Purple,Gold
+    }
     [CreateAssetMenu(fileName = "SeedData_", menuName = "PVZR/SeedData", order = 0)]
     public class SeedDataSO : ScriptableObject
     {
@@ -13,6 +18,6 @@ namespace TPL.PVZR
         // 显示
         public Sprite followingSprite;
         public Sprite plantSprite;
-        public bool isGolden;
+        public CardQuality CardQuality;
     }
 }

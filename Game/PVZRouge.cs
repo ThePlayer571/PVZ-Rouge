@@ -17,7 +17,8 @@ namespace TPL.PVZR
             this.RegisterSystem<InputSystem>(new InputSystem());
             // = 一局游戏内
             this.RegisterSystem<GameSystem>(new GameSystem());
-            this.RegisterSystem<InventorySystem>(new InventorySystem());
+            this.RegisterSystem<IInventorySystem>(new InventorySystem());
+            this.RegisterSystem<ILootCreateSystem>(new LootCreateSystem());
             // = 一个关卡内
             this.RegisterSystem<ILevelSystem>(new LevelSystem()); // 管理关卡进程
             this.RegisterSystem<IEntitySystem>(new EntitySystem()); // 负责实体的记录与创建

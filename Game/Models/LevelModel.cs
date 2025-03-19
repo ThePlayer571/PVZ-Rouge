@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using QFramework;
 using UnityEngine.Tilemaps;
@@ -10,6 +9,10 @@ namespace TPL.PVZR
     {
         // Build
         public ILevel level { get; }
+        public MapConfig MapConfig { get; }
+        public WaveConfig WaveConfig { get; }
+        public ZombieSpawnConfig ZombieSpawnConfig { get; }
+        public LootConfig LootConfig { get; }
         public void SetLevel(ILevel level);
         // ChooseCards
         public int maxCardCount { get; }
@@ -42,6 +45,12 @@ namespace TPL.PVZR
         /// </summary>
         // == Level
         public ILevel level { get; private set; }
+
+        public MapConfig MapConfig { get;private set; }
+        public WaveConfig WaveConfig { get;private set; }
+        public ZombieSpawnConfig ZombieSpawnConfig { get; private set;}
+        public LootConfig LootConfig { get; private set; }
+
         // == ChooseCard
         public int maxCardCount { get; private set; } = 4;
         // == Gameplay
@@ -84,6 +93,10 @@ namespace TPL.PVZR
         public void SetLevel(ILevel level)
         {
             this.level = level;
+            this.WaveConfig = level.WaveConfig;
+            this.MapConfig = level.MapConfig;
+            this.ZombieSpawnConfig = level.ZombieSpawnConfig;
+            this.LootConfig = level.LootConfig;
         }
         public void OnBuildingLevel()
         {
@@ -96,9 +109,9 @@ namespace TPL.PVZR
             DirtTilemap = GameObject.Find("DirtNotice").GetComponent<Tilemap>();
            
             // 网格数据
-            for (int x = -1; x <= level.size.x; ++x)
+            for (int x = -1; x <= MapConfig.size.x; ++x)
             {
-                for (int y = -1; y <= level.size.y; ++y)
+                for (int y = -1; y <= MapConfig.size.y; ++y)
                 {
                     if (GroundTilemap.HasTile(new Vector3Int(x, y, 0)) || BoundTilemap.HasTile(new Vector3Int(x, y, 0)))
                     {

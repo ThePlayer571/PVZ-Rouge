@@ -5,11 +5,13 @@ using System.Collections.Generic;
 
 namespace TPL.PVZR
 {
-    public interface IInventorySystem
+    public interface IInventorySystem:ISystem
     {
         public List<CardDataSO> cardsInInventory { get; }
+        public void AddLoot(LootData loot);
+        public void AddLoot(List<LootData> loots);
     }
-    public class InventorySystem: AbstractSystem
+    public class InventorySystem: AbstractSystem,IInventorySystem
     {
         protected override void OnInit()
         {
@@ -25,11 +27,27 @@ namespace TPL.PVZR
             cardsInInventory.Add(Card.GetCardData(PlantIdentifier.Wallnut));
             cardsInInventory.Add(Card.GetCardData(PlantIdentifier.CherryBoom));
             cardsInInventory.Add(Card.GetCardData(PlantIdentifier.Flowerpot));
-            
-            
         }
+        
+        
 
         public List<CardDataSO> cardsInInventory { get; private set; }
+        
+        public void AddLoot(LootData loot)
+        {
+            if (loot.lootType == LootData.LootType.Card)
+            {
+                cardsInInventory.Add( loot.cardData);
+            }
+        }
+
+        public void AddLoot(List<LootData> loots)
+        {
+            foreach (LootData loot in loots)
+            {
+                AddLoot(loot);
+            }
+        }
     }
 
 }

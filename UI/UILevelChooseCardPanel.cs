@@ -56,7 +56,7 @@ namespace TPL.PVZR
 
 		public void Init()
 		{
-			var _InventorySystem = this.GetSystem<InventorySystem>();
+			var _InventorySystem = this.GetSystem<IInventorySystem>();
 			var _ChooseCardSystem = this.GetSystem<IChooseCardSystem>();
 			foreach (CardDataSO cardData in _InventorySystem.cardsInInventory)
 			{

@@ -32,11 +32,11 @@ namespace TPL.PVZR
         {
             // 在刷新第1波怪之前的时间叫做第0波
             waveTimer += Time.deltaTime;
-            if (waveTimer >= _LevelModel.level.timeOfWave(currentWave))
+            if (waveTimer >= _LevelModel.WaveConfig.timeOfWave(currentWave))
             {
                 StartNextWave();}
 
-            if (currentWave == _LevelModel.level.totalWaveCount)
+            if (currentWave == _LevelModel.WaveConfig.totalWaveCount)
             {
                 GameManager.StopOnUpdate(Update);
             }
@@ -46,7 +46,7 @@ namespace TPL.PVZR
         {
             waveTimer = 0;
             currentWave++;
-            _ZombieSpawnSystem.SpawnWaveOfZombie(_LevelModel.level.valueOfWave(currentWave),currentWave);
+            _ZombieSpawnSystem.SpawnWaveOfZombie(_LevelModel.WaveConfig.valueOfWave(currentWave),currentWave);
             this.SendEvent<WaveStartEvent>(new WaveStartEvent { wave = currentWave });
 
         }

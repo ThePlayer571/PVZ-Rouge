@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using QFramework;
 using TPL.PVZR.EntityZombie;
+using UnityEngine;
 
 namespace TPL.PVZR
 {
@@ -13,7 +16,7 @@ namespace TPL.PVZR
 
     public partial class ZombieSpawnData
     {
-        private static Dictionary<ZombieIdentifier, ZombieSpawnData> ZombieSpawnDataDict;
+        private static Dictionary<ZombieIdentifier, ZombieSpawnData> ZombieSpawnDataDict = new();
 
         public static ZombieSpawnData GetDefaultData(ZombieIdentifier zombieIdentifier)
         {
@@ -24,17 +27,25 @@ namespace TPL.PVZR
 
         static ZombieSpawnData()
         {
-            ZombieSpawnDataDict = new Dictionary<ZombieIdentifier, ZombieSpawnData>
+            var json = ResLoader.Allocate().LoadSync<TextAsset>("ZombieSpawnDataJson");
+            var ZombieSpawnDataJsonList = JsonConvert.DeserializeObject<List<ZombieSpawnDataJson>>(json.text);
+
+            foreach (var each in ZombieSpawnDataJsonList)
             {
-                [ZombieIdentifier.NormalZombie] = new ZombieSpawnData
-                    { zombieIdentifier = ZombieIdentifier.NormalZombie, weight = 1000, value = 10 },
-                [ZombieIdentifier.ConeheadZombie] = new ZombieSpawnData
-                    { zombieIdentifier = ZombieIdentifier.ConeheadZombie, weight = 400, value = 15 },
-                [ZombieIdentifier.BucketZombie] = new ZombieSpawnData
-                    { zombieIdentifier = ZombieIdentifier.BucketZombie, weight = 200, value = 30 },
-                [ZombieIdentifier.ScreenDoorZombie] = new ZombieSpawnData
-                    { zombieIdentifier = ZombieIdentifier.ScreenDoorZombie, weight = 300, value = 30 }
-            };
+                ZombieSpawnDataDict[each.id] =
+                    new ZombieSpawnData
+                    {
+                        zombieIdentifier = each.id,
+                        weight = each.weight,
+                        value = each.value
+                    };
+            }
+        }
+        private struct ZombieSpawnDataJson
+        {
+            public ZombieIdentifier id;
+            public float weight;
+            public float value;
         }
     }
 }

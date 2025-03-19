@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using QFramework;
@@ -29,10 +30,10 @@ namespace TPL.PVZR
                         .Condition(() => ao.isDone) // 成功构建场景
                         .Callback(() => // 配置关卡GameObject
                         {
-                            _levelToBuild.GetLevelSceneSet().Instantiate();
+                            _levelToBuild.MapConfig.GetLevelSceneSet().Instantiate();
                             // Dave
                             var _Dave = _ResLoader.LoadSync<Dave>("Dave")
-                                .Instantiate(_levelToBuild.daveInitialPos, Quaternion.identity);
+                                .Instantiate(_levelToBuild.MapConfig.daveInitialPos, Quaternion.identity);
                             // VirtualCamara
                             var _VirtualCamera = Object.FindObjectOfType<CinemachineVirtualCamera>();
                             _VirtualCamera.Follow = _Dave.transform;
@@ -72,9 +73,9 @@ namespace TPL.PVZR
                         .Callback(() => 
                         {
                             // 将Card转移成为Seed
-                            _uiLevelPanel = UIKit.OpenPanel<UILevelPanel>();
-                            _uiLevelPanel.HideQuick();
-                            _uiLevelPanel.SetUp();
+                            _UILevelPanel = UIKit.OpenPanel<UILevelPanel>();
+                            _UILevelPanel.HideQuick();
+                            _UILevelPanel.SetUp();
                             // 初始化 InputSystem In Level
                             _LevelModel.OnGameplay();
                             _InputSystem.OnGameplay();
@@ -95,7 +96,7 @@ namespace TPL.PVZR
                         .Delay(1f)
                         .Callback(() =>
                         {
-                            _uiLevelPanel.Show();
+                            _UILevelPanel.Show();
                             _WaveSystem.OnGameplay();
                         })
                         .Delay(1f)
@@ -105,10 +106,29 @@ namespace TPL.PVZR
                 {
                     
                 });
+            //
             levelState.State(LevelState.End)
                 .OnEnter(() =>
                 {
-                    "关卡结束".LogInfo();
+                    UIKit.ClosePanel<UILevelPanel>();
+                    ResLoader.Allocate().LoadSync<GameObject>("EndLevelLootChest").Instantiate(_EntitySystem.lastDeadZombiePosition,Quaternion.identity);
+                });
+            //
+            levelState.State(LevelState.ChooseLoots)
+                .OnEnter(() =>
+                {
+                    // 抽取战利品
+                    var _UILevelChooseLootPanelData = new UILevelChooseLootPanelData(_LevelModel.LootConfig.value,
+                        _LevelModel.LootConfig.LootDataList);
+                    // 打开面板
+                    UIKit.OpenPanel<UILevelChooseLootPanel>(_UILevelChooseLootPanelData);
+                });
+            
+            levelState.State(LevelState.Exiting)
+                .OnEnter(() =>
+                {
+                    UIKit.ClosePanel<UILevelChooseLootPanel>();
+                    SceneManager.LoadSceneAsync("GameStartScene");
                 });
             levelState.State(LevelState.OutOfLevel);
             //

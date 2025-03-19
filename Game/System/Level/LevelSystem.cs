@@ -17,9 +17,16 @@ namespace TPL.PVZR
     public partial class LevelSystem : AbstractSystem,ILevelSystem
     {
         # region 通用
+
         public enum LevelState
         {
-            OutOfLevel,BuildingLevel, ChoosingCards, Gameplay, End 
+            OutOfLevel,
+            BuildingLevel,
+            ChoosingCards,
+            Gameplay,
+            End,
+            ChooseLoots,
+            Exiting
         }
 
         public FSM<LevelState> levelState { get; private set; }
@@ -33,7 +40,7 @@ namespace TPL.PVZR
         
         // 为方便调用而存的变量
         private UILevelChooseCardPanel _UILevelChooseCardPanel;
-        private UILevelPanel _uiLevelPanel;
+        private UILevelPanel _UILevelPanel;
         
         protected override void OnInit()
         {
@@ -63,7 +70,7 @@ namespace TPL.PVZR
         public void TryEndLevel()
         // 调用后，尝试结束游戏，根据当前状态判断是否应该结束
         {
-            if (_WaveSystem.currentWave == _LevelModel.level.totalWaveCount && _EntitySystem.ZombieSet.Count == 0 &&
+            if (_WaveSystem.currentWave == _LevelModel.WaveConfig.totalWaveCount && _EntitySystem.ZombieSet.Count == 0 &&
                 _ZombieSpawnSystem.OperatingCoroutine == 0)
             {
                 // ReSharper disable once Unity.PerformanceCriticalCodeInvocation

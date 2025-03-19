@@ -13,10 +13,6 @@ namespace TPL.PVZR
             return PVZRouge.Interface;
         }
 
-        class Test
-        {
-            public int test;
-        }
         public void Start()
         {
             this.RegisterEvent<EnterGameSceneInitEvent>(@event =>

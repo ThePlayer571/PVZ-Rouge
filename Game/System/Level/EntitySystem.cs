@@ -14,6 +14,7 @@ namespace TPL.PVZR
         #region 实体记录
 
         public HashSet<Zombie> ZombieSet { get; }
+        public Vector2 lastDeadZombiePosition { get; }
 
         #endregion
 
@@ -131,10 +132,12 @@ namespace TPL.PVZR
         public void DestroyZombie(Zombie zombie)
         {
             ZombieSet.Remove(zombie);
+            lastDeadZombiePosition= zombie.transform.position;
             // 触发一些事件
             _LevelSystem.TryEndLevel();
-
         }
+
+        public Vector2 lastDeadZombiePosition { get; private set; } 
 
     }
     
