@@ -23,7 +23,7 @@ namespace TPL.PVZR.EntityZombie
         
         // 僵尸属性
         protected BindableProperty<float> healthPoint;
-        protected Attack attack = new Attack {damage = 50};
+        protected Attack attack = new Attack {damage = 50, isFrameDamage = true};
         protected float moveSpeed = 1.5f;
         
 
@@ -116,7 +116,7 @@ namespace TPL.PVZR.EntityZombie
                     OnTriggerExitEvent += AIAttacking_WhenLoseTarget;
                 }).OnUpdate(() =>
                 {
-                    attackingTarget?.DealAttack(attack.DamageMultiplier(Time.deltaTime));
+                    attackingTarget?.DealAttack(attack);
                 })
                 .OnExit(() =>
                 {
@@ -135,7 +135,11 @@ namespace TPL.PVZR.EntityZombie
             if (other.CompareTag("Plant"))
             {
                 this.behaviorState.ChangeState(ZombieState.Attacking);
-                attackingTarget = other.GetComponent<Plant>() as IDealAttack;
+                attackingTarget = other.GetComponent<Plant>();
+            }else if (other.CompareTag("Dave"))
+            {
+                this.behaviorState.ChangeState(ZombieState.Attacking);
+                attackingTarget = other.GetComponent<Dave>();
             }
         }
         protected virtual void AITargeting_Targeting()
@@ -217,8 +221,5 @@ namespace TPL.PVZR.EntityZombie
             });
             SetUpState();
         }
-
-        
-
     }
 }

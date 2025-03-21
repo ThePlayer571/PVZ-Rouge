@@ -1,0 +1,16 @@
+"filename", "language", "C#", "comment", "blank", "total"
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Cell.cs", "C#", 1, 1, 0, 2
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Framework\Events.cs", "C#", 0, -1, 8, 7
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Level.cs", "C#", -98, -6, -13, -117
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Level\Level.cs", "C#", 55, 5, 4, 64
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Level\LevelDaveHouse.cs", "C#", 65, 2, 8, 75
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Models\LevelModel.cs", "C#", 19, 0, 3, 22
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\PVZRouge.cs", "C#", 2, 0, 0, 2
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\System\Game\InventorySystem.cs", "C#", 3, 0, 0, 3
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\System\InputSystem.cs", "C#", 6, 0, 0, 6
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\System\Level\HandSystem.cs", "C#", 62, 0, 2, 64
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\System\Level\LevelSystem.cs", "C#", -2, -2, 0, -4
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\System\Level\WaveSystem.cs", "C#", 3, 0, 0, 3
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Seed.cs", "C#", -17, -3, -2, -22
+"d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UILevelChooseCardPanel.cs", "C#", 1, 1, 1, 3
+"Total", "-", 100, -3, 11, 108

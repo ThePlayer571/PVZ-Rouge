@@ -13,28 +13,31 @@ namespace TPL.PVZR
 	public partial class UILevelPanel : UIPanel,IController
 	{
 		private ILevelModel _LevelModel;
+
 		protected override void OnInit(IUIData uiData = null)
 		{
 			mData = uiData as UILevelPanelData ?? new UILevelPanelData();
 			// please add init code here
 			rectTransform = GetComponent<RectTransform>();
 			_LevelModel = this.GetModel<ILevelModel>();
-			//
-			_LevelModel.sunpoint.RegisterWithInitValue(val => { SunpointText.text = _LevelModel.sunpoint.ToString(); });
+			_LevelModel.sunpoint.RegisterWithInitValue(val => { SunpointText.text = _LevelModel.sunpoint.ToString(); })
+				.UnRegisterWhenGameObjectDestroyed(this);
 //
 			this.RegisterEvent<WaveStartEvent>(@event =>
 			{
-				LevelStageBar.DOValue((float)@event.wave / _LevelModel.WaveConfig.totalWaveCount, 1f).SetEase(Ease.OutQuad);
+				LevelStageBar.DOValue((float)@event.wave / _LevelModel.WaveConfig.totalWaveCount, 1f)
+					.SetEase(Ease.OutQuad);
 				if (_LevelModel.WaveConfig.flaggedWaves.Contains(@event.wave))
 				{
 					if (FlagDict.TryGetValue(@event.wave, out var flag))
 					{
-						flag.DOAnchorPosY( 19,1.4f).SetEase(Ease.OutQuad);
+						flag.DOAnchorPosY(19, 1.4f).SetEase(Ease.OutQuad);
 					}
 				}
 			});
 
 		}
+
 		private RectTransform rectTransform;
 
 		public void HideQuick()

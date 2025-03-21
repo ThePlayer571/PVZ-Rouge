@@ -48,6 +48,9 @@ namespace TPL.PVZR
                             // 系统
                             _InputSystem.OnBuildingLevel();
                             _HandSystem.OnBuildingLevel();
+                            _EntitySystem.OnBuildingLevel();
+                            _WaveSystem.OnBuildingLevel();
+                            _ZombieSpawnSystem.OnBuildingLevel();
                         })
                         .Callback(() => // 结尾
                         {
@@ -70,17 +73,22 @@ namespace TPL.PVZR
                 .OnEnter(() =>
                 {
                     ActionKit.Sequence()
-                        .Callback(() => 
+                        .Callback(() =>
                         {
                             // 将Card转移成为Seed
                             _UILevelPanel = UIKit.OpenPanel<UILevelPanel>();
                             _UILevelPanel.HideQuick();
                             _UILevelPanel.SetUp();
-                            // 初始化 InputSystem In Level
+                        })
+                        .DelayFrame(1)
+                        .Callback(() =>
+                        {
                             _LevelModel.OnGameplay();
+                            // 初始化 System
+                            _ZombieSpawnSystem.OnGameplay();
                             _InputSystem.OnGameplay();
                             _HandSystem.OnGameplay();
-                            
+                            _ChooseCardSystem.OnGameplay();
                             // 隐藏菜单
                             _UILevelChooseCardPanel.Hide();
                         })
@@ -91,7 +99,6 @@ namespace TPL.PVZR
                             _UILevelChooseCardPanel = null;
                             UIKit.ClosePanel<UILevelChooseCardPanel>();
                             // 显示准备安放植物
-                            "显示准备安放植物界面".LogInfo();
                         })
                         .Delay(1f)
                         .Callback(() =>
@@ -107,12 +114,17 @@ namespace TPL.PVZR
                     
                 });
             //
-            levelState.State(LevelState.End)
+            levelState.State(LevelState.EndGameplay)
                 .OnEnter(() =>
                 {
                     UIKit.ClosePanel<UILevelPanel>();
                     ResLoader.Allocate().LoadSync<GameObject>("EndLevelLootChest").Instantiate(_EntitySystem.lastDeadZombiePosition,Quaternion.identity);
+                    // System
+                    _ZombieSpawnSystem.OnEndGameplay();
+                    _InventorySystem.OnEndGameplay();
                 });
+            //
+            
             //
             levelState.State(LevelState.ChooseLoots)
                 .OnEnter(() =>
@@ -123,11 +135,24 @@ namespace TPL.PVZR
                     // 打开面板
                     UIKit.OpenPanel<UILevelChooseLootPanel>(_UILevelChooseLootPanelData);
                 });
-            
+            levelState.State(LevelState.Defeat)
+                .OnEnter(() =>
+                {
+                    UIKit.OpenPanel<UILevelDefeatPanel>();
+                });
+            //
             levelState.State(LevelState.Exiting)
                 .OnEnter(() =>
                 {
                     UIKit.ClosePanel<UILevelChooseLootPanel>();
+                    // 
+                    _HandSystem.OnExiting();
+                    _EntitySystem.OnExiting();
+                    _WaveSystem.OnExiting();
+                    //
+                    _LevelModel.OnExiting();
+                    //
+                    
                     SceneManager.LoadSceneAsync("GameStartScene");
                 });
             levelState.State(LevelState.OutOfLevel);

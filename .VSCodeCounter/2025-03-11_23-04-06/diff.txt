@@ -1,0 +1,67 @@
+Date : 2025-03-11 23:04:06
+Directory : d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts
+Total : 28 files,  246 codes, 9 comments, 35 blanks, all 290 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C#       |         28 |        246 |          9 |         35 |        290 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                   |         28 |        246 |          9 |         35 |        290 |
+| Game                                                                                                                |         26 |        180 |          7 |         21 |        208 |
+| Game (Files)                                                                                                        |          3 |        -52 |          0 |         -9 |        -61 |
+| Game\Classes                                                                                                        |          5 |          7 |          4 |          1 |         12 |
+| Game\Classes (Files)                                                                                                |          3 |        -47 |         -5 |         -4 |        -56 |
+| Game\Classes\Framework                                                                                              |          2 |         54 |          9 |          5 |         68 |
+| Game\Commands                                                                                                       |          1 |        -16 |          0 |         -3 |        -19 |
+| Game\Manager                                                                                                        |          6 |        204 |          6 |         37 |        247 |
+| Game\Models                                                                                                         |          2 |         13 |          0 |         -2 |         11 |
+| Game\System                                                                                                         |          3 |         88 |         -2 |         14 |        100 |
+| Game\ViewControllers                                                                                                |          3 |          6 |          0 |          0 |          6 |
+| Game\ViewControllers\Entities                                                                                       |          3 |          6 |          0 |          0 |          6 |
+| Game\ViewControllers\Entities\Plants                                                                                |          2 |          7 |          0 |          0 |          7 |
+| Game\ViewControllers\Entities\Projectiles                                                                           |          1 |         -1 |          0 |          0 |         -1 |
+| Game\_Temp                                                                                                          |          3 |        -70 |         -1 |        -17 |        -88 |
+| UI                                                                                                                  |          2 |         66 |          2 |         14 |         82 |
++---------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                            | language | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Commands.cs                                | C#       |        -20 |         -2 |         -3 |        -25 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Events.cs                                  | C#       |        -41 |         -3 |         -3 |        -47 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Framework\Commands.cs                      | C#       |         13 |          6 |          2 |         21 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Framework\Events.cs                        | C#       |         41 |          3 |          3 |         47 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Classes\Level.cs                                   | C#       |         14 |          0 |          2 |         16 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Commands\PlantDeadCommand.cs                       | C#       |        -16 |          0 |         -3 |        -19 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\GameManager.cs                                     | C#       |        -34 |          0 |         -6 |        -40 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\GameStarter.cs                                     | C#       |        -19 |          0 |         -3 |        -22 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Manager\GameManager.cs                             | C#       |         35 |          0 |          7 |         42 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Manager\GameStarter.cs                             | C#       |         19 |          2 |          2 |         23 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Manager\GameTestManager.cs                         | C#       |         38 |          0 |         11 |         49 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Manager\Global.cs                                  | C#       |         24 |          0 |          3 |         27 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Manager\SceneTransitionManager.Designer.cs         | C#       |          7 |          1 |          2 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Manager\SceneTransitionManager.cs                  | C#       |         81 |          3 |         12 |         96 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Models\GameModel.cs                                | C#       |        -62 |        -13 |        -16 |        -91 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\Models\LevelModel.cs                               | C#       |         75 |         13 |         14 |        102 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\PVZRouge.cs                                        | C#       |          1 |          0 |          0 |          1 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\System\HandSystem.cs                               | C#       |          8 |          0 |          2 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\System\InputSystem.cs                              | C#       |         25 |        -12 |          5 |         18 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\System\LevelSystem.cs                              | C#       |         55 |         10 |          7 |         72 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\CherryBoom.cs      | C#       |          3 |          0 |          1 |          4 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Plants\PotatoMine.cs      | C#       |          4 |          0 |         -1 |          3 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\ViewControllers\Entities\Projectiles\Projectile.cs | C#       |         -1 |          0 |          0 |         -1 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\_Temp\GameTestManager.cs                           | C#       |        -38 |          0 |        -11 |        -49 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\_Temp\Global.Designer.cs                           | C#       |         -7 |         -1 |         -2 |        -10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Game\_Temp\Global.cs                                    | C#       |        -25 |          0 |         -4 |        -29 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UISceneTransitionPanel.Designer.cs                   | C#       |         38 |          1 |          8 |         47 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UISceneTransitionPanel.cs                            | C#       |         28 |          1 |          6 |         35 |
+| Total                                                                                                               |          |        246 |          9 |         35 |        290 |
++---------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

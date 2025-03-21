@@ -32,7 +32,7 @@ namespace TPL.PVZR
             {
                 this.SendEvent<InputJumpEvent>(new());
             };
-            GameManager.ExecuteOnFixedUpdate(() =>
+            GameManager.ExecuteOnUpdate(() =>
             {
                 var val = inputActions.Gameplay.Move.ReadValue<float>();
                 
@@ -147,7 +147,7 @@ namespace TPL.PVZR
             BindInputActions_2();
         }
 
-        public void OnEnd()
+        public void OnExiting()
         {
             inputActions.Gameplay.Disable();
             UnBindInputActions_2();

@@ -18,14 +18,32 @@ namespace TPL.PVZR
         private float waveTimer = 0;
 
 
-        public void OnGameplay()
+        public void OnExiting()
         {
-            StartWave();
+            currentWave = 0;
+            waveTimer = 0;
         }
 
-        private void StartWave()
+        public void OnBuildingLevel()
+        {
+            currentWave = 0;
+            waveTimer = 0;
+        }
+        
+        
+        public void OnGameplay()
+        {
+            StartWaveSystem();
+        }
+
+        private void StartWaveSystem()
         {
             GameManager.ExecuteOnUpdate(Update);
+        }
+
+        private void EndWaveSystem()
+        {
+            GameManager.StopOnUpdate(Update);
         }
 
         private void Update()

@@ -17,7 +17,12 @@ namespace TPL.PVZR
             throw new System.NotImplementedException();
         }
 
-        public void OnEnd()
+        public void OnEndGameplay()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnExiting()
         {
             throw new System.NotImplementedException();
         }

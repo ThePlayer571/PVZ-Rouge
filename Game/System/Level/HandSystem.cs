@@ -101,7 +101,7 @@ namespace TPL.PVZR
             ShovelImage = GameObject.Find("ShovelImage").GetComponent<Image>();
         }
 
-        public void OnEnd()
+        public void OnExiting()
         {
             FollowingSprite = null;
             SelectFramebox = null;

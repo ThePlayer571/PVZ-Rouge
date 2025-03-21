@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using QFramework;
 using UnityEngine;
 
 namespace TPL.PVZR
@@ -53,12 +54,10 @@ namespace TPL.PVZR
             return ZombieSpawnData.GetDefaultData(ZombieIdentifier.NormalZombie);
         }
         // 僵尸位置
-        
-        public virtual Level.ZombieSpawnPositionId GetRandomSpawnPositionId(int wave) // 获取随机的僵尸生成点
-        {
-            return allowedSpawnPosition[Random.Range(0, allowedSpawnPosition.Length - 1)];
-        }
-        
+
+        public abstract Level.ZombieSpawnPositionId GetRandomSpawnPositionId(int wave); // 获取随机的僵尸生成点
+
+
     }
 
     public abstract class LootConfig

@@ -49,7 +49,7 @@ namespace TPL.PVZR
         private ILevelSystem _LevelSystem;
 
         // 数据
-        public HashSet<Zombie> ZombieSet { get; private set; } = new();
+        public HashSet<Zombie> ZombieSet { get; private set; } = new(); // 存储所有场上的僵尸
 
 
         // 初始化
@@ -60,7 +60,18 @@ namespace TPL.PVZR
             // 初始化字典
             SetPrefabDict();
         }
-# region 管理Prefab
+
+        public void OnBuildingLevel()
+        {
+            ZombieSet = new HashSet<Zombie>();
+        }
+        public void OnExiting()
+        {
+            ZombieSet = null;
+        }
+
+
+        # region 管理Prefab
         private void SetPrefabDict()
         {
             var _ResLoader = ResLoader.Allocate();

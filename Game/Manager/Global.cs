@@ -14,7 +14,7 @@ namespace TPL.PVZR
         public static float peashooterRange = 20f;
         public static float peashooterColdTime = 1.2f;
         public static float sunflowerColdTime = 5f;
-        public static float cherryBoomRange = 1f;
+        public static float cherryBoomRange = 2f;
         public static float potatoMineSleepTime = 10f;
         public static float potatoMineRange = 0.5f;
         

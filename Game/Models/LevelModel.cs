@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using QFramework;
 using UnityEngine.Tilemaps;
@@ -16,7 +17,9 @@ namespace TPL.PVZR
         public void SetLevel(ILevel level);
         // ChooseCards
         public int maxCardCount { get; }
-
+        public List<Card> chosenCards { get; set; }
+        // = 
+        
         // = Gameplay
         // 
         public Dave Dave { get; }
@@ -37,10 +40,6 @@ namespace TPL.PVZR
     public class LevelModel : AbstractModel, ILevelModel
     {
         /// <summary>
-        /// 实现接口
-        /// </summary>
-
-        /// <summary>
         /// 数据
         /// </summary>
         // == Level
@@ -53,6 +52,9 @@ namespace TPL.PVZR
 
         // == ChooseCard
         public int maxCardCount { get; private set; } = 4;
+
+        public List<Card> chosenCards { get; set; }
+
         // == Gameplay
         // 游戏数据
         public BindableProperty<int> sunpoint { get; private set; }
@@ -100,7 +102,8 @@ namespace TPL.PVZR
         }
         public void OnBuildingLevel()
         {
-            sunpoint.Value = 100;
+            sunpoint.Value = 1000000;
+            chosenCards = new List<Card>();
             // 引用
             Dave = Object.FindAnyObjectByType<Dave>();
             Grid = Object.FindAnyObjectByType<Grid>();
@@ -135,12 +138,13 @@ namespace TPL.PVZR
 
         public void OnGameplay()
         {
+            
             seeds = Object.FindObjectsByType<Seed>(FindObjectsSortMode.None);
             shovel = GameObject.Find("Shovel"); LevelStageBar = GameObject.Find("LevelStageBar").GetComponent<Slider>();
 
         }
 
-        public void OnExitLevel()
+        public void OnExiting()
         {
             Dave = null;
             Grid = null;
@@ -151,6 +155,7 @@ namespace TPL.PVZR
             CellGrid = new DynaGrid<Cell>();
             sunpoint = new BindableProperty<int>();
             LevelStageBar = null;
+            chosenCards = null;
 
         }
     }

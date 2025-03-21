@@ -77,7 +77,12 @@ namespace TPL.PVZR
             chosenCards = new List<Card>();
         }
 
-        public void OnEnd()
+        public void OnGameplay()
+        {
+            _LevelModel.chosenCards = chosenCards;
+        }
+
+        public void OnExiting()
         {
             chosenCards = null;
         }

@@ -32,7 +32,11 @@ namespace TPL.PVZR
         public override int[] hugeWaves { get; protected set; } = new int[] { 4 };
         public override float timeOfWave(int wave)
         {
-            return 10;
+            if (wave == 0)
+            {
+                return 1;
+            }
+            return 1;
         }
 
         public override float valueOfWave(int wave)
@@ -75,7 +79,7 @@ namespace TPL.PVZR
             };
         }
         
-        public Level.ZombieSpawnPositionId GetRandomSpawnPositionId(int wave)
+        public override Level.ZombieSpawnPositionId GetRandomSpawnPositionId(int wave)
         {
             if (wave <= 3)
             {
@@ -87,14 +91,14 @@ namespace TPL.PVZR
             }
         }
     }
-
-
+    
     public class LootConfigLevelDaveHouse : LootConfig
     {
         public override List<LootData> LootDataList { get; protected set; } = new List<LootData>
         {
             LootData.GetDefaultData(PlantIdentifier.PeaShooter), LootData.GetDefaultData(PlantIdentifier.Flowerpot),
-            LootData.GetDefaultData(PlantIdentifier.Sunflower)
+            LootData.GetDefaultData(PlantIdentifier.Sunflower), LootData.GetDefaultData(PlantIdentifier.CherryBoom),
+            LootData.GetDefaultData(PlantIdentifier.SnowPea),LootData.GetDefaultData(PlantIdentifier.PotatoMine),
         };
 
         public override float value => Random.Range(300f, 400f);

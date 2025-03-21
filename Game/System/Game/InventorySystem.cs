@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace TPL.PVZR
 {
-    public interface IInventorySystem:ISystem
+    public interface IInventorySystem:ISystem,IInLevelSystem
     {
         public List<CardDataSO> cardsInInventory { get; }
         public void AddLoot(LootData loot);
@@ -46,6 +46,22 @@ namespace TPL.PVZR
             foreach (LootData loot in loots)
             {
                 AddLoot(loot);
+            }
+        }
+
+        public void OnEndGameplay()
+        {
+            var _LevelModel = this.GetModel<ILevelModel>();
+            foreach (var chosenCard in _LevelModel.chosenCards)
+            {
+                foreach (var cardInInventory in cardsInInventory)
+                {
+                    if (cardInInventory.seedData.plantIdentifier == chosenCard.cardData.seedData.plantIdentifier)
+                    {
+                        cardsInInventory.Remove(cardInInventory);
+                        break;
+                    }
+                }
             }
         }
     }

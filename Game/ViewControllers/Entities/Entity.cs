@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel;
+using DG.Tweening;
 using QFramework;
 using UnityEngine;
 
@@ -84,6 +85,11 @@ namespace TPL.PVZR
         {
             _EntitySystem = this.GetSystem<IEntitySystem>();
             _LevelModel = this.GetModel<ILevelModel>();
+        }
+
+        protected void OnDestroy()
+        {
+            DOTween.Kill(this);
         }
     }
 }

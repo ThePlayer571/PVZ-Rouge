@@ -10,6 +10,7 @@ namespace TPL.PVZR
         public float punchForce;
         public Vector2 punchDirection;
         public bool slowness;
+        public bool isFrameDamage;
 
         public void Initialize(AttackData data)
         {

@@ -16,7 +16,14 @@ namespace TPL.PVZR
 		
 		public void Interact()
 		{
-			this.SendCommand<LevelToStateChooseLootCommand>();
+			var _LevelSystem = this.GetSystem<ILevelSystem>();
+			// TODO： 测试代码，记得删
+			_LevelSystem.levelState.ChangeState(LevelSystem.LevelState.EndGameplay);
+			if (_LevelSystem.levelState.CurrentStateId != LevelSystem.LevelState.EndGameplay)
+			{
+				throw new Exception("在不正确的时间调用了");
+			}
+			_LevelSystem.levelState.ChangeState(LevelSystem.LevelState.ChooseLoots);
 			indicator.SetSelectable(false);
 		}
 
