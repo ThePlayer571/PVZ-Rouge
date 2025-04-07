@@ -1,9 +1,7 @@
-using System;
+using TPL.PVZR.Gameplay.ViewControllers.UI;
 using UnityEngine;
-using UnityEngine.UI;
-using QFramework;
 
-namespace TPL.PVZR
+namespace TPL.PVZR.UI
 {
 	// Generate Id:234e9cb9-627e-4788-816f-51c6a57f844d
 	public partial class UILevelChooseLootPanel
@@ -11,11 +9,11 @@ namespace TPL.PVZR
 		public const string Name = "UILevelChooseLootPanel";
 		
 		[SerializeField]
-		public TPL.PVZR.UILevelChooseLootChoice Choice_1;
+		public UILevelChooseLootChoice Choice_1;
 		[SerializeField]
-		public TPL.PVZR.UILevelChooseLootChoice Choice_2;
+		public UILevelChooseLootChoice Choice_2;
 		[SerializeField]
-		public TPL.PVZR.UILevelChooseLootChoice Choice_3;
+		public UILevelChooseLootChoice Choice_3;
 		
 		private UILevelChooseLootPanelData mPrivateData = null;
 		

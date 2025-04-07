@@ -1,9 +1,6 @@
-using System;
 using UnityEngine;
-using UnityEngine.UI;
-using QFramework;
 
-namespace TPL.PVZR
+namespace TPL.PVZR.UI
 {
 	// Generate Id:9d0aaf32-3564-492f-a2c0-650fe1557669
 	public partial class UISceneTransitionPanel

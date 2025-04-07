@@ -1,9 +1,10 @@
-using UnityEngine;
-using UnityEngine.UI;
 using QFramework;
-using UnityEngine.SceneManagement;
+using TPL.PVZR.Architecture;
+using TPL.PVZR.Architecture.Commands;
+using TPL.PVZR.Architecture.Systems;
+using TPL.PVZR.Gameplay.Class;
 
-namespace TPL.PVZR
+namespace TPL.PVZR.UI
 {
 	public class UIGameStartPanelData : UIPanelData
 	{
@@ -16,7 +17,7 @@ namespace TPL.PVZR
 			// please add init code here
 			Button.onClick.AddListener(() =>
             {
-                this.SendCommand(new StartGameCommand());
+	            this.SendCommand<StartNewGameCommand>(new StartNewGameCommand());
 			});
 		}
 		

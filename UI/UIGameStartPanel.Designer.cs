@@ -1,9 +1,6 @@
-using System;
 using UnityEngine;
-using UnityEngine.UI;
-using QFramework;
 
-namespace TPL.PVZR
+namespace TPL.PVZR.UI
 {
 	// Generate Id:4954254d-f047-466c-93ea-3a2e78c4aa67
 	public partial class UIGameStartPanel

@@ -1,0 +1,27 @@
+{
+    "name": "PVZR",
+    "rootNamespace": "TPL.PVZR",
+    "references": [
+        "GUID:9e97e42c28a41430880bee376c274c86",
+        "GUID:22208c7e849c34c218fe267b9a814fab",
+        "GUID:8ed2a396aae604c5ca111525d261bb03",
+        "GUID:038dff00bcd140258ec2ecc4c541bea0",
+        "GUID:33fdc5a868bf76c4cb91e896f10f8821",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:4307f53044263cf4b835bd812fc161a4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll",
+        "DOTweenEditor.dll",
+        "DOTween.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

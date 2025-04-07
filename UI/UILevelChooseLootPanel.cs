@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using QFramework;
+using TPL.PVZR.Architecture;
+using TPL.PVZR.Architecture.Systems.InGame;
+using TPL.PVZR.Gameplay.Class;
 
-namespace TPL.PVZR
+namespace TPL.PVZR.UI
 {
 	public class UILevelChooseLootPanelData : UIPanelData, ICanGetSystem
 	{
-		public List<LootData> Choice_1;
-		public List<LootData> Choice_2;
-		public List<LootData> Choice_3;
+		public List<Loot> Choice_1;
+		public List<Loot> Choice_2;
+		public List<Loot> Choice_3;
 
-		public UILevelChooseLootPanelData(float value,List<LootData> LootDataList )
+		public UILevelChooseLootPanelData(float value,List<Loot> LootDataList )
 		{
 			ILootCreateSystem _LootCreateSystem = this.GetSystem<ILootCreateSystem>();
 			Choice_1 = _LootCreateSystem.CreateSetOfLootData(value, LootDataList);

@@ -1,9 +1,6 @@
-using System;
 using UnityEngine;
-using UnityEngine.UI;
-using QFramework;
 
-namespace TPL.PVZR
+namespace TPL.PVZR.UI
 {
 	// Generate Id:a1dde997-63d8-4034-8f34-132933c86579
 	public partial class UILevelPanel

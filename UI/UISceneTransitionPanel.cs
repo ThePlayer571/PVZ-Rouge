@@ -1,8 +1,6 @@
-using UnityEngine;
-using UnityEngine.UI;
 using QFramework;
 
-namespace TPL.PVZR
+namespace TPL.PVZR.UI
 {
 	public class UISceneTransitionPanelData : UIPanelData
 	{

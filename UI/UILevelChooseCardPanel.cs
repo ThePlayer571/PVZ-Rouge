@@ -1,9 +1,16 @@
-using UnityEngine;
-using UnityEngine.UI;
-using QFramework;
 using DG.Tweening;
+using QFramework;
+using TPL.PVZR.Architecture;
+using TPL.PVZR.Architecture.Models;
+using TPL.PVZR.Architecture.Systems;
+using TPL.PVZR.Architecture.Systems.InGame;
+using TPL.PVZR.Architecture.Systems.InLevel;
+using TPL.PVZR.Architecture.Systems.Interfaces;
+using TPL.PVZR.Architecture.Systems.PhaseSystems;
+using TPL.PVZR.Gameplay.Class.Items;
+using UnityEngine;
 
-namespace TPL.PVZR
+namespace TPL.PVZR.UI
 {
 	public class UILevelChooseCardPanelData : UIPanelData
 	{
@@ -30,7 +37,7 @@ namespace TPL.PVZR
 			// 开始游戏按钮
 			BtnStartGame.onClick.AddListener(() =>
 			{
-				this.GetSystem<ILevelSystem>().levelState.ChangeState(LevelSystem.LevelState.Gameplay);
+				this.GetSystem<IGamePhaseSystem>().ChangePhase(GamePhaseSystem.GamePhase.Gameplay);
 			});
 		}
 		
@@ -58,9 +65,11 @@ namespace TPL.PVZR
 		{
 			var _InventorySystem = this.GetSystem<IInventorySystem>();
 			var _ChooseCardSystem = this.GetSystem<IChooseCardSystem>();
-			foreach (CardDataSO cardData in _InventorySystem.cardsInInventory)
+			foreach (Card card in _InventorySystem.cardsInInventory)
 			{
-				var go = _ChooseCardSystem.CreateCard(cardData);
+				var go = Card.CreateUICard(card);
+				"test:".LogInfo();
+				go.card.LogInfo();
 				go.transform.SetParent(Inventory);
 			}
 			// 设置选卡栏的长度
