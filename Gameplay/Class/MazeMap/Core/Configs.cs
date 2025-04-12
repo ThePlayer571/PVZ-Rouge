@@ -1,14 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using QFramework;
-using TPL.PVZR.Core;
 using TPL.PVZR.Core.Random;
 using TPL.PVZR.Gameplay.Class.Levels;
-using UnityEngine;
-using UnityEngine.Tilemaps;
 
-namespace TPL.PVZR.Gameplay.Class.MazeMap
+namespace TPL.PVZR.Gameplay.Class.MazeMap.Core
 {
     public abstract class MapConfig
     {

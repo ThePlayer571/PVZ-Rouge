@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace TPL.PVZR.Architecture.Systems.PhaseSystems
 {
-    public interface IMainGameSystem : ISystem, IPhaseManageSystem
+    public interface IMainGameSystem : ISystem, IPhaseCore
     {
         
     }
@@ -47,7 +47,6 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
             {
                 if (e.changeToPhase is GamePhaseSystem.GamePhase.PreInitialization)
                 {
-                    "call".LogInfo();
                     // 初始化设置
                     ResKit.Init();
                     var _ = ResLoader.Allocate();

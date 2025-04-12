@@ -1,7 +1,7 @@
 namespace TPL.PVZR.Architecture.Systems.Interfaces
 {
     
-    public interface IPhaseManageSystem
+    public interface IPhaseCore
     {
         // void RegisterPhaseEvents();
     }

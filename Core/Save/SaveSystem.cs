@@ -6,7 +6,10 @@ using QFramework;
 using UnityEngine;
 using UnityEngine.Events;
 using Newtonsoft.Json;
+using TPL.PVZR.Architecture.Events.GamePhase;
 using TPL.PVZR.Architecture.Events.Save;
+using TPL.PVZR.Architecture.Models;
+using TPL.PVZR.Architecture.Systems.PhaseSystems;
 using TPL.PVZR.Core.Save.Modules;
 
 namespace TPL.PVZR.Core.Save
@@ -16,13 +19,13 @@ namespace TPL.PVZR.Core.Save
 
         # region 公有方法
         // 获取数据
-        public ISaveModule GetModule(string key)
+        public T GetModule<T>(string key) where T: class, ISaveModule
         {
             foreach (var module in _modules)
             {
                 if (module.ModuleKey == key)
                 {
-                    return module;
+                    return module as T;
                 }
             }
             throw new ArgumentException($"不存在对应的键：{key}");
@@ -84,12 +87,20 @@ namespace TPL.PVZR.Core.Save
 
         # region 私有
 
+        // 定义
         private List<ISaveModule> _modules = new();
+        private IGameModel _GameModel;
 
+        
+        // 初始化
         protected override void OnInit()
         {
+            _GameModel = this.GetModel<IGameModel>();
             RegisterModule(new GameSaveModule());
+            RegisterEvents();
         }
+        
+        // 实用函数
         // 注册存储模块
         private void RegisterModule(ISaveModule module)
         {
@@ -114,5 +125,16 @@ namespace TPL.PVZR.Core.Save
         }
 
         #endregion
+
+        private void RegisterEvents()
+        {
+            this.RegisterEvent<OnLeavePhaseEvent>(e =>
+            {
+                if (e.leaveFromPhase is GamePhaseSystem.GamePhase.LevelExiting)
+                {
+                    this.GetModule<GameSaveModule>("game").SetData(_GameModel.currentGame.mazeMapSaveData);
+                }
+            });
+        }
     }
 }

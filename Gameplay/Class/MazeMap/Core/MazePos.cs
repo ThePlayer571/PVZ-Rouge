@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace TPL.PVZR.Gameplay.Class.MazeMap
+namespace TPL.PVZR.Gameplay.Class.MazeMap.Core
 {
     public struct MazePos : IEquatable<MazePos>
     {

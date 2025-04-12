@@ -23,7 +23,8 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
         /// 切换当前的游戏进程（会自动检查是否合理）
         /// </summary>
         /// <param name="changeToPhase"></param>
-        void ChangePhase(GamePhaseSystem.GamePhase changeToPhase);
+        /// <param name="parameters"></param>
+        void ChangePhase(GamePhaseSystem.GamePhase changeToPhase, Dictionary<string, object> parameters = null);
     }
 
     /// <summary>
@@ -51,6 +52,7 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
             // 核心游戏循环阶段
             GameInitialization, // 初始化游戏（从其他地方进入游戏时调用）
             MazeMap, // 迷宫地图
+            GameExiting,
 
             // 关卡内阶段
             LevelInitialization,
@@ -58,7 +60,6 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
             Gameplay,
             AllEnemyKilled,
             ChooseLoots,
-            Defeat,
             LevelExiting,
 
             RandomEvent, // 随机事件（包括商店/问号房间）
@@ -96,6 +97,7 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
 
         # region IGamePhaseSystem
 
+        private GamePhase _currentGamePhase;
         public GamePhase currentGamePhase => _currentGamePhase;
 
         public RoughGamePhase currentRoughGamePhase
@@ -108,9 +110,8 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
                         or GamePhase.LevelInitialization => RoughGamePhase.SomeInitialization,
                     GamePhase.SplashScreen or GamePhase.MainMenu => RoughGamePhase.MainMenu,
                     GamePhase.MazeMap => RoughGamePhase.MazeMap,
-                    GamePhase.LevelInitialization or GamePhase.ChooseCards or GamePhase.Gameplay
-                        or GamePhase.AllEnemyKilled or GamePhase.ChooseLoots or GamePhase.Defeat
-                        or GamePhase.LevelExiting => RoughGamePhase.Level,
+                    GamePhase.ChooseCards or GamePhase.Gameplay or GamePhase.AllEnemyKilled or GamePhase.ChooseLoots
+                        or GamePhase.GameOverDefeat or GamePhase.LevelExiting => RoughGamePhase.Level,
                     _ => throw new NotImplementedException()
                 };
             }
@@ -119,25 +120,26 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
 
         private readonly Dictionary<GamePhase, GamePhase[]> allowedPhaseToFrom = new()
         {
-            [GamePhase.PreInitialization] = new GamePhase[] { GamePhase.BeforeStart },
-            [GamePhase.MainMenu] = new GamePhase[] { GamePhase.PreInitialization },
-            [GamePhase.GameInitialization] = new GamePhase[] { GamePhase.MainMenu },
-            [GamePhase.MazeMap] = new GamePhase[] { GamePhase.GameInitialization },
-            [GamePhase.LevelInitialization] = new GamePhase[] { GamePhase.MazeMap },
-            [GamePhase.ChooseCards] = new GamePhase[] { GamePhase.LevelInitialization },
-            [GamePhase.Gameplay] = new GamePhase[] { GamePhase.ChooseCards },
-            [GamePhase.AllEnemyKilled] = new GamePhase[] { GamePhase.Gameplay },
-            [GamePhase.ChooseLoots] = new GamePhase[] { GamePhase.AllEnemyKilled },
-            [GamePhase.Defeat] = new GamePhase[] { GamePhase.Gameplay }
+            [GamePhase.PreInitialization] = new[] { GamePhase.BeforeStart },
+            [GamePhase.MainMenu] = new[] { GamePhase.PreInitialization },
+            [GamePhase.GameInitialization] = new[] { GamePhase.MainMenu },
+            [GamePhase.MazeMap] = new[] { GamePhase.GameInitialization ,GamePhase.LevelExiting},
+            [GamePhase.LevelInitialization] = new[] { GamePhase.MazeMap },
+            [GamePhase.ChooseCards] = new[] { GamePhase.LevelInitialization },
+            [GamePhase.Gameplay] = new[] { GamePhase.ChooseCards },
+            [GamePhase.AllEnemyKilled] = new[] { GamePhase.Gameplay },
+            [GamePhase.ChooseLoots] = new[] { GamePhase.AllEnemyKilled },
+            [GamePhase.GameOverDefeat] = new[] { GamePhase.Gameplay },
+            [GamePhase.LevelExiting] = new[] { GamePhase.ChooseLoots },
         };
 
-        public void ChangePhase(GamePhase changeToPhase)
+        public void ChangePhase(GamePhase changeToPhase, Dictionary<string, object> parameters = null)
         {
             // 检查错误
-            // if (!allowedPhaseFromTo.ContainsKey(_currentGamePhase))
-            // {
-            //     throw new ArgumentException($"未设置切换规则：{_currentGamePhase}");
-            // }
+            if (!allowedPhaseToFrom.ContainsKey(changeToPhase))
+            {
+                throw new ArgumentException($"未设置切换规则：{changeToPhase}");
+            }
 
             if (!allowedPhaseToFrom[changeToPhase].Contains(_currentGamePhase))
             {
@@ -145,18 +147,17 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
             }
 
             // 检查通过
-            this.SendEvent<OnLeavePhaseEarlyEvent>(new OnLeavePhaseEarlyEvent { leaveFromPhase = _currentGamePhase });
-            this.SendEvent<OnLeavePhaseEvent>(new OnLeavePhaseEvent { leaveFromPhase = _currentGamePhase });
-            this._currentGamePhase = changeToPhase;
-            this.SendEvent<OnEnterPhaseEarlyEvent>(new OnEnterPhaseEarlyEvent { changeToPhase = changeToPhase });
-            this.SendEvent<OnEnterPhaseEvent>(new OnEnterPhaseEvent { changeToPhase = changeToPhase });
+            this.SendEvent(new OnLeavePhaseEarlyEvent { leaveFromPhase = _currentGamePhase, parameters = parameters });
+            this.SendEvent(new OnLeavePhaseEvent { leaveFromPhase = _currentGamePhase, parameters = parameters });
+            this.SendEvent(new OnLeavePhaseLateEvent { leaveFromPhase = _currentGamePhase, parameters = parameters });
+            _currentGamePhase = changeToPhase;
+            this.SendEvent(new OnEnterPhaseEarlyEvent { changeToPhase = changeToPhase, parameters = parameters });
+            this.SendEvent(new OnEnterPhaseEvent { changeToPhase = changeToPhase, parameters = parameters });
+            this.SendEvent(new OnEnterPhaseLateEvent { changeToPhase = changeToPhase, parameters = parameters });
+            $"phase change to{changeToPhase}".LogInfo();
         }
 
         #endregion
-
-
-        private GamePhase _currentGamePhase;
-
 
         protected override void OnInit()
         {

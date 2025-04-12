@@ -7,17 +7,22 @@ using TPL.PVZR.Core.Random;
 using TPL.PVZR.Core.Save;
 using TPL.PVZR.Core.Save.Modules;
 using TPL.PVZR.Gameplay.Class.MazeMap;
+using TPL.PVZR.Gameplay.Class.MazeMap.Core;
 
 namespace TPL.PVZR.Gameplay.Class.Games
 {
     
+    public interface IGame
+    {
+        MazeMapSaveData mazeMapSaveData { get; }
+    }
     
     
     // 进入游戏时用到的数据结构
     public class Game : IGame,ICanGetSystem
     {
         # region 数据结构
-        public MazeMapHelper.MazeMapCreateData mazeMapCreateData { get; protected set; }
+        public MazeMapSaveData mazeMapSaveData { get; protected set; }
 
         # endregion
 
@@ -30,6 +35,7 @@ namespace TPL.PVZR.Gameplay.Class.Games
         
 
         #endregion
+        
         #region 工厂模式
 
         public static IGame CreateRandom(ulong? seed = null)
@@ -37,10 +43,9 @@ namespace TPL.PVZR.Gameplay.Class.Games
             seed ??= RandomHelper.Default.NextUnsigned();
             Game game = new()
             {
-                mazeMapCreateData = new MazeMapHelper.MazeMapCreateData
+                mazeMapSaveData = new MazeMapSaveData
                     { seed = seed.Value, identifier = MazeMapIdentifier.DaveLawn }
             };
-            game.mazeMapCreateData.seed.LogInfo();
             return game;
         }
 
@@ -67,8 +72,4 @@ namespace TPL.PVZR.Gameplay.Class.Games
         }
     }
 
-    public interface IGame
-    {
-        MazeMapHelper.MazeMapCreateData mazeMapCreateData { get; }
-    }
 }

@@ -17,7 +17,7 @@ namespace TPL.PVZR.Gameplay.ViewControllers.InMazeMap.PopInfo
         [SerializeField] private Image Bg;
          private float moveDistance = 0.5f;
         
-        # region 共有
+        # region 公有
         public override void Show()
         {
             Bg.DOFade(1, 0.5f).SetEase(Ease.OutQuad);
@@ -69,18 +69,18 @@ namespace TPL.PVZR.Gameplay.ViewControllers.InMazeMap.PopInfo
             // 创建与初始化
             UITombInfo go = ResLoader.LoadSync<GameObject>(Mazemap_uitombinfo_prefab.BundleName, Mazemap_uitombinfo_prefab.MazeMap_UITombInfo)
                 .Instantiate().GetComponent<UITombInfo>();
-            go.Init(data);
+            // 初始化设置
+            go.transform.position = data.WorldPosition + new Vector3(0, 1.6f, 0);
+            
+            //
             go.transform.SetParent(ReferenceModel.Get.WorldSpaceCanvas);
+            
             // 不显示
             go.HideInstant();
             //
             return go;
         }
 
-        private void Init(TombData data)
-        {
-            transform.position = data.WorldPosition;
-        }
         #endregion
     }
 }

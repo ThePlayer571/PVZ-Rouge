@@ -70,13 +70,13 @@ namespace TPL.PVZR.UI
 			LevelStageBar.GetComponent<RectTransform>().DOAnchorPosY(40, 0f);
 		}
 # endregion
-		public new void Init()
+		public void Init()
 		{
 			// seed生成
 			int i = 1;
 			foreach (var eachChosenCard in _LevelModel.chosenCards)
 			{
-				var go = Card.CreateSeed(eachChosenCard.cardSO.seedSO);
+				var go = CardHelper.CreateSeed(eachChosenCard.cardSO.seedSO);
 				go.GetComponent<Seed>().seedIndex = i++;
 				go.transform.SetParent(Seeds);
 			}

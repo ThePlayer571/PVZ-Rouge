@@ -1,4 +1,4 @@
-namespace TPL.PVZR.Gameplay.Class.MazeMap
+namespace TPL.PVZR.Gameplay.Class.MazeMap.Core
 {
     public enum MazeMapIdentifier
     {

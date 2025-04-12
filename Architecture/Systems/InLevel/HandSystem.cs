@@ -1,4 +1,5 @@
-﻿using QFramework;
+﻿using QAssetBundle;
+using QFramework;
 using TPL.PVZR.Architecture.Events.GamePhase;
 using TPL.PVZR.Architecture.Events.Input;
 using TPL.PVZR.Architecture.Managers;
@@ -54,8 +55,8 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
             _selectedSeed = seed;
             currentHandState = HandState.HavePlant;
             //
-            FollowingSprite.GetComponent<SpriteRenderer>().sprite = seed.seedSO.followingSprite;
-            FollowingSprite.Show();
+            ReferenceModel.Get.FollowingSprite.GetComponent<SpriteRenderer>().sprite = seed.seedSO.followingSprite;
+            ReferenceModel.Get.FollowingSprite.Show();
             //
             seed.OnSelected();
         }
@@ -72,8 +73,8 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
         {
             currentHandState = HandState.HaveShovel;
             //
-            FollowingSprite.GetComponent<SpriteRenderer>().sprite = ReferenceModel.Get.ShovelImage.sprite;
-            FollowingSprite.Show();
+            ReferenceModel.Get.FollowingSprite.GetComponent<SpriteRenderer>().sprite = ReferenceModel.Get.ShovelImage.sprite;
+            ReferenceModel.Get.FollowingSprite.Show();
             ReferenceModel.Get.ShovelImage.Hide();
         }
 
@@ -94,13 +95,13 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
                 _selectedSeed = null;
                 currentHandState = HandState.Empty;
                 //
-                FollowingSprite.Hide();
+                ReferenceModel.Get.FollowingSprite.Hide();
             }
             else if (currentHandState == HandState.HaveShovel)
             {
                 currentHandState = HandState.Empty;
                 //
-                FollowingSprite.Hide();
+                ReferenceModel.Get.FollowingSprite.Hide();
                 ReferenceModel.Get.ShovelImage.Show();
             }
         }
@@ -124,7 +125,7 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
             _selectedSeed = null;
             currentHandState = HandState.Empty;
             // 图片跟随
-            FollowingSprite.Hide();
+            ReferenceModel.Get.FollowingSprite.Hide();
         }
 
         private void TryUseShovel()
@@ -140,7 +141,7 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
         {
             HandOnCell.plant.Kill();
             currentHandState = HandState.Empty;
-            FollowingSprite.Hide();
+            ReferenceModel.Get.FollowingSprite.Hide();
             ReferenceModel.Get.ShovelImage.Show();
         }
 
@@ -152,10 +153,6 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
         private IGamePhaseSystem _GamePhaseSystem;
 
         private ResLoader _ResLoader;
-
-        // 引用
-        private GameObject SelectFramebox;
-        private GameObject FollowingSprite;
 
         // 变量
         private Seed _selectedSeed = null;
@@ -218,26 +215,12 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
             });
             this.RegisterEvent<InputPickShovelEvent>(@event => TryPickShovel());
             this.RegisterEvent<InputUseShovelEvent>(@event => TryUseShovel());
-            // 
+            //  PhaseEvents
             this.RegisterEvent<OnEnterPhaseEvent>(e =>
             {
                 if (e.changeToPhase is GamePhaseSystem.GamePhase.LevelInitialization)
                 {
-                    // 初始化私有引用
-                    FollowingSprite = _ResLoader.LoadSync<GameObject>("FollowingSprite").Instantiate();
-                    FollowingSprite.GetComponent<SpriteRenderer>().sortingLayerName = "HandItem";
-                    FollowingSprite.Hide();
-                    //
-                    SelectFramebox = _ResLoader.LoadSync<GameObject>("SelectFramebox").Instantiate();
-                    SelectFramebox.GetComponent<SpriteRenderer>().sortingLayerName = "SelectFramebox";
-                    SelectFramebox.Hide();
-                    //
                     ActionKit.DelayFrame(1, () => GameManager.ExecuteOnUpdate(Update)).Start(GameManager.Instance);
-                }
-                else if (e.changeToPhase is GamePhaseSystem.GamePhase.LevelExiting)
-                {
-                    FollowingSprite = null;
-                    SelectFramebox = null;
                 }
             });
         }
@@ -246,7 +229,7 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
         {
             if (currentHandState is HandState.HavePlant or HandState.HaveShovel)
             {
-                FollowingSprite.Position2D(handWorldPos);
+                ReferenceModel.Get.FollowingSprite.Position2D(handWorldPos);
             }
 
             // 跟随图片
@@ -256,39 +239,39 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
                 {
                     if (selectedPlantCanPlaceOnMousePos)
                     {
-                        SelectFramebox.Show();
-                        SelectFramebox.Position2D(ReferenceModel.Get.Grid.CellToWorld(handCellPos) +
-                                                  ReferenceModel.Get.Grid.cellSize * 0.5f);
+                        ReferenceModel.Get.SelectFramebox.Show();
+                        ReferenceModel.Get.SelectFramebox.Position2D(ReferenceModel.Get.Grid.CellToWorld(handCellPos) +
+                                                                     ReferenceModel.Get.Grid.cellSize * 0.5f);
                     }
                     else
                     {
-                        SelectFramebox.Hide();
+                        ReferenceModel.Get.SelectFramebox.Hide();
                     }
                 }
                 else if (currentHandState is HandState.Empty)
                 {
                     if (HandOnCell.CanPlantHere && HandDownCell.CanPotAbove && daveHandCanReachMousePos)
                     {
-                        SelectFramebox.Show();
-                        SelectFramebox.Position2D(ReferenceModel.Get.Grid.CellToWorld(handCellPos) +
-                                                  ReferenceModel.Get.Grid.cellSize * 0.5f);
+                        ReferenceModel.Get.SelectFramebox.Show();
+                        ReferenceModel.Get.SelectFramebox.Position2D(ReferenceModel.Get.Grid.CellToWorld(handCellPos) +
+                                                                     ReferenceModel.Get.Grid.cellSize * 0.5f);
                     }
                     else
                     {
-                        SelectFramebox.Hide();
+                        ReferenceModel.Get.SelectFramebox.Hide();
                     }
                 }
                 else if (currentHandState is HandState.HaveShovel)
                 {
                     if (HandOnCell.HavePlant)
                     {
-                        SelectFramebox.Show();
-                        SelectFramebox.Position2D(ReferenceModel.Get.Grid.CellToWorld(handCellPos) +
-                                                  ReferenceModel.Get.Grid.cellSize * 0.5f);
+                        ReferenceModel.Get.SelectFramebox.Show();
+                        ReferenceModel.Get.SelectFramebox.Position2D(ReferenceModel.Get.Grid.CellToWorld(handCellPos) +
+                                                                     ReferenceModel.Get.Grid.cellSize * 0.5f);
                     }
                     else
                     {
-                        SelectFramebox.Hide();
+                        ReferenceModel.Get.SelectFramebox.Hide();
                     }
                 }
             }

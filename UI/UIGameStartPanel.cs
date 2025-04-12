@@ -11,13 +11,19 @@ namespace TPL.PVZR.UI
 	}
 	public partial class UIGameStartPanel : UIPanel, IController
 	{
+		private ulong? inputSeed = null;
 		protected override void OnInit(IUIData uiData = null)
 		{
 			mData = uiData as UIGameStartPanelData ?? new UIGameStartPanelData();
 			// please add init code here
-			Button.onClick.AddListener(() =>
+			BtnStart.onClick.AddListener(() =>
             {
-	            this.SendCommand<StartNewGameCommand>(new StartNewGameCommand());
+	            // 注：以下可能会传进去一个null，但我们的代码能够处理传入的null
+	            this.SendCommand<StartNewGameCommand>(new StartNewGameCommand(inputSeed));
+			});
+			SeedInputField.onEndEdit.AddListener(val =>
+			{
+				inputSeed = ulong.Parse(val);
 			});
 		}
 		

@@ -18,7 +18,8 @@
     "precompiledReferences": [
         "Newtonsoft.Json.dll",
         "DOTweenEditor.dll",
-        "DOTween.dll"
+        "DOTween.dll",
+        ""
     ],
     "autoReferenced": true,
     "defineConstraints": [],

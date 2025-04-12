@@ -67,8 +67,7 @@ namespace TPL.PVZR.UI
 			var _ChooseCardSystem = this.GetSystem<IChooseCardSystem>();
 			foreach (Card card in _InventorySystem.cardsInInventory)
 			{
-				var go = Card.CreateUICard(card);
-				"test:".LogInfo();
+				var go = CardHelper.CreateUICard(card);
 				go.card.LogInfo();
 				go.transform.SetParent(Inventory);
 			}

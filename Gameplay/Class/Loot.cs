@@ -45,7 +45,7 @@ namespace TPL.PVZR.Gameplay.Class
                 CardLootDefaultDataDict[each.id] = new Loot
                 {
                     lootType = LootType.Card,
-                    cardSO = Card.GetCardSO(each.id),
+                    cardSO = CardHelper.GetCardSO(each.id),
                     weight = each.weight,
                     value = each.value
                 };

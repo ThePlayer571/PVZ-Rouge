@@ -1,9 +1,8 @@
 using System;
-using QFramework;
 using TPL.PVZR.Gameplay.ViewControllers.AutoInteractBase;
-using UnityEngine;
+using TPL.PVZR.Gameplay.ViewControllers.InMazeMap.PopInfo;
 
-namespace TPL.PVZR.Gameplay.ViewControllers.InMazeMap.PopInfo
+namespace TPL.PVZR.Gameplay.ViewControllers.InMazeMap
 {
     /// <summary>
     /// 检测鼠标进入，提示关卡信息

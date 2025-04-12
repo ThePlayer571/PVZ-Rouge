@@ -8,7 +8,7 @@ namespace TPL.PVZR.Architecture.Commands
     {
         protected override void OnExecute()
         {
-            this.GetSystem<IGamePhaseSystem>().ChangePhase(GamePhaseSystem.GamePhase.Defeat);
+            this.GetSystem<IGamePhaseSystem>().ChangePhase(GamePhaseSystem.GamePhase.GameOverDefeat);
         }
     }
 }

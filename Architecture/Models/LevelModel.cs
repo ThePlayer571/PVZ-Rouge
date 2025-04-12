@@ -10,13 +10,17 @@ namespace TPL.PVZR.Architecture.Models
 {
     public interface ILevelModel : IModel
     {
-        public ILevel level { get; }
+        /// <summary>
+        /// 当前正在运行的关卡
+        /// </summary>
+        /// <remarks>当且仅当LevelInitializationEarly阶段更新（所以说"当前正在运行"的说法并不准确）</remarks>>
+        public ILevel currentLevel { get; }
+        public void SetCurrentLevel(ILevel level);
         public MapConfig MapConfig { get; }
         public WaveConfig WaveConfig { get; }
         public ZombieSpawnConfig ZombieSpawnConfig { get; }
         public LootConfig LootConfig { get; }
 
-        public void SetLevel(ILevel level);
 
         // 选卡相关
         // TODO:临时放在这里↓
@@ -30,7 +34,7 @@ namespace TPL.PVZR.Architecture.Models
 
         // 方法
         void OnLevelInitialization();
-        void OnExiting();
+        void OnLevelExiting();
     }
 
     public class LevelModel : AbstractModel, ILevelModel
@@ -40,7 +44,7 @@ namespace TPL.PVZR.Architecture.Models
         #region 数据
 
         // LevelConfig
-        public ILevel level { get; private set; } = null;
+        public ILevel currentLevel { get; private set; } = null;
 
         public MapConfig MapConfig { get; private set; } = null;
         public WaveConfig WaveConfig { get; private set; } = null;
@@ -65,9 +69,9 @@ namespace TPL.PVZR.Architecture.Models
         {
             chosenCards = newChosenCards.ToList();
         }
-        public void SetLevel(ILevel level)
+        public void SetCurrentLevel(ILevel level)
         {
-            this.level = level;
+            this.currentLevel = level;
             this.WaveConfig = level.WaveConfig;
             this.MapConfig = level.MapConfig;
             this.ZombieSpawnConfig = level.ZombieSpawnConfig;
@@ -107,14 +111,14 @@ namespace TPL.PVZR.Architecture.Models
             }
         }
 
-        public void OnExiting()
+        public void OnLevelExiting()
         {
             CellGrid = new DynaGrid<Cell>();
             // ↓不能换引用，不然已经Register了的东西会出错
             // sunpoint = new BindableProperty<int>();
             chosenCards.Clear();
             
-            level = null;
+            currentLevel = null;
             MapConfig = null;
             WaveConfig = null;
             ZombieSpawnConfig = null;

@@ -11,6 +11,7 @@ namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
 {
 	public partial class EndLevelLootChest : ViewController, IController, IInteractable
 	{
+		[SerializeField]
 		private InteractorButton indicator;
 		
 		public void Interact()
@@ -26,7 +27,6 @@ namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
 		
 		private void Awake()
 		{
-			throw new Exception();
 			// 出场动画
 			var targetPosition = this.transform.position + new Vector3(RandomHelper.Default.Range(-1f,1f), RandomHelper.Default.Range(-0.4f,-0.1f), 0);
 			transform.DOJump(targetPosition, 0.5f, 1, 0.5f);

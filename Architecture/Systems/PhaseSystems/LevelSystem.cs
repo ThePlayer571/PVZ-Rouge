@@ -1,11 +1,14 @@
 ﻿using Cinemachine;
 using QAssetBundle;
 using QFramework;
+using TPL.PVZR.Architecture.Events;
 using TPL.PVZR.Architecture.Events.GamePhase;
 using TPL.PVZR.Architecture.Managers;
 using TPL.PVZR.Architecture.Models;
 using TPL.PVZR.Architecture.Systems.InLevel;
 using TPL.PVZR.Architecture.Systems.Interfaces;
+using TPL.PVZR.Core;
+using TPL.PVZR.Core.Extensions;
 using TPL.PVZR.Gameplay.Class.Levels;
 using TPL.PVZR.Gameplay.ViewControllers.InLevel;
 using TPL.PVZR.UI;
@@ -14,9 +17,8 @@ using UnityEngine.SceneManagement;
 
 namespace TPL.PVZR.Architecture.Systems.PhaseSystems
 {
-    public interface ILevelSystem : ISystem, IPhaseManageSystem
+    public interface ILevelSystem : ISystem, IPhaseCore
     {
-        void SetCurrentLevel(ILevel level);
     }
 
 
@@ -25,10 +27,6 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
     {
         #region ILevelSystem
 
-        public void SetCurrentLevel(ILevel level)
-        {
-            _levelToBuild = level;
-        }
 
         #endregion
 
@@ -41,7 +39,7 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
             RegisterGameplay();
             RegisterAllEnemyKilled();
             RegisterChooseLoots();
-            RegisterDefeat();
+            RegisterGameOverDefeat();
             RegisterLevelExiting();
         }
 
@@ -51,6 +49,8 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
             {
                 if (e.changeToPhase is GamePhaseSystem.GamePhase.LevelInitialization)
                 {
+                    // 获取参数
+                    var levelToEnter = e.parameters.GetPara<ILevel>("levelToEnter");
                     AsyncOperation ao = new();
                     //
                     var _ResLoader = ResLoader.Allocate();
@@ -61,16 +61,17 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
                         .Callback(() => // 搭建场景＆基础设置
                         {
                             Time.timeScale = 0;
+                            // TODO: 此处有一个问题，场景是异步加载的，在触发下个事件时 场景可能并未加载出来 
                             ao = SceneManager.LoadSceneAsync("LevelSceneTemplate");
-                            _LevelModel.SetLevel(_levelToBuild);
+                            _LevelModel.SetCurrentLevel(levelToEnter);
                         })
                         .Condition(() => ao.isDone) // 成功构建场景
                         .Callback(() => // 配置关卡GameObject
                         {
-                            _levelToBuild.MapConfig.GetLevelSceneSet().Instantiate();
+                            levelToEnter.MapConfig.GetLevelSceneSet().Instantiate();
                             // Dave
                             var _Dave = _ResLoader.LoadSync<Dave>(Dave_prefab.BundleName, Dave_prefab.Dave)
-                                .Instantiate(_levelToBuild.MapConfig.daveInitialPos, Quaternion.identity);
+                                .Instantiate(levelToEnter.MapConfig.daveInitialPos, Quaternion.identity);
                             // VirtualCamara
                             var _VirtualCamera = Object.FindObjectOfType<CinemachineVirtualCamera>();
                             _VirtualCamera.Follow = _Dave.transform;
@@ -93,7 +94,6 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
                 ;
             });
         }
-
         private void RegisterChooseCards()
         {
             this.RegisterEvent<OnEnterPhaseEvent>(e =>
@@ -105,7 +105,6 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
                 }
             });
         }
-
         private void RegisterGameplay()
         {
             this.RegisterEvent<OnEnterPhaseEvent>(e =>
@@ -151,20 +150,18 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
                 }
             });
         }
-
         private void RegisterAllEnemyKilled()
         {
             this.RegisterEvent<OnEnterPhaseEvent>(e =>
                 {
                     if (e.changeToPhase is GamePhaseSystem.GamePhase.AllEnemyKilled)
                     {
-                        ResLoader.Allocate().LoadSync<GameObject>("EndLevelLootChest")
+                        ResLoader.Allocate().LoadSync<GameObject>(Endlevellootchest_prefab.BundleName, Endlevellootchest_prefab.EndLevelLootChest)
                             .Instantiate(_EntitySystem.lastDeadZombiePosition, Quaternion.identity);
                     }
                 }
             );
         }
-
         private void RegisterChooseLoots()
         {
             this.RegisterEvent<OnEnterPhaseEvent>(e =>
@@ -187,11 +184,11 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
             });
         }
 
-        private void RegisterDefeat()
+        private void RegisterGameOverDefeat()
         {
             this.RegisterEvent<OnEnterPhaseEvent>(e =>
             {
-                if (e.changeToPhase is GamePhaseSystem.GamePhase.Defeat)
+                if (e.changeToPhase is GamePhaseSystem.GamePhase.GameOverDefeat)
                 {
                     UIKit.OpenPanel<UILevelDefeatPanel>();
                 }
@@ -200,14 +197,12 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
 
         private void RegisterLevelExiting()
         {
-            this.RegisterEvent<OnEnterPhaseEvent>(e =>
+            this.RegisterEvent<OnEnterPhaseLateEvent>(e =>
             {
                 if (e.changeToPhase is GamePhaseSystem.GamePhase.LevelExiting)
                 {
                     // 重置数据
-                    _LevelModel.OnExiting();
-                    // 返回界面（还没做）
-                    SceneManager.LoadSceneAsync("GameStartScene");
+                    _LevelModel.OnLevelExiting();
                 }
             });
         }
@@ -227,15 +222,20 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
         // 为方便调用而存的变量(史山)
         private UILevelChooseCardPanel _UILevelChooseCardPanel;
         private UILevelPanel _UILevelPanel;
-        private ILevel _levelToBuild;
 
         protected override void OnInit()
         {
             _LevelModel = this.GetModel<ILevelModel>();
             _WaveSystem = this.GetSystem<IWaveSystem>();
             _EntitySystem = this.GetSystem<IEntitySystem>();
+            _GamePhaseSystem = this.GetSystem<IGamePhaseSystem>();
+            _ZombieSpawnSystem = this.GetSystem<IZombieSpawnSystem>();
             //
             RegisterPhaseEvents();
+            this.RegisterEvent<OnZombieDestroyedEvent>(e =>
+            {
+                TryEndLevel();
+            });
         }
 
         #endregion
@@ -250,7 +250,8 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
                                   _ZombieSpawnSystem.activeZombieSpawners.Count == 0;
             if (shouldEndLevel)
             {
-            }
+                _GamePhaseSystem.ChangePhase(GamePhaseSystem.GamePhase.AllEnemyKilled);
+              }
         }
 
         # endregion

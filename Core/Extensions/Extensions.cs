@@ -1,10 +1,9 @@
 using System;
-using QFramework;
-using TPL.PVZR.Gameplay.Class.MazeMap;
+using TPL.PVZR.Gameplay.Class.MazeMap.Core;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace TPL.PVZR.Core
+namespace TPL.PVZR.Core.Extensions
 {
     using MazeGrid = Matrix<Node>;
     public static class Extensions

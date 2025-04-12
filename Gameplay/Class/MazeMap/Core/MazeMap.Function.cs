@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using QFramework;
 using TPL.PVZR.Core;
+using TPL.PVZR.Core.Extensions;
 using TPL.PVZR.Core.Random;
 
-namespace TPL.PVZR.Gameplay.Class.MazeMap
+namespace TPL.PVZR.Gameplay.Class.MazeMap.Core
 {
     public abstract partial class MazeMap
     {
@@ -17,8 +17,10 @@ namespace TPL.PVZR.Gameplay.Class.MazeMap
              * [STEP 3] 绘制路径(粗略)
              * [STEP 4] 优化路径
              * [STEP 5] 生成关卡
+             * [STEP 6] 设置玩家游玩数据
              */
             {
+                Node.ResetNodeId();
                 // [STEP 1] 生成迷宫地图的节点
                 mazeGrid = new Matrix<Node>(MapConfig.rowCount, MapConfig.colCount);
                 this.GenerateNodes(mazeGrid);
@@ -29,7 +31,9 @@ namespace TPL.PVZR.Gameplay.Class.MazeMap
                 // [STEP 4] 优化路径 - 暂时不需要
                 // FunctionConfig.BetterRoutes();
                 // [STEP 5] 生成关卡数据
-                this.GenerateLevels();
+                this.GenerateSpots();
+                // [STEP 6] 设置玩家游玩数据
+                this.SetPlayerData();
             }
             # region Test
             // //
@@ -137,9 +141,10 @@ namespace TPL.PVZR.Gameplay.Class.MazeMap
             // [STEP 2] 生成起始点
             // $可配置项$
             int startRow = mazeGrid.Rows / 2;
-            mazeGrid[startRow, 0].level = 0;
-            mazeGrid[startRow, 0].isKeyNode = true;
-            keyNodes.Add(mazeGrid[startRow, 0]);
+            startNode = mazeGrid[startRow, 0];
+            startNode.level = 0;
+            startNode.isKeyNode = true;
+            keyNodes.Add(startNode);
 
             // [STEP 3] 生成其余关键节点
             HashSet<int> keyNodesRowInLastLevel = new() { startRow }; // 记录次级节点的位置，算法会用到
@@ -488,36 +493,46 @@ namespace TPL.PVZR.Gameplay.Class.MazeMap
 
         #endregion
 
-        # region GenerateLevels
+        # region GenerateSpots
 
-        public void GenerateLevels()
+        public void GenerateSpots()
         {
-            // [STEP 1]
+            // [STEP 1] 获取nodesWithLevel
             List<Node> nodesWithLevel = new();
             foreach (var keyNode in keyNodes)
             {
                 if (keyNode.level == 0) continue;
                 List<Node> possibleNodesToGenerateLevel = new();
                 possibleNodesToGenerateLevel.Add(keyNode);
-                // Node currentNode = keyNode;
-                // while (true)
-                // {
-                //     if (currentNode.fromNode.Count != 1)
-                //     {
-                //         break;
-                //     }
-                //     Node lastNode = currentNode.fromNode.First();
-                //     possibleNodesToGenerateLevel.Add(lastNode);
-                //     currentNode = lastNode;
-                // }
                 nodesWithLevel.Add(RandomHelper.MazeMap.RandomChoose(possibleNodesToGenerateLevel));
             }
-            // [STEP 2]
+            // [STEP 2] 设置node的数据
             foreach (var node in nodesWithLevel)
             {
                 node.carrySpot = true;
             }
         }
+
+        #endregion
+
+        #region SetPlayerData
+
+        private void SetPlayerData()
+        {
+            // [STEP 1] 获取passedNodes
+            List<Node> passedNodes = new();
+            foreach (var node in keyNodes)
+            {
+                if (MazeMapSaveData.passSpotIds.Contains(node.id))
+                {
+                    passedNodes.Add(node);
+                }
+            }
+            passedNodes.Sort((a, b) => a.level.CompareTo(b.level));
+            //
+            passSpotNodes = passedNodes;
+        }
+        
 
         #endregion
     }

@@ -1,6 +1,7 @@
 using QFramework;
 using TPL.PVZR.Architecture.Models;
 using TPL.PVZR.Gameplay.Class.MazeMap;
+using TPL.PVZR.Gameplay.Class.MazeMap.Core;
 using UnityEngine;
 
 namespace TPL.PVZR.Architecture.Systems.InGame
