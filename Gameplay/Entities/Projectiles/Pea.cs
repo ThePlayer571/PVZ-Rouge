@@ -30,8 +30,8 @@ namespace TPL.PVZR.Gameplay.Entities.Projectiles
 
             if (collision.collider.CompareTag("Zombie") || collision.collider.CompareTag("ZombieShield"))
             {
-                collision.collider.GetComponent<IDealAttack>()
-                    .DealAttack(attack.PunchDirection(
+                collision.collider.GetComponent<IDamageable>()
+                    .TakeDamage(attack.WithPunchDirection(
                         (collision.collider.transform.position - this.transform.position)
                         .normalized));
             }

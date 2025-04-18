@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using QFramework;
 using TPL.PVZR.Architecture.Events;
+using TPL.PVZR.Architecture.Managers;
 using TPL.PVZR.Architecture.Models;
 using TPL.PVZR.Core;
 using TPL.PVZR.Gameplay.Class;
@@ -9,6 +10,7 @@ using TPL.PVZR.Gameplay.Entities;
 using TPL.PVZR.Gameplay.Entities.Plants.Base;
 using TPL.PVZR.Gameplay.Entities.Projectiles;
 using TPL.PVZR.Gameplay.Entities.Zombies;
+using TPL.PVZR.Gameplay.Entities.Zombies.Base;
 using UnityEngine;
 
 namespace TPL.PVZR.Architecture.Systems.InLevel

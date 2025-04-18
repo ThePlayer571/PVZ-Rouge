@@ -7,14 +7,14 @@ using TPL.PVZR.Architecture.Events.Input;
 using TPL.PVZR.Gameplay.Class;
 using TPL.PVZR.Gameplay.Data;
 using TPL.PVZR.Gameplay.Entities;
+using TPL.PVZR.Gameplay.Entities.Plants;
 using UnityEngine;
 
 namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
 {
-    public partial class Dave : ViewController, IController, IDealAttack
+    public partial class Dave : ViewController, IController, IDamageable
     {
         # region 不重要的
-
 
         public enum JumpState
         {
@@ -28,6 +28,8 @@ namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
             KnockedDown,
             Dead
         }
+
+        [SerializeField] private BoxCollider2D JumpDetectArea; 
         // 框架接口
         public IArchitecture GetArchitecture()
         {
@@ -83,13 +85,31 @@ namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
         private FSM<JumpState> _jumpState = new();
 
         // 属性
-        private bool isOnGround =>
-            Physics2D.OverlapArea(jumpDetectRegionMin, jumpDetectRegionMax, LayerMask.GetMask("Barrier"));
+        private bool isOnGround
+        {
+            get
+            {
+                Vector2 start =  new Vector2(transform.position.x , _Collider2D.bounds.min.y);
+                Vector2 size = new Vector2(0.48f, 0.02f);
+                var hits = Physics2D.BoxCastAll(start, size, 0, Vector2.zero,
+                    distance: 1f,
+                    layerMask: LayerMask.GetMask("Barrier","Plant"));
+                foreach (var hit in hits)
+                {
+                    if (hit.collider.IsInLayerMask(LayerMask.GetMask("Barrier"))) return true;
+                    if (hit.collider.CompareTag("Plant"))
+                    {
+                        if (hit.collider.GetComponent<Flowerpot>() is not null) return true;
+                    }
+                }
+                return false;
+            }
+        }
 
-        private Vector3 jumpDetectRegionMin => _Collider2D.bounds.min + new Vector3(0.1f, -0.1f); // 左下
+        private Vector3 jumpDetectRegionMin => _Collider2D.bounds.min + new Vector3(0.01f, -0.1f); // 左下
 
         private Vector3 jumpDetectRegionMax =>
-            _Collider2D.bounds.min + new Vector3(_Collider2D.bounds.extents.x - 0.1f, 0); // 右上
+            _Collider2D.bounds.min + new Vector3(_Collider2D.bounds.extents.x - 0.2f, 0); // 右上
 
         // 操作
         private void TryJump(InputJumpEvent inputJumpEvent)
@@ -108,7 +128,6 @@ namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
                 _jumpState.ChangeState(JumpState.TwiceJumped);
             }
             // Case (3): Do Nothing
-
         }
 
         private void Jump()
@@ -118,7 +137,6 @@ namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
 
         private void SetUpStateJump()
         {
-
             _jumpState.State(JumpState.NotTwiceJumped);
             _jumpState.State(JumpState.TwiceJumped)
                 .OnUpdate(() =>
@@ -149,18 +167,14 @@ namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
             throw new NotImplementedException();
         }
 
-        public void DealAttack(Attack attack)
+        public void TakeDamage(Attack attack)
         {
+            // 参数检查
+            if (attack is null) throw new ArgumentNullException();
+            // 
             if (_daveState.CurrentStateId == DaveState.Dead) return;
-            if (attack.isFrameDamage)
-            {
-                _health.Value = Mathf.Clamp(_health.Value - attack.damage * Time.deltaTime, 0, 100);
-            }
-            else
-            {
-                _health.Value = Mathf.Clamp(_health.Value - attack.damage, 0, 100);
-            }
-
+            //
+            _health.Value = Mathf.Clamp(_health.Value - attack.damageValue, 0, 100);
             _stunTimer = 1f;
         }
 
@@ -208,6 +222,7 @@ namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
         #region Behavior: Move
 
         private float _currentMovementInputX = 0;
+
         private void TryMove(InputMoveEvent inputMoveEvent)
         {
             if (_daveState.CurrentStateId != DaveState.Normal) return;
@@ -221,17 +236,17 @@ namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
 
         private void FixedUpdate()
         {
-            var newVelocity = new Vector2(0,_Rigidbody2D.velocity.y);
+            var newVelocity = new Vector2(0, _Rigidbody2D.velocity.y);
             // Case(1): 正在被吃
             if (_daveState.CurrentStateId != DaveState.Normal)
             {
                 _Rigidbody2D.velocity = newVelocity;
                 return;
             }
+
             // Case(2): 正常状态
-            newVelocity.x += _currentMovementInputX *6f;
+            newVelocity.x += _currentMovementInputX * 6f;
             _Rigidbody2D.velocity = newVelocity;
-            
         }
 
         #endregion

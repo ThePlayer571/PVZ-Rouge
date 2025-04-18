@@ -6,7 +6,5 @@ namespace TPL.PVZR.Gameplay.Entities.Zombies
 {
 	public partial class BucketZombie
 	{
-		public Bucket Bucket;
-		
 	}
 }

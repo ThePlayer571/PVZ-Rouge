@@ -1,0 +1,160 @@
+# Details
+
+Date : 2025-04-12 11:12:50
+
+Directory d:\\FileFolder\\Life\\Unity\\Projects\\PVZR\\PVZ-R\\Assets\\Scripts
+
+Total : 145 files,  6702 codes, 787 comments, 1277 blanks, all 8766 lines
+
+[Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
+
+## Files
+| filename | language | code | comment | blank | total |
+| :--- | :--- | ---: | ---: | ---: | ---: |
+| [Architecture/Commands/InLevelCommands.cs](/Architecture/Commands/InLevelCommands.cs) | C# | 13 | 0 | 1 | 14 |
+| [Architecture/Commands/PhaseChangeCommands.cs](/Architecture/Commands/PhaseChangeCommands.cs) | C# | 81 | 16 | 11 | 108 |
+| [Architecture/Events/Events.cs](/Architecture/Events/Events.cs) | C# | 98 | 5 | 22 | 125 |
+| [Architecture/Managers/GameManager.cs](/Architecture/Managers/GameManager.cs) | C# | 37 | 0 | 8 | 45 |
+| [Architecture/Managers/GameStarter.cs](/Architecture/Managers/GameStarter.cs) | C# | 18 | 1 | 2 | 21 |
+| [Architecture/Managers/ReferenceModel.cs](/Architecture/Managers/ReferenceModel.cs) | C# | 186 | 1 | 38 | 225 |
+| [Architecture/Managers/SceneTransitionManager.cs](/Architecture/Managers/SceneTransitionManager.cs) | C# | 109 | 12 | 16 | 137 |
+| [Architecture/Models/GameModel.cs](/Architecture/Models/GameModel.cs) | C# | 42 | 11 | 16 | 69 |
+| [Architecture/Models/LevelModel.cs](/Architecture/Models/LevelModel.cs) | C# | 100 | 14 | 24 | 138 |
+| [Architecture/PVZRouge.cs](/Architecture/PVZRouge.cs) | C# | 32 | 17 | 7 | 56 |
+| [Architecture/Systems/InGame/InventorySystem.cs](/Architecture/Systems/InGame/InventorySystem.cs) | C# | 86 | 2 | 15 | 103 |
+| [Architecture/Systems/InGame/LootCreateSystem.cs](/Architecture/Systems/InGame/LootCreateSystem.cs) | C# | 56 | 6 | 9 | 71 |
+| [Architecture/Systems/InGame/MazeMapSystem.cs](/Architecture/Systems/InGame/MazeMapSystem.cs) | C# | 24 | 0 | 4 | 28 |
+| [Architecture/Systems/InLevel/ChooseCardSystem.cs](/Architecture/Systems/InLevel/ChooseCardSystem.cs) | C# | 64 | 6 | 13 | 83 |
+| [Architecture/Systems/InLevel/Classes/ZombieSpawner.cs](/Architecture/Systems/InLevel/Classes/ZombieSpawner.cs) | C# | 66 | 8 | 9 | 83 |
+| [Architecture/Systems/InLevel/EntitySystem.cs](/Architecture/Systems/InLevel/EntitySystem.cs) | C# | 95 | 10 | 14 | 119 |
+| [Architecture/Systems/InLevel/EntitySystem.interface.cs](/Architecture/Systems/InLevel/EntitySystem.interface.cs) | C# | 96 | 10 | 28 | 134 |
+| [Architecture/Systems/InLevel/HandSystem.cs](/Architecture/Systems/InLevel/HandSystem.cs) | C# | 227 | 20 | 33 | 280 |
+| [Architecture/Systems/InLevel/HandSystem.interface.cs](/Architecture/Systems/InLevel/HandSystem.interface.cs) | C# | 6 | 0 | 1 | 7 |
+| [Architecture/Systems/InLevel/LevelState.md](/Architecture/Systems/InLevel/LevelState.md) | Markdown | 6 | 0 | 5 | 11 |
+| [Architecture/Systems/InLevel/WaveSystem.cs](/Architecture/Systems/InLevel/WaveSystem.cs) | C# | 76 | 8 | 17 | 101 |
+| [Architecture/Systems/InLevel/ZombieSpawnSystem.cs](/Architecture/Systems/InLevel/ZombieSpawnSystem.cs) | C# | 68 | 12 | 9 | 89 |
+| [Architecture/Systems/Interfaces/Interfaces.cs](/Architecture/Systems/Interfaces/Interfaces.cs) | C# | 6 | 1 | 1 | 8 |
+| [Architecture/Systems/PhaseSystems/GamePhaseSystem.cs](/Architecture/Systems/PhaseSystems/GamePhaseSystem.cs) | C# | 119 | 23 | 26 | 168 |
+| [Architecture/Systems/PhaseSystems/GameSystem.cs](/Architecture/Systems/PhaseSystems/GameSystem.cs) | C# | 112 | 9 | 17 | 138 |
+| [Architecture/Systems/PhaseSystems/LevelSystem.cs](/Architecture/Systems/PhaseSystems/LevelSystem.cs) | C# | 216 | 22 | 21 | 259 |
+| [Architecture/Systems/PhaseSystems/MainGameSystem.cs](/Architecture/Systems/PhaseSystems/MainGameSystem.cs) | C# | 75 | 5 | 8 | 88 |
+| [Core/Enums.cs](/Core/Enums.cs) | C# | 12 | 0 | 0 | 12 |
+| [Core/Extensions/DictionaryExtensions.cs](/Core/Extensions/DictionaryExtensions.cs) | C# | 28 | 7 | 6 | 41 |
+| [Core/Extensions/Extensions.cs](/Core/Extensions/Extensions.cs) | C# | 99 | 35 | 18 | 152 |
+| [Core/InputSystem.cs](/Core/InputSystem.cs) | C# | 160 | 11 | 18 | 189 |
+| [Core/Matrix.cs](/Core/Matrix.cs) | C# | 89 | 40 | 13 | 142 |
+| [Core/Random/DeterministicRandom.cs](/Core/Random/DeterministicRandom.cs) | C# | 135 | 56 | 35 | 226 |
+| [Core/Random/RandomHelper.cs](/Core/Random/RandomHelper.cs) | C# | 42 | 1 | 7 | 50 |
+| [Core/Save/ISaveModule.cs](/Core/Save/ISaveModule.cs) | C# | 13 | 0 | 1 | 14 |
+| [Core/Save/Modules/GameSaveModule.cs](/Core/Save/Modules/GameSaveModule.cs) | C# | 66 | 15 | 17 | 98 |
+| [Core/Save/SaveProfile.cs](/Core/Save/SaveProfile.cs) | C# | 11 | 0 | 2 | 13 |
+| [Core/Save/SaveSystem.cs](/Core/Save/SaveSystem.cs) | C# | 109 | 8 | 23 | 140 |
+| [Documents/PhaseEvents的响应.md](/Documents/PhaseEvents%E7%9A%84%E5%93%8D%E5%BA%94.md) | Markdown | 35 | 0 | 12 | 47 |
+| [Documents/Untitled Folder/Template.md](/Documents/Untitled%20Folder/Template.md) | Markdown | 19 | 0 | 10 | 29 |
+| [Documents/Untitled Folder/文件注释.md](/Documents/Untitled%20Folder/%E6%96%87%E4%BB%B6%E6%B3%A8%E9%87%8A.md) | Markdown | 10 | 0 | 10 | 20 |
+| [Documents/Untitled Folder/术语解释.md](/Documents/Untitled%20Folder/%E6%9C%AF%E8%AF%AD%E8%A7%A3%E9%87%8A.md) | Markdown | 7 | 0 | 1 | 8 |
+| [Documents/游戏进程的调用方式.md](/Documents/%E6%B8%B8%E6%88%8F%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E7%94%A8%E6%96%B9%E5%BC%8F.md) | Markdown | 2 | 0 | 1 | 3 |
+| [Gameplay/Class/Attack.cs](/Gameplay/Class/Attack.cs) | C# | 31 | 0 | 7 | 38 |
+| [Gameplay/Class/Cell.cs](/Gameplay/Class/Cell.cs) | C# | 19 | 2 | 6 | 27 |
+| [Gameplay/Class/Games/Game.cs](/Gameplay/Class/Games/Game.cs) | C# | 54 | 1 | 20 | 75 |
+| [Gameplay/Class/Items/Card.cs](/Gameplay/Class/Items/Card.cs) | C# | 33 | 0 | 10 | 43 |
+| [Gameplay/Class/Items/CardHelper.cs](/Gameplay/Class/Items/CardHelper.cs) | C# | 71 | 6 | 15 | 92 |
+| [Gameplay/Class/Items/Item.cs](/Gameplay/Class/Items/Item.cs) | C# | 20 | 1 | 3 | 24 |
+| [Gameplay/Class/Levels/Configs.cs](/Gameplay/Class/Levels/Configs.cs) | C# | 58 | 2 | 10 | 70 |
+| [Gameplay/Class/Levels/Enums.cs](/Gameplay/Class/Levels/Enums.cs) | C# | 26 | 2 | 0 | 28 |
+| [Gameplay/Class/Levels/Level.cs](/Gameplay/Class/Levels/Level.cs) | C# | 22 | 0 | 3 | 25 |
+| [Gameplay/Class/Levels/LevelHelper.cs](/Gameplay/Class/Levels/LevelHelper.cs) | C# | 18 | 0 | 2 | 20 |
+| [Gameplay/Class/Levels/Levels/DaveLawn/DaveLawn.cs](/Gameplay/Class/Levels/Levels/DaveLawn/DaveLawn.cs) | C# | 90 | 0 | 13 | 103 |
+| [Gameplay/Class/Loot.cs](/Gameplay/Class/Loot.cs) | C# | 55 | 1 | 9 | 65 |
+| [Gameplay/Class/MazeMap/Core/Configs.cs](/Gameplay/Class/MazeMap/Core/Configs.cs) | C# | 50 | 1 | 7 | 58 |
+| [Gameplay/Class/MazeMap/Core/Enums.cs](/Gameplay/Class/MazeMap/Core/Enums.cs) | C# | 7 | 0 | 0 | 7 |
+| [Gameplay/Class/MazeMap/Core/MazeMap.Function.cs](/Gameplay/Class/MazeMap/Core/MazeMap.Function.cs) | C# | 324 | 160 | 55 | 539 |
+| [Gameplay/Class/MazeMap/Core/MazeMap.cs](/Gameplay/Class/MazeMap/Core/MazeMap.cs) | C# | 45 | 6 | 14 | 65 |
+| [Gameplay/Class/MazeMap/Core/MazePos.cs](/Gameplay/Class/MazeMap/Core/MazePos.cs) | C# | 32 | 9 | 14 | 55 |
+| [Gameplay/Class/MazeMap/Core/Node.cs](/Gameplay/Class/MazeMap/Core/Node.cs) | C# | 40 | 13 | 12 | 65 |
+| [Gameplay/Class/MazeMap/MazeMapHelper.cs](/Gameplay/Class/MazeMap/MazeMapHelper.cs) | C# | 23 | 1 | 1 | 25 |
+| [Gameplay/Class/MazeMap/MazeMaps/DaveLawn.cs](/Gameplay/Class/MazeMap/MazeMaps/DaveLawn.cs) | C# | 75 | 5 | 10 | 90 |
+| [Gameplay/Class/ZombieSpawnData.cs](/Gameplay/Class/ZombieSpawnData.cs) | C# | 48 | 0 | 8 | 56 |
+| [Gameplay/Data/ArmorData.cs](/Gameplay/Data/ArmorData.cs) | C# | 10 | 0 | 1 | 11 |
+| [Gameplay/Data/AttackData.cs](/Gameplay/Data/AttackData.cs) | C# | 11 | 0 | 1 | 12 |
+| [Gameplay/Data/CardSO.cs](/Gameplay/Data/CardSO.cs) | C# | 10 | 0 | 1 | 11 |
+| [Gameplay/Data/Global.cs](/Gameplay/Data/Global.cs) | C# | 20 | 0 | 3 | 23 |
+| [Gameplay/Data/SeedSO.cs](/Gameplay/Data/SeedSO.cs) | C# | 20 | 2 | 2 | 24 |
+| [Gameplay/Entities/Entity.cs](/Gameplay/Entities/Entity.cs) | C# | 73 | 5 | 19 | 97 |
+| [Gameplay/Entities/Enums.cs](/Gameplay/Entities/Enums.cs) | C# | 21 | 0 | 2 | 23 |
+| [Gameplay/Entities/Interfaces.cs](/Gameplay/Entities/Interfaces.cs) | C# | 8 | 0 | 1 | 9 |
+| [Gameplay/Entities/Plants/Base/PeashooterBase.cs](/Gameplay/Entities/Plants/Base/PeashooterBase.cs) | C# | 48 | 9 | 6 | 63 |
+| [Gameplay/Entities/Plants/Base/Plant.cs](/Gameplay/Entities/Plants/Base/Plant.cs) | C# | 88 | 11 | 16 | 115 |
+| [Gameplay/Entities/Plants/CherryBoom.cs](/Gameplay/Entities/Plants/CherryBoom.cs) | C# | 43 | 3 | 5 | 51 |
+| [Gameplay/Entities/Plants/Flowerpot.cs](/Gameplay/Entities/Plants/Flowerpot.cs) | C# | 20 | 0 | 2 | 22 |
+| [Gameplay/Entities/Plants/PeaShooter.Designer.cs](/Gameplay/Entities/Plants/PeaShooter.Designer.cs) | C# | 8 | 1 | 4 | 13 |
+| [Gameplay/Entities/Plants/PeaShooter.cs](/Gameplay/Entities/Plants/PeaShooter.cs) | C# | 12 | 0 | 2 | 14 |
+| [Gameplay/Entities/Plants/PotatoMine.cs](/Gameplay/Entities/Plants/PotatoMine.cs) | C# | 42 | 1 | 4 | 47 |
+| [Gameplay/Entities/Plants/SnowPea.Designer.cs](/Gameplay/Entities/Plants/SnowPea.Designer.cs) | C# | 8 | 1 | 4 | 13 |
+| [Gameplay/Entities/Plants/SnowPea.cs](/Gameplay/Entities/Plants/SnowPea.cs) | C# | 12 | 0 | 2 | 14 |
+| [Gameplay/Entities/Plants/Sunflower.Designer.cs](/Gameplay/Entities/Plants/Sunflower.Designer.cs) | C# | 6 | 1 | 2 | 9 |
+| [Gameplay/Entities/Plants/Sunflower.cs](/Gameplay/Entities/Plants/Sunflower.cs) | C# | 27 | 5 | 6 | 38 |
+| [Gameplay/Entities/Plants/Wallnut.Designer.cs](/Gameplay/Entities/Plants/Wallnut.Designer.cs) | C# | 6 | 1 | 2 | 9 |
+| [Gameplay/Entities/Plants/Wallnut.cs](/Gameplay/Entities/Plants/Wallnut.cs) | C# | 12 | 0 | 2 | 14 |
+| [Gameplay/Entities/Projectiles/IcePea.cs](/Gameplay/Entities/Projectiles/IcePea.cs) | C# | 35 | 1 | 8 | 44 |
+| [Gameplay/Entities/Projectiles/Interfaces.cs](/Gameplay/Entities/Projectiles/Interfaces.cs) | C# | 8 | 0 | 1 | 9 |
+| [Gameplay/Entities/Projectiles/Pea.cs](/Gameplay/Entities/Projectiles/Pea.cs) | C# | 35 | 1 | 8 | 44 |
+| [Gameplay/Entities/Projectiles/Projectile.cs](/Gameplay/Entities/Projectiles/Projectile.cs) | C# | 19 | 2 | 5 | 26 |
+| [Gameplay/Entities/Zombies/BucketZombie.Designer.cs](/Gameplay/Entities/Zombies/BucketZombie.Designer.cs) | C# | 8 | 1 | 4 | 13 |
+| [Gameplay/Entities/Zombies/BucketZombie.cs](/Gameplay/Entities/Zombies/BucketZombie.cs) | C# | 30 | 0 | 4 | 34 |
+| [Gameplay/Entities/Zombies/ConeheadZombie.Designer.cs](/Gameplay/Entities/Zombies/ConeheadZombie.Designer.cs) | C# | 8 | 1 | 4 | 13 |
+| [Gameplay/Entities/Zombies/ConeheadZombie.cs](/Gameplay/Entities/Zombies/ConeheadZombie.cs) | C# | 30 | 0 | 4 | 34 |
+| [Gameplay/Entities/Zombies/NormalZombie.Designer.cs](/Gameplay/Entities/Zombies/NormalZombie.Designer.cs) | C# | 6 | 1 | 2 | 9 |
+| [Gameplay/Entities/Zombies/NormalZombie.cs](/Gameplay/Entities/Zombies/NormalZombie.cs) | C# | 6 | 0 | 1 | 7 |
+| [Gameplay/Entities/Zombies/ScreenDoorZombie.Designer.cs](/Gameplay/Entities/Zombies/ScreenDoorZombie.Designer.cs) | C# | 6 | 1 | 2 | 9 |
+| [Gameplay/Entities/Zombies/ScreenDoorZombie.cs](/Gameplay/Entities/Zombies/ScreenDoorZombie.cs) | C# | 6 | 0 | 2 | 8 |
+| [Gameplay/Entities/Zombies/Zombie.cs](/Gameplay/Entities/Zombies/Zombie.cs) | C# | 180 | 27 | 25 | 232 |
+| [Gameplay/ViewControllers/AutoInteractBase/AutoInteractor.cs](/Gameplay/ViewControllers/AutoInteractBase/AutoInteractor.cs) | C# | 41 | 3 | 10 | 54 |
+| [Gameplay/ViewControllers/AutoInteractBase/IInteractable.cs](/Gameplay/ViewControllers/AutoInteractBase/IInteractable.cs) | C# | 7 | 0 | 0 | 7 |
+| [Gameplay/ViewControllers/AutoInteractBase/InteractorButton.Designer.cs](/Gameplay/ViewControllers/AutoInteractBase/InteractorButton.Designer.cs) | C# | 8 | 1 | 4 | 13 |
+| [Gameplay/ViewControllers/AutoInteractBase/InteractorButton.cs](/Gameplay/ViewControllers/AutoInteractBase/InteractorButton.cs) | C# | 44 | 1 | 4 | 49 |
+| [Gameplay/ViewControllers/AutoInteractBase/InteractorPointer.cs](/Gameplay/ViewControllers/AutoInteractBase/InteractorPointer.cs) | C# | 28 | 0 | 4 | 32 |
+| [Gameplay/ViewControllers/InLevel/Dave.Designer.cs](/Gameplay/ViewControllers/InLevel/Dave.Designer.cs) | C# | 6 | 1 | 2 | 9 |
+| [Gameplay/ViewControllers/InLevel/Dave.cs](/Gameplay/ViewControllers/InLevel/Dave.cs) | C# | 179 | 21 | 40 | 240 |
+| [Gameplay/ViewControllers/InLevel/EndLevelLootChest.Designer.cs](/Gameplay/ViewControllers/InLevel/EndLevelLootChest.Designer.cs) | C# | 6 | 1 | 2 | 9 |
+| [Gameplay/ViewControllers/InLevel/EndLevelLootChest.cs](/Gameplay/ViewControllers/InLevel/EndLevelLootChest.cs) | C# | 35 | 1 | 5 | 41 |
+| [Gameplay/ViewControllers/InLevel/Sun.Designer.cs](/Gameplay/ViewControllers/InLevel/Sun.Designer.cs) | C# | 8 | 1 | 3 | 12 |
+| [Gameplay/ViewControllers/InLevel/Sun.cs](/Gameplay/ViewControllers/InLevel/Sun.cs) | C# | 31 | 0 | 4 | 35 |
+| [Gameplay/ViewControllers/InLevel/ZombieAttackArea.Designer.cs](/Gameplay/ViewControllers/InLevel/ZombieAttackArea.Designer.cs) | C# | 6 | 1 | 2 | 9 |
+| [Gameplay/ViewControllers/InLevel/ZombieAttackArea.cs](/Gameplay/ViewControllers/InLevel/ZombieAttackArea.cs) | C# | 19 | 0 | 5 | 24 |
+| [Gameplay/ViewControllers/InMazeMap/PopInfo/UISpotInfo.cs](/Gameplay/ViewControllers/InMazeMap/PopInfo/UISpotInfo.cs) | C# | 16 | 0 | 1 | 17 |
+| [Gameplay/ViewControllers/InMazeMap/PopInfo/UITombInfo.cs](/Gameplay/ViewControllers/InMazeMap/PopInfo/UITombInfo.cs) | C# | 67 | 5 | 14 | 86 |
+| [Gameplay/ViewControllers/InMazeMap/Spot.cs](/Gameplay/ViewControllers/InMazeMap/Spot.cs) | C# | 28 | 3 | 5 | 36 |
+| [Gameplay/ViewControllers/InMazeMap/Tomb.cs](/Gameplay/ViewControllers/InMazeMap/Tomb.cs) | C# | 58 | 4 | 5 | 67 |
+| [Gameplay/ViewControllers/InMazeMap/TombInteractor.cs](/Gameplay/ViewControllers/InMazeMap/TombInteractor.cs) | C# | 33 | 7 | 2 | 42 |
+| [Gameplay/ViewControllers/UI/CardOnlyView.Designer.cs](/Gameplay/ViewControllers/UI/CardOnlyView.Designer.cs) | C# | 9 | 1 | 5 | 15 |
+| [Gameplay/ViewControllers/UI/CardOnlyView.cs](/Gameplay/ViewControllers/UI/CardOnlyView.cs) | C# | 27 | 0 | 2 | 29 |
+| [Gameplay/ViewControllers/UI/Seed.Designer.cs](/Gameplay/ViewControllers/UI/Seed.Designer.cs) | C# | 11 | 1 | 7 | 19 |
+| [Gameplay/ViewControllers/UI/Seed.cs](/Gameplay/ViewControllers/UI/Seed.cs) | C# | 134 | 13 | 16 | 163 |
+| [Gameplay/ViewControllers/UI/UICard.Designer.cs](/Gameplay/ViewControllers/UI/UICard.Designer.cs) | C# | 8 | 1 | 3 | 12 |
+| [Gameplay/ViewControllers/UI/UICard.cs](/Gameplay/ViewControllers/UI/UICard.cs) | C# | 56 | 2 | 10 | 68 |
+| [Gameplay/ViewControllers/UI/UILevelChooseLootChoice.Designer.cs](/Gameplay/ViewControllers/UI/UILevelChooseLootChoice.Designer.cs) | C# | 6 | 1 | 2 | 9 |
+| [Gameplay/ViewControllers/UI/UILevelChooseLootChoice.cs](/Gameplay/ViewControllers/UI/UILevelChooseLootChoice.cs) | C# | 78 | 3 | 14 | 95 |
+| [Gameplay/ViewControllers/ZombieArmor/Base/Armor.cs](/Gameplay/ViewControllers/ZombieArmor/Base/Armor.cs) | C# | 109 | 13 | 25 | 147 |
+| [Gameplay/ViewControllers/ZombieArmor/Base/HealthArmor.cs](/Gameplay/ViewControllers/ZombieArmor/Base/HealthArmor.cs) | C# | 6 | 0 | 0 | 6 |
+| [Gameplay/ViewControllers/ZombieArmor/Base/ShieldArmor.cs](/Gameplay/ViewControllers/ZombieArmor/Base/ShieldArmor.cs) | C# | 6 | 0 | 0 | 6 |
+| [Gameplay/ViewControllers/ZombieArmor/Bucket.Designer.cs](/Gameplay/ViewControllers/ZombieArmor/Bucket.Designer.cs) | C# | 6 | 1 | 2 | 9 |
+| [Gameplay/ViewControllers/ZombieArmor/Bucket.cs](/Gameplay/ViewControllers/ZombieArmor/Bucket.cs) | C# | 7 | 0 | 2 | 9 |
+| [Gameplay/ViewControllers/ZombieArmor/Conehead.cs](/Gameplay/ViewControllers/ZombieArmor/Conehead.cs) | C# | 7 | 0 | 2 | 9 |
+| [Gameplay/ViewControllers/ZombieArmor/ScreenDoor.cs](/Gameplay/ViewControllers/ZombieArmor/ScreenDoor.cs) | C# | 7 | 0 | 1 | 8 |
+| [Test/GameTestManager.cs](/Test/GameTestManager.cs) | C# | 28 | 0 | 4 | 32 |
+| [Test/Tester.cs](/Test/Tester.cs) | C# | 17 | 0 | 1 | 18 |
+| [UI/UIGameStartPanel.Designer.cs](/UI/UIGameStartPanel.Designer.cs) | C# | 41 | 1 | 8 | 50 |
+| [UI/UIGameStartPanel.cs](/UI/UIGameStartPanel.cs) | C# | 43 | 2 | 7 | 52 |
+| [UI/UILevelChooseCardPanel.Designer.cs](/UI/UILevelChooseCardPanel.Designer.cs) | C# | 44 | 1 | 8 | 53 |
+| [UI/UILevelChooseCardPanel.cs](/UI/UILevelChooseCardPanel.cs) | C# | 82 | 5 | 27 | 114 |
+| [UI/UILevelChooseLootPanel.Designer.cs](/UI/UILevelChooseLootPanel.Designer.cs) | C# | 42 | 1 | 8 | 51 |
+| [UI/UILevelChooseLootPanel.cs](/UI/UILevelChooseLootPanel.cs) | C# | 55 | 2 | 11 | 68 |
+| [UI/UILevelDefeatPanel.Designer.cs](/UI/UILevelDefeatPanel.Designer.cs) | C# | 31 | 1 | 7 | 39 |
+| [UI/UILevelDefeatPanel.cs](/UI/UILevelDefeatPanel.cs) | C# | 26 | 1 | 6 | 33 |
+| [UI/UILevelPanel.Designer.cs](/UI/UILevelPanel.Designer.cs) | C# | 59 | 1 | 8 | 68 |
+| [UI/UILevelPanel.cs](/UI/UILevelPanel.cs) | C# | 102 | 7 | 40 | 149 |
+| [UI/UISceneTransitionPanel.Designer.cs](/UI/UISceneTransitionPanel.Designer.cs) | C# | 35 | 1 | 8 | 44 |
+| [UI/UISceneTransitionPanel.cs](/UI/UISceneTransitionPanel.cs) | C# | 26 | 1 | 6 | 33 |
+
+[Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)

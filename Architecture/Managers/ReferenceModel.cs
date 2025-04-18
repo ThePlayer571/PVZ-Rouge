@@ -1,7 +1,5 @@
 using System;
 using System.Linq;
-using QFramework;
-using TPL.PVZR.Gameplay.ViewControllers;
 using TPL.PVZR.Gameplay.ViewControllers.InLevel;
 using TPL.PVZR.Gameplay.ViewControllers.UI;
 using UnityEngine;
@@ -9,7 +7,7 @@ using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace TPL.PVZR.Architecture.Models
+namespace TPL.PVZR.Architecture.Managers
 {
     public class ReferenceModel
     {

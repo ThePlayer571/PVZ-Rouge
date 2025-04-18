@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Architecture.Events.GamePhase;
 using TPL.PVZR.Architecture.Models;
 using TPL.PVZR.Architecture.Systems.PhaseSystems;
 using TPL.PVZR.Gameplay.Entities;
 using TPL.PVZR.Gameplay.Entities.Zombies;
+using TPL.PVZR.Gameplay.Entities.Zombies.Base;
 using UnityEngine;
 
 namespace TPL.PVZR.Architecture.Systems.InLevel
@@ -35,7 +37,7 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
             // Projectile
             projectilePrefabDict = new Dictionary<ProjectileIdentifier, GameObject>()
             {
-                [ProjectileIdentifier.Pea] = _ResLoader.LoadSync<GameObject>("Pea"),
+                [ProjectileIdentifier.Pea] = _ResLoader.LoadSync<GameObject>(Pea_prefab.BundleName,Pea_prefab.Pea),
                 [ProjectileIdentifier.IcePea] = _ResLoader.LoadSync<GameObject>("IcePea"),
             };
             // Plant

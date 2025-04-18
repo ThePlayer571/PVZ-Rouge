@@ -1,6 +1,7 @@
 using TPL.PVZR.Gameplay.Class;
 using TPL.PVZR.Gameplay.Data;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace TPL.PVZR.Gameplay.Entities.Projectiles
 {
@@ -13,13 +14,13 @@ namespace TPL.PVZR.Gameplay.Entities.Projectiles
         protected Rigidbody2D _Rigidbody2D;
 
         // 数据
-        public AttackData attackData;
+        [SerializeField] public AttackDataSO attackDataSO;
         protected Attack attack;
 
         protected override void Awake()
         {
             _Rigidbody2D = GetComponent<Rigidbody2D>();
-            attack.Initialize(attackData);
+            attack=new Attack(attackDataSO);
             base.Awake();
         }
     }

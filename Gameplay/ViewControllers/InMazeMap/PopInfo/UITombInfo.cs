@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using QAssetBundle;
 using TMPro;
+using TPL.PVZR.Architecture.Managers;
 
 
 namespace TPL.PVZR.Gameplay.ViewControllers.InMazeMap.PopInfo

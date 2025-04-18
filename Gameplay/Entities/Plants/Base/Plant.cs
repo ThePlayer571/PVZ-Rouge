@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using QFramework;
 using TPL.PVZR.Core;
 using TPL.PVZR.Gameplay.Class;
@@ -6,22 +7,25 @@ using UnityEngine;
 
 namespace TPL.PVZR.Gameplay.Entities.Plants.Base
 {
-    public interface IPlant : IEntity,IDealAttack
+    public interface IPlant : IEntity, IDamageable
     {
     }
 
     public enum PlantState
     {
-        Idle, Dead
+        Idle,
+        Dead
     }
+
     public abstract class Plant : Entity, IPlant
     {
         /// <summary>
         /// Behavior
         /// </summary>
-        
+
         // 植物属性
         protected Direction2 direction;
+
         protected BindableProperty<float> healthPoint;
         protected FSM<PlantState> behaviorState = new();
         protected float initialHealthPoint = 100;
@@ -29,18 +33,11 @@ namespace TPL.PVZR.Gameplay.Entities.Plants.Base
 
         #region 植物行为(方法)
 
-        public void DealAttack(Attack attack)
-        {
-            if (attack.isFrameDamage)
-            {
-                this.healthPoint.Value -= attack.damage * Time.deltaTime;
-                
-            }
-            else
-            {
-                this.healthPoint.Value -= attack.damage;
-                
-            }
+        public void TakeDamage(Attack attack)
+        { 
+            // 参数检查
+            if (attack is null) throw new ArgumentNullException();
+            this.healthPoint.Value -= attack.damageValue;
         }
 
         public override void Kill()
@@ -55,10 +52,11 @@ namespace TPL.PVZR.Gameplay.Entities.Plants.Base
             _LevelModel.CellGrid[gridPos2.x, gridPos2.y].plant = null;
             gameObject.DestroySelf();
         }
-        
 
         #endregion
+
         # region 植物行为(逻辑)
+
         protected virtual void DefaultAI()
         {
         }
@@ -66,35 +64,33 @@ namespace TPL.PVZR.Gameplay.Entities.Plants.Base
         protected virtual void SetUpState()
         {
             behaviorState.State(PlantState.Idle)
-                .OnUpdate(() =>
-                {
-                    DefaultAI();
-                });
+                .OnUpdate(() => { DefaultAI(); });
             behaviorState.State(PlantState.Dead)
-                .OnEnter(() =>
-                {
-                    Dead();
-                });
+                .OnEnter(() => { Dead(); });
             behaviorState.StartState(PlantState.Idle);
         }
-    # endregion
+
+        # endregion
+
         protected virtual void Update()
         {
             behaviorState.Update();
         }
+
         // 初始化
         public virtual void Initialize(Direction2 direction)
         {
             this.direction = direction;
             gameObject.LocalScaleX(direction == Direction2.Right ? 1 : -1);
         }
-        
+
         /// <summary>
         /// Code
         /// </summary>
-        
+
         // 属性
         protected Vector2 directionVector => direction == Direction2.Right ? Vector2.right : Vector2.left;
+
         // 初始化
         protected override void Awake()
         {
@@ -110,6 +106,5 @@ namespace TPL.PVZR.Gameplay.Entities.Plants.Base
             });
             SetUpState();
         }
-
     }
 }

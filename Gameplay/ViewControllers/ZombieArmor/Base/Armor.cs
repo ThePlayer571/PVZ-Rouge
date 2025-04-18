@@ -11,133 +11,127 @@ namespace TPL.PVZR.Gameplay.ViewControllers.ZombieArmor.Base
 {
     public enum ArmorState
     {
-        Intact,
-        Damaged,
-        Destroyed
+        Intact, // 完好无损
+        Damaged, // 轻微受损
+        Destroyed // 重度受损
     }
 
-    public abstract class Armor : ViewController, IController, IDealAttack
+    public interface IArmor : IController, IDamageable
     {
-        // 可配置项
+        
+    }
+
+    public abstract class Armor : ViewController, IArmor
+    {
+        #region SerializeField
+
+        
+
         [FormerlySerializedAs("zombieArmorData")]
-        public ArmorData armorData;
+        [SerializeField] public ArmorData armorData;
+        #endregion
 
         // 属性
-        protected BindableProperty<float> duration;
+        protected float duration;
 
         // 变量
         protected FSM<ArmorState> armorState = new FSM<ArmorState>();
-
-        protected Attack lastReceivedAttack;
+        
 
         // 引用
         protected SpriteRenderer spriteRenderer;
+        protected Attack laseReceivedAttack = null;
 
         // 事件
-        public EasyEvent<Attack> OnArmorAttacked = new(); // para: 经盔甲抵消后的伤害
-        public EasyEvent OnArmorDamaged = new();
-
         public EasyEvent OnArmorDestroyed = new();
 
         // StateMachine
-        protected virtual void SetUpStateMachine()
+        protected virtual void SetUpState()
         {
             armorState ??= new FSM<ArmorState>();
-            armorState.State(ArmorState.Intact)
-                .OnEnter(OnIntact);
-            armorState.State(ArmorState.Damaged)
-                .OnEnter(OnDamaged);
+            armorState.State(ArmorState.Intact);
+            armorState.State(ArmorState.Damaged);
             armorState.State(ArmorState.Destroyed)
-                .OnEnter(OnDestroyed);
-            armorState.StartState(ArmorState.Intact);
-        }
-
-        protected virtual void OnIntact()
-        {
-
-        }
-
-        protected virtual void OnDamaged()
-        {
-
-        }
-
-        protected virtual void OnDestroyed()
-        {
-            transform.SetParent(null);
-            OnArmorDestroyed.Trigger();
-            ActionKit.Sequence()
-                .Callback(() =>
+                .OnEnter(() =>
                 {
-                    transform.DOJump(
-                        transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(0, 0.3f)),
-                        0.5f, 1, 0.5f);
-                })
-                .Delay(1).Callback(() => { spriteRenderer.DOFade(0, 0.5f); })
-                .Delay(1).Callback(() => gameObject.DestroySelf())
-                .Start(this);
+                    transform.SetParent(null);
+                    OnArmorDestroyed.Trigger();
+                    ActionKit.Sequence()
+                        .Callback(() =>
+                        {
+                            transform.DOJump(
+                                transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(0, 0.3f)),
+                                0.5f, 1, 0.5f);
+                        })
+                        .Delay(1).Callback(() => { spriteRenderer.DOFade(0, 0.5f); })
+                        .Delay(1).Callback(() => gameObject.DestroySelf())
+                        .Start(this);
+                });
+            //
+            armorState.StartState(ArmorState.Intact);
         }
 
         // 初始化
         protected virtual void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
+            duration = armorData.duration;
             //
-            duration ??= new BindableProperty<float>(armorData.duration);
-            SetUpStateMachine();
+            SetUpState();
         }
 
-        // 函数
-        protected virtual Attack GetAttackAfterArmor(Attack attack)
-        {
-            Attack attackAfterArmor = attack;
-            // Damage
-            attackAfterArmor.damage -= this.duration.Value;
-            if (attackAfterArmor.damage < 0)
-            {
-                attackAfterArmor.damage = 0;
-            }
-
-            //
-            return attackAfterArmor;
-        }
-
+        #region 函数
         protected virtual void ChangeStateByDuration()
         {
             if (armorState.CurrentStateId != ArmorState.Intact &&
-                duration.Value > armorData.damagedDuration)
+                duration > armorData.damagedDuration)
             {
                 armorState.ChangeState(ArmorState.Intact);
-
             }
             else if (armorState.CurrentStateId != ArmorState.Damaged &&
-                     (duration.Value <= armorData.damagedDuration && duration.Value > 0))
+                     (duration <= armorData.damagedDuration && duration > 0))
             {
                 armorState.ChangeState(ArmorState.Damaged);
 
             }
-            else if (armorState.CurrentStateId != ArmorState.Destroyed && duration.Value <= 0)
+            else if (armorState.CurrentStateId != ArmorState.Destroyed && duration <= 0)
             {
                 armorState.ChangeState(ArmorState.Destroyed);
             }
         }
+        
+        #endregion
 
-        // 不知道为什么，必须实现这个接口才行，不然会报错
-        public virtual void Kill()
+        #region IArmor
+
+        public void TakeDamage(Attack attack)
         {
-            duration.Value = 0;
+            this.TakeDamage(attack,out var leftAttack);
         }
 
-        public virtual void DealAttack(Attack attack)
+        public virtual void TakeDamage(Attack attack,out Attack leftAttack)
         {
-            lastReceivedAttack = attack;
-            OnArmorAttacked.Trigger(GetAttackAfterArmor(attack));
-            duration.Value -= attack.damage;
+            // 损伤耐久
+            duration -= attack.damage;
+            if (duration >= 0)
+            {
+                leftAttack = attack.DamageMultiplier(0);
+            }
+            else
+            {
+                leftAttack = attack.WithDamage(-duration);
+            }
+            // 处理行为状态
             ChangeStateByDuration();
         }
+        public void Kill()
+        {
+            throw new System.NotImplementedException();
+        }
 
+        
 
-        // 架构
+        #endregion
         public IArchitecture GetArchitecture()
         {
             return PVZRouge.Interface;

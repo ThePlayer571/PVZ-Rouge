@@ -3,18 +3,20 @@ using TPL.PVZR.Gameplay.Class;
 using TPL.PVZR.Gameplay.Data;
 using TPL.PVZR.Gameplay.Entities.Plants.Base;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace TPL.PVZR.Gameplay.Entities.Plants
 {
     public class PotatoMine : Plant
     {
         private static readonly int Ready = Animator.StringToHash("Ready");
-        public AttackData attackData;
+        [FormerlySerializedAs("attackData")] public AttackDataSO attackDataSO;
         protected Attack attack;
+
         protected override void Awake()
         {
             base.Awake();
-            attack.Initialize(attackData);
+            attack = new Attack(attackDataSO);
             //
             ActionKit.Sequence()
                 .Delay(Global.potatoMineSleepTime)
@@ -34,14 +36,14 @@ namespace TPL.PVZR.Gameplay.Entities.Plants
         protected void Boom()
         {
             var hitAll =
-                Physics2D.OverlapCircleAll(transform.position, Global.potatoMineRange, LayerMask.GetMask("Zombie", "ZombieShield"));
+                Physics2D.OverlapCircleAll(transform.position, Global.potatoMineRange,
+                    LayerMask.GetMask("Zombie", "ZombieShield"));
             foreach (var hit in hitAll)
             {
-                hit.GetComponent<IDealAttack>()?.DealAttack(attack);
+                hit.GetComponent<IDamageable>()?.TakeDamage(attack);
             }
 
             gameObject.DestroySelf();
         }
-
     }
 }

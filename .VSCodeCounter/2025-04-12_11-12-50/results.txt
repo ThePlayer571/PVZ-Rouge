@@ -1,0 +1,226 @@
+Date : 2025-04-12 11:12:50
+Directory : d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts
+Total : 145 files,  6702 codes, 787 comments, 1277 blanks, all 8766 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C#       |        139 |      6,623 |        787 |      1,238 |      8,648 |
+| Markdown |          6 |         79 |          0 |         39 |        118 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                               | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                  |        145 |      6,702 |        787 |      1,277 |      8,766 |
+| Architecture                                                                                                                       |         27 |      2,114 |        219 |        375 |      2,708 |
+| Architecture (Files)                                                                                                               |          1 |         32 |         17 |          7 |         56 |
+| Architecture\Commands                                                                                                              |          2 |         94 |         16 |         12 |        122 |
+| Architecture\Events                                                                                                                |          1 |         98 |          5 |         22 |        125 |
+| Architecture\Managers                                                                                                              |          4 |        350 |         14 |         64 |        428 |
+| Architecture\Models                                                                                                                |          2 |        142 |         25 |         40 |        207 |
+| Architecture\Systems                                                                                                               |         17 |      1,398 |        142 |        230 |      1,770 |
+| Architecture\Systems\InGame                                                                                                        |          3 |        166 |          8 |         28 |        202 |
+| Architecture\Systems\InLevel                                                                                                       |          9 |        704 |         74 |        129 |        907 |
+| Architecture\Systems\InLevel (Files)                                                                                               |          8 |        638 |         66 |        120 |        824 |
+| Architecture\Systems\InLevel\Classes                                                                                               |          1 |         66 |          8 |          9 |         83 |
+| Architecture\Systems\Interfaces                                                                                                    |          1 |          6 |          1 |          1 |          8 |
+| Architecture\Systems\PhaseSystems                                                                                                  |          4 |        522 |         59 |         72 |        653 |
+| Core                                                                                                                               |         11 |        764 |        173 |        140 |      1,077 |
+| Core (Files)                                                                                                                       |          3 |        261 |         51 |         31 |        343 |
+| Core\Extensions                                                                                                                    |          2 |        127 |         42 |         24 |        193 |
+| Core\Random                                                                                                                        |          2 |        177 |         57 |         42 |        276 |
+| Core\Save                                                                                                                          |          4 |        199 |         23 |         43 |        265 |
+| Core\Save (Files)                                                                                                                  |          3 |        133 |          8 |         26 |        167 |
+| Core\Save\Modules                                                                                                                  |          1 |         66 |         15 |         17 |         98 |
+| Documents                                                                                                                          |          5 |         73 |          0 |         34 |        107 |
+| Documents (Files)                                                                                                                  |          2 |         37 |          0 |         13 |         50 |
+| Documents\Untitled Folder                                                                                                          |          3 |         36 |          0 |         21 |         57 |
+| Gameplay                                                                                                                           |         88 |      3,120 |        371 |        579 |      4,070 |
+| Gameplay\Class                                                                                                                     |         21 |      1,141 |        210 |        219 |      1,570 |
+| Gameplay\Class (Files)                                                                                                             |          4 |        153 |          3 |         30 |        186 |
+| Gameplay\Class\Games                                                                                                               |          1 |         54 |          1 |         20 |         75 |
+| Gameplay\Class\Items                                                                                                               |          3 |        124 |          7 |         28 |        159 |
+| Gameplay\Class\Levels                                                                                                              |          5 |        214 |          4 |         28 |        246 |
+| Gameplay\Class\Levels (Files)                                                                                                      |          4 |        124 |          4 |         15 |        143 |
+| Gameplay\Class\Levels\Levels                                                                                                       |          1 |         90 |          0 |         13 |        103 |
+| Gameplay\Class\Levels\Levels\DaveLawn                                                                                              |          1 |         90 |          0 |         13 |        103 |
+| Gameplay\Class\MazeMap                                                                                                             |          8 |        596 |        195 |        113 |        904 |
+| Gameplay\Class\MazeMap (Files)                                                                                                     |          1 |         23 |          1 |          1 |         25 |
+| Gameplay\Class\MazeMap\Core                                                                                                        |          6 |        498 |        189 |        102 |        789 |
+| Gameplay\Class\MazeMap\MazeMaps                                                                                                    |          1 |         75 |          5 |         10 |         90 |
+| Gameplay\Data                                                                                                                      |          5 |         71 |          2 |          8 |         81 |
+| Gameplay\Entities                                                                                                                  |         29 |        811 |         73 |        149 |      1,033 |
+| Gameplay\Entities (Files)                                                                                                          |          3 |        102 |          5 |         22 |        129 |
+| Gameplay\Entities\Plants                                                                                                           |         13 |        332 |         33 |         57 |        422 |
+| Gameplay\Entities\Plants (Files)                                                                                                   |         11 |        196 |         13 |         35 |        244 |
+| Gameplay\Entities\Plants\Base                                                                                                      |          2 |        136 |         20 |         22 |        178 |
+| Gameplay\Entities\Projectiles                                                                                                      |          4 |         97 |          4 |         22 |        123 |
+| Gameplay\Entities\Zombies                                                                                                          |          9 |        280 |         31 |         48 |        359 |
+| Gameplay\ViewControllers                                                                                                           |         33 |      1,097 |         86 |        203 |      1,386 |
+| Gameplay\ViewControllers\AutoInteractBase                                                                                          |          5 |        128 |          5 |         22 |        155 |
+| Gameplay\ViewControllers\InLevel                                                                                                   |          8 |        290 |         26 |         63 |        379 |
+| Gameplay\ViewControllers\InMazeMap                                                                                                 |          5 |        202 |         19 |         27 |        248 |
+| Gameplay\ViewControllers\InMazeMap (Files)                                                                                         |          3 |        119 |         14 |         12 |        145 |
+| Gameplay\ViewControllers\InMazeMap\PopInfo                                                                                         |          2 |         83 |          5 |         15 |        103 |
+| Gameplay\ViewControllers\UI                                                                                                        |          8 |        329 |         22 |         59 |        410 |
+| Gameplay\ViewControllers\ZombieArmor                                                                                               |          7 |        148 |         14 |         32 |        194 |
+| Gameplay\ViewControllers\ZombieArmor (Files)                                                                                       |          4 |         27 |          1 |          7 |         35 |
+| Gameplay\ViewControllers\ZombieArmor\Base                                                                                          |          3 |        121 |         13 |         25 |        159 |
+| Test                                                                                                                               |          2 |         45 |          0 |          5 |         50 |
+| UI                                                                                                                                 |         12 |        586 |         24 |        144 |        754 |
++------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                                           | language | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Commands\InLevelCommands.cs                               | C#       |         13 |          0 |          1 |         14 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Commands\PhaseChangeCommands.cs                           | C#       |         81 |         16 |         11 |        108 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Events\Events.cs                                          | C#       |         98 |          5 |         22 |        125 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Managers\GameManager.cs                                   | C#       |         37 |          0 |          8 |         45 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Managers\GameStarter.cs                                   | C#       |         18 |          1 |          2 |         21 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Managers\ReferenceModel.cs                                | C#       |        186 |          1 |         38 |        225 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Managers\SceneTransitionManager.cs                        | C#       |        109 |         12 |         16 |        137 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Models\GameModel.cs                                       | C#       |         42 |         11 |         16 |         69 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Models\LevelModel.cs                                      | C#       |        100 |         14 |         24 |        138 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\PVZRouge.cs                                               | C#       |         32 |         17 |          7 |         56 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\InGame\InventorySystem.cs                         | C#       |         86 |          2 |         15 |        103 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\InGame\LootCreateSystem.cs                        | C#       |         56 |          6 |          9 |         71 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\InGame\MazeMapSystem.cs                           | C#       |         24 |          0 |          4 |         28 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\InLevel\ChooseCardSystem.cs                       | C#       |         64 |          6 |         13 |         83 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\InLevel\Classes\ZombieSpawner.cs                  | C#       |         66 |          8 |          9 |         83 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\InLevel\EntitySystem.cs                           | C#       |         95 |         10 |         14 |        119 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\InLevel\EntitySystem.interface.cs                 | C#       |         96 |         10 |         28 |        134 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\InLevel\HandSystem.cs                             | C#       |        227 |         20 |         33 |        280 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\InLevel\HandSystem.interface.cs                   | C#       |          6 |          0 |          1 |          7 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\InLevel\LevelState.md                             | Markdown |          6 |          0 |          5 |         11 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\InLevel\WaveSystem.cs                             | C#       |         76 |          8 |         17 |        101 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\InLevel\ZombieSpawnSystem.cs                      | C#       |         68 |         12 |          9 |         89 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\Interfaces\Interfaces.cs                          | C#       |          6 |          1 |          1 |          8 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\PhaseSystems\GamePhaseSystem.cs                   | C#       |        119 |         23 |         26 |        168 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\PhaseSystems\GameSystem.cs                        | C#       |        112 |          9 |         17 |        138 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\PhaseSystems\LevelSystem.cs                       | C#       |        216 |         22 |         21 |        259 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Architecture\Systems\PhaseSystems\MainGameSystem.cs                    | C#       |         75 |          5 |          8 |         88 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Core\Enums.cs                                                          | C#       |         12 |          0 |          0 |         12 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Core\Extensions\DictionaryExtensions.cs                                | C#       |         28 |          7 |          6 |         41 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Core\Extensions\Extensions.cs                                          | C#       |         99 |         35 |         18 |        152 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Core\InputSystem.cs                                                    | C#       |        160 |         11 |         18 |        189 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Core\Matrix.cs                                                         | C#       |         89 |         40 |         13 |        142 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Core\Random\DeterministicRandom.cs                                     | C#       |        135 |         56 |         35 |        226 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Core\Random\RandomHelper.cs                                            | C#       |         42 |          1 |          7 |         50 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Core\Save\ISaveModule.cs                                               | C#       |         13 |          0 |          1 |         14 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Core\Save\Modules\GameSaveModule.cs                                    | C#       |         66 |         15 |         17 |         98 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Core\Save\SaveProfile.cs                                               | C#       |         11 |          0 |          2 |         13 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Core\Save\SaveSystem.cs                                                | C#       |        109 |          8 |         23 |        140 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Documents\PhaseEvents的响应.md                                            | Markdown |         35 |          0 |         12 |         47 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Documents\Untitled Folder\Template.md                                  | Markdown |         19 |          0 |         10 |         29 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Documents\Untitled Folder\文件注释.md                                      | Markdown |         10 |          0 |         10 |         20 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Documents\Untitled Folder\术语解释.md                                      | Markdown |          7 |          0 |          1 |          8 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Documents\游戏进程的调用方式.md                                                 | Markdown |          2 |          0 |          1 |          3 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\Attack.cs                                               | C#       |         31 |          0 |          7 |         38 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\Cell.cs                                                 | C#       |         19 |          2 |          6 |         27 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\Games\Game.cs                                           | C#       |         54 |          1 |         20 |         75 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\Items\Card.cs                                           | C#       |         33 |          0 |         10 |         43 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\Items\CardHelper.cs                                     | C#       |         71 |          6 |         15 |         92 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\Items\Item.cs                                           | C#       |         20 |          1 |          3 |         24 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\Levels\Configs.cs                                       | C#       |         58 |          2 |         10 |         70 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\Levels\Enums.cs                                         | C#       |         26 |          2 |          0 |         28 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\Levels\Level.cs                                         | C#       |         22 |          0 |          3 |         25 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\Levels\LevelHelper.cs                                   | C#       |         18 |          0 |          2 |         20 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\Levels\Levels\DaveLawn\DaveLawn.cs                      | C#       |         90 |          0 |         13 |        103 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\Loot.cs                                                 | C#       |         55 |          1 |          9 |         65 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\MazeMap\Core\Configs.cs                                 | C#       |         50 |          1 |          7 |         58 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\MazeMap\Core\Enums.cs                                   | C#       |          7 |          0 |          0 |          7 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\MazeMap\Core\MazeMap.Function.cs                        | C#       |        324 |        160 |         55 |        539 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\MazeMap\Core\MazeMap.cs                                 | C#       |         45 |          6 |         14 |         65 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\MazeMap\Core\MazePos.cs                                 | C#       |         32 |          9 |         14 |         55 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\MazeMap\Core\Node.cs                                    | C#       |         40 |         13 |         12 |         65 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\MazeMap\MazeMapHelper.cs                                | C#       |         23 |          1 |          1 |         25 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\MazeMap\MazeMaps\DaveLawn.cs                            | C#       |         75 |          5 |         10 |         90 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Class\ZombieSpawnData.cs                                      | C#       |         48 |          0 |          8 |         56 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Data\ArmorData.cs                                             | C#       |         10 |          0 |          1 |         11 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Data\AttackData.cs                                            | C#       |         11 |          0 |          1 |         12 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Data\CardSO.cs                                                | C#       |         10 |          0 |          1 |         11 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Data\Global.cs                                                | C#       |         20 |          0 |          3 |         23 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Data\SeedSO.cs                                                | C#       |         20 |          2 |          2 |         24 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Entity.cs                                            | C#       |         73 |          5 |         19 |         97 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Enums.cs                                             | C#       |         21 |          0 |          2 |         23 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Interfaces.cs                                        | C#       |          8 |          0 |          1 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Plants\Base\PeashooterBase.cs                        | C#       |         48 |          9 |          6 |         63 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Plants\Base\Plant.cs                                 | C#       |         88 |         11 |         16 |        115 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Plants\CherryBoom.cs                                 | C#       |         43 |          3 |          5 |         51 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Plants\Flowerpot.cs                                  | C#       |         20 |          0 |          2 |         22 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Plants\PeaShooter.Designer.cs                        | C#       |          8 |          1 |          4 |         13 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Plants\PeaShooter.cs                                 | C#       |         12 |          0 |          2 |         14 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Plants\PotatoMine.cs                                 | C#       |         42 |          1 |          4 |         47 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Plants\SnowPea.Designer.cs                           | C#       |          8 |          1 |          4 |         13 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Plants\SnowPea.cs                                    | C#       |         12 |          0 |          2 |         14 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Plants\Sunflower.Designer.cs                         | C#       |          6 |          1 |          2 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Plants\Sunflower.cs                                  | C#       |         27 |          5 |          6 |         38 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Plants\Wallnut.Designer.cs                           | C#       |          6 |          1 |          2 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Plants\Wallnut.cs                                    | C#       |         12 |          0 |          2 |         14 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Projectiles\IcePea.cs                                | C#       |         35 |          1 |          8 |         44 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Projectiles\Interfaces.cs                            | C#       |          8 |          0 |          1 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Projectiles\Pea.cs                                   | C#       |         35 |          1 |          8 |         44 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Projectiles\Projectile.cs                            | C#       |         19 |          2 |          5 |         26 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Zombies\BucketZombie.Designer.cs                     | C#       |          8 |          1 |          4 |         13 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Zombies\BucketZombie.cs                              | C#       |         30 |          0 |          4 |         34 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Zombies\ConeheadZombie.Designer.cs                   | C#       |          8 |          1 |          4 |         13 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Zombies\ConeheadZombie.cs                            | C#       |         30 |          0 |          4 |         34 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Zombies\NormalZombie.Designer.cs                     | C#       |          6 |          1 |          2 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Zombies\NormalZombie.cs                              | C#       |          6 |          0 |          1 |          7 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Zombies\ScreenDoorZombie.Designer.cs                 | C#       |          6 |          1 |          2 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Zombies\ScreenDoorZombie.cs                          | C#       |          6 |          0 |          2 |          8 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\Entities\Zombies\Zombie.cs                                    | C#       |        180 |         27 |         25 |        232 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\AutoInteractBase\AutoInteractor.cs            | C#       |         41 |          3 |         10 |         54 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\AutoInteractBase\IInteractable.cs             | C#       |          7 |          0 |          0 |          7 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\AutoInteractBase\InteractorButton.Designer.cs | C#       |          8 |          1 |          4 |         13 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\AutoInteractBase\InteractorButton.cs          | C#       |         44 |          1 |          4 |         49 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\AutoInteractBase\InteractorPointer.cs         | C#       |         28 |          0 |          4 |         32 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\InLevel\Dave.Designer.cs                      | C#       |          6 |          1 |          2 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\InLevel\Dave.cs                               | C#       |        179 |         21 |         40 |        240 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\InLevel\EndLevelLootChest.Designer.cs         | C#       |          6 |          1 |          2 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\InLevel\EndLevelLootChest.cs                  | C#       |         35 |          1 |          5 |         41 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\InLevel\Sun.Designer.cs                       | C#       |          8 |          1 |          3 |         12 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\InLevel\Sun.cs                                | C#       |         31 |          0 |          4 |         35 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\InLevel\ZombieAttackArea.Designer.cs          | C#       |          6 |          1 |          2 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\InLevel\ZombieAttackArea.cs                   | C#       |         19 |          0 |          5 |         24 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\InMazeMap\PopInfo\UISpotInfo.cs               | C#       |         16 |          0 |          1 |         17 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\InMazeMap\PopInfo\UITombInfo.cs               | C#       |         67 |          5 |         14 |         86 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\InMazeMap\Spot.cs                             | C#       |         28 |          3 |          5 |         36 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\InMazeMap\Tomb.cs                             | C#       |         58 |          4 |          5 |         67 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\InMazeMap\TombInteractor.cs                   | C#       |         33 |          7 |          2 |         42 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\UI\CardOnlyView.Designer.cs                   | C#       |          9 |          1 |          5 |         15 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\UI\CardOnlyView.cs                            | C#       |         27 |          0 |          2 |         29 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\UI\Seed.Designer.cs                           | C#       |         11 |          1 |          7 |         19 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\UI\Seed.cs                                    | C#       |        134 |         13 |         16 |        163 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\UI\UICard.Designer.cs                         | C#       |          8 |          1 |          3 |         12 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\UI\UICard.cs                                  | C#       |         56 |          2 |         10 |         68 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\UI\UILevelChooseLootChoice.Designer.cs        | C#       |          6 |          1 |          2 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\UI\UILevelChooseLootChoice.cs                 | C#       |         78 |          3 |         14 |         95 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\ZombieArmor\Base\Armor.cs                     | C#       |        109 |         13 |         25 |        147 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\ZombieArmor\Base\HealthArmor.cs               | C#       |          6 |          0 |          0 |          6 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\ZombieArmor\Base\ShieldArmor.cs               | C#       |          6 |          0 |          0 |          6 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\ZombieArmor\Bucket.Designer.cs                | C#       |          6 |          1 |          2 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\ZombieArmor\Bucket.cs                         | C#       |          7 |          0 |          2 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\ZombieArmor\Conehead.cs                       | C#       |          7 |          0 |          2 |          9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Gameplay\ViewControllers\ZombieArmor\ScreenDoor.cs                     | C#       |          7 |          0 |          1 |          8 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Test\GameTestManager.cs                                                | C#       |         28 |          0 |          4 |         32 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\Test\Tester.cs                                                         | C#       |         17 |          0 |          1 |         18 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UIGameStartPanel.Designer.cs                                        | C#       |         41 |          1 |          8 |         50 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UIGameStartPanel.cs                                                 | C#       |         43 |          2 |          7 |         52 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UILevelChooseCardPanel.Designer.cs                                  | C#       |         44 |          1 |          8 |         53 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UILevelChooseCardPanel.cs                                           | C#       |         82 |          5 |         27 |        114 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UILevelChooseLootPanel.Designer.cs                                  | C#       |         42 |          1 |          8 |         51 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UILevelChooseLootPanel.cs                                           | C#       |         55 |          2 |         11 |         68 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UILevelDefeatPanel.Designer.cs                                      | C#       |         31 |          1 |          7 |         39 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UILevelDefeatPanel.cs                                               | C#       |         26 |          1 |          6 |         33 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UILevelPanel.Designer.cs                                            | C#       |         59 |          1 |          8 |         68 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UILevelPanel.cs                                                     | C#       |        102 |          7 |         40 |        149 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UISceneTransitionPanel.Designer.cs                                  | C#       |         35 |          1 |          8 |         44 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ-R\Assets\Scripts\UI\UISceneTransitionPanel.cs                                           | C#       |         26 |          1 |          6 |         33 |
+| Total                                                                                                                              |          |      6,702 |        787 |      1,277 |      8,766 |
++------------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
