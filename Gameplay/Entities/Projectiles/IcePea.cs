@@ -10,14 +10,7 @@ namespace TPL.PVZR.Gameplay.Entities.Projectiles
 
         public void Initialize(Direction2 direction)
         {
-            if (direction == Direction2.Right)
-            {
-                _Rigidbody2D.velocity = Vector2.right * Global.peaSpeed;
-            }
-            else if (direction == Direction2.Left)
-            {
-                _Rigidbody2D.velocity = Vector2.left * Global.peaSpeed;
-            }
+            _Rigidbody2D.velocity = direction.ToVector2() * Global.peaSpeed;
         }
 
         // 变量
@@ -30,7 +23,7 @@ namespace TPL.PVZR.Gameplay.Entities.Projectiles
             
             if (collision.collider.CompareTag("Zombie") || collision.collider.CompareTag("ZombieShield") )
             {
-                collision.collider.GetComponent<IDamageable>()
+                collision.collider.GetComponent<IAttackable>()
                     .TakeDamage(attack.WithPunchDirection(
                         (collision.collider.transform.position - this.transform.position)
                         .normalized));

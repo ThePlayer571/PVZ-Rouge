@@ -10,6 +10,7 @@ namespace TPL.PVZR.Gameplay.Class.Levels
         DaveRoof,DaveRoofNight,DaveRoofRain,
         PlainLawn,
         WaterlessLawn, WaterlessLawnNight,
+        ConeheadField,
         // Dungeon
         DungeonEntrance, DungeonEntranceNight,
         MazeChamber, MazeChamberRain,

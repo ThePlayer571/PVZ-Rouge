@@ -55,7 +55,8 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
             GameExiting,
 
             // 关卡内阶段
-            LevelInitialization,
+            LevelPreInitialization, // 最初的初始化，主要用于构建场景等；之后的初始化可能会调用场景中的东西，所以加了这个阶段
+            LevelInitialization, // 初始化关卡
             ChooseCards,
             Gameplay,
             AllEnemyKilled,
@@ -124,7 +125,8 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
             [GamePhase.MainMenu] = new[] { GamePhase.PreInitialization },
             [GamePhase.GameInitialization] = new[] { GamePhase.MainMenu },
             [GamePhase.MazeMap] = new[] { GamePhase.GameInitialization ,GamePhase.LevelExiting},
-            [GamePhase.LevelInitialization] = new[] { GamePhase.MazeMap },
+            [GamePhase.LevelPreInitialization] = new[] { GamePhase.MazeMap },
+            [GamePhase.LevelInitialization] = new[] { GamePhase.LevelPreInitialization},
             [GamePhase.ChooseCards] = new[] { GamePhase.LevelInitialization },
             [GamePhase.Gameplay] = new[] { GamePhase.ChooseCards },
             [GamePhase.AllEnemyKilled] = new[] { GamePhase.Gameplay },
@@ -145,7 +147,6 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
             {
                 throw new ArgumentException($"进行了不允许的状态切换：{_currentGamePhase}->{changeToPhase}");
             }
-
             // 检查通过
             this.SendEvent(new OnLeavePhaseEarlyEvent { leaveFromPhase = _currentGamePhase, parameters = parameters });
             this.SendEvent(new OnLeavePhaseEvent { leaveFromPhase = _currentGamePhase, parameters = parameters });
@@ -154,7 +155,6 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
             this.SendEvent(new OnEnterPhaseEarlyEvent { changeToPhase = changeToPhase, parameters = parameters });
             this.SendEvent(new OnEnterPhaseEvent { changeToPhase = changeToPhase, parameters = parameters });
             this.SendEvent(new OnEnterPhaseLateEvent { changeToPhase = changeToPhase, parameters = parameters });
-            $"phase change to{changeToPhase}".LogInfo();
         }
 
         #endregion

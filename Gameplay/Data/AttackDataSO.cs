@@ -8,6 +8,7 @@ namespace TPL.PVZR.Gameplay.Data
         public float damage;
         public float punchForce;
         public bool slowness;
+        public bool buttered;
         public bool isFrameDamage;
     }
 }

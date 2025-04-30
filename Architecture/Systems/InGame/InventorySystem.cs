@@ -28,31 +28,26 @@ namespace TPL.PVZR.Architecture.Systems.InGame
             _LevelModel = this.GetModel<ILevelModel>();
             cardsInInventory = new SortedSet<Card>();
 
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.PeaShooter));
             cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.Sunflower));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.PeaShooter));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.Sunflower));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.PotatoMine));
             cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.SnowPea));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.Flowerpot));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.Wallnut));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.CherryBoom));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.CherryBoom));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.CherryBoom));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.CherryBoom));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.CherryBoom));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.CherryBoom));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.CherryBoom));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.CherryBoom));
-            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.CherryBoom));
             cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.CherryBoom));
             cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.Flowerpot));
+            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.RepeaterPea));
+            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.Blover));
+            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.CabbagePult));
+            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.Cactus));
+            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.Caltrop));
+            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.Chomper));
+            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.CornPult));
+            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.MelonPult));
+            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.RepeaterPea));
+            cardsInInventory.Add(CardHelper.CreateCard(PlantIdentifier.SplitPea));
 
             RegisterEvents();
         }
 
         # region IInventorySystem
-        
+
         public SortedSet<Card> cardsInInventory { get; private set; }
 
         public void AddCard(Card card)
@@ -84,6 +79,7 @@ namespace TPL.PVZR.Architecture.Systems.InGame
         #endregion
 
         private ILevelModel _LevelModel;
+
         private void RegisterEvents()
         {
             this.RegisterEvent<OnEnterPhaseEarlyEvent>(e =>
@@ -98,6 +94,5 @@ namespace TPL.PVZR.Architecture.Systems.InGame
                 }
             });
         }
-
     }
 }

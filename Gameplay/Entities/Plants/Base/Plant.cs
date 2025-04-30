@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TPL.PVZR.Gameplay.Entities.Plants.Base
 {
-    public interface IPlant : IEntity, IDamageable
+    public interface IPlant : IEntity, IAttackable
     {
     }
 
@@ -19,24 +19,31 @@ namespace TPL.PVZR.Gameplay.Entities.Plants.Base
 
     public abstract class Plant : Entity, IPlant
     {
-        /// <summary>
-        /// Behavior
-        /// </summary>
+        #region Behavior
 
-        // 植物属性
+        #region 变量
+        // 可配置数据
+        [SerializeField] protected float _initialHealthPoint_ = 100;
+        
+/// <summary>
+/// 植物的血量像樱桃炸弹一样（不会被常规方式杀死）
+/// </summary>
+        [SerializeField] protected bool _cherryBoomHealth_ = false;
+        // 变量
         protected Direction2 direction;
 
         protected BindableProperty<float> healthPoint;
         protected FSM<PlantState> behaviorState = new();
-        protected float initialHealthPoint = 100;
 
-
-        #region 植物行为(方法)
+        #endregion
+        
+        #region 一层具象(可调用方法)
 
         public void TakeDamage(Attack attack)
         { 
             // 参数检查
             if (attack is null) throw new ArgumentNullException();
+            if (_cherryBoomHealth_) return;
             this.healthPoint.Value -= attack.damageValue;
         }
 
@@ -48,17 +55,18 @@ namespace TPL.PVZR.Gameplay.Entities.Plants.Base
 
         protected virtual void Dead()
         {
-            _LevelModel.CellGrid[gridPos2.x, gridPos2.y].cellState = Cell.CellState.Empty;
-            _LevelModel.CellGrid[gridPos2.x, gridPos2.y].plant = null;
+            _LevelModel.CellGrid[gridPos2.x, gridPos2.y].SetState( Cell.CellState.Empty);
+            _LevelModel.CellGrid[gridPos2.x, gridPos2.y].SetPlant(null);
             gameObject.DestroySelf();
         }
 
         #endregion
 
-        # region 植物行为(逻辑)
+        # region 逻辑
 
         protected virtual void DefaultAI()
         {
+            // 必须是空的，因为有些植物override了，而且无法跳过PeaShooterBase直接执行Plant的DefaultAI
         }
 
         protected virtual void SetUpState()
@@ -71,8 +79,10 @@ namespace TPL.PVZR.Gameplay.Entities.Plants.Base
         }
 
         # endregion
-
-        protected virtual void Update()
+        
+        #endregion
+        
+        private void Update()
         {
             behaviorState.Update();
         }
@@ -84,19 +94,10 @@ namespace TPL.PVZR.Gameplay.Entities.Plants.Base
             gameObject.LocalScaleX(direction == Direction2.Right ? 1 : -1);
         }
 
-        /// <summary>
-        /// Code
-        /// </summary>
-
-        // 属性
-        protected Vector2 directionVector => direction == Direction2.Right ? Vector2.right : Vector2.left;
-
         // 初始化
-        protected override void Awake()
+        protected override void OnAwakeBase()
         {
-            base.Awake();
-            //
-            healthPoint = new BindableProperty<float>(initialHealthPoint);
+            healthPoint = new BindableProperty<float>(_initialHealthPoint_);
             healthPoint.Register((val) =>
             {
                 if (val <= 0)

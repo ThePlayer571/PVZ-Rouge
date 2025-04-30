@@ -37,20 +37,33 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
             // Projectile
             projectilePrefabDict = new Dictionary<ProjectileIdentifier, GameObject>()
             {
-                [ProjectileIdentifier.Pea] = _ResLoader.LoadSync<GameObject>(Pea_prefab.BundleName,Pea_prefab.Pea),
-                [ProjectileIdentifier.IcePea] = _ResLoader.LoadSync<GameObject>("IcePea"),
+                [ProjectileIdentifier.Pea] = _ResLoader.LoadSync<GameObject>(Pea_prefab.Pea),
+                [ProjectileIdentifier.IcePea] = _ResLoader.LoadSync<GameObject>(Icepea_prefab.IcePea),
+                [ProjectileIdentifier.Spike] = _ResLoader.LoadSync<GameObject>(Spike_prefab.Spike),
+                [ProjectileIdentifier.Cabbage] = _ResLoader.LoadSync<GameObject>(Cabbage_prefab.Cabbage),
+                [ProjectileIdentifier.Watermelon] = _ResLoader.LoadSync<GameObject>(Watermelon_prefab.Watermelon),
+                [ProjectileIdentifier.Kernel] = _ResLoader.LoadSync<GameObject>(Kernel_prefab.Kernel),
+                [ProjectileIdentifier.Butter] = _ResLoader.LoadSync<GameObject>(Butter_prefab.Butter),
+                
             };
             // Plant
             plantPrefabDict = new Dictionary<PlantIdentifier, GameObject>
             {
-                [PlantIdentifier.PeaShooter] = _ResLoader.LoadSync<GameObject>("PeaShooter"),
-                [PlantIdentifier.Sunflower] = _ResLoader.LoadSync<GameObject>("Sunflower"),
-                [PlantIdentifier.Wallnut] = _ResLoader.LoadSync<GameObject>("Wallnut"),
-                [PlantIdentifier.Flowerpot] = _ResLoader.LoadSync<GameObject>("Flowerpot"),
-                [PlantIdentifier.SnowPea] = _ResLoader.LoadSync<GameObject>("SnowPea"),
-                [PlantIdentifier.CherryBoom] = _ResLoader.LoadSync<GameObject>("CherryBoom"),
-                [PlantIdentifier.PotatoMine] = _ResLoader.LoadSync<GameObject>("PotatoMine"),
-
+                [PlantIdentifier.PeaShooter] = _ResLoader.LoadSync<GameObject>(Peashooter_prefab.PeaShooter),
+                [PlantIdentifier.Sunflower] = _ResLoader.LoadSync<GameObject>(Sunflower_prefab.Sunflower),
+                [PlantIdentifier.Wallnut] = _ResLoader.LoadSync<GameObject>(Wallnut_prefab.Wallnut),
+                [PlantIdentifier.Flowerpot] = _ResLoader.LoadSync<GameObject>(Flowerpot_prefab.Flowerpot),
+                [PlantIdentifier.SnowPea] = _ResLoader.LoadSync<GameObject>(Snowpea_prefab.SnowPea),
+                [PlantIdentifier.CherryBoom] = _ResLoader.LoadSync<GameObject>(Cherryboom_prefab.CherryBoom),
+                [PlantIdentifier.PotatoMine] = _ResLoader.LoadSync<GameObject>(Potatomine_prefab.PotatoMine),
+                [PlantIdentifier.RepeaterPea] = _ResLoader.LoadSync<GameObject>(Repeaterpea_prefab.RepeaterPea),
+                [PlantIdentifier.SplitPea] = _ResLoader.LoadSync<GameObject>(Splitpea_prefab.SplitPea),
+                [PlantIdentifier.Cactus] = _ResLoader.LoadSync<GameObject>(Cactus_prefab.Cactus),
+                [PlantIdentifier.Caltrop] = _ResLoader.LoadSync<GameObject>(Caltrop_prefab.Caltrop),
+                [PlantIdentifier.Blover] = _ResLoader.LoadSync<GameObject>(Blover_prefab.Blover),
+                [PlantIdentifier.CabbagePult] = _ResLoader.LoadSync<GameObject>(Cabbagepult_prefab.CabbagePult),
+                [PlantIdentifier.MelonPult] = _ResLoader.LoadSync<GameObject>(Melonpult_prefab.MelonPult),
+                [PlantIdentifier.CornPult] = _ResLoader.LoadSync<GameObject>(Cornpult_prefab.CornPult),
             };
             // Zombie
             zombiePrefabDict = new Dictionary<ZombieIdentifier, GameObject>

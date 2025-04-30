@@ -5,6 +5,7 @@ using TPL.PVZR.Architecture;
 using TPL.PVZR.Architecture.Commands;
 using TPL.PVZR.Architecture.Events.Input;
 using TPL.PVZR.Gameplay.Class;
+using TPL.PVZR.Gameplay.Class.Tags;
 using TPL.PVZR.Gameplay.Data;
 using TPL.PVZR.Gameplay.Entities;
 using TPL.PVZR.Gameplay.Entities.Plants;
@@ -12,7 +13,7 @@ using UnityEngine;
 
 namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
 {
-    public partial class Dave : ViewController, IController, IDamageable
+    public partial class Dave : Entity, IController, IAttackable
     {
         # region 不重要的
 
@@ -91,15 +92,14 @@ namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
             {
                 Vector2 start =  new Vector2(transform.position.x , _Collider2D.bounds.min.y);
                 Vector2 size = new Vector2(0.48f, 0.02f);
-                var hits = Physics2D.BoxCastAll(start, size, 0, Vector2.zero,
-                    distance: 1f,
+                var hits = Physics2D.OverlapBoxAll(start, size, 0, 
                     layerMask: LayerMask.GetMask("Barrier","Plant"));
                 foreach (var hit in hits)
                 {
-                    if (hit.collider.IsInLayerMask(LayerMask.GetMask("Barrier"))) return true;
-                    if (hit.collider.CompareTag("Plant"))
+                    if (hit.IsInLayerMask(LayerMask.GetMask("Barrier"))) return true;
+                    if (hit.CompareTag("Plant"))
                     {
-                        if (hit.collider.GetComponent<Flowerpot>() is not null) return true;
+                        if (hit.GetComponent<Flowerpot>() is not null) return true;
                     }
                 }
                 return false;
@@ -162,10 +162,11 @@ namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
         // IDealAttack
         private BindableProperty<float> _health = new(100f);
 
-        public void Kill()
+        public override void Kill()
         {
             throw new NotImplementedException();
         }
+
 
         public void TakeDamage(Attack attack)
         {

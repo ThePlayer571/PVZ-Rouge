@@ -73,7 +73,8 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
         {
             currentHandState = HandState.HaveShovel;
             //
-            ReferenceModel.Get.FollowingSprite.GetComponent<SpriteRenderer>().sprite = ReferenceModel.Get.ShovelImage.sprite;
+            ReferenceModel.Get.FollowingSprite.GetComponent<SpriteRenderer>().sprite =
+                ReferenceModel.Get.ShovelImage.sprite;
             ReferenceModel.Get.FollowingSprite.Show();
             ReferenceModel.Get.ShovelImage.Hide();
         }
@@ -140,6 +141,7 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
         private void UseShovel()
         {
             HandOnCell.plant.Kill();
+            //
             currentHandState = HandState.Empty;
             ReferenceModel.Get.FollowingSprite.Hide();
             ReferenceModel.Get.ShovelImage.Show();
@@ -159,16 +161,21 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
 
         #region 属性 用于提高可读性的
 
+        //  坐标
         private Vector3 handWorldPos => Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         private Vector3Int handCellPos => ReferenceModel.Get.Grid.WorldToCell(handWorldPos);
 
         private Vector2Int handCellPos2 =>
             new Vector2Int(handCellPos.x, handCellPos.y); // 有些时候计算需要用到vector3 所以有handCellPos 2D 3D
 
+        // Cell
         private Cell HandOnCell => _LevelModel.CellGrid[handCellPos2.x, handCellPos2.y];
 
         private Cell HandDownCell => _LevelModel.CellGrid[handCellPos2.x, handCellPos2.y - 1];
 
+        /// <summary>
+        /// 戴夫的手能够到鼠标的位置(能放植物)
+        /// </summary>
         private bool daveHandCanReachMousePos =>
             Vector2.Distance(ReferenceModel.Get.Dave.transform.position, handWorldPos) < 5f;
 
@@ -178,13 +185,20 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
             {
                 if (!_selectedSeed) return false;
                 //
-                if (_selectedSeed.seedSO.plantIdentifier is PlantIdentifier.Flowerpot) // 花盆
+                var handPlantIdentifier = _selectedSeed.seedSO.plantIdentifier;
+                if (handPlantIdentifier is PlantIdentifier.Flowerpot) // 花盆
                 {
-                    return HandOnCell.CanPlantHere && HandDownCell.CanPotAbove && daveHandCanReachMousePos;
+                    var davePos = ReferenceModel.Get.Dave.transform.position;
+                    var daveCellPos = ReferenceModel.Get.Grid.WorldToCell(davePos);
+
+                    return HandOnCell.CanPlantHere(PlantIdentifier.Flowerpot) &&
+                           HandDownCell.CanPlantAbove(PlantIdentifier.Flowerpot) && daveHandCanReachMousePos &&
+                           handCellPos != daveCellPos;
                 }
                 else // 其他植物
                 {
-                    return HandOnCell.CanPlantHere && HandDownCell.CanPlantAbove && daveHandCanReachMousePos;
+                    return HandOnCell.CanPlantHere(handPlantIdentifier) &&
+                           HandDownCell.CanPlantAbove(handPlantIdentifier) && daveHandCanReachMousePos;
                 }
             }
         }
@@ -250,7 +264,8 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
                 }
                 else if (currentHandState is HandState.Empty)
                 {
-                    if (HandOnCell.CanPlantHere && HandDownCell.CanPotAbove && daveHandCanReachMousePos)
+                    if (HandOnCell.CanPlantHere() && HandDownCell.CanPlantAbove(PlantIdentifier.Flowerpot) &&
+                        daveHandCanReachMousePos)
                     {
                         ReferenceModel.Get.SelectFramebox.Show();
                         ReferenceModel.Get.SelectFramebox.Position2D(ReferenceModel.Get.Grid.CellToWorld(handCellPos) +

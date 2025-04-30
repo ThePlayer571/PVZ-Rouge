@@ -84,8 +84,7 @@ namespace TPL.PVZR.Architecture.Commands
 
             // 核心
             _GameModel.SetLastEnteredNode(_levelFromNode);
-            $"to {_levelFromNode.id}".LogInfo();
-            _GamePhaseSystem.ChangePhase(GamePhaseSystem.GamePhase.LevelInitialization,
+            _GamePhaseSystem.ChangePhase(GamePhaseSystem.GamePhase.LevelPreInitialization,
                 new Dictionary<string, object> { ["levelToEnter"] = _level });
         }
     }

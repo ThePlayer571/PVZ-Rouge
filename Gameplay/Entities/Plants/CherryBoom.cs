@@ -11,15 +11,12 @@ namespace TPL.PVZR.Gameplay.Entities.Plants
 {
     public class CherryBoom : Plant
     {
-        public AttackDataSO attackDataSO;
+        [SerializeField] public AttackDataSO attackDataSO;
         protected Attack attack;
         
-        protected override void Awake()
+        protected override void OnAwake()
         {
-            initialHealthPoint = 11451419;
-            base.Awake();
             attack = new Attack(attackDataSO);
-            //
         }
 
         public override void Initialize(Direction2 direction)
@@ -44,7 +41,7 @@ namespace TPL.PVZR.Gameplay.Entities.Plants
                 Physics2D.OverlapCircleAll(transform.position, Global.cherryBoomRange, LayerMask.GetMask("Zombie", "ZombieShield"));
             foreach (var hit in hitAll)
             {
-                hit.GetComponent<IDamageable>()?.TakeDamage(attack);
+                hit.GetComponent<IAttackable>()?.TakeDamage(attack);
             }
             Kill();
         }

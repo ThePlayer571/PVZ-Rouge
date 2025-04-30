@@ -6,7 +6,7 @@ namespace TPL.PVZR.Gameplay.Entities.Plants
 	{
 		protected override void Shoot()
 		{
-			_EntitySystem.CreatePea(ProjectileIdentifier.IcePea,FirePoint.position, direction);
+			_EntitySystem.CreateIPea(ProjectileIdentifier.IcePea,FirePoint.position, direction);
 			base.Shoot();
 		}
 	}

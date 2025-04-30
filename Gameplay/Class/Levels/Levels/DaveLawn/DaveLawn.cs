@@ -19,7 +19,7 @@ namespace TPL.PVZR.Gameplay.Class.Levels.Levels.DaveLawn
     
     public class MapConfigDaveLawn : MapConfig
     {
-        public override Vector2Int size { get; protected set; } = new Vector2Int(45, 26);
+        public override Vector2Int size { get; protected set; } = new Vector2Int(47, 28);
         public override Vector2 daveInitialPos { get; protected set; } = new Vector2(10, 10);
         public override GameObject GetLevelSceneSet()
         {

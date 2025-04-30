@@ -1,3 +1,5 @@
+using QFramework;
+using TPL.PVZR.Core;
 using TPL.PVZR.Gameplay.Data;
 using UnityEngine;
 
@@ -9,20 +11,15 @@ namespace TPL.PVZR.Gameplay.Entities.Plants.Base
 		{
 			InCold, Ready
 		}
-		/// <summary>
-		/// Behavior
-		/// </summary>
-
+		
 		// 植物属性
-		protected float shootColdTime;
-		protected PeashooterState peashooterState;
+		protected float shootColdTime = Global.peashooterColdTime;
+		protected PeashooterState peashooterState = PeashooterState.InCold;
 		protected float shootTimer;
 
 		// 植物行为
 		protected override void DefaultAI()
 		{
-			base.DefaultAI();
-			//
 			if (peashooterState == PeashooterState.InCold)
 			{
 				shootTimer+=Time.deltaTime;
@@ -34,8 +31,8 @@ namespace TPL.PVZR.Gameplay.Entities.Plants.Base
 
 			if (peashooterState == PeashooterState.Ready)
 			{
-				RaycastHit2D hit = Physics2D.Raycast(transform.position, this.directionVector, Global.peashooterRange,
-					LayerMask.GetMask("Zombie", "Barrier"));
+				RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.ToVector2(), Global.peashooterRange,
+					LayerMask.GetMask("Zombie", "Barrier","ZombieShield"));
 				if (hit.collider && hit.collider.CompareTag("Zombie"))
 				{
 					Shoot();
@@ -46,16 +43,6 @@ namespace TPL.PVZR.Gameplay.Entities.Plants.Base
 		{
 			// 创建实体
 			peashooterState = PeashooterState.InCold;
-			shootTimer = 0;
-		}
-		// 初始化
-
-		protected override void Awake()
-		{
-			base.Awake();
-			//
-			shootColdTime = Global.peashooterColdTime;
-			peashooterState = PeashooterState.Ready;
 			shootTimer = 0;
 		}
 	}

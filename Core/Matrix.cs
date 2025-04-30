@@ -14,15 +14,9 @@ namespace TPL.PVZR.Core
     {
         private readonly T[,] _data;
 
-        /// <summary>
-        /// 矩阵行数
-        /// </summary>
-        public int Rows => _data.GetLength(0);
+        #region 公有
 
-        /// <summary>
-        /// 矩阵列数
-        /// </summary>
-        public int Columns => _data.GetLength(1);
+        #region 构造函数
 
         /// <summary>
         /// 初始化矩阵
@@ -33,6 +27,7 @@ namespace TPL.PVZR.Core
             // 深拷贝以防止外部修改
             _data = (T[,])data.Clone();
         }
+
         /// <summary>
         /// 创建指定行列的空矩阵（元素为 default(T)）
         /// </summary>
@@ -41,6 +36,25 @@ namespace TPL.PVZR.Core
             ValidateDimensions(rows, columns);
             _data = new T[rows, columns];
         }
+
+        #endregion
+
+        #region 公有属性
+
+        /// <summary>
+        /// 矩阵行数
+        /// </summary>
+        public int Rows => _data.GetLength(0);
+
+        /// <summary>
+        /// 矩阵列数
+        /// </summary>
+        public int Columns => _data.GetLength(1);
+
+        #endregion
+
+        #region 公有方法
+
         /// <summary>
         /// 用指定值填充整个矩阵
         /// </summary>
@@ -62,7 +76,7 @@ namespace TPL.PVZR.Core
         public void Fill(Func<int, int, T> generator)
         {
             if (generator == null) throw new ArgumentNullException(nameof(generator));
-        
+
             for (int i = 0; i < Rows; i++)
             {
                 for (int j = 0; j < Columns; j++)
@@ -71,8 +85,35 @@ namespace TPL.PVZR.Core
                 }
             }
         }
-
-        //
+        /// <summary>
+        /// 获取指定位置周围3x3区域内的元素（包括自身）
+        /// </summary>
+        /// <param name="row">中心行索引</param>
+        /// <param name="column">中心列索引</param>
+        /// <returns>可枚举的邻居元素集合</returns>
+        public IEnumerable<T> GetNeighbors(int row, int column)
+        {
+            ValidateIndex(row, column);
+    
+            // 3x3邻域的行列偏移量
+            int[] offsets = { -1, 0, 1 };
+    
+            foreach (int iOffset in offsets)
+            {
+                int neighborRow = row + iOffset;
+                if (neighborRow < 0 || neighborRow >= Rows) continue;
+        
+                foreach (int jOffset in offsets)
+                {
+                    int neighborCol = column + jOffset;
+                    if (neighborCol < 0 || neighborCol >= Columns) continue;
+            
+                    yield return _data[neighborRow, neighborCol];
+                }
+            }
+        }
+        
+        
         /// <summary>
         /// 二维索引器
         /// </summary>
@@ -85,10 +126,16 @@ namespace TPL.PVZR.Core
             }
             set
             {
-                ValidateIndex( row, column );
+                ValidateIndex(row, column);
                 _data[row, column] = value;
             }
         }
+
+        #endregion
+
+        #endregion
+
+        //
 
         /// <summary>
         /// 实现 IEnumerable<T> 以支持 LINQ
@@ -130,7 +177,7 @@ namespace TPL.PVZR.Core
             if (column < 0 || column >= Columns)
                 throw new IndexOutOfRangeException($"列索引 {column} 越界，有效范围 [0, {Columns - 1}]");
         }
-        
+
         private static void ValidateDimensions(int rows, int columns)
         {
             if (rows <= 0)

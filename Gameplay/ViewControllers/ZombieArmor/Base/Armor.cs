@@ -16,27 +16,21 @@ namespace TPL.PVZR.Gameplay.ViewControllers.ZombieArmor.Base
         Destroyed // 重度受损
     }
 
-    public interface IArmor : IController, IDamageable
+    public interface IArmor : IController, IAttackable
     {
         
     }
 
-    public abstract class Armor : ViewController, IArmor
+    public abstract class Armor : Entity, IArmor
     {
-        #region SerializeField
-
-        
-
         [FormerlySerializedAs("zombieArmorData")]
         [SerializeField] public ArmorData armorData;
-        #endregion
 
+        #region 变量/事件
         // 属性
         protected float duration;
 
         // 变量
-        protected FSM<ArmorState> armorState = new FSM<ArmorState>();
-        
 
         // 引用
         protected SpriteRenderer spriteRenderer;
@@ -44,6 +38,13 @@ namespace TPL.PVZR.Gameplay.ViewControllers.ZombieArmor.Base
 
         // 事件
         public EasyEvent OnArmorDestroyed = new();
+        #endregion
+
+        #region 状态机
+
+        protected FSM<ArmorState> armorState = new FSM<ArmorState>();
+
+        
 
         // StateMachine
         protected virtual void SetUpState()
@@ -70,6 +71,7 @@ namespace TPL.PVZR.Gameplay.ViewControllers.ZombieArmor.Base
             //
             armorState.StartState(ArmorState.Intact);
         }
+        #endregion
 
         // 初始化
         protected virtual void Awake()
@@ -115,7 +117,7 @@ namespace TPL.PVZR.Gameplay.ViewControllers.ZombieArmor.Base
             duration -= attack.damage;
             if (duration >= 0)
             {
-                leftAttack = attack.DamageMultiplier(0);
+                leftAttack = attack.WithDamageMultiplier(0);
             }
             else
             {
@@ -124,9 +126,12 @@ namespace TPL.PVZR.Gameplay.ViewControllers.ZombieArmor.Base
             // 处理行为状态
             ChangeStateByDuration();
         }
-        public void Kill()
+        public override void Kill()
         {
-            throw new System.NotImplementedException();
+            "call kill".LogInfo();
+            duration = 0;
+            // 处理行为状态
+            ChangeStateByDuration();
         }
 
         

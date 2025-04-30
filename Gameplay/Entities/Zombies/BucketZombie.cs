@@ -7,9 +7,5 @@ namespace TPL.PVZR.Gameplay.Entities.Zombies
 	public partial class BucketZombie : ArmoredZombie
 	{
 
-		protected override void Awake()
-		{
-			base.Awake();
-		}
 	}
 }

@@ -31,6 +31,24 @@ namespace TPL.PVZR.Gameplay.Class.Items
                     Carddata_cherryboom_asset.CardData_CherryBoom),
                 [PlantIdentifier.PotatoMine] = _ResLoader.LoadSync<CardSO>(Carddata_potatomine_asset.BundleName,
                     Carddata_potatomine_asset.CardData_PotatoMine),
+                [PlantIdentifier.Blover] = _ResLoader.LoadSync<CardSO>(Carddata_blover_asset.BundleName,
+                    Carddata_blover_asset.CardData_Blover),
+                [PlantIdentifier.CabbagePult] = _ResLoader.LoadSync<CardSO>(Carddata_cabbagepult_asset.BundleName,
+                    Carddata_cabbagepult_asset.CardData_CabbagePult),
+                [PlantIdentifier.Cactus] = _ResLoader.LoadSync<CardSO>(Carddata_cactus_asset.BundleName,
+                    Carddata_cactus_asset.CardData_Cactus),
+                [PlantIdentifier.Caltrop] = _ResLoader.LoadSync<CardSO>(Carddata_caltrop_asset.BundleName,
+                    Carddata_caltrop_asset.CardData_Caltrop),
+                [PlantIdentifier.Chomper] = _ResLoader.LoadSync<CardSO>(Carddata_chomper_asset.BundleName,
+                    Carddata_chomper_asset.CardData_Chomper),
+                [PlantIdentifier.CornPult] = _ResLoader.LoadSync<CardSO>(Carddata_cornpult_asset.BundleName,
+                    Carddata_cornpult_asset.CardData_CornPult),
+                [PlantIdentifier.MelonPult] = _ResLoader.LoadSync<CardSO>(Carddata_melonpult_asset.BundleName,
+                    Carddata_melonpult_asset.CardData_MelonPult),
+                [PlantIdentifier.RepeaterPea] = _ResLoader.LoadSync<CardSO>(Carddata_repeaterpea_asset.BundleName,
+                    Carddata_repeaterpea_asset.CardData_RepeaterPea),
+                [PlantIdentifier.SplitPea] = _ResLoader.LoadSync<CardSO>(Carddata_splitpea_asset.BundleName,
+                    Carddata_splitpea_asset.CardData_SplitPea),
             };
         }
 
@@ -87,6 +105,7 @@ namespace TPL.PVZR.Gameplay.Class.Items
 
         private static readonly Dictionary<PlantIdentifier, CardSO> _CardDataDict;
         private static readonly ResLoader _ResLoader;
+
         # endregion
     }
 }

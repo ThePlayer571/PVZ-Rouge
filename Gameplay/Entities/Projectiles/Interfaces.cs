@@ -6,4 +6,9 @@ namespace TPL.PVZR.Gameplay.Entities.Projectiles
     {
         public void Initialize(Direction2 direction);
     }
+
+    public interface ICabbage : IProjectile
+    {
+        public void Initialize(Direction2 direction);
+    }
 }

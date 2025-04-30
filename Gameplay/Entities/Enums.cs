@@ -8,7 +8,9 @@ namespace TPL.PVZR.Gameplay.Entities
         Flowerpot,
         SnowPea,
         CherryBoom,
-        PotatoMine
+        PotatoMine,
+        Blover,CabbagePult,Cactus,Caltrop,CornPult
+        ,MelonPult,RepeaterPea,SplitPea,Chomper
     }
 
     public enum ZombieIdentifier
@@ -18,6 +20,6 @@ namespace TPL.PVZR.Gameplay.Entities
 
     public enum ProjectileIdentifier
     {
-        Pea, IcePea
+        Pea, IcePea,Spike,Cabbage, Kernel, Butter, Watermelon, FrozenMelon
     }
 }

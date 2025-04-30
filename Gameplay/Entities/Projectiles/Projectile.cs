@@ -1,3 +1,4 @@
+using System;
 using TPL.PVZR.Gameplay.Class;
 using TPL.PVZR.Gameplay.Data;
 using UnityEngine;
@@ -5,7 +6,10 @@ using UnityEngine.Serialization;
 
 namespace TPL.PVZR.Gameplay.Entities.Projectiles
 {
-    public interface IProjectile{}
+    public interface IProjectile : IEntity
+    {
+        
+    }
 
 
     public abstract class Projectile : Entity, IProjectile
@@ -17,11 +21,15 @@ namespace TPL.PVZR.Gameplay.Entities.Projectiles
         [SerializeField] public AttackDataSO attackDataSO;
         protected Attack attack;
 
-        protected override void Awake()
+        protected override void OnAwakeBase()
         {
             _Rigidbody2D = GetComponent<Rigidbody2D>();
             attack=new Attack(attackDataSO);
-            base.Awake();
+        }
+
+        public override void Kill()
+        {
+            throw new NotImplementedException();
         }
     }
 }

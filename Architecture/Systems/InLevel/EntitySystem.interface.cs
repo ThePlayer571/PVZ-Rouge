@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using QFramework;
@@ -12,6 +13,7 @@ using TPL.PVZR.Gameplay.Entities.Projectiles;
 using TPL.PVZR.Gameplay.Entities.Zombies;
 using TPL.PVZR.Gameplay.Entities.Zombies.Base;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace TPL.PVZR.Architecture.Systems.InLevel
 {
@@ -27,7 +29,8 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
         #region 创建实体
 
         // Projectile
-        GameObject CreatePea(ProjectileIdentifier projectileIdentifier, Vector2 position, Direction2 direction);
+        GameObject CreateIPea(ProjectileIdentifier projectileIdentifier, Vector2 position, Direction2 direction);
+        GameObject CreateICabbage(ProjectileIdentifier projectileIdentifier, Vector2 position, Direction2 direction);
 
         // Plant
         GameObject CreatePlant(PlantIdentifier plantIdentifier, Vector2Int position,
@@ -43,22 +46,23 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
 
         #region 删除实体
 
-        void DestroyZombie(Zombie zombie);
+        void RemoveZombie(Zombie zombie);
 
         #endregion
     }
+
     public partial class EntitySystem
     {
         #region 实体记录
 
-        
         public HashSet<Zombie> ZombieSet { get; private set; } = new(); // 存储所有场上的僵尸
 
-        public Vector2 lastDeadZombiePosition { get; private set; } 
+        public Vector2 lastDeadZombiePosition { get; private set; }
 
         #endregion
-        
+
         # region 创建实体
+
         public GameObject CreatePlant(PlantIdentifier plantIdentifier, Vector2Int position,
             Direction2 direction = Direction2.Right)
         {
@@ -72,15 +76,14 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
             Cell targetCell = _LevelModel.CellGrid[plant.gridPos2.x, plant.gridPos2.y];
             if (plantIdentifier == PlantIdentifier.Flowerpot)
             {
-
-                targetCell.cellState = Cell.CellState.HaveFlowerpot;
+                targetCell.SetState(Cell.CellState.HaveFlowerpot);
             }
             else
             {
-                targetCell.cellState = Cell.CellState.HavePlant;
+                targetCell.SetState(Cell.CellState.HavePlant);
             }
 
-            targetCell.plant = plant;
+            targetCell.SetPlant(plant);
 
             //
             return go;
@@ -91,25 +94,39 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
             // 创建
             GameObject go = GetPrefab(zombieIdentifier)
                 .Instantiate(new Vector3(position.x, position.y), Quaternion.identity);
-            go.GetComponent<Zombie>().Initialize();
             // 记录
             ZombieSet.Add(go.GetComponent<Zombie>());
             return go;
         }
 
-        public GameObject CreatePea(ProjectileIdentifier projectileIdentifier, Vector2 position, Direction2 direction)
+        public GameObject CreateIPea(ProjectileIdentifier projectileIdentifier, Vector2 position, Direction2 direction)
         {
-            GameObject go = GetPrefab(projectileIdentifier)
+            var go = GetPrefab(projectileIdentifier)
                 .Instantiate(new Vector3(position.x, position.y), Quaternion.identity);
-            go.GetComponent<IPea>().Initialize(direction);
+            var pea = go.GetComponent<IPea>();
+            if (pea is null) throw new ArgumentException($"该投射物不是IPea: {projectileIdentifier}");
+            pea.Initialize(direction);
             return go;
         }
+
+        public GameObject CreateICabbage(ProjectileIdentifier projectileIdentifier, Vector2 position,
+            Direction2 direction)
+        {
+            var go = GetPrefab(projectileIdentifier)
+                .Instantiate(new Vector3(position.x, position.y), Quaternion.identity);
+            var cabbage = go.GetComponent<ICabbage>();
+            if (cabbage is null) throw new ArgumentException($"该投射物不是ICabbage: {projectileIdentifier}");
+            cabbage.Initialize(direction);
+            return go;
+        }
+
 
         public GameObject CreateSunByFall(Vector2 position)
         {
             var go = sunPrefab.Instantiate(position, Quaternion.identity);
             return go;
         }
+
         public GameObject CreateSunBySunflower(Vector2 position)
         {
             var go = sunPrefab.Instantiate(position, Quaternion.identity);
@@ -117,20 +134,19 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
                 0.5f, 1, 0.5f);
             return go;
         }
+
         # endregion
 
         #region 删除实体
 
-        
-        public void DestroyZombie(Zombie zombie)
+        public void RemoveZombie(Zombie zombie)
         {
             ZombieSet.Remove(zombie);
-            lastDeadZombiePosition= zombie.transform.position;
+            lastDeadZombiePosition = zombie.transform.position;
             // 触发事件
             this.SendEvent<OnZombieDestroyedEvent>();
         }
 
         #endregion
     }
-
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using TPL.PVZR.Core;
 using TPL.PVZR.Gameplay.ViewControllers.InLevel;
 using TPL.PVZR.Gameplay.ViewControllers.UI;
 using UnityEngine;
@@ -75,45 +76,17 @@ namespace TPL.PVZR.Architecture.Managers
             }
         }
 
-        public Tilemap GroundTilemap
+        public TilemapGroup TilemapGroup
         {
             get
             {
-                if (!_GroundTilemap)
+                if (!_TilemapGroup)
                 {
-                    _GroundTilemap = GameObject.Find("Ground")?.GetComponent<Tilemap>();
-                    if (!_GroundTilemap) throw new MissingReferenceException("实例未找到");
+                    _TilemapGroup = Object.FindObjectOfType<TilemapGroup>();
+                    if (!_TilemapGroup) throw new MissingReferenceException("实例未找到");
                 }
 
-                return _GroundTilemap;
-            }
-        }
-
-        public Tilemap BoundTilemap
-        {
-            get
-            {
-                if (!_BoundTilemap)
-                {
-                    _BoundTilemap = GameObject.Find("Bound")?.GetComponent<Tilemap>();
-                    if (!_BoundTilemap) throw new MissingReferenceException("实例未找到");
-                }
-
-                return _BoundTilemap;
-            }
-        }
-
-        public Tilemap DirtTilemap
-        {
-            get
-            {
-                if (!_DirtTilemap)
-                {
-                    _DirtTilemap = GameObject.Find("DirtNotice")?.GetComponent<Tilemap>();
-                    if (!_DirtTilemap) throw new MissingReferenceException("实例未找到");
-                }
-
-                return _DirtTilemap;
+                return _TilemapGroup;
             }
         }
 
@@ -197,9 +170,7 @@ namespace TPL.PVZR.Architecture.Managers
         private Transform _WorldSpaceCanvas;
         private Dave _Dave;
         private Grid _Grid;
-        private Tilemap _GroundTilemap;
-        private Tilemap _BoundTilemap;
-        private Tilemap _DirtTilemap;
+        private TilemapGroup _TilemapGroup;
         private GameObject _shovel;
         private Image _ShovelImage;
         private Slider _LevelStageBar;

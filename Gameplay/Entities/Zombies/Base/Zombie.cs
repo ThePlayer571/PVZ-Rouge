@@ -3,20 +3,22 @@ using DG.Tweening;
 using QFramework;
 using TPL.PVZR.Architecture.Managers;
 using TPL.PVZR.Gameplay.Class;
+using TPL.PVZR.Gameplay.Class.Effects;
 using TPL.PVZR.Gameplay.Data;
 using TPL.PVZR.Gameplay.Entities.Plants.Base;
 using TPL.PVZR.Gameplay.ViewControllers.InLevel;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace TPL.PVZR.Gameplay.Entities.Zombies.Base
 {
-    public interface IZombie : IEntity, IDamageable
+    public interface IZombie : IEntity, IAttackable, IEffectable
     {
     }
 
     public abstract class Zombie : Entity, IZombie
     {
-        #region 定义
+        #region Enum
 
         protected enum ZombieState
         {
@@ -30,16 +32,77 @@ namespace TPL.PVZR.Gameplay.Entities.Zombies.Base
 
         #region Behavior
 
-        #region 声明
+        #region Effects
+
+        protected EffectGroup _effectGroup = new();
+
+        /// <summary>
+        /// 需确保已在Update处驱动
+        /// </summary>
+        protected void EffectUpdate()
+        {
+            _effectGroup.ReduceDuration();
+            while (_effectGroup.effectsToRecycle.TryPop(out var effect))
+            {
+                WhenEffectEnd(effect);
+            }
+        }
+        public void GiveEffect(IEffect effect)
+        {
+            _effectGroup.Combine(effect, out var startEffect);
+            if (startEffect)
+            {
+                WhenEffectStart(effect);
+            }
+        }
+
+        protected void WhenEffectStart(IEffect effect)
+        {
+            switch (effect.effectId)
+            {
+                case EffectId.SnowSlowness:
+                    moveSpeed *= 0.5f;
+                    attack.SetDamage(attack.damage * 0.5f);
+                    break;
+                case EffectId.Buttered:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        // 以后肯定要改，性能有点小难绷
+        protected void WhenEffectEnd(IEffect effect)
+        {
+            switch (effect.effectId)
+            {
+                case EffectId.SnowSlowness:
+                    moveSpeed *= 2f;
+                    attack.SetDamage(attack.damage * 2f);
+                    break;
+                case EffectId.Buttered:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        #endregion
+
+        #region 变量
+
+        // 待配置数据
+        [SerializeField] protected float _initialHealthPoint_ = 100f;
+        [SerializeField] protected float _defaultMoveSpeed_ = 1.5f;
+
+        [SerializeField] protected AttackDataSO _attackDataSO_;
 
         // 属性
+        protected float moveSpeed;
         protected BindableProperty<float> healthPoint;
-        protected readonly Attack attack = new Attack(damage: 50, isFrameDamage: true);
-        protected float moveSpeed = 1.5f;
+        protected Attack attack;
 
         // 变量
         protected FSM<ZombieState> behaviorState = new();
-        protected IDamageable attackingTarget = null;
+        protected IAttackable attackingTarget = null;
 
         #endregion
 
@@ -56,7 +119,12 @@ namespace TPL.PVZR.Gameplay.Entities.Zombies.Base
 
             if (attack.slowness)
             {
-                StartSlowness();
+                this.GiveEffect(new GeneralEffect(EffectId.SnowSlowness,4f));
+            }
+
+            if (attack.butter)
+            {
+                this.GiveEffect(new GeneralEffect(EffectId.Buttered,4f));
             }
 
             // 血量减少放在后面，因为僵尸死亡时会导致DOTween被销毁导致报错。添加死亡阶段后就能解决这个问题
@@ -65,12 +133,11 @@ namespace TPL.PVZR.Gameplay.Entities.Zombies.Base
                 this.healthPoint.Value -= attack.damage;
             }
         }
+
         protected virtual void Dead()
         {
-            DOTween.Kill(_Rigidbody2D);
-
             gameObject.DestroySelf();
-            _EntitySystem.DestroyZombie(this);
+            _EntitySystem.RemoveZombie(this);
         }
 
         protected virtual void Jump()
@@ -83,32 +150,9 @@ namespace TPL.PVZR.Gameplay.Entities.Zombies.Base
             healthPoint.Value = 0;
         }
 
-        // slowness
-        protected bool slowness = false;
-        protected float slowTime;
-
-        protected virtual void StartSlowness()
-        {
-            if (!slowness)
-            {
-                moveSpeed *= 0.5f;
-                attack.SetDamage(attack.damage * 0.5f);
-            }
-
-            slowness = true;
-            slowTime = 3f;
-        }
-
-        protected virtual void EndSlowness()
-        {
-            attack.SetDamage(attack.damage * 2f);
-            moveSpeed *= 2f;
-            slowness = false;
-        }
-
         # endregion
 
-        # region Logic
+        # region MainLogic
 
         protected virtual void SetUpState()
         {
@@ -188,15 +232,7 @@ namespace TPL.PVZR.Gameplay.Entities.Zombies.Base
         protected virtual void Update()
         {
             // Slowness
-            if (slowness)
-            {
-                slowTime -= Time.deltaTime;
-                if (slowTime <= 0)
-                {
-                    EndSlowness();
-                }
-            }
-
+            EffectUpdate();
             //
             behaviorState.Update();
         }
@@ -205,12 +241,18 @@ namespace TPL.PVZR.Gameplay.Entities.Zombies.Base
 
         #endregion
 
+        // 引用
+        protected Rigidbody2D _Rigidbody2D;
+        protected ZombieAttackArea _ZombieAttackArea;
 
         // 初始化
-        public void Initialize()
+        protected override void OnAwakeBase()
         {
+            _Rigidbody2D = GetComponent<Rigidbody2D>();
+            _ZombieAttackArea = GetComponentInChildren<ZombieAttackArea>();
             // 初始化数据
-            healthPoint = new BindableProperty<float>(114);
+            moveSpeed = _defaultMoveSpeed_;
+            healthPoint = new BindableProperty<float>(_initialHealthPoint_);
             healthPoint.Register(val =>
             {
                 if (val <= 0)
@@ -218,23 +260,8 @@ namespace TPL.PVZR.Gameplay.Entities.Zombies.Base
                     behaviorState.ChangeState(ZombieState.Dead);
                 }
             });
+            attack = new Attack(_attackDataSO_);
             SetUpState();
-        }
-
-
-        // 引用
-        protected Rigidbody2D _Rigidbody2D;
-
-        protected ZombieAttackArea _ZombieAttackArea;
-
-        // 初始化
-        protected override void Awake()
-        {
-            base.Awake();
-            //
-            // 获取
-            _Rigidbody2D = GetComponent<Rigidbody2D>();
-            _ZombieAttackArea = GetComponentInChildren<ZombieAttackArea>();
         }
     }
 }

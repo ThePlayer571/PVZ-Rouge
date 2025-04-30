@@ -20,5 +20,10 @@ namespace TPL.PVZR.Gameplay.Entities.Zombies.Base
                 base.TakeDamage(armorLeftAttack);
             }
         }
+
+        public void RemoveArmor()
+        {
+            armor.Kill();
+        }
     }
 }

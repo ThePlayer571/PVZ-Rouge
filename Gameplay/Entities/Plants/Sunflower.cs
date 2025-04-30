@@ -16,8 +16,6 @@ namespace TPL.PVZR.Gameplay.Entities.Plants
 		
 		protected override void DefaultAI()
 		{
-			base.DefaultAI();
-			//
 			timer += Time.deltaTime;
 			if (timer > coldTime)
 			{
@@ -26,10 +24,8 @@ namespace TPL.PVZR.Gameplay.Entities.Plants
 			}
 		}
 
-		protected override void Awake()
+		protected override void OnAwake()
 		{
-			base.Awake();
-			//
 			coldTime = Global.sunflowerColdTime;
 			timer = 0;
 		}

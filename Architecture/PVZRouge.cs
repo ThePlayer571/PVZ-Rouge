@@ -35,6 +35,7 @@ namespace TPL.PVZR.Architecture
             this.RegisterSystem<IChooseCardSystem>(new ChooseCardSystem()); // 选择卡片时起作用
             this.RegisterSystem<IWaveSystem>(new WaveSystem()); // 管理记录波次
             this.RegisterSystem<IZombieSpawnSystem>(new ZombieSpawnSystem()); // 管理一波僵尸的生成
+            this.RegisterSystem<IZombieAISystem>(new ZombieAISystem()); // 管理僵尸AI的数据和计算
 
             // == Utility
             

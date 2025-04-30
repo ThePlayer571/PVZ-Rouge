@@ -60,7 +60,6 @@ namespace TPL.PVZR.Architecture.Models
 
         public void SetCurrentMazeMap(IMazeMap mazeMap)
         {
-            "callsetcyrr".LogInfo();
             currentMazeMap = mazeMap;
         }
 

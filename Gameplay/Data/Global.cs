@@ -13,6 +13,8 @@ namespace TPL.PVZR.Gameplay.Data
         public static float potatoMineSleepTime = 10f;
         public static float potatoMineRange = 0.5f;
         public static float daveJumpSpeed = 10f;
+        public static float cabbageCultColdTime = 2.4f;
+        public static float cabbageCultThrowPower = 11.3f;
         
         public static float Direction2ToFloat(Direction2 dir)
         {

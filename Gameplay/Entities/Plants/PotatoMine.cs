@@ -13,9 +13,8 @@ namespace TPL.PVZR.Gameplay.Entities.Plants
         [FormerlySerializedAs("attackData")] public AttackDataSO attackDataSO;
         protected Attack attack;
 
-        protected override void Awake()
+        protected override void OnAwake()
         {
-            base.Awake();
             attack = new Attack(attackDataSO);
             //
             ActionKit.Sequence()
@@ -40,7 +39,7 @@ namespace TPL.PVZR.Gameplay.Entities.Plants
                     LayerMask.GetMask("Zombie", "ZombieShield"));
             foreach (var hit in hitAll)
             {
-                hit.GetComponent<IDamageable>()?.TakeDamage(attack);
+                hit.GetComponent<IAttackable>()?.TakeDamage(attack);
             }
 
             gameObject.DestroySelf();

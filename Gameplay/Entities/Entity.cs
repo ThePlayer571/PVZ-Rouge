@@ -6,47 +6,49 @@ using TPL.PVZR.Architecture.Managers;
 using TPL.PVZR.Architecture.Models;
 using TPL.PVZR.Architecture.Systems.InLevel;
 using TPL.PVZR.Gameplay.Class;
+using TPL.PVZR.Gameplay.Class.Tags;
 using UnityEngine;
 
 namespace TPL.PVZR.Gameplay.Entities
 {
-    public interface IEntity
+    public interface IEntity : IController
     {
         public GameObject gameObject { get; }
 
         public void Kill();
+        TagGroup tagGroup { get; }
     }
 
-    public abstract class Entity : ViewController, IEntity, IController
+    public abstract class Entity : ViewController, IEntity
     {
+        #region Architecture
+
         IArchitecture IBelongToArchitecture.GetArchitecture()
         {
             return PVZRouge.Interface;
         }
-        // 属性(对内外都可用)
-        public new GameObject gameObject => this.transform.gameObject;
-        
+
+        #endregion
+
+        #region IEntity
+
         public Vector3Int gridPos => ReferenceModel.Get.Grid.WorldToCell(transform.position);
-
         public Vector2Int gridPos2 => new Vector2Int(gridPos.x, gridPos.y);
-
         public Cell currentCell => _LevelModel.CellGrid[gridPos.x, gridPos.y];
-        // 方法
-        public virtual void Kill()
-        {
-            
-        }
+        public abstract void Kill();
 
-        # region 碰撞
+        public TagGroup tagGroup { get; } = new();
 
-        //
+        #endregion
+
+        # region 碰撞事件
+
         protected event Action<Collision2D> OnCollisionEnterEvent;
         protected event Action<Collision2D> OnCollisionStayEvent;
         protected event Action<Collision2D> OnCollisionExitEvent;
         protected event Action<Collider2D> OnTriggerEnterEvent;
         protected event Action<Collider2D> OnTriggerStayEvent;
         protected event Action<Collider2D> OnTriggerExitEvent;
-        //
 
         protected void OnCollisionEnter2D(Collision2D other)
         {
@@ -80,19 +82,45 @@ namespace TPL.PVZR.Gameplay.Entities
 
         #endregion
 
-        // 引用
-        protected IEntitySystem _EntitySystem;
-        protected ILevelModel _LevelModel;
-
-        protected virtual void Awake()
+        #region 私有
+        
+        private void Awake()
         {
             _EntitySystem = this.GetSystem<IEntitySystem>();
             _LevelModel = this.GetModel<ILevelModel>();
+            OnAwakeBase();
+            OnAwake();
         }
-
-        protected void OnDestroy()
+        private void OnDestroy()
         {
             DOTween.Kill(this);
         }
+
+        #endregion
+
+        // 常用的引用 (懒得每组件Get一次了)
+        protected IEntitySystem _EntitySystem;
+        protected ILevelModel _LevelModel;
+
+        #region virtual
+
+        /// <summary>
+        /// 由Base使用
+        /// </summary>
+        protected virtual void OnAwakeBase()
+        {
+            // do nothing
+        }
+        /// <summary>
+        /// 由sealed class使用
+        /// </summary>
+        protected virtual void OnAwake()
+        {
+            // do nothing
+        }
+        
+
+        #endregion
+
     }
 }

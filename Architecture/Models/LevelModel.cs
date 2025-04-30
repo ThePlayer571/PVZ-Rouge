@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using QFramework;
 using TPL.PVZR.Architecture.Managers;
+using TPL.PVZR.Core;
 using TPL.PVZR.Gameplay.Class;
 using TPL.PVZR.Gameplay.Class.Items;
 using TPL.PVZR.Gameplay.Class.Levels;
@@ -16,6 +18,7 @@ namespace TPL.PVZR.Architecture.Models
         /// </summary>
         /// <remarks>当且仅当LevelInitializationEarly阶段更新（所以说"当前正在运行"的说法并不准确）</remarks>>
         public ILevel currentLevel { get; }
+
         public void SetCurrentLevel(ILevel level);
         public MapConfig MapConfig { get; }
         public WaveConfig WaveConfig { get; }
@@ -30,11 +33,11 @@ namespace TPL.PVZR.Architecture.Models
         public void SetChosenCards(List<Card> newChosenCards);
 
         // Gameplay
-        public DynaGrid<Cell> CellGrid { get; }
+        public Matrix<Cell> CellGrid { get; }
         public BindableProperty<int> sunpoint { get; }
 
         // 方法
-        void OnLevelInitialization();
+        void OnLevelInitialization(ILevel levelToEnter);
         void OnLevelExiting();
     }
 
@@ -60,7 +63,7 @@ namespace TPL.PVZR.Architecture.Models
 
         // Gameplay
         public BindableProperty<int> sunpoint { get; private set; } = null;
-        public DynaGrid<Cell> CellGrid { get; private set; } = null;
+        public Matrix<Cell> CellGrid { get; private set; } = null;
 
         #endregion
 
@@ -70,6 +73,7 @@ namespace TPL.PVZR.Architecture.Models
         {
             chosenCards = newChosenCards.ToList();
         }
+
         public void SetCurrentLevel(ILevel level)
         {
             this.currentLevel = level;
@@ -83,42 +87,54 @@ namespace TPL.PVZR.Architecture.Models
 
         #region 初始化相关
 
-        public void OnLevelInitialization()
+        public void OnLevelInitialization(ILevel levelToEnter)
         {
-            sunpoint.Value = 200;
+            CellGrid = new Matrix<Cell>(levelToEnter.MapConfig.size.x, levelToEnter.MapConfig.size.y);
+            sunpoint.Value = 11451400;
             chosenCards = new List<Card>();
             // 网格数据
-            for (int x = -1; x <= MapConfig.size.x; ++x)
+            var GroundTilemap = ReferenceModel.Get.TilemapGroup.Ground;
+            var BoundTilemap = ReferenceModel.Get.TilemapGroup.Bound;
+            var DirtTilemap = ReferenceModel.Get.TilemapGroup.DirtNotice;
+            for (int x = 0; x < MapConfig.size.x; ++x)
             {
-                for (int y = -1; y <= MapConfig.size.y; ++y)
+                for (int y = 0; y < MapConfig.size.y; ++y)
                 {
-                    if (ReferenceModel.Get.GroundTilemap.HasTile(new Vector3Int(x, y, 0)) ||
-                        ReferenceModel.Get.BoundTilemap.HasTile(new Vector3Int(x, y, 0)))
+                    // 读取场景中的Tile数据，生成CellGrid
+                    SetCellFromTilemapToCellGrid(x, y);
+                }
+            }
+
+            return;
+
+            void SetCellFromTilemapToCellGrid(int x, int y)
+            {
+                if (GroundTilemap.HasTile(new Vector3Int(x, y, 0)) ||
+                    BoundTilemap.HasTile(new Vector3Int(x, y, 0)))
+                {
+                    if (DirtTilemap.HasTile(new Vector3Int(x, y, 0)))
                     {
-                        if (ReferenceModel.Get.DirtTilemap.HasTile(new Vector3Int(x, y, 0)))
-                        {
-                            CellGrid[x, y] = new Cell { cellState = Cell.CellState.HaveDirt };
-                        }
-                        else
-                        {
-                            CellGrid[x, y] = new Cell { cellState = Cell.CellState.HaveStone };
-                        }
+                        CellGrid[x, y] = new Cell(Cell.CellState.HaveDirt);
                     }
                     else
                     {
-                        CellGrid[x, y] = new Cell { cellState = Cell.CellState.Empty };
+                        CellGrid[x, y] = new Cell(Cell.CellState.HaveStone);
                     }
+                }
+                else
+                {
+                    CellGrid[x, y] = new Cell(Cell.CellState.Empty);
                 }
             }
         }
 
         public void OnLevelExiting()
         {
-            CellGrid = new DynaGrid<Cell>();
+            CellGrid = null;
             // ↓不能换引用，不然已经Register了的东西会出错
             // sunpoint = new BindableProperty<int>();
             chosenCards.Clear();
-            
+
             currentLevel = null;
             MapConfig = null;
             WaveConfig = null;
@@ -133,7 +149,7 @@ namespace TPL.PVZR.Architecture.Models
         protected override void OnInit()
         {
             sunpoint = new BindableProperty<int>();
-            CellGrid = new DynaGrid<Cell>();
+            CellGrid = null;
         }
     }
 }
