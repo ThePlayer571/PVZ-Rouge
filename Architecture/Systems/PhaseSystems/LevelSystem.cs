@@ -89,7 +89,6 @@ namespace TPL.PVZR.Architecture.Systems.PhaseSystems
                         })
                         .Callback(() =>
                             {
-                                "Call once".LogInfo();
                                 _GamePhaseSystem.ChangePhase(GamePhaseSystem.GamePhase.LevelInitialization,
                                     new Dictionary<string, object> { ["levelToEnter"] = levelToEnter });
                                 

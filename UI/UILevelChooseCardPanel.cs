@@ -68,7 +68,6 @@ namespace TPL.PVZR.UI
 			foreach (Card card in _InventorySystem.cardsInInventory)
 			{
 				var go = CardHelper.CreateUICard(card);
-				go.card.LogInfo();
 				go.transform.SetParent(Inventory);
 			}
 			// 设置选卡栏的长度

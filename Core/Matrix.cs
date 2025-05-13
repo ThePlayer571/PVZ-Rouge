@@ -10,7 +10,7 @@ namespace TPL.PVZR.Core
     /// 泛型矩阵类，支持二维数据存储和 LINQ 操作
     /// </summary>
     /// <typeparam name="T">矩阵元素类型</typeparam>
-    public sealed class Matrix<T> : IEnumerable<T>
+    public sealed class Matrix<T> : IEnumerable<T>, ICloneable
     {
         private readonly T[,] _data;
 
@@ -184,6 +184,11 @@ namespace TPL.PVZR.Core
                 throw new ArgumentOutOfRangeException(nameof(rows), "行数必须大于0");
             if (columns <= 0)
                 throw new ArgumentOutOfRangeException(nameof(columns), "列数必须大于0");
+        }
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
         }
     }
 }
