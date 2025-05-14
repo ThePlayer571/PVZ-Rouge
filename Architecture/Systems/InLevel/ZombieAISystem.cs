@@ -33,9 +33,8 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
             {
                 if (e.changeToPhase is GamePhaseSystem.GamePhase.LevelInitialization)
                 {
-                    var _ = new ZombieAIUnit();
-                    _.ReadFromLevelModel();
-                    _.DisplayTheMap();
+                    IZombieAIUnit _ = new ZombieAIUnit();
+                    _.InitializeFromMap();
                 }
             });
         }

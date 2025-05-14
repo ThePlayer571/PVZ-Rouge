@@ -58,29 +58,30 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.New.Others
 
         private float Heuristic(Vertex start, Vertex end)
         {
-            return Mathf.Abs(start.x - end.x) + Mathf.Abs(start.y - end.y);
+            // 每格的Weight为10
+            return 10 * (Mathf.Abs(start.x - end.x) + Mathf.Abs(start.y - end.y));
         }
 
         private IPath ReconstructPath(AStarNode current)
         {
             IPath result = new Path();
-            List<IKeyEdge> keyEdges = new();
+            Stack<IKeyEdge> keyEdges = new(); // 使用栈反转路径方向
             while (current.parent != null)
             {
                 if (current.fromEdge != null)
-                    keyEdges.Add(current.fromEdge);
+                    keyEdges.Push(current.fromEdge);
                 current = current.parent;
             }
 
-            for (int i = keyEdges.Count - 1; i >= 0; i--)
+            while (keyEdges.Count > 0)
             {
-                result.Add(keyEdges[i]);
+                result.Add(keyEdges.Pop());
             }
 
             return result;
         }
 
-        public IPath FindPathInternal(Cluster startCluster, Vertex end, AITendency aiTendency)
+        private IPath FindPathInternal(Cluster startCluster, Vertex end, AITendency aiTendency)
         {
             var vertexA = startCluster.vertexA;
             var vertexB = startCluster.vertexB;
@@ -88,13 +89,15 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.New.Others
             if (!_keyAdjacencyList.ContainsKey(vertexA) || !_keyAdjacencyList.ContainsKey(end))
                 throw new System.ArgumentException("Start/End not in graph");
 
-            var frontier = new FastPriorityQueue<AStarNode>(1000);
+            var frontier = new FastPriorityQueue<AStarNode>(1000); // TODO: 动态调整容量
             var vertexToNode = new Dictionary<Vertex, AStarNode>();
 
             void AddStartNode(Vertex v)
             {
+                if (v == null) return; // 防止空引用
                 var startNode = new AStarNode(null, v, null, 0, Heuristic(v, end));
                 frontier.Enqueue(startNode, startNode.fCost);
+                vertexToNode[v] = startNode;
             }
 
             AddStartNode(vertexA);
@@ -117,28 +120,30 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.New.Others
                     var neighbor = edge.To;
                     float tentativeGCost = current.gCost + edge.Weight(aiTendency);
 
-                    if (!vertexToNode.ContainsKey(neighbor))
+                    if (vertexToNode.TryGetValue(neighbor, out var neighborNode))
                     {
-                        var neighborNode = new AStarNode(edge, edge.To, current, tentativeGCost,
-                            Heuristic(neighbor, end));
+                        if (neighborNode.gCost > tentativeGCost)
+                        {
+                            neighborNode.fromEdge = edge;
+                            neighborNode.parent = current;
+                            neighborNode.gCost = tentativeGCost;
+                            frontier.UpdatePriority(neighborNode, neighborNode.fCost);
+                        }
+                    }
+                    else
+                    {
+                        neighborNode = new AStarNode(edge, edge.To, current, tentativeGCost, Heuristic(neighbor, end));
                         vertexToNode[neighbor] = neighborNode;
                         frontier.Enqueue(neighborNode, neighborNode.fCost);
-                    }
-                    else if (vertexToNode[neighbor].gCost > tentativeGCost)
-                    {
-                        var neighborNode = vertexToNode[neighbor];
-                        neighborNode.fromEdge = edge;
-                        neighborNode.parent = current;
-                        neighborNode.gCost = tentativeGCost;
-                        frontier.UpdatePriority(neighborNode, neighborNode.fCost);
                     }
                 }
             }
 
-            return null;
+            Debug.LogWarning("Path not found");
+            return null; // 或抛出异常
         }
 
-        public IPath FindPathInternal(Vertex start, Vertex end, AITendency aiTendency)
+        private IPath FindPathInternal(Vertex start, Vertex end, AITendency aiTendency)
         {
             // 验证输入
             if (!_keyAdjacencyList.ContainsKey(start) || !_keyAdjacencyList.ContainsKey(end))

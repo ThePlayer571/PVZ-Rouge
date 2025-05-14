@@ -6,6 +6,6 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.ZombieAiUnit
         void InitializeFromMap();
         // 获取路径
 
-        Path FindPath(Vertex startVertex, Vertex endVertex, AITendency aiTendency);
+        IPath FindPath(Vertex startVertex, Vertex endVertex, AITendency aiTendency);
     }
 }

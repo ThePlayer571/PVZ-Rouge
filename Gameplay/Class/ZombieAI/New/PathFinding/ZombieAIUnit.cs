@@ -13,19 +13,20 @@ using UnityEngine.Tilemaps;
 
 namespace TPL.PVZR.Gameplay.Class.ZombieAI.ZombieAiUnit
 {
-    // 用于僵尸AI的计算单元
+    /// <summary>
+    /// 用于僵尸AI的计算单元
+    /// </summary>
     public class ZombieAIUnit : ICanGetModel, IZombieAIUnit
     {
-        #region IZombieAIUnit
+        #region IZombieAIUnit 接口实现
 
-        // 初始化
         public void InitializeFromMap()
         {
             BakeFromMap();
         }
 
         // 获取路径
-        public Path FindPath(Vertex startVertex, Vertex endVertex, AITendency aiTendency)
+        public IPath FindPath(Vertex startVertex, Vertex endVertex, AITendency aiTendency)
         {
             return _pathCache.GetPathAllowUnreachable(startVertex, endVertex, aiTendency);
         }
@@ -34,40 +35,6 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.ZombieAiUnit
         {
             _pathCache = new PathManager(this);
         }
-
-        #region 1
-
-        // // 预制数据
-        //     var tempKeyAdjacencyList = new Dictionary<Vertex, List<KeyEdge>>(keyAdjacencyList);
-        //     tempKeyAdjacencyList.Add(startVertex);
-        //
-        //     var excludeVertices = new List<Vertex>();
-        //     var currentEndVertex = endVertex;
-        //     // 获取可用的allowedPaths
-        //     List<Path> allowedPaths = null;
-        //     while (true)
-        //     {
-        //         allowedPaths = GetAllowedPaths();
-        //         if (allowedPaths.Any()) break;
-        //         else // 没有通路
-        //         {
-        //             currentEndVertex = GetClosestKeyVertex(currentEndVertex, excludeVertices);
-        //             excludeVertices.Add(currentEndVertex);
-        //         }
-        //     }
-        //
-        //     // 返回值
-        //     return aiTendency.ChooseOnePath(allowedPaths);
-        //
-        //     List<Path> GetAllowedPaths()
-        //     {
-        //         var allPaths = GetAllPaths(startVertex, currentEndVertex, tempMapMatrix);
-        //         aiTendency.ApplyFilter(allPaths);
-        //         return allPaths;
-        //     }
-        // }
-
-        #endregion
 
         #endregion
 
@@ -90,28 +57,29 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.ZombieAiUnit
         /// <summary>
         /// 根据当前的地图烘焙数据结构
         /// </summary>
-        /// <exception cref="Exception"></exception>
         private void BakeFromMap()
         {
             // !!== 注释有重要的调试代码，请勿删除 ==!!
             var _LevelModel = this.GetModel<ILevelModel>();
             var CellGrid = _LevelModel.CellGrid;
-            // 初始化
+
+            // 初始化数据结构
             mapMatrix = new Matrix<Vertex>(_LevelModel.MapConfig.size.x, _LevelModel.MapConfig.size.y);
             vertices = new List<Vertex>();
             keyVertices = new List<Vertex>();
             adjacencyList = new Dictionary<Vertex, List<IEdge>>();
             keyAdjacencyList = new Dictionary<Vertex, List<IKeyEdge>>();
 
-            // [STEP 1] 记录所有结点
+            // [STEP 1] 记录所有顶点
             RecordAllVertices();
-            // [STEP 2] 遍历结点，构建所有边
+
+            // [STEP 2] 构建邻接表
             foreach (var vertex in vertices)
             {
                 BuildAdjacencyList(vertex);
             }
 
-            // [STEP 3] 遍历结点，设置关键结点
+            // [STEP 3] 标记关键顶点
             foreach (var vertex in vertices)
             {
                 if (ShouldBeKeyVertex(vertex))
@@ -152,24 +120,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.ZombieAiUnit
                 ConnectToAdjacentKeyVertices(keyVertex);
             }
 
-            #region 一大坨调试代码
-
-            // foreach (var keyVertex in keyVertices)
-            // {
-            //     foreach (var keyEdge in keyAdjacencyList[keyVertex])
-            //     {
-            //         $"key, from:{keyEdge.From.x}, {keyEdge.From.y}, to:{keyEdge.To.x}, {keyEdge.To.y}, edgeType: {keyEdge.edgeType}, height: {keyEdge.minAllowedPassHeight}"
-            //             .LogInfo();
-            //     }
-            // }
-            // $"找到关键结点数量{keyVertices.Count}".LogInfo();
-
-            #endregion
-
-
-            return;
-
-            #region 函数（很大一坨，不建议展开）
+            #region 内部函数
 
             void RecordAllVertices()
             {
@@ -200,7 +151,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.ZombieAiUnit
 
             void BuildAdjacencyList(Vertex vertex)
             {
-                adjacencyList[vertex] = new List<Edge>(); // 每个结点都会有个表（即便是空的）
+                adjacencyList[vertex] = new List<IEdge>(); // 每个结点都会有个表（即便是空的）
                 var adjacentEdges = adjacencyList[vertex];
                 // [TYPE 1] WalkJump
                 foreach (var adjacentVertex in mapMatrix.GetNeighbors(vertex.x, vertex.y))
@@ -297,9 +248,9 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.ZombieAiUnit
 
             void ConnectToAdjacentKeyVertices(Vertex keyVertex)
             {
-                keyAdjacencyList[keyVertex] = new List<KeyEdge>();
+                keyAdjacencyList[keyVertex] = new List<IKeyEdge>();
                 // 初始为当前keyVertex相连的所有边
-                var toDiscover = new Queue<KeyEdge>(adjacencyList[keyVertex].Select(edge => new KeyEdge(edge)));
+                var toDiscover = new Queue<IKeyEdge>(adjacencyList[keyVertex].Select(edge => new KeyEdge(edge)));
                 var haveDiscovered = new List<Vertex>() { keyVertex };
                 // 探索所有连接的结点
                 int tryCount = 0;
@@ -333,14 +284,13 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.ZombieAiUnit
 
         #endregion
 
-
         #region 寻路相关
 
         private IPathManager _pathCache;
 
 
         /// <summary>
-        /// 找到与vertex相邻的所有关键节点。
+        /// 找到与vertex相邻的所有关键
         /// </summary>
         /// <param name="vertex"></param>
         /// <param name="includeSelf">为true时，如果vertex.isKey，返回它自己</param>
@@ -420,6 +370,8 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.ZombieAiUnit
             if (result.Count is not 1 or 2) throw new Exception();
             return result;
         }
+
+        #endregion
 
         #region 调试相关
 
