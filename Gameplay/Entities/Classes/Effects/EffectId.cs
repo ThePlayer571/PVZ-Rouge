@@ -1,4 +1,4 @@
-namespace TPL.PVZR.Gameplay.Class.Effects
+namespace TPL.PVZR.Gameplay.Entities.Classes.Effects
 {
     public enum EffectId
     {

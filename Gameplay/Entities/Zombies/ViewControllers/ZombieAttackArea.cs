@@ -2,7 +2,7 @@ using System;
 using QFramework;
 using UnityEngine;
 
-namespace TPL.PVZR.Gameplay.ViewControllers.InLevel
+namespace TPL.PVZR.Gameplay.Entities.Zombies.ViewControllers
 {
 	public partial class ZombieAttackArea : ViewController
 	{

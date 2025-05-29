@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using TPL.PVZR.Gameplay.Entities.Classes.Effects.Interfaces;
 using UnityEngine;
 
-namespace TPL.PVZR.Gameplay.Class.Effects
+namespace TPL.PVZR.Gameplay.Entities.Classes.Effects
 {
     /*
      * 使用Combine添加效果，可以自动合并已有的效果

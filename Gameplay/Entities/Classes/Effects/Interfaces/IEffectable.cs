@@ -1,6 +1,4 @@
-using TPL.PVZR.Gameplay.Entities;
-
-namespace TPL.PVZR.Gameplay.Class.Effects
+namespace TPL.PVZR.Gameplay.Entities.Classes.Effects.Interfaces
 {
     public interface IEffectable:IEntity
     {

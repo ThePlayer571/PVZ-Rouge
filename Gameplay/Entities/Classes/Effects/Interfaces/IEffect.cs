@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using TPL.PVZR.Gameplay.Class.Tags;
-
-namespace TPL.PVZR.Gameplay.Class.Effects
+namespace TPL.PVZR.Gameplay.Entities.Classes.Effects.Interfaces
 {
     public interface IEffect
     {

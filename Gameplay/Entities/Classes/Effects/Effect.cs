@@ -1,6 +1,6 @@
-using UnityEngine;
+using TPL.PVZR.Gameplay.Entities.Classes.Effects.Interfaces;
 
-namespace TPL.PVZR.Gameplay.Class.Effects
+namespace TPL.PVZR.Gameplay.Entities.Classes.Effects
 {
     public abstract class Effect : IEffect
     {
