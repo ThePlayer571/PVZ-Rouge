@@ -33,9 +33,13 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
         }
 
         // 获取路径
-        public IPath FindPath(Vertex startVertex, Vertex endVertex, AITendency aiTendency)
+        public IZombiePath FindPath(Vector2Int start, Vector2Int end, AITendency aiTendency)
         {
-            return _pathManager.GetOnePath(startVertex, endVertex, aiTendency);
+            var startVertex = this.GetVertex(start.x, start.y);
+            var endVertex = this.GetVertex(end.x, end.y);
+
+            var path = _pathManager.GetOnePath(startVertex, endVertex, aiTendency);
+            return new ZombiePath(path);
         }
 
         public Vertex GetVertex(int x, int y)
@@ -55,8 +59,8 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
         // 必要数据
         private Matrix<Vertex> mapMatrix;
 
-        public Dictionary<Vertex, List<IEdge>> adjacencyList;
-        public Dictionary<Vertex, List<IKeyEdge>> keyAdjacencyList;
+        public Dictionary<Vertex, List<Edge>> adjacencyList;
+        public Dictionary<Vertex, List<KeyEdge>> keyAdjacencyList;
 
         // 为了性能而记录的数据
         private List<Vertex> vertices;
@@ -79,8 +83,8 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             mapMatrix = new Matrix<Vertex>(_LevelModel.MapConfig.size.x, _LevelModel.MapConfig.size.y);
             vertices = new List<Vertex>();
             keyVertices = new List<Vertex>();
-            adjacencyList = new Dictionary<Vertex, List<IEdge>>();
-            keyAdjacencyList = new Dictionary<Vertex, List<IKeyEdge>>();
+            adjacencyList = new Dictionary<Vertex, List<Edge>>();
+            keyAdjacencyList = new Dictionary<Vertex, List<KeyEdge>>();
 
             // [STEP 1] 记录所有顶点
             RecordAllVertices();
@@ -129,12 +133,12 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             // [STEP 4] 连接关键结点
             foreach (var keyVertex in keyVertices)
             {
-                var keyEdges = GetKeyEdgesToAdjacentKeyVertices(keyVertex);
+                var keyEdges = FindKeyEdgesToAdjacentKeyVertices(keyVertex);
                 keyAdjacencyList[keyVertex] = keyEdges;
                 SetClusterCache(keyVertex, keyEdges);
             }
 
-            void SetClusterCache(Vertex keyVertex, List<IKeyEdge> keyEdges)
+            void SetClusterCache(Vertex keyVertex, List<KeyEdge> keyEdges)
             {
                 // keyVertex的Cluster
                 var closest = keyEdges.OrderBy(keyEdge => keyEdge.Weight(AITendency.Default)).First().To;
@@ -188,7 +192,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             {
                 if (!adjacencyList.ContainsKey(vertex))
                 {
-                    adjacencyList[vertex] = new List<IEdge>(); // 每个结点都会有个表（即便是空的）
+                    adjacencyList[vertex] = new List<Edge>(); // 每个结点都会有个表（即便是空的）
                 }
 
                 var adjacentEdges = adjacencyList[vertex];
@@ -198,7 +202,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
                     if (adjacentVertex is null || ReferenceEquals(vertex, adjacentVertex)) continue;
                     if (CanWalkJumpTo(vertex, adjacentVertex))
                     {
-                        adjacentEdges.Add(new Edge(vertex, adjacentVertex, Edge.EdgeType.WalkJump));
+                        adjacentEdges.Add(new Edge(vertex, adjacentVertex, MoveType.WalkJump));
                         // $"BuildWalkJump: from({vertex.x},{vertex.y}), to({adjacentVertex.x},{adjacentVertex.y})"
                         //     .LogInfo();
                     }
@@ -232,9 +236,9 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
                         if (mapMatrix[x, y] is null) continue;
                         var toVertex = mapMatrix[x, y];
                         // 设置边
-                        adjacentEdges.Add(new Edge(vertex, toVertex, Edge.EdgeType.Fall, allowedPassHeight));
+                        adjacentEdges.Add(new Edge(vertex, toVertex, MoveType.Fall, allowedPassHeight));
                         if (!adjacencyList.ContainsKey(toVertex)) adjacencyList[toVertex] = new();
-                        adjacencyList[toVertex].Add(new Edge(toVertex, vertex, Edge.EdgeType.HumanLadder,
+                        adjacencyList[toVertex].Add(new Edge(toVertex, vertex, MoveType.HumanLadder,
                             allowedPassHeight));
                         // 设置key
                         vertex.isKey = true;
@@ -277,9 +281,9 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
                 if (edges.Count == 0) return false;
                 // 核心代码
                 // 1 - WalkJump，只能往一个方向走（是边界）
-                if (edges.Count == 1 && edges.First().edgeType is Edge.EdgeType.WalkJump) return true;
+                if (edges.Count == 1 && edges.First().moveType is MoveType.WalkJump) return true;
                 // 2 - 可以Fall/Climb到其他地方
-                if (edges.Any(edge => edge.edgeType is Edge.EdgeType.Fall)) return true;
+                if (edges.Any(edge => edge.moveType is MoveType.Fall)) return true;
                 return false;
             }
 
@@ -300,7 +304,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
         /// <param name="vertex"></param>
         /// <param name="includeSelf">为true时，如果vertex.isKey，返回它自己</param>
         /// <returns></returns>
-        public List<Vertex> GetAdjacentKeyVertices(Vertex vertex, bool includeSelf = false)
+        public List<Vertex> FindAdjacentKeyVertices(in Vertex vertex, bool includeSelf = false)
         {
             // 如果vertex.isKey，返回它自己
             if (includeSelf && vertex.isKey) return new List<Vertex>() { vertex };
@@ -320,7 +324,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
                 }
                 else
                 {
-                    foreach (var edge in adjacencyList.GetValueOrDefault(current, new List<IEdge>()))
+                    foreach (var edge in adjacencyList.GetValueOrDefault(current, new List<Edge>()))
                     {
                         if (!visited.Contains(edge.To))
                         {
@@ -339,15 +343,15 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
         /// </summary>
         /// <param name="vertex"></param>
         /// <returns></returns>
-        public List<IKeyEdge> GetKeyEdgesToAdjacentKeyVertices(Vertex vertex)
+        public List<KeyEdge> FindKeyEdgesToAdjacentKeyVertices(in Vertex vertex)
         {
             // 验证输入
             if (!adjacencyList.ContainsKey(vertex)) throw new ArgumentException("Start/End not in graph");
 
             // 初始化数据结构
-            Stack<IKeyEdge> frontier = new Stack<IKeyEdge>();
+            Stack<KeyEdge> frontier = new Stack<KeyEdge>();
             List<Vertex> visited = new List<Vertex>();
-            List<IKeyEdge> result = new List<IKeyEdge>();
+            List<KeyEdge> result = new List<KeyEdge>();
 
             visited.Add(vertex);
             foreach (var each in adjacencyList[vertex])
@@ -398,6 +402,91 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 给两个Vertex，已知它们在同一KeyEdge里，start到end的keyEdge
+        /// </summary>
+        /// <returns></returns>
+        public KeyEdge FindKeyEdgeInOneKeyEdge(in Vertex startVertex, in Vertex endVertex)
+        {
+            // 验证输入
+            if (!(adjacencyList.ContainsKey(startVertex) && adjacencyList.ContainsKey(endVertex)))
+                throw new ArgumentException("Start/End not in graph");
+            if (startVertex.isKey) throw new ArgumentException("startVertex.isKey");
+
+            // 初始化数据结构
+            Stack<KeyEdge> frontier = new Stack<KeyEdge>();
+            List<Vertex> visited = new List<Vertex>();
+
+            visited.Add(startVertex);
+            foreach (var each in adjacencyList[startVertex])
+            {
+                frontier.Push(new KeyEdge(each));
+                visited.Add(each.To);
+            }
+
+            // 
+            while (frontier.Count > 0)
+            {
+                var current = frontier.Peek();
+                // 探索最新的结点
+                var v = current.To;
+                // [Case 1] 找到了终点
+                if (v == endVertex) return current;
+
+                // [Case 2] 遇到了keyVertex（已规避终点是keyVertex的情况）
+                if (v.isKey)
+                {
+                    frontier.Pop();
+                    continue;
+                }
+
+                // [Case 3] 常规寻路
+
+                // 将临近的结点加入列表
+                var adj = adjacencyList[current.To].Where(edge => !visited.Contains(edge.To)).ToList();
+
+                // 异常处理
+                if (adj.Count >= 2)
+                {
+                    string exp = "GetKeyEdgesToAdjacentKeyVertices的路径中出现岔路，这是不应该的。";
+                    exp += $"源头是({current.From.x},{current.From.y})。";
+                    exp += $"正在探索：" + String.Join(",",
+                        adj.Select(each => $"({each.From.x},{each.From.y})->({each.To.x},{each.To.y})"));
+                    Debug.LogWarning(exp);
+                }
+
+
+                var next = adj.First();
+                visited.Add(next.To);
+                current.AddEdge(next);
+            }
+
+
+            throw new ArgumentException($"GetKeyEdgeInOneKeyEdge未找到路径: {startVertex.Position}->{endVertex.Position}");
+        }
+
+        public KeyEdge GetKeyEdgeInKeyEdge(in Vertex startVertex, in Vertex endVertex, in KeyEdge keyEdge)
+        {
+            // 验证输入
+            if (startVertex == endVertex) throw new ArgumentException();
+
+            //
+            var result = new KeyEdge();
+            bool startRecord = false;
+            foreach (var edge in keyEdge.includeEdges)
+            {
+                if (edge.From == startVertex) startRecord = true;
+                if (startRecord)
+                {
+                    result.AddEdge(edge);
+                    if (edge.To == endVertex) return result;
+                }
+            }
+
+            throw new ArgumentException(
+                $"无法找到keyEdge：{startVertex.Position}->{endVertex.Position}, 在KeyEdge({keyEdge.From.x},{keyEdge.From.y}) -> ({keyEdge.To.x},{keyEdge.To.y})中");
         }
 
         #endregion
@@ -462,7 +551,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             }
         }
 
-        public void LogThePath(IPath path)
+        public void LogThePath(Path path)
         {
             string output = "";
             foreach (var edge in path.keyEdges)
@@ -471,6 +560,16 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             }
 
             output.LogInfo();
+        }
+
+        public void LogThePath(IZombiePath path)
+        {
+            string output = "";
+            while (path.Count > 0)
+            {
+                var next = path.NextTarget();
+                output += $"{next.target}({next.moveType})->";
+            }
         }
 
         #endregion

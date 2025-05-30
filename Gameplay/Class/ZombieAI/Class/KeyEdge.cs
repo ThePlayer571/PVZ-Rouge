@@ -8,39 +8,12 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Class
     /// <summary>
     /// 表示两个 KeyVertex 之间的连接
     /// </summary>
-    public interface IKeyEdge : IEdge
-    {
-        /// <summary>
-        /// 包含的所有 Edge
-        /// </summary>
-        List<IEdge> includeEdges { get; }
-
-        List<Vertex> IncludeVertices();
-
-        /// <summary>
-        /// 添加一个 Edge 到 KeyEdge 中
-        /// </summary>
-        /// <param name="edge">要添加的 Edge</param>
-        /// <returns>更新后的 KeyEdge</returns>
-        IKeyEdge AddEdge(IEdge edge);
-
-        /// <summary>
-        /// 将 KeyEdge 反转
-        /// </summary>
-        /// <param name="adjacencyList">邻接表</param>
-        /// <returns>反转后的 KeyEdge</returns>
-        IKeyEdge Adversed(Dictionary<Vertex, List<IEdge>> adjacencyList);
-    }
-
-    /// <summary>
-    /// KeyEdge 的实现类
-    /// </summary>
-    public class KeyEdge : IKeyEdge
+    public class KeyEdge
     {
         #region 字段与属性
 
-        public List<IEdge> includeEdges { get; private set; } = new();
-        public Edge.EdgeType edgeType { get; }
+        public List<Edge> includeEdges { get; private set; } = new();
+        public MoveType moveType { get; private set; }
         public AllowedPassHeight allowedPassHeight { get; private set; }
         public Vertex From => includeEdges.First().From;
         public Vertex To => includeEdges.Last().To;
@@ -61,7 +34,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Class
             vertices.AddRange(includeEdges.Select(e => e.To));
             return vertices;
         }
-        
+
         public float Weight(AITendency aiTendency)
         {
             if (_weightCache.TryGetValue(aiTendency.mainAI, out var cachedWeight))
@@ -74,9 +47,9 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Class
             return totalWeight;
         }
 
-        public IKeyEdge Adversed(Dictionary<Vertex, List<IEdge>> adjacencyList)
+        public KeyEdge Adversed(Dictionary<Vertex, List<Edge>> adjacencyList)
         {
-            var reversedEdges = new List<IEdge>();
+            var reversedEdges = new List<Edge>();
             for (int i = includeEdges.Count - 1; i >= 0; i--)
             {
                 var oldEdge = includeEdges[i];
@@ -89,10 +62,15 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Class
             return new KeyEdge(this, reversedEdges);
         }
 
-        public IKeyEdge AddEdge(IEdge edge)
+        public KeyEdge AddEdge(Edge edge)
         {
-            if (edge.allowedPassHeight is AllowedPassHeight.One &&
-                this.allowedPassHeight is AllowedPassHeight.TwoAndMore)
+            // moveType
+            if (this.moveType != MoveType.NotSet && this.moveType != edge.moveType) throw new Exception("无法添加不同类型的边");
+            if (this.moveType == MoveType.NotSet) this.moveType = edge.moveType;
+
+            // allowedPassHeight
+            if (edge.allowedPassHeight == AllowedPassHeight.One &&
+                this.allowedPassHeight == AllowedPassHeight.TwoAndMore)
             {
                 this.allowedPassHeight = AllowedPassHeight.One;
             }
@@ -109,17 +87,24 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Class
 
         #region 构造函数
 
-        public KeyEdge(IEdge startEdge)
+        public KeyEdge()
+        {
+            includeEdges = new List<Edge>();
+            this.moveType = MoveType.NotSet;
+            this.allowedPassHeight = AllowedPassHeight.TwoAndMore;
+        }
+
+        public KeyEdge(Edge startEdge)
         {
             includeEdges.Add(startEdge);
-            this.edgeType = startEdge.edgeType;
+            this.moveType = startEdge.moveType;
             this.allowedPassHeight = startEdge.allowedPassHeight;
         }
 
-        public KeyEdge(IKeyEdge startEdge, List<IEdge> includeEdges = null)
+        public KeyEdge(KeyEdge startEdge, List<Edge> includeEdges = null)
         {
             this.includeEdges = includeEdges ?? startEdge.includeEdges.ToList();
-            this.edgeType = startEdge.edgeType;
+            this.moveType = startEdge.moveType;
             this.allowedPassHeight = startEdge.allowedPassHeight;
         }
 

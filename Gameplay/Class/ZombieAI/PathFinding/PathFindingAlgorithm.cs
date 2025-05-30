@@ -9,15 +9,15 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
     public class PathFindingAlgorithm
     {
         
-        private readonly Dictionary<Vertex, List<IKeyEdge>> _keyAdjacencyList;
+        private readonly Dictionary<Vertex, List<KeyEdge>> _keyAdjacencyList;
 
-        public PathFindingAlgorithm(Dictionary<Vertex, List<IKeyEdge>> keyAdjacencyList)
+        public PathFindingAlgorithm(Dictionary<Vertex, List<KeyEdge>> keyAdjacencyList)
         {
             this._keyAdjacencyList = keyAdjacencyList;
         }
 
         // 提示：终点是单个结点时无法围攻
-        public List<IPath> AStarFindSiegePath(Cluster startCluster, Cluster endCluster, AITendency aiTendency)
+        public List<Path> AStarFindSiegePath(Cluster startCluster, Cluster endCluster, AITendency aiTendency)
         {
             // 预制数据
             var keyAdjacencyList = this._keyAdjacencyList.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToList());
@@ -27,7 +27,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             var a = new AStarPathfinder(keyAdjacencyList);
             var pathToA = a.FindPath(startCluster, endCluster.vertexA, aiTendency);
             var pathToB = a.FindPath(startCluster, endCluster.vertexB, aiTendency);
-            var result = new List<IPath> { pathToA, pathToB }.Where(p => p != null).ToList();
+            var result = new List<Path> { pathToA, pathToB }.Where(p => p != null).ToList();
             if (!result.Any())
             {
                 throw new Exception("AStarFindSiegePath首次未发现任何路");
@@ -35,7 +35,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             return result ;
         }
 
-        public List<IPath> AStarFindSiegePath(Vertex startVertex, Cluster endCluster, AITendency aiTendency)
+        public List<Path> AStarFindSiegePath(Vertex startVertex, Cluster endCluster, AITendency aiTendency)
         {
             // 预制数据
             var keyAdjacencyList = this._keyAdjacencyList.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToList());
@@ -45,7 +45,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             var a = new AStarPathfinder(keyAdjacencyList);
             var pathToA = a.FindPath(startVertex, endCluster.vertexA, aiTendency);
             var pathToB = a.FindPath(startVertex, endCluster.vertexB, aiTendency);
-            var result = new List<IPath> { pathToA, pathToB }.Where(p => p != null).ToList();
+            var result = new List<Path> { pathToA, pathToB }.Where(p => p != null).ToList();
             if (!result.Any())
             {
                 throw new Exception("AStarFindSiegePath首次未发现任何路");

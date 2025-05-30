@@ -9,7 +9,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
 {
     public interface IPathManager
     {
-        IPath GetOnePath(Vertex startVertex, Vertex endVertex, AITendency aiTendency);
+        Path GetOnePath(Vertex startVertex, Vertex endVertex, AITendency aiTendency);
     }
 
     /*
@@ -20,7 +20,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
     {
         #region 公有方法
 
-        public IPath GetOnePath(Vertex startVertex, Vertex endVertex, AITendency aiTendency)
+        public Path GetOnePath(Vertex startVertex, Vertex endVertex, AITendency aiTendency)
         {
             var paths = GetMultiPaths(startVertex, endVertex, aiTendency);
             return aiTendency.ChooseOnePath(paths);
@@ -30,39 +30,63 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
 
         #region 一层具象
 
-        private List<IPath> GetMultiPaths(Vertex startVertex, Vertex endVertex, AITendency aiTendency)
+        private List<Path> GetMultiPaths(Vertex startVertex, Vertex endVertex, AITendency aiTendency)
         {
             // 预制数据
             var startCluster = _zombieAIUnit.GetCluster(startVertex);
             var endCluster = _zombieAIUnit.GetCluster(endVertex);
-            // TODO: 
-            
-            
-            
-            List<IKeyEdge> startKeyEdges, endKeyEdges;
-            PathKey pathKey;
 
-            startKeyEdges = startVertex.isKey
-                ? new List<IKeyEdge>()
-                : _zombieAIUnit.GetKeyEdgesToAdjacentKeyVertices(startVertex);
-            endKeyEdges = endVertex.isKey
-                ? new List<IKeyEdge>()
-                : _zombieAIUnit.GetKeyEdgesToAdjacentKeyVertices(endVertex)
-                    .Select(keyEdge => keyEdge.Adversed(_zombieAIUnit.adjacencyList)).ToList();
-            pathKey = new PathKey(new FromToKey<Cluster>(startCluster, endCluster), aiTendency);
-            
+            // 简单情况处理，这时不需要调用寻路算法
+            if (startCluster.IsIdentical(endCluster))
+            {
+                var _ = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(startVertex, endVertex);
+                return new List<Path> { new Path(_) };
+            }
+
+            if (startCluster.GetIntersection(endCluster, out var intersection))
+            {
+                var _1 = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(startVertex, intersection);
+                var _2 = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(intersection, endVertex);
+                var path = new Path();
+                path.Add(_1);
+                path.Add(_2);
+                return new List<Path> { path };
+            }
+
+            // 调用寻路算法
+            List<KeyEdge> startKeyEdges, endKeyEdges;
+            if (startVertex.isKey) startKeyEdges = new List<KeyEdge>();
+            else
+            {
+                startKeyEdges = _zombieAIUnit.FindKeyEdgesToAdjacentKeyVertices(startVertex);
+            }
+
+            if (endVertex.isKey) endKeyEdges = new List<KeyEdge>();
+            else
+            {
+                var AToB = _zombieAIUnit.keyAdjacencyList[endCluster.vertexA].First(e => e.To == endCluster.vertexB);
+                var BToA = _zombieAIUnit.keyAdjacencyList[endCluster.vertexB].First(e => e.To == endCluster.vertexA);
+                endKeyEdges = new List<KeyEdge>()
+                {
+                    _zombieAIUnit.GetKeyEdgeInKeyEdge(endCluster.vertexA, endVertex, AToB),
+                    _zombieAIUnit.GetKeyEdgeInKeyEdge(endCluster.vertexB, endVertex, BToA)
+                };
+            }
+
+            var pathKey = new PathKey(new FromToKey<Cluster>(startCluster, endCluster), aiTendency);
+
             // 不存在这条路，利用寻路算法补充
             if (!_pathCache.ContainsPath(pathKey))
             {
                 var pfa = new PathFindingAlgorithm(_zombieAIUnit.keyAdjacencyList);
-                List<IPath> siegePaths = pfa.AStarFindSiegePath(startCluster, endCluster, aiTendency);
+                List<Path> siegePaths = pfa.AStarFindSiegePath(startCluster, endCluster, aiTendency);
 
                 _pathCache.AddPathRange(pathKey, siegePaths);
                 "调用了寻路算法".LogInfo();
             }
 
             // 如果已经有这条路了，直接返回
-            List<IPath> result = new List<IPath>();
+            List<Path> result = new List<Path>();
             if (_pathCache.TryGetValue(pathKey, out var paths))
             {
                 foreach (var path in paths)

@@ -10,9 +10,9 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
     public class AStarPathfinder
     {
         // 邻接表结构：Dictionary<起点, List<带权边>>
-        private readonly Dictionary<Vertex, List<IKeyEdge>> _keyAdjacencyList;
+        private readonly Dictionary<Vertex, List<KeyEdge>> _keyAdjacencyList;
 
-        public AStarPathfinder(Dictionary<Vertex, List<IKeyEdge>> keyAdjacencyList)
+        public AStarPathfinder(Dictionary<Vertex, List<KeyEdge>> keyAdjacencyList)
         {
             _keyAdjacencyList = keyAdjacencyList;
         }
@@ -25,13 +25,13 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             public float hCost;
             public float fCost => gCost + hCost;
 
-            public IKeyEdge fromEdge;
+            public KeyEdge fromEdge;
             public Vertex vertex;
             public Vector2Int position => new Vector2Int(vertex.x, vertex.y);
             public AStarNode parent;
 
 
-            public AStarNode(IKeyEdge fromEdge, Vertex vertex, AStarNode parent, float gCost, float hCost)
+            public AStarNode(KeyEdge fromEdge, Vertex vertex, AStarNode parent, float gCost, float hCost)
             {
                 this.fromEdge = fromEdge;
                 this.vertex = vertex;
@@ -44,13 +44,13 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
         #endregion
 
         // 对外接口 - 单起点
-        public IPath FindPath(Vertex start, Vertex end, AITendency aiTendency)
+        public Path FindPath(Vertex start, Vertex end, AITendency aiTendency)
         {
             return FindPathInternal(start, end, aiTendency);
         }
 
         // 对外接口 - 双起点（Cluster）
-        public IPath FindPath(Cluster clusterStart, Vertex end, AITendency aiTendency)
+        public Path FindPath(Cluster clusterStart, Vertex end, AITendency aiTendency)
         {
             return FindPathInternal(clusterStart, end, aiTendency);
         }
@@ -63,10 +63,10 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             return 10 * (Mathf.Abs(start.x - end.x) + Mathf.Abs(start.y - end.y));
         }
 
-        private IPath ReconstructPath(AStarNode current)
+        private Path ReconstructPath(AStarNode current)
         {
-            IPath result = new Path();
-            Stack<IKeyEdge> keyEdges = new(); // 使用栈反转路径方向
+            Path result = new Path();
+            Stack<KeyEdge> keyEdges = new(); // 使用栈反转路径方向
             while (current.parent != null)
             {
                 if (current.fromEdge != null)
@@ -82,7 +82,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             return result;
         }
 
-        private IPath FindPathInternal(Cluster startCluster, Vertex end, AITendency aiTendency)
+        private Path FindPathInternal(Cluster startCluster, Vertex end, AITendency aiTendency)
         {
             if (startCluster.Include(end)) return new Path();
             var vertexA = startCluster.vertexA;
@@ -117,7 +117,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
 
                 if (!_keyAdjacencyList.TryGetValue(current.vertex, out var edges)) continue;
 
-                foreach (IKeyEdge edge in edges)
+                foreach (KeyEdge edge in edges)
                 {
                     var neighbor = edge.To;
                     float tentativeGCost = current.gCost + edge.Weight(aiTendency);
@@ -146,7 +146,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             return null; // 或抛出异常
         }
 
-        private IPath FindPathInternal(Vertex start, Vertex end, AITendency aiTendency)
+        private Path FindPathInternal(Vertex start, Vertex end, AITendency aiTendency)
         {
             // 验证输入
             if (!_keyAdjacencyList.ContainsKey(start) || !_keyAdjacencyList.ContainsKey(end))
@@ -174,7 +174,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
                 }
 
                 // 遍历邻接边
-                foreach (IKeyEdge edge in _keyAdjacencyList[current.vertex])
+                foreach (KeyEdge edge in _keyAdjacencyList[current.vertex])
                 {
                     Vertex neighbor = edge.To;
                     float tentativeGCost = current.gCost + edge.Weight(aiTendency);

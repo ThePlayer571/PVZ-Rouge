@@ -18,6 +18,31 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Class
         {
             return vertex == vertexA || vertex == vertexB;
         }
+
+        public bool IsIdentical(Cluster other)
+        {
+            return (vertexA == other.vertexA && vertexB == other.vertexB) ||
+                   (vertexA == other.vertexB && vertexB == other.vertexA);
+        }
+
+        public bool GetIntersection(Cluster other, out Vertex intersection)
+        {
+            intersection = null;
+
+            if (vertexA == other.vertexA || vertexA == other.vertexB)
+            {
+                intersection = vertexA;
+                return true;
+            }
+
+            if (vertexB == other.vertexA || vertexB == other.vertexB)
+            {
+                intersection = vertexB;
+                return true;
+            }
+
+            return false;
+        }
         
         public override int GetHashCode()
         {

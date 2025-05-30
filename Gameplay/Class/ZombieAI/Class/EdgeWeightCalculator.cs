@@ -6,36 +6,31 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Class
     // Copilot
     public class EdgeWeightCalculator
     {
-        private readonly Dictionary<(Edge.EdgeType, AITendency.MainAI), float> _weightRules;
-
-        public EdgeWeightCalculator()
+        private static readonly Dictionary<(MoveType, AITendency.MainAI), float> _weightRules = new()
         {
-            _weightRules = new Dictionary<(Edge.EdgeType, AITendency.MainAI), float>
-            {
-                // 根据文档表格填充权重规则
-                {(Edge.EdgeType.WalkJump, AITendency.MainAI.Default), 10f},
-                {(Edge.EdgeType.WalkJump, AITendency.MainAI.CanPutLadder), 10f},
-                {(Edge.EdgeType.WalkJump, AITendency.MainAI.CanSwim), 10f},
+            // 根据文档表格填充权重规则
+            {(MoveType.WalkJump, AITendency.MainAI.Default), 10f},
+            {(MoveType.WalkJump, AITendency.MainAI.CanPutLadder), 10f},
+            {(MoveType.WalkJump, AITendency.MainAI.CanSwim), 10f},
 
-                {(Edge.EdgeType.Water, AITendency.MainAI.Default), 20f},
-                {(Edge.EdgeType.Water, AITendency.MainAI.CanPutLadder), 20f},
-                {(Edge.EdgeType.Water, AITendency.MainAI.CanSwim), 3f},
+            {(MoveType.Water, AITendency.MainAI.Default), 20f},
+            {(MoveType.Water, AITendency.MainAI.CanPutLadder), 20f},
+            {(MoveType.Water, AITendency.MainAI.CanSwim), 3f},
 
-                {(Edge.EdgeType.Fall, AITendency.MainAI.Default), 1f},
-                {(Edge.EdgeType.Fall, AITendency.MainAI.CanPutLadder), 1f},
-                {(Edge.EdgeType.Fall, AITendency.MainAI.CanSwim), 1f},
+            {(MoveType.Fall, AITendency.MainAI.Default), 1f},
+            {(MoveType.Fall, AITendency.MainAI.CanPutLadder), 1f},
+            {(MoveType.Fall, AITendency.MainAI.CanSwim), 1f},
 
-                {(Edge.EdgeType.HumanLadder, AITendency.MainAI.Default), 100f},
-                {(Edge.EdgeType.HumanLadder, AITendency.MainAI.CanPutLadder), 1f},
-                {(Edge.EdgeType.HumanLadder, AITendency.MainAI.CanSwim), 100f},
+            {(MoveType.HumanLadder, AITendency.MainAI.Default), 100f},
+            {(MoveType.HumanLadder, AITendency.MainAI.CanPutLadder), 1f},
+            {(MoveType.HumanLadder, AITendency.MainAI.CanSwim), 100f},
 
-                {(Edge.EdgeType.ClimbLadder, AITendency.MainAI.Default), 10f},
-                {(Edge.EdgeType.ClimbLadder, AITendency.MainAI.CanPutLadder), 10f},
-                {(Edge.EdgeType.ClimbLadder, AITendency.MainAI.CanSwim), 10f},
-            };
-        }
+            {(MoveType.ClimbLadder, AITendency.MainAI.Default), 10f},
+            {(MoveType.ClimbLadder, AITendency.MainAI.CanPutLadder), 10f},
+            {(MoveType.ClimbLadder, AITendency.MainAI.CanSwim), 10f},
+        };
 
-        public float GetWeight(Edge.EdgeType edgeType, AITendency.MainAI aiTendency)
+        public float GetWeight(MoveType edgeType, AITendency.MainAI aiTendency)
         {
             if (_weightRules.TryGetValue((edgeType, aiTendency), out var weight))
             {

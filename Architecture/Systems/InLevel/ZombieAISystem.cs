@@ -11,10 +11,7 @@ using TPL.PVZR.Gameplay.Class.ZombieAI;
 using TPL.PVZR.Gameplay.Class.ZombieAI.Class;
 using TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding;
 using TPL.PVZR.Gameplay.Class.ZombieAI.Public;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using UnityEngine.U2D;
 
 
 namespace TPL.PVZR.Architecture.Systems.InLevel
@@ -43,8 +40,7 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
                     for (int i = 0; i < 100; i++)
                     {
                         AITendency aiTendency = new AITendency(AITendency.MainAI.Default);
-                        var path = _.FindPath(_.GetVertex(3, 19), _.GetVertex(13, 16), aiTendency);
-                        $"成功返回path{path is not null}".LogInfo();
+                        var path = _.FindPath(new Vector2Int(3,19), new Vector2Int(13,16), aiTendency);
                         _.LogThePath(path);
                     }
                 }

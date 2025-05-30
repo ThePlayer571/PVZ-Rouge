@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace TPL.PVZR.Gameplay.Class.ZombieAI.Class
 {
@@ -34,6 +35,8 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Class
         public bool isKey;
         #endregion
 
+        public Vector2Int Position => new Vector2Int(x, y);
+        
         #region override
 
         public override bool Equals(object obj)

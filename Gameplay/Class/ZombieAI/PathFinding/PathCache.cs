@@ -7,10 +7,10 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
 {
     public interface IPathCache
     {
-        bool TryGetValue(PathKey pathKey, out List<IPath> paths);
+        bool TryGetValue(PathKey pathKey, out List<Path> paths);
         bool ContainsPath(PathKey pathKey);
-        void AddPath(PathKey pathKey, IPath path);
-        void AddPathRange(PathKey pathKey, IEnumerable<IPath> paths);
+        void AddPath(PathKey pathKey, Path path);
+        void AddPathRange(PathKey pathKey, IEnumerable<Path> paths);
         int Count { get; }
     }
 
@@ -18,7 +18,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
     {
         #region IPathCache
 
-        public bool TryGetValue(PathKey pathKey, out List<IPath> paths)
+        public bool TryGetValue(PathKey pathKey, out List<Path> paths)
         {
             return _pathDict.TryGetValue(pathKey, out paths);
         }
@@ -28,21 +28,21 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             return _pathDict.ContainsKey(pathKey);
         }
 
-        public void AddPath(PathKey pathKey, IPath path)
+        public void AddPath(PathKey pathKey, Path path)
         {
-            if (!_pathDict.TryGetValue(pathKey, out List<IPath> pathList))
+            if (!_pathDict.TryGetValue(pathKey, out List<Path> pathList))
             {
-                pathList = new List<IPath>();
+                pathList = new List<Path>();
                 _pathDict[pathKey] = pathList;
             }
             pathList.Add(path);
         }
 
-        public void AddPathRange(PathKey pathKey, IEnumerable<IPath> paths)
+        public void AddPathRange(PathKey pathKey, IEnumerable<Path> paths)
         {
-            if (!_pathDict.TryGetValue(pathKey, out List<IPath> pathList))
+            if (!_pathDict.TryGetValue(pathKey, out List<Path> pathList))
             {
-                pathList = new List<IPath>();
+                pathList = new List<Path>();
                 _pathDict[pathKey] = pathList;
             }
             pathList.AddRange(paths);
@@ -52,7 +52,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
 
         #endregion
 
-        private readonly Dictionary<PathKey, List<IPath>> _pathDict = new Dictionary<PathKey, List<IPath>>();
+        private readonly Dictionary<PathKey, List<Path>> _pathDict = new Dictionary<PathKey, List<Path>>();
     }
 
     

@@ -1,32 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using TPL.PVZR.Gameplay.Class.ZombieAI.Class;
+using UnityEngine;
 
 namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
 {
     /// <summary>
     /// 表示一条路径，由多个 KeyEdge 组成
     /// </summary>
-    public interface IPath
-    {
-        List<IKeyEdge> keyEdges { get; }
-
-        void Add(IKeyEdge edge);
-
-        float Weight(AITendency aiTendency);
-    }
-
-    /// <summary>
-    /// 路径实现类
-    /// </summary>
-    public class Path : IPath
+    public class Path
     {
         #region 字段与属性
 
-        /// <summary>
-        /// 路径中的所有 KeyEdge
-        /// </summary>
-        public List<IKeyEdge> keyEdges { get; }
+        public List<KeyEdge> keyEdges { get; }
 
         /// <summary>
         /// 缓存每种 AITendency.MainAI 对应的路径权重
@@ -58,8 +44,13 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
         /// 添加一个 KeyEdge 到路径中
         /// </summary>
         /// <param name="keyEdge">要添加的 KeyEdge</param>
-        public void Add(IKeyEdge keyEdge)
+        public void Add(KeyEdge keyEdge)
         {
+            if (keyEdges.Count > 0 && keyEdges.Last().To != keyEdge.From)
+            {
+                throw new System.Exception("KeyEdge 的起点必须与当前路径的终点相同");
+            }
+
             keyEdges.Add(keyEdge);
             // 清除缓存，确保后续调用 Weight 时重新计算
             _weightCache.Clear();
@@ -75,9 +66,9 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
         /// <param name="startKeyEdge">起始 KeyEdge</param>
         /// <param name="path">已有路径</param>
         /// <param name="endKeyEdge">结束 KeyEdge</param>
-        public Path(IKeyEdge startKeyEdge, IPath path, IKeyEdge endKeyEdge)
+        public Path(KeyEdge startKeyEdge, Path path, KeyEdge endKeyEdge)
         {
-            keyEdges = new List<IKeyEdge>();
+            keyEdges = new List<KeyEdge>();
             _weightCache = new Dictionary<AITendency.MainAI, float>();
 
             if (startKeyEdge != null) this.keyEdges.Add(startKeyEdge);
@@ -85,12 +76,18 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
             if (endKeyEdge != null) this.keyEdges.Add(endKeyEdge);
         }
 
+        public Path(KeyEdge keyEdge)
+        {
+            keyEdges = new List<KeyEdge> { keyEdge };
+            _weightCache = new Dictionary<AITendency.MainAI, float>();
+        }
+
         /// <summary>
         /// 构造一个空路径
         /// </summary>
         public Path()
         {
-            keyEdges = new List<IKeyEdge>();
+            keyEdges = new List<KeyEdge>();
             _weightCache = new Dictionary<AITendency.MainAI, float>();
         }
 
