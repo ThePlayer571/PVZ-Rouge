@@ -36,6 +36,10 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             var startCluster = _zombieAIUnit.GetCluster(startVertex);
             var endCluster = _zombieAIUnit.GetCluster(endVertex);
 
+
+            $"调用 GetMultiPaths({startVertex.Position}->{endVertex.Position}) | IsIdentical: {startCluster.IsIdentical(endCluster)}"
+                .LogInfo();
+
             // 简单情况处理，这时不需要调用寻路算法
             if (startCluster.IsIdentical(endCluster))
             {
@@ -45,11 +49,14 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
 
             if (startCluster.GetIntersection(endCluster, out var intersection))
             {
-                var _1 = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(startVertex, intersection);
-                var _2 = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(intersection, endVertex);
                 var path = new Path();
-                path.Add(_1);
-                path.Add(_2);
+
+                var firstEdge = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(startVertex, intersection);
+                path.Add(firstEdge);
+
+                var secondEdge = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(intersection, endVertex);
+                path.Add(secondEdge);
+
                 return new List<Path> { path };
             }
 

@@ -36,11 +36,11 @@ namespace TPL.PVZR.Architecture.Systems.InLevel
                     ZombieAIUnit _ = new ZombieAIUnit();
                     _.InitializeFromMap();
                     _.LogAllKeyAdjacencyList();
-                    _.DisplayTheMap();
+                    // _.DisplayTheMap();
                     for (int i = 0; i < 100; i++)
                     {
                         AITendency aiTendency = new AITendency(AITendency.MainAI.Default);
-                        var path = _.FindPath(new Vector2Int(3,19), new Vector2Int(13,16), aiTendency);
+                        var path = _.FindPath(new Vector2Int(5,8), new Vector2Int(9,8), aiTendency);
                         _.LogThePath(path);
                     }
                 }

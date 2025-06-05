@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
@@ -34,11 +35,8 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
                 {
                     moveQueue.Enqueue(new MoveData(keyEdge.moveType, keyEdge.To.Position, MoveStage.FollowVertex));
                 }
-                else
-                {
-                    moveQueue.Enqueue(new MoveData(keyEdge.moveType, Vector2Int.zero, MoveStage.FindDave));
-                }
             }
+            moveQueue.Enqueue(new MoveData(path.keyEdges.Last().moveType, Vector2Int.zero, MoveStage.FindDave));
         }
     }
 }
