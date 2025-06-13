@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using QFramework;
+using TPL.PVZR.Events;
 
 namespace Models
 {
@@ -23,7 +26,25 @@ namespace Models
 
         public void ChangePhase(GamePhase changeToPhase, Dictionary<string, object> parameters = null)
         {
-            
+            // 检查错误
+            if (!allowedPhaseToFrom.ContainsKey(changeToPhase))
+            {
+                throw new ArgumentException($"未设置切换规则：{changeToPhase}");
+            }
+
+            if (!allowedPhaseToFrom[changeToPhase].Contains(this.GamePhase))
+            {
+                throw new ArgumentException($"进行了不允许的状态切换：{this.GamePhase}->{changeToPhase}");
+            }
+            // 切换状态
+            this.SendEvent(new OnLeavePhaseEarlyEvent { leaveFromPhase = this.GamePhase, parameters = parameters });
+            this.SendEvent(new OnLeavePhaseEvent { leaveFromPhase = this.GamePhase, parameters = parameters });
+            this.SendEvent(new OnLeavePhaseLateEvent { leaveFromPhase = this.GamePhase, parameters = parameters });
+            this.GamePhase = changeToPhase;
+            this.SendEvent(new OnEnterPhaseEarlyEvent { changeToPhase = changeToPhase, parameters = parameters });
+            this.SendEvent(new OnEnterPhaseEvent { changeToPhase = changeToPhase, parameters = parameters });
+            this.SendEvent(new OnEnterPhaseLateEvent { changeToPhase = changeToPhase, parameters = parameters });
+
         }
 
         #endregion
