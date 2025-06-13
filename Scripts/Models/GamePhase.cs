@@ -1,9 +1,9 @@
-namespace Models
+namespace TPL.PVZR.Models
 {
     public enum GamePhase
     {
         
-        // 启动之前(抽象)
+        // 启动之前（初始的默认状态）
         BeforeStart,
 
         // 启动与初始化阶段
@@ -12,9 +12,6 @@ namespace Models
 
         // 菜单导航阶段
         MainMenu, // 主菜单（开始/设置/退出）
-        SaveSlotSelection, // 存档位选择
-        SettingsMenu, // 设置菜单
-        CreditsScreen, // 制作人员名单
 
         // 核心游戏循环阶段
         GameInitialization, // 初始化游戏（从其他地方进入游戏时调用）

@@ -4,7 +4,7 @@ using System.Linq;
 using QFramework;
 using TPL.PVZR.Events;
 
-namespace Models
+namespace TPL.PVZR.Models
 {
     interface IPhaseModel : IModel
     {
@@ -16,6 +16,13 @@ namespace Models
         /// <param name="changeToPhase"></param>
         /// <param name="parameters"></param>
         void ChangePhase(GamePhase changeToPhase, Dictionary<string, object> parameters = null);
+
+        /// <summary>
+        /// 在当前阶段延迟切换到指定的游戏进程（允许_changingPhase为true时调用，会在当前切换结束后再切换至新的阶段）
+        /// </summary>
+        /// <param name="changeToPhase"></param>
+        /// <param name="parameters"></param>
+        void DelayChangePhase(GamePhase changeToPhase, Dictionary<string, object> parameters = null);
     }
 
     public class PhaseModel : AbstractModel, IPhaseModel
@@ -36,6 +43,10 @@ namespace Models
             {
                 throw new ArgumentException($"进行了不允许的状态切换：{this.GamePhase}->{changeToPhase}");
             }
+            
+            if (_changingPhase) throw new Exception("正在切换状态，不能重复调用ChangePhase");
+
+            _changingPhase = true;
             // 切换状态
             this.SendEvent(new OnLeavePhaseEarlyEvent { leaveFromPhase = this.GamePhase, parameters = parameters });
             this.SendEvent(new OnLeavePhaseEvent { leaveFromPhase = this.GamePhase, parameters = parameters });
@@ -44,11 +55,38 @@ namespace Models
             this.SendEvent(new OnEnterPhaseEarlyEvent { changeToPhase = changeToPhase, parameters = parameters });
             this.SendEvent(new OnEnterPhaseEvent { changeToPhase = changeToPhase, parameters = parameters });
             this.SendEvent(new OnEnterPhaseLateEvent { changeToPhase = changeToPhase, parameters = parameters });
+            // 
+            _changingPhase = false;
 
+            // 检查是否有延迟切换
+            if (_delayedChangePhase.HasValue)
+            {
+                var delayed = _delayedChangePhase.Value;
+                _delayedChangePhase = null;
+                ChangePhase(delayed.changeToPhase, delayed.parameters);
+            }
+        }
+
+        public void DelayChangePhase(GamePhase changeToPhase, Dictionary<string, object> parameters = null)
+        {
+            if (_changingPhase)
+            {
+                // 记录延迟切换
+                _delayedChangePhase = (changeToPhase, parameters);
+            }
+            else
+            {
+                ChangePhase(changeToPhase, parameters);
+            }
         }
 
         #endregion
 
+        #region Private
+        private bool _changingPhase = false;
+
+        // 延迟切换阶段的存储
+        private (GamePhase changeToPhase, Dictionary<string, object> parameters)? _delayedChangePhase = null;
 
         private readonly Dictionary<GamePhase, GamePhase[]> allowedPhaseToFrom = new()
         {
@@ -66,10 +104,12 @@ namespace Models
             [GamePhase.LevelExiting] = new[] { GamePhase.ChooseLoots },
         };
 
+        #endregion
+
 
         protected override void OnInit()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }
