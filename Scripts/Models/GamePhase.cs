@@ -16,6 +16,7 @@ namespace TPL.PVZR.Models
         // 核心游戏循环阶段
         GameInitialization, // 初始化游戏（从其他地方进入游戏时调用）
         MazeMap, // 迷宫地图
+        
         GameExiting,
 
         // 关卡内阶段

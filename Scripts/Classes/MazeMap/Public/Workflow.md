@@ -1,0 +1,2 @@
+新建MazeMap：创建新的Instance即可
+写Definition，定义新的generator

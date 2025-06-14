@@ -4,4 +4,9 @@ namespace TPL.PVZR.Classes.MazeMap
     {
         DaveHouse
     }
+
+    public enum GeneratorId
+    {
+        DaveHouse
+    }
 }
