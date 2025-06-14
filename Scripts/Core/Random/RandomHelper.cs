@@ -1,3 +1,5 @@
+using TPL.PVZR.Core.Save.SaveClasses;
+
 namespace TPL.PVZR.Core.Random
 {
     public static class RandomHelper
@@ -14,7 +16,7 @@ namespace TPL.PVZR.Core.Random
         public static void Load(GameSaveData saveData)
         {
             // _defaultRandom 是不重要的随机数，不需要初始化
-            Game.RestoreState(saveData.gameRandomState);
+            Game.RestoreState(saveData.RandomState);
         }
 
         public static void SetRandomSeed()
