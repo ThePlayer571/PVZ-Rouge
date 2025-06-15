@@ -9,11 +9,11 @@ using UnityEngine;
 
 namespace TPL.PVZR.Classes.MazeMap
 {
-    public class MazeMapController : IController
+    public abstract class MazeMapController : IMazeMapController
     {
         #region Public
 
-        public MazeMapData MazeMapData { get; private set; }
+        public MazeMapData MazeMapData { get; protected set; }
 
         public GameObject MazeMapGO
         {
@@ -36,22 +36,20 @@ namespace TPL.PVZR.Classes.MazeMap
         // _mazeMapGO
         private GameObject _mazeMapGO;
 
-        private GameObject GenerateMazeMapGo()
-        {
-            throw new NotImplementedException();
-        }
+        protected abstract GameObject GenerateMazeMapGo();
+
         #endregion
 
 
-        public MazeMapController(MazeMapData mazeMapData)
+        protected MazeMapController(MazeMapData mazeMapData)
         {
             _PhaseModel = this.GetModel<IPhaseModel>();
-            
+
             this.MazeMapData = mazeMapData;
-            
+
             // 生成迷宫地图数据
             var generator = MazeMapGenerateHelper.GetGenerator(mazeMapData);
-           (MazeMapData.mazeMatrix)= generator.Generate();
+            MazeMapData.mazeMatrix = generator.Generate();
         }
 
         public IArchitecture GetArchitecture()

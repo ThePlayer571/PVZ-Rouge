@@ -18,7 +18,7 @@ namespace TPL.PVZR.Systems
 
         #region Model
 
-        public MazeMapController MazeMapController { get; private set; }
+        public IMazeMapController MazeMapController { get; private set; }
 
         #endregion
         
