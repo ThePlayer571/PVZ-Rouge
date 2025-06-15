@@ -2,6 +2,7 @@ using System;
 using QFramework;
 using TPL.PVZR.Classes.Game;
 using TPL.PVZR.Classes.MazeMap;
+using TPL.PVZR.Events;
 using TPL.PVZR.Models;
 
 namespace TPL.PVZR.Systems
@@ -41,6 +42,15 @@ namespace TPL.PVZR.Systems
         protected override void OnInit()
         {
             _PhaseModel = this.GetModel<IPhaseModel>();
+
+            this.RegisterEvent<OnEnterPhaseEarlyEvent>(e =>
+            {
+                if (e.changeToPhase == GamePhase.GameInitialization)
+                {
+                    var GameData = e.parameters["GameData"] as GameData;
+                    StartGame(GameData);
+                }
+            });
         }
     }
 }

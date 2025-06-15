@@ -15,12 +15,10 @@ namespace TPL.PVZR.Systems
     {
         protected override void OnInit()
         {
-            "call MainGameSystem.OnInit".LogInfo();
             this.RegisterEvent<OnEnterPhaseEarlyEvent>(e =>
             {
                 if (e.changeToPhase == GamePhase.PreInitialization)
                 {
-                    "call MainGameSystem.OnInit.OnEnterPhaseEarlyEvent".LogInfo();
                     // 初始化设置
                     ResKit.Init();
                     var resLoader = ResLoader.Allocate();
