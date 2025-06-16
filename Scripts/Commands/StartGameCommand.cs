@@ -5,6 +5,7 @@ using TPL.PVZR.Classes.Game;
 using TPL.PVZR.Core.Random;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
+using UnityEngine;
 
 namespace TPL.PVZR.Commands
 {
@@ -13,7 +14,7 @@ namespace TPL.PVZR.Commands
         protected override void OnExecute()
         {
             // 异常处理
-            var PhaseModel = this.GetModel<PhaseModel>();
+            var PhaseModel = this.GetModel<IPhaseModel>();
             if (PhaseModel.GamePhase != GamePhase.MainMenu)
                 throw new Exception($"在不正确的阶段执行StartRandomNewGameCommand：{PhaseModel.GamePhase}");
 
@@ -22,8 +23,9 @@ namespace TPL.PVZR.Commands
             GameData.seed = RandomHelper.Default.NextUnsigned();
 
             // 开始游戏
-            PhaseModel.ChangePhase(GamePhase.PreInitialization,
+            PhaseModel.ChangePhase(GamePhase.GameInitialization,
                 new Dictionary<string, object> { { "GameData", GameData } });
+            
         }
     }
 

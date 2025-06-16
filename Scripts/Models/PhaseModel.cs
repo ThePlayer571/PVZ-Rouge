@@ -6,7 +6,7 @@ using TPL.PVZR.Events;
 
 namespace TPL.PVZR.Models
 {
-    interface IPhaseModel : IModel
+    public interface IPhaseModel : IModel
     {
         GamePhase GamePhase { get; }
 
@@ -93,7 +93,8 @@ namespace TPL.PVZR.Models
             [GamePhase.PreInitialization] = new[] { GamePhase.BeforeStart },
             [GamePhase.MainMenu] = new[] { GamePhase.PreInitialization },
             [GamePhase.GameInitialization] = new[] { GamePhase.MainMenu },
-            [GamePhase.MazeMap] = new[] { GamePhase.GameInitialization, GamePhase.LevelExiting },
+            [GamePhase.MazeMapInitialization] = new[] { GamePhase.GameInitialization },
+            [GamePhase.MazeMap] = new[] { GamePhase.MazeMapInitialization },
             [GamePhase.LevelPreInitialization] = new[] { GamePhase.MazeMap },
             [GamePhase.LevelInitialization] = new[] { GamePhase.LevelPreInitialization },
             [GamePhase.ChooseCards] = new[] { GamePhase.LevelInitialization },

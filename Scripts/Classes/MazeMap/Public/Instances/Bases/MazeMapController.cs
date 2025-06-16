@@ -15,28 +15,13 @@ namespace TPL.PVZR.Classes.MazeMap
 
         public MazeMapData MazeMapData { get; protected set; }
 
-        public GameObject MazeMapGO
-        {
-            private set => _mazeMapGO = value;
-            get
-            {
-                if (_PhaseModel.GamePhase != GamePhase.MazeMap)
-                    throw new Exception($"在不正确的时机获取MazeMapGO：{_PhaseModel.GamePhase}");
-                if (!_mazeMapGO) _mazeMapGO = GenerateMazeMapGo();
-                return _mazeMapGO;
-            }
-        }
-
+        public abstract void SetMazeMapTiles();
+        
         #endregion
 
         #region Private
 
-        private IPhaseModel _PhaseModel;
-
-        // _mazeMapGO
-        private GameObject _mazeMapGO;
-
-        protected abstract GameObject GenerateMazeMapGo();
+        protected IPhaseModel _PhaseModel;
 
         #endregion
 
