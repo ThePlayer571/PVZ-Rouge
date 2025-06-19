@@ -4,7 +4,7 @@ namespace TPL.PVZR.Classes.LevelStuff
 {
     public class Attack
     {
-        public AttackDefinition AttackDefinition;
+        private AttackDefinition AttackDefinition;
         // 我想或许不用让外界访问AttackDefinition，而是提供方便的方法调用
 
 

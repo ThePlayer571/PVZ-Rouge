@@ -1,12 +1,13 @@
+using QFramework;
+using UnityEngine;
+
 namespace TPL.PVZR.ViewControllers.Entities
 {
-    public interface IAttackable
+    public class Entity : MonoBehaviour, IController
     {
-        void TakeAttack();
-    }
-    
-    public class Entity
-    {
-        
+        public IArchitecture GetArchitecture()
+        {
+            return PVZRouge.Interface;
+        }
     }
 }
