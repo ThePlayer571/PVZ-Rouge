@@ -19,9 +19,10 @@ namespace TPL.PVZR.Commands
                 throw new Exception($"在不正确的阶段执行StartRandomNewGameCommand：{PhaseModel.GamePhase}");
 
             // 生成一个新的游戏数据
-            var GameData = new GameData();
-            GameData.seed = RandomHelper.Default.NextUnsigned();
-
+            IGameData GameData = new GameData(
+                seed: RandomHelper.Default.NextUnsigned(),
+                initialSunPoint: 50
+                );
             // 开始游戏
             PhaseModel.ChangePhase(GamePhase.GameInitialization,
                 new Dictionary<string, object> { { "GameData", GameData } });

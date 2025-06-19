@@ -34,7 +34,7 @@ namespace TPL.PVZR.Classes.MazeMap
 
             // 生成迷宫地图数据
             var generator = MazeMapGenerateHelper.GetGenerator(mazeMapData);
-            MazeMapData.mazeMatrix = generator.Generate();
+            (MazeMapData.mazeMatrix, MazeMapData.adjacencyList) = generator.Generate();
         }
 
         public IArchitecture GetArchitecture()

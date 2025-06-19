@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TPL.PVZR.Core;
 
 namespace TPL.PVZR.Classes.MazeMap
@@ -9,7 +10,11 @@ namespace TPL.PVZR.Classes.MazeMap
         
         // Runtime Data
         ulong generatedSeed { get; }
+        
         Matrix<Node> mazeMatrix { get; }
+        public Dictionary<Node, List<Node>> adjacencyList { get; }
+        
+        // 便民属性
         Node startNode { get; }
         //
     }

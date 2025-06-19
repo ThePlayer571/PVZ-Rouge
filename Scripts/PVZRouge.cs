@@ -11,7 +11,8 @@ namespace TPL.PVZR
             // ===== Others =====
             this.RegisterModel<IPhaseModel>(new PhaseModel());
             this.RegisterSystem<IMainGameSystem>(new MainGameSystem());
-            this.RegisterSystem<IGameSystem>(new GameSystem());
+            this.RegisterSystem<IGamePhaseSystem>(new GamePhaseSystem());
+            this.RegisterSystem<ILevelSystem>(new LevelSystem());
         }
     }
 }

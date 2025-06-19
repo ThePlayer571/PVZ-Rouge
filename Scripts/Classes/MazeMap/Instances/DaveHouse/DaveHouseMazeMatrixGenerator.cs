@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using QFramework;
 using TPL.PVZR.Classes.MazeMap.Generator;
 using TPL.PVZR.Core;
 using TPL.PVZR.Core.Random;
@@ -40,7 +41,7 @@ namespace TPL.PVZR.Classes.MazeMap.Instances.DaveHouse
                     $"spotCountRangeInFirstLevel.max不匹配：max={MazeMapDefinition.spotCountRangeInFirstLevel.max}，应为(colCount+1)/2={((MazeMapDefinition.colCount + 1) / 2)}");
         }
 
-        public override Matrix<Node> Generate()
+        public override (Matrix<Node> mazeMatrix, Dictionary<Node, List<Node>>) Generate()
         {
             // 异常处理
             ValidateParameters();
@@ -52,7 +53,7 @@ namespace TPL.PVZR.Classes.MazeMap.Instances.DaveHouse
 
             //
             GenerateDaveHose();
-            return mazeMatrix;
+            return (mazeMatrix, adjacencyList);
         }
 
         #endregion
@@ -155,7 +156,7 @@ namespace TPL.PVZR.Classes.MazeMap.Instances.DaveHouse
                 var col = RandomHelper.MazeMap.RandomChoose(Enumerable.Range(0, MazeMapDefinition.colCount));
                 var node = mazeMatrix[row, col];
                 node.isKey = true;
-                node.level = level; 
+                node.level = level;
                 keyNodes.Add(col);
                 _levelKeyNodes.Add(level, keyNodes);
             }
@@ -225,6 +226,7 @@ namespace TPL.PVZR.Classes.MazeMap.Instances.DaveHouse
                 {
                     var from = mazeMatrix[row, col];
                     var to = mazeMatrix[row + 1, col];
+                    if (!from.isKey || from.level == -1) "????".LogWarning();
                     ConnectNodes(from, to);
                 }
 
@@ -248,6 +250,8 @@ namespace TPL.PVZR.Classes.MazeMap.Instances.DaveHouse
                         if (col == component.Last()) break;
                         var from = mazeMatrix[midRow, col];
                         var to = mazeMatrix[midRow, col + 1];
+                        from.level = level;
+                        to.level = level;
                         ConnectNodes(from, to);
                     }
                 }
@@ -259,53 +263,26 @@ namespace TPL.PVZR.Classes.MazeMap.Instances.DaveHouse
         #region 间接调用的
 
         /// <summary>
-        /// 更新两个节点之间的连接关系。
+        /// 更新两个节点之间的连接关系（邻接表方式）。
         /// </summary>
         /// <param name="a">第一个节点</param>
         /// <param name="b">第二个节点</param>
         private void ConnectNodes(Node a, Node b)
         {
             if (a == null || b == null) throw new ArgumentNullException("节点不能为空");
-            // 此外，还有异常：只有直接直线相邻的两个结点才能调用（后面会处理）
+            // 只允许直线相邻节点
+            if (!((a.x == b.x && Math.Abs(a.y - b.y) == 1) || (a.y == b.y && Math.Abs(a.x - b.x) == 1)))
+                throw new ArgumentException("ConnectNodes: 仅支持直线相邻节点");
 
-            if (a.x == b.x)
-            {
-                if (a.y + 1 == b.y)
-                {
-                    a.connections.Yp = true;
-                    b.connections.Yn = true;
-                }
-                else if (a.y - 1 == b.y)
-                {
-                    a.connections.Yn = true;
-                    b.connections.Yp = true;
-                }
-                else
-                {
-                    throw new ArgumentException("ConnectNodes: 两节点的x相同，但y不相邻");
-                }
-            }
-            else if (a.y == b.y)
-            {
-                if (a.x + 1 == b.x)
-                {
-                    a.connections.Xp = true;
-                    b.connections.Xn = true;
-                }
-                else if (a.x - 1 == b.x)
-                {
-                    a.connections.Xn = true;
-                    b.connections.Xp = true;
-                }
-                else
-                {
-                    throw new ArgumentException("ConnectNodes: 两节点的y相同，但x不相邻");
-                }
-            }
-            else
-            {
-                throw new ArgumentException(" ConnectNodes: 两节点x,y皆不相同");
-            }
+            if (!adjacencyList.ContainsKey(a))
+                adjacencyList[a] = new List<Node>();
+            if (!adjacencyList[a].Contains(b))
+                adjacencyList[a].Add(b);
+
+            if (!adjacencyList.ContainsKey(b))
+                adjacencyList[b] = new List<Node>();
+            if (!adjacencyList[b].Contains(a))
+                adjacencyList[b].Add(a);
         }
 
         #endregion

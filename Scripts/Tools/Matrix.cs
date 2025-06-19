@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using QFramework;
+using UnityEngine;
 
 namespace TPL.PVZR.Core
 {
@@ -70,6 +72,48 @@ namespace TPL.PVZR.Core
         }
 
         /// <summary>
+        /// 用指定值填充指定区域
+        /// </summary>
+        /// <param name="startRow">起始行（包含）</param>
+        /// <param name="startCol">起始列（包含）</param>
+        /// <param name="endRow">结束行（包含）</param>
+        /// <param name="endCol">结束列（包含）</param>
+        /// <param name="value">填充值</param>
+        public void Fill(int startRow, int startCol, int endRow, int endCol, T value)
+        {
+            // 自动识别起止点
+            int minRow = Math.Min(startRow, endRow);
+            int maxRow = Math.Max(startRow, endRow);
+            int minCol = Math.Min(startCol, endCol);
+            int maxCol = Math.Max(startCol, endCol);
+
+            if (minRow < 0 || maxRow >= Rows)
+                throw new ArgumentOutOfRangeException("行索引越界");
+            if (minCol < 0 || maxCol >= Columns)
+                throw new ArgumentOutOfRangeException("列索引越界");
+
+            for (int i = minRow; i <= maxRow; i++)
+            {
+                for (int j = minCol; j <= maxCol; j++)
+                {
+                    _data[i, j] = value;
+                }
+            }
+            
+        }
+
+        /// <summary>
+        /// 用指定值填充指定区域（使用Vector2Int，自动识别起止点大小）
+        /// </summary>
+        /// <param name="start">第一个点</param>
+        /// <param name="end">第二个点</param>
+        /// <param name="value">填充值</param>
+        public void Fill(Vector2Int start, Vector2Int end, T value)
+        {
+            Fill(start.x, start.y, end.x, end.y, value);
+        }
+
+        /// <summary>
         /// 用生成函数填充矩阵
         /// </summary>
         /// <param name="generator">接收行列索引，返回填充值的函数</param>
@@ -85,6 +129,7 @@ namespace TPL.PVZR.Core
                 }
             }
         }
+
         /// <summary>
         /// 获取指定位置周围3x3区域内的元素（包括自身）
         /// </summary>
@@ -94,26 +139,26 @@ namespace TPL.PVZR.Core
         public IEnumerable<T> GetNeighbors(int row, int column)
         {
             ValidateIndex(row, column);
-    
+
             // 3x3邻域的行列偏移量
             int[] offsets = { -1, 0, 1 };
-    
+
             foreach (int iOffset in offsets)
             {
                 int neighborRow = row + iOffset;
                 if (neighborRow < 0 || neighborRow >= Rows) continue;
-        
+
                 foreach (int jOffset in offsets)
                 {
                     int neighborCol = column + jOffset;
                     if (neighborCol < 0 || neighborCol >= Columns) continue;
-            
+
                     yield return _data[neighborRow, neighborCol];
                 }
             }
         }
-        
-        
+
+
         /// <summary>
         /// 二维索引器
         /// </summary>
@@ -128,6 +173,22 @@ namespace TPL.PVZR.Core
             {
                 ValidateIndex(row, column);
                 _data[row, column] = value;
+            }
+        }
+
+        /// <summary>
+        /// 遍历所有元素及其索引，执行指定操作
+        /// </summary>
+        /// <param name="action">接收行、列索引和值的操作</param>
+        public void Foreach(Action<int, int, T> action)
+        {
+            if (action == null) throw new ArgumentNullException(nameof(action));
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                {
+                    action(i, j, _data[i, j]);
+                }
             }
         }
 

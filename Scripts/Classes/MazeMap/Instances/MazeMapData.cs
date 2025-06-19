@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TPL.PVZR.Core;
 
@@ -12,6 +13,7 @@ namespace TPL.PVZR.Classes.MazeMap
         public IMazeMapDefinition definition { get; }
         public ulong generatedSeed { get; }
         public Matrix<Node> mazeMatrix { get; set; }
+        public Dictionary<Node, List<Node>> adjacencyList { get; set; }
         public Node startNode => mazeMatrix.First(n => n.level == 0);
 
         public MazeMapData(IMazeMapDefinition definition, ulong generatedSeed)

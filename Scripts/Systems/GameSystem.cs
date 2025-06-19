@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using QFramework;
 using TPL.PVZR.Classes.Game;
+using TPL.PVZR.Classes.Level;
 using TPL.PVZR.Classes.MazeMap;
 using TPL.PVZR.Classes.MazeMap.Instances.DaveHouse;
 using TPL.PVZR.Events;
@@ -11,15 +13,15 @@ using UnityEngine.SceneManagement;
 
 namespace TPL.PVZR.Systems
 {
-    public interface IGameSystem : ISystem
+    public interface IGamePhaseSystem : ISystem
     {
     }
 
-    public class GameSystem : AbstractSystem, IGameSystem
+    public class GamePhaseSystem : AbstractSystem, IGamePhaseSystem
     {
         #region Public
 
-        #region Model
+        #region MazeMap
 
         public IMazeMapController MazeMapController { get; private set; }
 
@@ -61,7 +63,7 @@ namespace TPL.PVZR.Systems
                         SceneManager.GetActiveScene().name.LogInfo();
                         MazeMapController =
                             new DaveHouseMazeMapController(new MazeMapData(new DaveHouseMazeMapDefinition(),
-                                _GameData.seed));
+                                _GameData.Seed));
                         break;
                 }
             });
@@ -72,10 +74,6 @@ namespace TPL.PVZR.Systems
                 {
                     case GamePhase.MazeMapInitialization:
                         ActionKit.Sequence()
-                            .Callback(() =>
-                            {
-                                "call this".LogInfo();
-                            })
                             .DelayFrame(1) // 等待场景加载
                             .Callback(() =>
                             {
@@ -87,9 +85,26 @@ namespace TPL.PVZR.Systems
             });
             this.RegisterEvent<OnEnterPhaseLateEvent>(e =>
             {
-                if (e.changeToPhase == GamePhase.GameInitialization)
+                switch (e.changeToPhase)
                 {
-                    _PhaseModel.DelayChangePhase(GamePhase.MazeMapInitialization);
+                    case GamePhase.GameInitialization:
+                        _PhaseModel.DelayChangePhase(GamePhase.MazeMapInitialization);
+                        break;
+                    case GamePhase.MazeMapInitialization:
+                        ActionKit.Sequence()
+                            .DelayFrame(2)
+                            .Callback(() => { _PhaseModel.DelayChangePhase(GamePhase.MazeMap); })
+                            .Delay(1)
+                            .Callback(() =>
+                            {
+                                _PhaseModel.DelayChangePhase(GamePhase.LevelPreInitialization,
+                                    new Dictionary<string, object>
+                                        { { "LevelData", new LevelData() } });
+                            })
+                            .Start(GameManager.Instance);
+                        break;
+                    case GamePhase.MazeMap:
+                        break;
                 }
             });
         }
