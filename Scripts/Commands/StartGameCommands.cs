@@ -20,8 +20,7 @@ namespace TPL.PVZR.Commands
 
             // 生成一个新的游戏数据
             IGameData GameData = new GameData(
-                seed: RandomHelper.Default.NextUnsigned(),
-                initialSunPoint: 50
+                seed: RandomHelper.Default.NextUnsigned()
                 );
             // 开始游戏
             PhaseModel.ChangePhase(GamePhase.GameInitialization,

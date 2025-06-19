@@ -5,16 +5,13 @@ namespace TPL.PVZR.Classes.Game
         // MazeMap数据
         public ulong Seed { get; }
 
-        // 玩家属性
-        public int InitialSunPoint { get; set; }
         
         
         //
 
-        public GameData(ulong seed, int initialSunPoint)
+        public GameData(ulong seed)
         {
             this.Seed = seed;
-            this.InitialSunPoint = initialSunPoint;
         }
     }
 }
