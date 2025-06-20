@@ -1,7 +1,10 @@
+using TPL.PVZR.Classes.MazeMap;
+
 namespace TPL.PVZR.Classes.Game
 {
     public interface IGameData
     {
-        ulong Seed { get; }
+        IMazeMapData MazeMapData { get; set; }
+
     }
 }

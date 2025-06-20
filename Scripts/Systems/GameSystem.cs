@@ -6,6 +6,7 @@ using TPL.PVZR.Classes.Level;
 using TPL.PVZR.Classes.MazeMap;
 using TPL.PVZR.Classes.MazeMap.Instances.DaveHouse;
 using TPL.PVZR.Events;
+using TPL.PVZR.Helpers;
 using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers.Managers;
 using TPL.PVZR.ViewControllers.UI;
@@ -19,26 +20,14 @@ namespace TPL.PVZR.Systems
 
     public class GamePhaseSystem : AbstractSystem, IGamePhaseSystem
     {
-        #region Public
-
-        #region MazeMap
-
-        public IMazeMapController MazeMapController { get; private set; }
-
-        #endregion
-
-        #endregion
-
-        #region Private
-
         private IPhaseModel _PhaseModel;
-        private GameData _GameData;
-
-        #endregion
+        private IGameModel _GameModel;
 
         protected override void OnInit()
         {
             _PhaseModel = this.GetModel<IPhaseModel>();
+            _GameModel = this.GetModel<IGameModel>();
+
             this.RegisterEvent<OnLeavePhaseEvent>(e =>
             {
                 switch (e.leaveFromPhase)
@@ -54,16 +43,13 @@ namespace TPL.PVZR.Systems
                 {
                     case GamePhase.GameInitialization:
 
-                        _GameData = e.parameters["GameData"] as GameData;
-                        // StartGame(GameData);
+                        _GameModel.GameData = e.parameters["GameData"] as GameData;
                         break;
 
                     case GamePhase.MazeMapInitialization:
                         SceneManager.LoadScene("MazeMapScene");
                         SceneManager.GetActiveScene().name.LogInfo();
-                        MazeMapController =
-                            new DaveHouseMazeMapController(new MazeMapData(new DaveHouseMazeMapDefinition(),
-                                _GameData.Seed));
+                        _GameModel.MazeMapController = new DaveHouseMazeMapController(_GameModel.GameData.MazeMapData);
                         break;
                 }
             });
@@ -78,7 +64,7 @@ namespace TPL.PVZR.Systems
                             .Callback(() =>
                             {
                                 SceneManager.GetActiveScene().name.LogInfo();
-                                MazeMapController.SetMazeMapTiles();
+                                _GameModel.MazeMapController.SetMazeMapTiles();
                             }).Start(GameManager.Instance);
                         break;
                 }

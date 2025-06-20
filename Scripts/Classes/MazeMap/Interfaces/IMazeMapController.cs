@@ -5,7 +5,7 @@ namespace TPL.PVZR.Classes.MazeMap
 {
     public interface IMazeMapController : IController
     {
-        MazeMapData MazeMapData { get; }
+        IMazeMapData MazeMapData { get; }
         void SetMazeMapTiles();
     }
 }

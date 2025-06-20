@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TPL.PVZR.Classes.MazeMap.Public;
 using TPL.PVZR.Core;
 
 namespace TPL.PVZR.Classes.MazeMap
@@ -20,6 +21,18 @@ namespace TPL.PVZR.Classes.MazeMap
         {
             this.definition = definition;
             this.generatedSeed = generatedSeed;
+            //
+            GenerateMazeMatrix();
         }
+
+        public void GenerateMazeMatrix()
+        {
+            doMazeMatrixGenerated = true;
+            // 生成迷宫地图数据
+            var generator = MazeMapGenerateHelper.GetGenerator(this);
+            (this.mazeMatrix, this.adjacencyList) = generator.Generate();
+        }
+
+        public bool doMazeMatrixGenerated { get; private set; } = false;
     }
 }

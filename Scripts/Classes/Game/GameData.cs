@@ -1,17 +1,17 @@
+using TPL.PVZR.Classes.MazeMap;
+
 namespace TPL.PVZR.Classes.Game
 {
     public class GameData : IGameData
     {
-        // MazeMap数据
-        public ulong Seed { get; }
+        public IMazeMapData MazeMapData { get; set; }
 
-        
-        
+
         //
 
-        public GameData(ulong seed)
+        public GameData(MazeMapData mazeMapData)
         {
-            this.Seed = seed;
+            this.MazeMapData = mazeMapData;
         }
     }
 }

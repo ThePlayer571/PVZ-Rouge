@@ -6,6 +6,7 @@ namespace TPL.PVZR.Classes.MazeMap.Public
 {
     public static class MazeMapGenerateHelper
     {
+        // Generator需要阅读MazeMapData里的信息（比如地图的长宽），这里不能传enum进来
         public static IMazeMatrixGenerator GetGenerator(MazeMapData mazeMapData)
         {
             switch (mazeMapData.definition.generatorId)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using QFramework;
 using TPL.PVZR.Events;
+using UnityEngine;
 
 namespace TPL.PVZR.Models
 {
@@ -27,6 +28,9 @@ namespace TPL.PVZR.Models
 
     public class PhaseModel : AbstractModel, IPhaseModel
     {
+        [SerializeField] private float test;
+
+
         #region Public
 
         public GamePhase GamePhase { get; private set; } = GamePhase.BeforeStart;
@@ -43,7 +47,7 @@ namespace TPL.PVZR.Models
             {
                 throw new ArgumentException($"进行了不允许的状态切换：{this.GamePhase}->{changeToPhase}");
             }
-            
+
             if (_changingPhase) throw new Exception("正在切换状态，不能重复调用ChangePhase");
 
             _changingPhase = true;
@@ -83,6 +87,7 @@ namespace TPL.PVZR.Models
         #endregion
 
         #region Private
+
         private bool _changingPhase = false;
 
         // 延迟切换阶段的存储
@@ -110,7 +115,6 @@ namespace TPL.PVZR.Models
 
         protected override void OnInit()
         {
-            
         }
     }
 }

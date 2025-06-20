@@ -13,6 +13,10 @@ namespace TPL.PVZR.Classes.MazeMap
         
         Matrix<Node> mazeMatrix { get; }
         public Dictionary<Node, List<Node>> adjacencyList { get; }
+
+        // 数据结构生成
+        public void GenerateMazeMatrix();
+        bool doMazeMatrixGenerated { get; }
         
         // 便民属性
         Node startNode { get; }

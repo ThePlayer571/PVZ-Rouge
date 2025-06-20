@@ -9,7 +9,30 @@ namespace TPL.PVZR.Classes.GameStuff
 {
     public static class CardHelper
     {
+        #region Public
+
+        public static CardData GetCardData(PlantId id)
+        {
+            if (_cardsDict.TryGetValue(id, out var cardDefinition))
+            {
+                return new CardData(cardDefinition);
+            }
+
+            throw new ArgumentException("不存在");
+        }
+        
+        public static GameObject CreateSeedOptionController(CardData cardData)
+        {
+            var go = _seedOptionControllerPrefab.Instantiate();
+            go.GetComponent<SeedOptionController>().Initialize(cardData);
+            return go;
+        }
+
+        #endregion
+
+
         private static readonly Dictionary<PlantId, CardDefinition> _cardsDict;
+        private static GameObject _seedOptionControllerPrefab;
 
         static CardHelper()
         {
@@ -28,23 +51,5 @@ namespace TPL.PVZR.Classes.GameStuff
         }
 
 
-        public static CardData GetCardData(PlantId id)
-        {
-            if (_cardsDict.TryGetValue(id, out var cardDefinition))
-            {
-                return new CardData(cardDefinition);
-            }
-
-            throw new ArgumentException("不存在");
-        }
-
-        private static GameObject _seedOptionControllerPrefab;
-
-        public static GameObject CreateSeedOptionController(CardData cardData)
-        {
-            var go = _seedOptionControllerPrefab.Instantiate();
-            go.GetComponent<SeedOptionController>().Initialize(cardData);
-            return go;
-        }
     }
 }

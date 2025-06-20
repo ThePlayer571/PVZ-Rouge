@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using QFramework;
 using TPL.PVZR.Classes.Game;
 using TPL.PVZR.Core.Random;
+using TPL.PVZR.Helpers;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
 using UnityEngine;
@@ -19,9 +20,7 @@ namespace TPL.PVZR.Commands
                 throw new Exception($"在不正确的阶段执行StartRandomNewGameCommand：{PhaseModel.GamePhase}");
 
             // 生成一个新的游戏数据
-            IGameData GameData = new GameData(
-                seed: RandomHelper.Default.NextUnsigned()
-                );
+            IGameData GameData = GameHelper.CreateGameData();
             // 开始游戏
             PhaseModel.ChangePhase(GamePhase.GameInitialization,
                 new Dictionary<string, object> { { "GameData", GameData } });

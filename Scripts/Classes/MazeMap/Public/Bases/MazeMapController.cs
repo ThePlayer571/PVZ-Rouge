@@ -13,28 +13,22 @@ namespace TPL.PVZR.Classes.MazeMap
     {
         #region Public
 
-        public MazeMapData MazeMapData { get; protected set; }
+        public IMazeMapData MazeMapData { get; protected set; }
 
         public abstract void SetMazeMapTiles();
         
         #endregion
 
-        #region Private
-
+        
+        
+        
         protected IPhaseModel _PhaseModel;
-
-        #endregion
-
-
-        protected MazeMapController(MazeMapData mazeMapData)
+        
+        protected MazeMapController(IMazeMapData mazeMapData)
         {
             _PhaseModel = this.GetModel<IPhaseModel>();
 
             this.MazeMapData = mazeMapData;
-
-            // 生成迷宫地图数据
-            var generator = MazeMapGenerateHelper.GetGenerator(mazeMapData);
-            (MazeMapData.mazeMatrix, MazeMapData.adjacencyList) = generator.Generate();
         }
 
         public IArchitecture GetArchitecture()
