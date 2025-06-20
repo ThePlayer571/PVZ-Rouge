@@ -1,4 +1,7 @@
 using QFramework;
+using TPL.PVZR.Classes.GameStuff;
+using TPL.PVZR.Core;
+using TPL.PVZR.Helpers;
 using TPL.PVZR.Models;
 using UnityEngine;
 
@@ -14,6 +17,13 @@ namespace TPL.PVZR.ViewControllers.Managers
                 .Callback(() =>
                 {
                     _.ChangePhase(GamePhase.PreInitialization);
+                }).Start(this);
+            
+            ActionKit.Sequence()
+                .Delay(0.5f)
+                .Callback(() =>
+                {
+                    PlantHelper.CreatePlant(PlantId.PeaShooter, Direction2.Right);
                 }).Start(this);
         }
 

@@ -36,5 +36,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
 
         protected float speed;
 
+        public void TakeAttack(Attack attack)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

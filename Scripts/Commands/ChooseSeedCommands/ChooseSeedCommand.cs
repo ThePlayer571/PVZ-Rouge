@@ -30,7 +30,7 @@ namespace TPL.PVZR.Commands
             if (seed.IsSelected == true) throw new Exception("尝试选择一个已经被选择的种子");
 
             // 数据操作
-            ReferenceHelper.ChooseSeedPanel.chosenSeeds.Add(seed);
+            ReferenceHelper.ChooseSeedPanel.chosenSeedOptions.Add(seed);
             
             // 动画
             GameObject movingView = null;

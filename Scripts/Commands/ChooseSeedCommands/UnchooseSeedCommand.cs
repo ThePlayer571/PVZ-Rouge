@@ -32,7 +32,7 @@ namespace TPL.PVZR.Commands
 
 
             // 数据操作
-            ReferenceHelper.ChooseSeedPanel.chosenSeeds.Remove(seed);
+            ReferenceHelper.ChooseSeedPanel.chosenSeedOptions.Remove(seed);
 
             // 动画
             GameObject movingView = null;

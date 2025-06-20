@@ -1,3 +1,4 @@
+using TPL.PVZR.Classes.GameStuff;
 using UnityEngine;
 
 namespace TPL.PVZR.Classes.Level
@@ -6,5 +7,6 @@ namespace TPL.PVZR.Classes.Level
     {
         int InitialSunPoint { get; }
         Vector2 InitialPlayerPos { get; }
+        GlobalEntityData GlobalEntityData { get; }
     }
 }

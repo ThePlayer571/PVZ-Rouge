@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using QFramework;
 using TPL.PVZR.Classes.Game;
+using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Classes.MazeMap;
 using TPL.PVZR.Classes.MazeMap.Instances.DaveHouse;
 using TPL.PVZR.Core.Random;
@@ -12,7 +15,17 @@ namespace TPL.PVZR.Helpers
         {
             seed ??= RandomHelper.Default.NextUnsigned();
             //
-            return new GameData(MazeMapHelper.CreateMazeMapData(MazeMapIdentifier.DaveHouse, seed.Value));
+            var testMazeMapData = MazeMapHelper.CreateMazeMapData(MazeMapIdentifier.DaveHouse, seed.Value);
+            var testInventoryData = new InventoryData();
+            testInventoryData.Cards = new List<CardData>()
+            {
+                CardHelper.CreateCardData(PlantId.PeaShooter),
+                CardHelper.CreateCardData(PlantId.PeaShooter),
+                CardHelper.CreateCardData(PlantId.PeaShooter),
+                CardHelper.CreateCardData(PlantId.PeaShooter),
+            };
+
+            return new GameData(testMazeMapData, testInventoryData);
         }
     }
 }

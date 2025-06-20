@@ -15,26 +15,38 @@ namespace TPL.PVZR.Systems
     {
         protected override void OnInit()
         {
-            this.RegisterEvent<OnEnterPhaseEarlyEvent>(e =>
+            this.RegisterEvent<OnPhaseChangeEvent>(e =>
             {
-                if (e.changeToPhase == GamePhase.PreInitialization)
+                switch (e.GamePhase)
                 {
-                    // 初始化设置
-                    ResKit.Init();
-                    var resLoader = ResLoader.Allocate();
-                    var gm = resLoader.LoadSync<GameObject>(Gamemanager_prefab.BundleName, Gamemanager_prefab.GameManager).Instantiate();
-                    Object.DontDestroyOnLoad(gm);
-                    UIKit.Root.SetResolution(1920, 1080, 0);
+                    case GamePhase.PreInitialization:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.EnterEarly:
+                                // 初始化设置
+                                ResKit.Init();
+                                var resLoader = ResLoader.Allocate();
+                                var gm = resLoader.LoadSync<GameObject>(Gamemanager_prefab.BundleName,
+                                    Gamemanager_prefab.GameManager).Instantiate();
+                                Object.DontDestroyOnLoad(gm);
+                                UIKit.Root.SetResolution(1920, 1080, 0);
 
-                    this.GetModel<IPhaseModel>().DelayChangePhase(GamePhase.MainMenu);
-                }
-            });
+                                this.GetModel<IPhaseModel>().DelayChangePhase(GamePhase.MainMenu);
+                                break;
+                        }
 
-            this.RegisterEvent<OnEnterPhaseEvent>(e =>
-            {
-                if (e.changeToPhase == GamePhase.MainMenu)
-                {
-                    UIKit.OpenPanel<UIGameStartPanel>();
+                        break;
+                    case GamePhase.MainMenu:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.EnterNormal:
+                                UIKit.OpenPanel<UIGameStartPanel>();
+                                break;
+                            case PhaseStage.LeaveLate:
+                                UIKit.ClosePanel<UIGameStartPanel>();
+                                break;
+                        }
+                        break;
                 }
             });
         }

@@ -2,7 +2,9 @@ using System.Collections.Generic;
 
 namespace TPL.PVZR.Classes.GameStuff
 {
-    public class PlayerInventoryData
+    
+    
+    public class InventoryData
     {
         // 玩家属性
         public int InitialSunPoint { get; set; } = 50;

@@ -11,7 +11,7 @@ namespace TPL.PVZR.Classes.GameStuff
     {
         #region Public
 
-        public static CardData GetCardData(PlantId id)
+        public static CardData CreateCardData(PlantId id)
         {
             if (_cardsDict.TryGetValue(id, out var cardDefinition))
             {
@@ -20,11 +20,18 @@ namespace TPL.PVZR.Classes.GameStuff
 
             throw new ArgumentException("不存在");
         }
-        
-        public static GameObject CreateSeedOptionController(CardData cardData)
+
+        public static SeedOptionController CreateSeedOptionController(CardData cardData)
         {
-            var go = _seedOptionControllerPrefab.Instantiate();
-            go.GetComponent<SeedOptionController>().Initialize(cardData);
+            var go = _seedOptionControllerPrefab.Instantiate().GetComponent<SeedOptionController>();
+            go.Initialize(cardData);
+            return go;
+        }
+
+        public static SeedController CreateSeedController(CardData cardData)
+        {
+            var go = _seedControllerPrefab.Instantiate().GetComponent<SeedController>();
+            go.Initialize(cardData);
             return go;
         }
 
@@ -33,6 +40,7 @@ namespace TPL.PVZR.Classes.GameStuff
 
         private static readonly Dictionary<PlantId, CardDefinition> _cardsDict;
         private static GameObject _seedOptionControllerPrefab;
+        private static GameObject _seedControllerPrefab;
 
         static CardHelper()
         {
@@ -45,11 +53,10 @@ namespace TPL.PVZR.Classes.GameStuff
                 [PlantId.PeaShooter] = resLoader.LoadSync<CardDefinition>(Carddefinition_peashooter_asset.BundleName,
                     Carddefinition_peashooter_asset.CardDefinition_Peashooter),
             };
-            //
+            // TODO
+            _seedControllerPrefab = resLoader.LoadSync<GameObject>(Seedcontroller_prefab.BundleName, Seedcontroller_prefab.SeedController);
             _seedOptionControllerPrefab =
                 resLoader.LoadSync<GameObject>(Seedoption_prefab.BundleName, Seedoption_prefab.SeedOption);
         }
-
-
     }
 }

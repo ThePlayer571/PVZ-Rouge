@@ -34,7 +34,7 @@ namespace TPL.PVZR.ViewControllers
         private void Jump()
         {
             var start = new Vector2(this.transform.position.x, _Collider.bounds.min.y);
-            var size = new Vector2(0.8f, 0.02f);
+            var size = new Vector2(0.5f, 0.02f);
             bool OnGround = Physics2D.OverlapBox(start, size, 0, LayerMask.GetMask("Barrier"));
             
             if (OnGround)

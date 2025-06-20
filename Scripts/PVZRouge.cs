@@ -8,11 +8,17 @@ namespace TPL.PVZR
     {
         protected override void Init()
         {
+            // ===== Game =====
+            this.RegisterSystem<IMainGameSystem>(new MainGameSystem());
+            this.RegisterSystem<IGameSystem>(new GameSystem());
+            this.RegisterModel<IGameModel>(new GameModel());
+            
+            // ===== Level =====
+            this.RegisterModel<ILevelModel>(new LevelModel());
+            this.RegisterSystem<ILevelSystem>(new LevelSystem());
+            
             // ===== Others =====
             this.RegisterModel<IPhaseModel>(new PhaseModel());
-            this.RegisterSystem<IMainGameSystem>(new MainGameSystem());
-            this.RegisterSystem<IGamePhaseSystem>(new GamePhaseSystem());
-            this.RegisterSystem<ILevelSystem>(new LevelSystem());
         }
     }
 }

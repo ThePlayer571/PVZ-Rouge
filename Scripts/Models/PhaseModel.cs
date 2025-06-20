@@ -52,13 +52,20 @@ namespace TPL.PVZR.Models
 
             _changingPhase = true;
             // 切换状态
-            this.SendEvent(new OnLeavePhaseEarlyEvent { leaveFromPhase = this.GamePhase, parameters = parameters });
-            this.SendEvent(new OnLeavePhaseEvent { leaveFromPhase = this.GamePhase, parameters = parameters });
-            this.SendEvent(new OnLeavePhaseLateEvent { leaveFromPhase = this.GamePhase, parameters = parameters });
+            var leaveFromPhase = this.GamePhase;
+            this.SendEvent(new OnPhaseChangeEvent
+                { GamePhase = leaveFromPhase, PhaseStage = PhaseStage.LeaveEarly, Parameters = parameters });
+            this.SendEvent(new OnPhaseChangeEvent
+                { GamePhase = leaveFromPhase, PhaseStage = PhaseStage.LeaveNormal, Parameters = parameters });
+            this.SendEvent(new OnPhaseChangeEvent
+                { GamePhase = leaveFromPhase, PhaseStage = PhaseStage.LeaveLate, Parameters = parameters });
             this.GamePhase = changeToPhase;
-            this.SendEvent(new OnEnterPhaseEarlyEvent { changeToPhase = changeToPhase, parameters = parameters });
-            this.SendEvent(new OnEnterPhaseEvent { changeToPhase = changeToPhase, parameters = parameters });
-            this.SendEvent(new OnEnterPhaseLateEvent { changeToPhase = changeToPhase, parameters = parameters });
+            this.SendEvent(new OnPhaseChangeEvent
+                { GamePhase = changeToPhase, PhaseStage = PhaseStage.EnterEarly, Parameters = parameters });
+            this.SendEvent(new OnPhaseChangeEvent
+                { GamePhase = changeToPhase, PhaseStage = PhaseStage.EnterNormal, Parameters = parameters });
+            this.SendEvent(new OnPhaseChangeEvent
+                { GamePhase = changeToPhase, PhaseStage = PhaseStage.EnterLate, Parameters = parameters });
             // 
             _changingPhase = false;
 
@@ -103,7 +110,8 @@ namespace TPL.PVZR.Models
             [GamePhase.LevelPreInitialization] = new[] { GamePhase.MazeMap },
             [GamePhase.LevelInitialization] = new[] { GamePhase.LevelPreInitialization },
             [GamePhase.ChooseSeeds] = new[] { GamePhase.LevelInitialization },
-            [GamePhase.Gameplay] = new[] { GamePhase.ChooseSeeds },
+            [GamePhase.ReadyToStart] = new[] { GamePhase.ChooseSeeds },
+            [GamePhase.Gameplay] = new[] { GamePhase.ReadyToStart },
             [GamePhase.AllEnemyKilled] = new[] { GamePhase.Gameplay },
             [GamePhase.ChooseLoots] = new[] { GamePhase.AllEnemyKilled },
             [GamePhase.GameOverDefeat] = new[] { GamePhase.Gameplay },

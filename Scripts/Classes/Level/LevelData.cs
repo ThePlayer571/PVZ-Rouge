@@ -1,13 +1,24 @@
+using TPL.PVZR.Classes.Game;
+using TPL.PVZR.Classes.GameStuff;
 using UnityEngine;
 
 namespace TPL.PVZR.Classes.Level
 {
     public class LevelData : ILevelData
     {
-        // 需要实时加载的数据，放到这里是为了好用
-        public int InitialSunPoint { get; } = 50;
+        // Runtime Definition
+        public int InitialSunPoint { get; }
+        public GlobalEntityData GlobalEntityData { get; }
         
-        // 配置数据
+        // Definition
         public Vector2 InitialPlayerPos { get; } = new Vector2(20, 9);
+        public LevelId LevelId { get; } = LevelId.DaveLawn;
+        
+        
+        public LevelData(in IGameData gameData)
+        {
+            this.InitialSunPoint = gameData.InventoryData.InitialSunPoint;
+            this.GlobalEntityData = gameData.GlobalEntityData;
+        }
     }
 }

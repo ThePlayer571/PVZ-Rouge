@@ -3,39 +3,20 @@ using TPL.PVZR.Models;
 
 namespace TPL.PVZR.Events
 {
-    public struct OnEnterPhaseEarlyEvent
+    public enum PhaseStage
     {
-        public GamePhase changeToPhase;
-        public Dictionary<string,object> parameters;
+        EnterEarly,
+        EnterNormal,
+        EnterLate,
+        LeaveEarly,
+        LeaveNormal,
+        LeaveLate
     }
 
-    public struct OnEnterPhaseEvent
+    public struct OnPhaseChangeEvent
     {
-        public GamePhase changeToPhase;
-        public Dictionary<string,object> parameters;
-    }
-
-    public struct OnEnterPhaseLateEvent
-    {
-        public GamePhase changeToPhase;
-        public Dictionary<string,object> parameters;
-    }
-
-    public struct OnLeavePhaseEarlyEvent
-    {
-        public GamePhase leaveFromPhase;
-        public Dictionary<string,object> parameters;
-    }
-
-    public struct OnLeavePhaseEvent
-    {
-        public GamePhase leaveFromPhase;
-        public Dictionary<string,object> parameters;
-    }
-
-    public struct OnLeavePhaseLateEvent
-    {
-        public GamePhase leaveFromPhase;
-        public Dictionary<string,object> parameters;
+        public GamePhase GamePhase;
+        public PhaseStage PhaseStage;
+        public Dictionary<string, object> Parameters;
     }
 }
