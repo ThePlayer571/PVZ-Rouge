@@ -11,10 +11,11 @@ namespace TPL.PVZR.Classes.Level
         public GlobalEntityData GlobalEntityData { get; }
         
         // Definition
-        public Vector2 InitialPlayerPos { get; } = new Vector2(20, 9);
         public LevelId LevelId { get; } = LevelId.DaveLawn;
-        
-        
+        public Vector2 InitialPlayerPos { get; } = new Vector2(20, 9);
+        public Vector2Int MapSize { get; } = new Vector2Int(47, 37);
+
+
         public LevelData(in IGameData gameData)
         {
             this.InitialSunPoint = gameData.InventoryData.InitialSunPoint;

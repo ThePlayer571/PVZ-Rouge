@@ -4,6 +4,7 @@ using TMPro;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Commands.HandCommands;
+using TPL.PVZR.Core;
 using TPL.PVZR.Events.HandEvents;
 using TPL.PVZR.Systems;
 using UnityEngine;
@@ -43,6 +44,13 @@ namespace TPL.PVZR.ViewControllers.Others
                     UpdateUI();
                 }
             });
+            
+            ReferenceHelper.SeedControllers.Add(this);
+        }
+
+        private void OnDestroy()
+        {
+            ReferenceHelper.SeedControllers.Remove(this);
         }
 
         // 数据

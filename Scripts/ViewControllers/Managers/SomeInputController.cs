@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Commands.HandCommands;
+using TPL.PVZR.Core;
 using TPL.PVZR.Events;
 using TPL.PVZR.Events.HandEvents;
 using TPL.PVZR.Models;
@@ -35,30 +37,30 @@ namespace TPL.PVZR.ViewControllers.Managers
                 }
             };
 
-            //TODO TrySelectSeedWithIndex函数改名，这个名字根本不对
-            _inputActions.Level.SelectSeed_1.performed += (context) => TrySelectSeedWithIndex(1);
-            _inputActions.Level.SelectSeed_2.performed += (context) => TrySelectSeedWithIndex(2);
-            _inputActions.Level.SelectSeed_3.performed += (context) => TrySelectSeedWithIndex(3);
-            _inputActions.Level.SelectSeed_4.performed += (context) => TrySelectSeedWithIndex(4);
-            _inputActions.Level.SelectSeed_5.performed += (context) => TrySelectSeedWithIndex(5);
-            _inputActions.Level.SelectSeed_6.performed += (context) => TrySelectSeedWithIndex(6);
-            _inputActions.Level.SelectSeed_7.performed += (context) => TrySelectSeedWithIndex(7);
-            _inputActions.Level.SelectSeed_8.performed += (context) => TrySelectSeedWithIndex(8);
+            _inputActions.Level.SelectSeed_1.performed += (context) => TrySelectSeedByIndex(1);
+            _inputActions.Level.SelectSeed_2.performed += (context) => TrySelectSeedByIndex(2);
+            _inputActions.Level.SelectSeed_3.performed += (context) => TrySelectSeedByIndex(3);
+            _inputActions.Level.SelectSeed_4.performed += (context) => TrySelectSeedByIndex(4);
+            _inputActions.Level.SelectSeed_5.performed += (context) => TrySelectSeedByIndex(5);
+            _inputActions.Level.SelectSeed_6.performed += (context) => TrySelectSeedByIndex(6);
+            _inputActions.Level.SelectSeed_7.performed += (context) => TrySelectSeedByIndex(7);
+            _inputActions.Level.SelectSeed_8.performed += (context) => TrySelectSeedByIndex(8);
 
-            void TrySelectSeedWithIndex(int index)
+            void TrySelectSeedByIndex(int index)
             {
                 if (_PhaseModel.GamePhase != GamePhase.Gameplay) return;
-                if (!_LevelModel.TryGetSeedControllerWithIndex(index, out var seedController)) return;
+                var targetSeedController = ReferenceHelper.SeedControllers.FirstOrDefault(sc => sc.Index == index);
+                if (targetSeedController == null) return;
 
                 if (_HandSystem.HandState == HandState.Empty)
                 {
-                    this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(seedController));
+                    this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(targetSeedController));
                 }
                 else
                 {
                     if (_HandSystem.PickedSeed.Index == index) return;
                     this.SendCommand<DeselectCommand>();
-                    this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(seedController));
+                    this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(targetSeedController));
                 }
             }
 

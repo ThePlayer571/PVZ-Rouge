@@ -82,10 +82,11 @@ namespace TPL.PVZR.Systems
                                 var ChosenSeeds = _LevelModel.ChosenCardData;
                                 var chosenSeedOptions = ReferenceHelper.ChooseSeedPanel.chosenSeedOptions;
                                 //
+                                // 这里为了确保index对应，没有用List.Add（非常安全）
+                                ChosenSeeds.Resize(chosenSeedOptions.Count);
                                 for (int i = 0; i < chosenSeedOptions.Count; i++)
                                 {
-                                    // 注意index是i+1
-                                    ChosenSeeds[i + 1] = chosenSeedOptions[i].CardData;
+                                    ChosenSeeds[i] = chosenSeedOptions[i].CardData;
                                 }
 
                                 break;

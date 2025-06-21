@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using QFramework;
 using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Classes.Level;
+using TPL.PVZR.Classes.LevelStuff;
+using TPL.PVZR.Core;
 using TPL.PVZR.ViewControllers.Others;
 
 namespace TPL.PVZR.Models
@@ -11,9 +13,10 @@ namespace TPL.PVZR.Models
     {
         // Data
         int SunPoint { get; set; }
-        bool TryGetSeedControllerWithIndex(int index, out SeedController seedController);
-        Dictionary<int, CardData> ChosenCardData { get; }
-        Dictionary<int, SeedController> ChosenSeedControllers { get; }
+        List<CardData> ChosenCardData { get; }
+        Matrix<Cell> LevelMatrix { get; }
+
+        // Runtime Definition
         ILevelData LevelData { get; }
 
         // Methods
@@ -25,33 +28,30 @@ namespace TPL.PVZR.Models
     public class LevelModel : AbstractModel, ILevelModel
     {
         public int SunPoint { get; set; }
-        public bool TryGetSeedControllerWithIndex(int index, out SeedController seedController)
-        {
-            return ChosenSeedControllers.TryGetValue(index, out seedController);
-        }
 
-        public Dictionary<int, CardData> ChosenCardData { get; private set; }
-        public Dictionary<int, SeedController> ChosenSeedControllers { get; private set; }
+        public List<CardData> ChosenCardData { get; private set; }
+        public Matrix<Cell> LevelMatrix { get; private set; }
+
+
         public ILevelData LevelData { get; private set; }
 
         public void Initialize(ILevelData levelData)
         {
-            this.SunPoint = levelData.InitialSunPoint;
-
             this.LevelData = levelData;
+            
+            this.SunPoint = levelData.InitialSunPoint;
+            
         }
 
         public void Reset()
         {
             ChosenCardData.Clear();
-            ChosenSeedControllers.Clear();
         }
 
 
         protected override void OnInit()
         {
-            ChosenCardData = new Dictionary<int, CardData>();
-            ChosenSeedControllers = new Dictionary<int, SeedController>();
+            ChosenCardData = new List<CardData>();
         }
     }
 }
