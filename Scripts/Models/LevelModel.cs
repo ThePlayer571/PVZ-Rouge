@@ -11,8 +11,9 @@ namespace TPL.PVZR.Models
     {
         // Data
         int SunPoint { get; set; }
-        List<CardData> ChosenCardData { get; }
-        List<SeedController> ChosenSeedControllers { get; }
+        bool TryGetSeedControllerWithIndex(int index, out SeedController seedController);
+        Dictionary<int, CardData> ChosenCardData { get; }
+        Dictionary<int, SeedController> ChosenSeedControllers { get; }
         ILevelData LevelData { get; }
 
         // Methods
@@ -24,8 +25,13 @@ namespace TPL.PVZR.Models
     public class LevelModel : AbstractModel, ILevelModel
     {
         public int SunPoint { get; set; }
-        public List<CardData> ChosenCardData { get; private set; }
-        public List<SeedController> ChosenSeedControllers { get; private set; }
+        public bool TryGetSeedControllerWithIndex(int index, out SeedController seedController)
+        {
+            return ChosenSeedControllers.TryGetValue(index, out seedController);
+        }
+
+        public Dictionary<int, CardData> ChosenCardData { get; private set; }
+        public Dictionary<int, SeedController> ChosenSeedControllers { get; private set; }
         public ILevelData LevelData { get; private set; }
 
         public void Initialize(ILevelData levelData)
@@ -44,8 +50,8 @@ namespace TPL.PVZR.Models
 
         protected override void OnInit()
         {
-            ChosenCardData = new List<CardData>();
-            ChosenSeedControllers = new List<SeedController>();
+            ChosenCardData = new Dictionary<int, CardData>();
+            ChosenSeedControllers = new Dictionary<int, SeedController>();
         }
     }
 }

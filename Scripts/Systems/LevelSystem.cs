@@ -81,12 +81,13 @@ namespace TPL.PVZR.Systems
                                 // 将选卡数据转录
                                 var ChosenSeeds = _LevelModel.ChosenCardData;
                                 var chosenSeedOptions = ReferenceHelper.ChooseSeedPanel.chosenSeedOptions;
-                                // 因为之后会用index选择Seed，这里也用index的方式设置是最安全的，别改！！！！（不过有可能outOfIndex）
-                                ChosenSeeds.Resize(chosenSeedOptions.Count);
+                                //
                                 for (int i = 0; i < chosenSeedOptions.Count; i++)
                                 {
-                                    ChosenSeeds[i] = chosenSeedOptions[i].CardData;
+                                    // 注意index是i+1
+                                    ChosenSeeds[i + 1] = chosenSeedOptions[i].CardData;
                                 }
+
                                 break;
                         }
 
@@ -95,7 +96,19 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterEarly:
-                                UIKit.OpenPanel<UILevelGameplayPanel>();
+                                var LevelGameplayPanel = UIKit.OpenPanel<UILevelGameplayPanel>();
+                                LevelGameplayPanel.HideUIInstantly();
+                                break;
+                            case PhaseStage.EnterNormal:
+                                ActionKit.Sequence()
+                                    .Callback(() => { "准备安置植物！！！".LogInfo(); })
+                                    .Delay(2f)
+                                    .Callback(() =>
+                                    {
+                                        ReferenceHelper.LevelGameplayPanel.ShowUI();
+                                        _PhaseModel.DelayChangePhase(GamePhase.Gameplay);
+                                    })
+                                    .Start(GameManager.Instance);
                                 break;
                         }
 

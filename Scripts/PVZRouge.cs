@@ -12,11 +12,12 @@ namespace TPL.PVZR
             this.RegisterSystem<IMainGameSystem>(new MainGameSystem());
             this.RegisterSystem<IGameSystem>(new GameSystem());
             this.RegisterModel<IGameModel>(new GameModel());
-            
+
             // ===== Level =====
             this.RegisterModel<ILevelModel>(new LevelModel());
             this.RegisterSystem<ILevelSystem>(new LevelSystem());
-            
+            this.RegisterSystem<IHandSystem>(new HandSystem());
+
             // ===== Others =====
             this.RegisterModel<IPhaseModel>(new PhaseModel());
         }

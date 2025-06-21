@@ -28,10 +28,10 @@ namespace TPL.PVZR.Classes.GameStuff
             return go;
         }
 
-        public static SeedController CreateSeedController(CardData cardData)
+        public static SeedController CreateSeedController(CardData cardData, int index)
         {
             var go = _seedControllerPrefab.Instantiate().GetComponent<SeedController>();
-            go.Initialize(cardData);
+            go.Initialize(cardData, index);
             return go;
         }
 
@@ -53,8 +53,8 @@ namespace TPL.PVZR.Classes.GameStuff
                 [PlantId.PeaShooter] = resLoader.LoadSync<CardDefinition>(Carddefinition_peashooter_asset.BundleName,
                     Carddefinition_peashooter_asset.CardDefinition_Peashooter),
             };
-            // TODO
-            _seedControllerPrefab = resLoader.LoadSync<GameObject>(Seedcontroller_prefab.BundleName, Seedcontroller_prefab.SeedController);
+            _seedControllerPrefab =
+                resLoader.LoadSync<GameObject>(Seedcontroller_prefab.BundleName, Seedcontroller_prefab.SeedController);
             _seedOptionControllerPrefab =
                 resLoader.LoadSync<GameObject>(Seedoption_prefab.BundleName, Seedoption_prefab.SeedOption);
         }
