@@ -44,14 +44,17 @@ namespace TPL.PVZR.Systems
                                 SceneManager.LoadScene("LevelScene");
                                 ActionKit.Sequence()
                                     .DelayFrame(1) // 等待场景加载
+                                    .Callback(() => { LevelData.LevelDefinition.LevelPrefab.Instantiate(); })
+                                    .DelayFrame(1) // 等待LevelPrefab加载
                                     .Callback(() =>
                                     {
+                                        _LevelModel.Initialize(LevelData);
                                         //
                                         var DavePrefab = _ResLoader.LoadSync<Player>(Dave_prefab.BundleName,
                                             Dave_prefab.Dave);
                                         //
                                         var VirtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
-                                        var Player = DavePrefab.Instantiate(LevelData.InitialPlayerPos,
+                                        var Player = DavePrefab.Instantiate(LevelData.LevelDefinition.InitialPlayerPos,
                                             Quaternion.identity);
                                         VirtualCamera.Follow = Player.transform;
                                     }).Start(GameManager.Instance);

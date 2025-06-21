@@ -18,7 +18,7 @@ namespace TPL.PVZR.Classes.GameStuff
                 return new CardData(cardDefinition);
             }
 
-            throw new ArgumentException("不存在");
+            throw new ArgumentException($"未考虑的PlantId：{id}");
         }
 
         public static SeedOptionController CreateSeedOptionController(CardData cardData)

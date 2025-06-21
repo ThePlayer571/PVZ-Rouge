@@ -9,17 +9,18 @@ namespace TPL.PVZR.Classes.Level
         // Runtime Definition
         public int InitialSunPoint { get; }
         public GlobalEntityData GlobalEntityData { get; }
-        
+
         // Definition
-        public LevelId LevelId { get; } = LevelId.DaveLawn;
-        public Vector2 InitialPlayerPos { get; } = new Vector2(20, 9);
-        public Vector2Int MapSize { get; } = new Vector2Int(47, 37);
+        public LevelDefinition LevelDefinition { get; }
+        
 
 
-        public LevelData(in IGameData gameData)
+        public LevelData(in IGameData gameData, in LevelDefinition levelDefinition)
         {
             this.InitialSunPoint = gameData.InventoryData.InitialSunPoint;
             this.GlobalEntityData = gameData.GlobalEntityData;
+            
+            this.LevelDefinition = levelDefinition;
         }
     }
 }

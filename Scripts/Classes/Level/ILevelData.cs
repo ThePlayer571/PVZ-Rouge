@@ -6,8 +6,10 @@ namespace TPL.PVZR.Classes.Level
     public interface ILevelData
     {
         int InitialSunPoint { get; }
+
         GlobalEntityData GlobalEntityData { get; }
+
         // Definition
-        Vector2 InitialPlayerPos { get; }
+        LevelDefinition LevelDefinition { get; }
     }
 }

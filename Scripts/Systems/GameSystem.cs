@@ -71,7 +71,7 @@ namespace TPL.PVZR.Systems
                                     {
                                         _PhaseModel.DelayChangePhase(GamePhase.LevelPreInitialization,
                                             new Dictionary<string, object>
-                                                { { "LevelData", new LevelData(_GameModel.GameData) } });
+                                                { { "LevelData", LevelHelper.CreateLevelData(_GameModel.GameData, LevelId.DaveLawn) } });
                                     })
                                     .Start(GameManager.Instance);
                                 break;
