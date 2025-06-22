@@ -20,6 +20,7 @@ namespace TPL.PVZR.Models
         // 实用方法
         bool IsValidPos(Vector2Int pos);
         bool CanSpawnPlantOn(Vector2Int pos, PlantId id);
+        Cell HandOnCell();
 
         // Methods
         void Initialize(ILevelData levelData);
@@ -50,6 +51,13 @@ namespace TPL.PVZR.Models
             }
 
             throw new ArgumentException($"出现未考虑的plantId: {id}");
+        }
+
+        public Cell HandOnCell()
+        {
+            var handPos = HandHelper.MouseCellPos();
+            if (!IsValidPos(handPos)) return null;
+            return LevelMatrix[handPos.x, handPos.y];
         }
 
         public void Initialize(ILevelData levelData)

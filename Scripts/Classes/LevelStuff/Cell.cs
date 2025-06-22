@@ -12,7 +12,7 @@ namespace TPL.PVZR.Classes.LevelStuff
         public int y { get; }
 
         public CellTileState CellTileState { get; set; } = CellTileState.NotSet;
-        public CellPlantState CellPlantState { private get; set; } = CellPlantState.Empty;
+        public CellPlantState CellPlantState { get; set; } = CellPlantState.Empty;
         public Plant Plant { get; set; } = null;
 
         public bool IsEmpty => CellTileState is CellTileState.Empty && CellPlantState is CellPlantState.Empty;

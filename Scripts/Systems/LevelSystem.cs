@@ -31,6 +31,7 @@ namespace TPL.PVZR.Systems
             _ResLoader = ResLoader.Allocate();
             _PhaseModel = this.GetModel<IPhaseModel>();
             _LevelModel = this.GetModel<ILevelModel>();
+            _LevelGridModel = this.GetModel<ILevelGridModel>();
 
             this.RegisterEvent<OnPhaseChangeEvent>(e =>
             {

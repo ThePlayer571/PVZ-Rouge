@@ -1,4 +1,5 @@
 using System;
+using TPL.PVZR.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -62,6 +63,8 @@ namespace TPL.PVZR.ViewControllers
             _inputActions.Level.Enable();
 
             _inputActions.Level.Jump.performed += (context) => { Jump(); };
+
+            ReferenceHelper.Player = this;
         }
     }
 }

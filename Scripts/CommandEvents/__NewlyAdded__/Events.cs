@@ -1,6 +1,7 @@
 using System;
 using QFramework;
 using TPL.PVZR.Classes.GameStuff;
+using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Core;
 using TPL.PVZR.Models;
 using UnityEngine;
@@ -28,17 +29,28 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
             var targetCell = _LevelGridModel.LevelMatrix[this._position.x, this._position.y];
             if (!_LevelGridModel.CanSpawnPlantOn(_position, _id))
                 throw new ArgumentException($"不能在此处生成植物, pos:{_position}");
-
-
             //
         }
     }
 
     public class RemovePlantCommand : AbstractCommand
     {
+        public RemovePlantCommand(Vector2Int position)
+        {
+            this._position = position;
+        }
+
+        private Vector2Int _position;
+
         protected override void OnExecute()
         {
-            throw new System.NotImplementedException();
+            // 异常处理
+            var _LevelGridModel = this.GetModel<ILevelGridModel>();
+            if (!_LevelGridModel.IsValidPos(_position)) throw new ArgumentException($"在地图外RemovePlant，pos:{_position}");
+            var targetCell = _LevelGridModel.LevelMatrix[this._position.x, this._position.y];
+            if (targetCell.CellPlantState != CellPlantState.HavePlant)
+                throw new ArgumentException($"此处不存在植物，却调用了RemovePlantCommand，pos:{_position}");
+            //
         }
     }
 
