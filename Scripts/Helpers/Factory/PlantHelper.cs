@@ -4,6 +4,7 @@ using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Core;
+using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.ViewControllers.Entities.Plants;
 using TPL.PVZR.ViewControllers.Entities.Projectiles;
 using UnityEngine;
@@ -26,13 +27,15 @@ namespace TPL.PVZR.Helpers
 
         private static Dictionary<PlantId, GameObject> _plantDict;
 
-        public static Plant CreatePlant(PlantId id, Direction2 direction)
+        public static Plant SpawnPlant(PlantId id, Direction2 direction, Vector2Int position)
         {
             if (_plantDict.TryGetValue(id, out var plantPrefab))
             {
-                var go = plantPrefab.Instantiate().GetComponent<Plant>();
-                go.Initialize(direction);
-                return go;
+                var plant = plantPrefab
+                    .Instantiate(LevelTilemapHelper.CellToWorldBottom(position), Quaternion.identity)
+                    .GetComponent<Plant>();
+                plant.Initialize(direction);
+                return plant;
             }
             else
             {

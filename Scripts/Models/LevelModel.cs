@@ -19,11 +19,6 @@ namespace TPL.PVZR.Models
         BindableProperty<int> SunPoint { get; set; }
         List<SeedData> ChosenSeeds { get; }
 
-        /// <summary>
-        /// 与Scene内的坐标|每个Tilemap的坐标对应
-        /// </summary>
-        Matrix<Cell> LevelMatrix { get; }
-
         // Runtime Definition
         ILevelData LevelData { get; }
 

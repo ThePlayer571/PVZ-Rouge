@@ -22,10 +22,10 @@ namespace TPL.PVZR.Helpers.Methods
                     var pos = new Vector3Int(x, y, 0);
                     var cell = new Cell(x, y);
                     LevelMatrix[x, y] = cell;
-                    if (LevelTileMap.Bound.HasTile(pos)) cell.CellState = CellState.Bound;
-                    else if (LevelTileMap.Ground.HasTile(pos)) cell.CellState = CellState.Barrier;
-                    else if (LevelTileMap.Dirt.HasTile(pos)) cell.CellState = CellState.Dirt;
-                    else cell.CellState = CellState.Empty;
+                    if (LevelTileMap.Bound.HasTile(pos)) cell.CellTileState = CellTileState.Bound;
+                    else if (LevelTileMap.Ground.HasTile(pos)) cell.CellTileState = CellTileState.Barrier;
+                    else if (LevelTileMap.Dirt.HasTile(pos)) cell.CellTileState = CellTileState.Dirt;
+                    else cell.CellTileState = CellTileState.Empty;
                 }
             }
 
@@ -42,9 +42,9 @@ namespace TPL.PVZR.Helpers.Methods
             {
                 for (int y = 0; y < LevelMatrix.Columns; y++)
                 {
-                    if (LevelMatrix[x, y].CellState == CellState.Dirt)
+                    if (LevelMatrix[x, y].CellTileState == CellTileState.Dirt)
                         DebugTilemap.SetTile(new Vector3Int(x, y, 0), dirt);
-                    else if (LevelMatrix[x, y].CellState == CellState.Barrier)
+                    else if (LevelMatrix[x, y].CellTileState == CellTileState.Barrier)
                         DebugTilemap.SetTile(new Vector3Int(x, y, 0), barrier);
                 }
             }

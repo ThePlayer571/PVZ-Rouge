@@ -24,6 +24,7 @@ namespace TPL.PVZR.Systems
         private ResLoader _ResLoader;
         private IPhaseModel _PhaseModel;
         private ILevelModel _LevelModel;
+        private ILevelGridModel _LevelGridModel;
 
         protected override void OnInit()
         {
@@ -50,6 +51,7 @@ namespace TPL.PVZR.Systems
                                     .Callback(() =>
                                     {
                                         _LevelModel.Initialize(LevelData);
+                                        _LevelGridModel.Initialize(LevelData);
                                         //
                                         var DavePrefab = _ResLoader.LoadSync<Player>(Dave_prefab.BundleName,
                                             Dave_prefab.Dave);

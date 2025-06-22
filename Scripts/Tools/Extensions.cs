@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace TPL.PVZR.Core
 {
@@ -29,6 +30,42 @@ namespace TPL.PVZR.Core
                 for (int i = current; i < size; i++)
                     list[i] = defaultValue;
             }
+        }
+    }
+
+
+    public static class Vector2IntExtensions
+    {
+        /// <summary>
+        /// 返回上方（y+1，相同x）的新Vector2Int
+        /// </summary>
+        public static Vector2Int Up(this Vector2Int v)
+        {
+            return new Vector2Int(v.x, v.y + 1);
+        }
+
+        /// <summary>
+        /// 返回下方（y-1，相同x）的新Vector2Int
+        /// </summary>
+        public static Vector2Int Down(this Vector2Int v)
+        {
+            return new Vector2Int(v.x, v.y - 1);
+        }
+
+        /// <summary>
+        /// 返回左方（x-1，相同y）的新Vector2Int
+        /// </summary>
+        public static Vector2Int Left(this Vector2Int v)
+        {
+            return new Vector2Int(v.x - 1, v.y);
+        }
+
+        /// <summary>
+        /// 返回右方（x+1，相同y）的新Vector2Int
+        /// </summary>
+        public static Vector2Int Right(this Vector2Int v)
+        {
+            return new Vector2Int(v.x + 1, v.y);
         }
     }
 }

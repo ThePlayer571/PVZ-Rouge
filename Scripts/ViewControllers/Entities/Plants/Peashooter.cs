@@ -1,5 +1,6 @@
 using Codice.Client.Common;
 using TPL.PVZR.Classes;
+using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Core;
 using TPL.PVZR.Helpers;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
     public class Peashooter : Plant
     {
+        public override PlantId Id { get; } = PlantId.PeaShooter;
+
         public override void Initialize(Direction2 direction)
         {
             base.Initialize(direction);
