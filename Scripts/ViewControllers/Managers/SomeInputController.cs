@@ -49,18 +49,18 @@ namespace TPL.PVZR.ViewControllers.Managers
             void TrySelectSeedByIndex(int index)
             {
                 if (_PhaseModel.GamePhase != GamePhase.Gameplay) return;
-                var targetSeedController = ReferenceHelper.SeedControllers.FirstOrDefault(sc => sc.Index == index);
-                if (targetSeedController == null) return;
+                var targetSeedData = _LevelModel.TryGetSeedDataByIndex(index);
+                if (targetSeedData == null) return;
 
                 if (_HandSystem.HandState == HandState.Empty)
                 {
-                    this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(targetSeedController));
+                    this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(targetSeedData));
                 }
                 else
                 {
                     if (_HandSystem.PickedSeed.Index == index) return;
                     this.SendCommand<DeselectCommand>();
-                    this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(targetSeedController));
+                    this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(targetSeedData));
                 }
             }
 

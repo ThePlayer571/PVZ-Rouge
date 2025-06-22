@@ -1,4 +1,5 @@
 using QFramework;
+using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Events.HandEvents;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
@@ -8,12 +9,12 @@ namespace TPL.PVZR.Commands.HandCommands
 {
     public class SelectSeedCommand : AbstractCommand
     {
-        public SelectSeedCommand(SeedController selectedSeed)
+        public SelectSeedCommand(SeedData seedData)
         {
-            _selectedSeed = selectedSeed;
+            _selectedSeed = seedData;
         }
 
-        private SeedController _selectedSeed;
+        private SeedData _selectedSeed;
 
         protected override void OnExecute()
         {
@@ -26,7 +27,7 @@ namespace TPL.PVZR.Commands.HandCommands
                 throw new System.Exception($"执行了SelectSeedCommand，但是手的状态为：{HandSystem.HandState}");
 
             // 
-            this.SendEvent<SelectSeedEvent>(new SelectSeedEvent { SelectedSeed = _selectedSeed });
+            this.SendEvent<SelectSeedEvent>(new SelectSeedEvent { SelectedSeedData = _selectedSeed });
         }
     }
 }

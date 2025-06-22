@@ -17,6 +17,7 @@ namespace TPL.PVZR
             this.RegisterModel<ILevelModel>(new LevelModel());
             this.RegisterSystem<ILevelSystem>(new LevelSystem());
             this.RegisterSystem<IHandSystem>(new HandSystem());
+            this.RegisterSystem<ISeedSystem>(new SeedSystem());
 
             // ===== Others =====
             this.RegisterModel<IPhaseModel>(new PhaseModel());

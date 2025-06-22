@@ -3,6 +3,7 @@ using QFramework;
 using TMPro;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.GameStuff;
+using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Commands.HandCommands;
 using TPL.PVZR.Core;
 using TPL.PVZR.Events.HandEvents;
@@ -21,7 +22,14 @@ namespace TPL.PVZR.ViewControllers.Others
         [SerializeField] private TextMeshProUGUI SunpointCostText;
         [SerializeField] private Image GrayMask;
         [SerializeField] private Image BlackMask;
+
         private IHandSystem _HandSystem;
+
+        // 数据
+        private SeedData _seedData;
+
+        // 变量
+        private bool _selected = false;
 
         private void Awake()
         {
@@ -29,22 +37,22 @@ namespace TPL.PVZR.ViewControllers.Others
 
             this.RegisterEvent<SelectSeedEvent>(e =>
             {
-                if (ReferenceEquals(e.SelectedSeed, this))
+                if (e.SelectedSeedData.Index == this._seedData.Index)
                 {
-                    isSelected = true;
+                    this._selected = true;
                     UpdateUI();
                 }
             });
 
             this.RegisterEvent<DeselectEvent>(e =>
             {
-                if (isSelected)
+                if (this._selected)
                 {
-                    isSelected = false;
+                    this._selected = false;
                     UpdateUI();
                 }
             });
-            
+
             ReferenceHelper.SeedControllers.Add(this);
         }
 
@@ -53,37 +61,22 @@ namespace TPL.PVZR.ViewControllers.Others
             ReferenceHelper.SeedControllers.Remove(this);
         }
 
-        // 数据
-        public CardData CardData { get; private set; }
-        public int Index { get; private set; }
-
-        #region Logic
-
-        // 变量
-        public bool isSelected { get; private set; }
-        [SerializeField] private Timer coldTimeTimer;
 
         private void Update()
         {
-            coldTimeTimer.Update(Time.deltaTime);
-
-            if (!coldTimeTimer.Ready || coldTimeTimer.JustReady) UpdateUI();
+            if (!_seedData.ColdTimeTimer.Ready || _seedData.ColdTimeTimer.JustReady) UpdateUI();
         }
 
-// 初始化
-        public void Initialize(CardData cardData, int index)
+        public void Initialize(SeedData seedData)
         {
-            // 数据
-            this.CardData = cardData;
-            this.Index = index;
+            this._seedData = seedData;
             // UI
-            PlantImage.sprite = cardData.CardDefinition.PlantSprite;
-            SunpointCostText.text = cardData.CardDefinition.SunpointCost.ToString();
-            // Logic
-            coldTimeTimer = new Timer(CardData.CardDefinition.ColdTime);
+            PlantImage.sprite = seedData.CardData.CardDefinition.PlantSprite;
+            SunpointCostText.text = seedData.CardData.CardDefinition.SunpointCost.ToString();
         }
 
-// 交互
+        #region UI交互
+
         public void OnPointerClick(PointerEventData eventData)
         {
             if (eventData.button == PointerEventData.InputButton.Left)
@@ -94,7 +87,7 @@ namespace TPL.PVZR.ViewControllers.Others
                 }
                 else
                 {
-                    this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(this));
+                    this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(this._seedData));
                 }
             }
             else if (eventData.button == PointerEventData.InputButton.Right)
@@ -116,18 +109,18 @@ namespace TPL.PVZR.ViewControllers.Others
 
         #endregion
 
-        #region UI
+        #region UI表现
 
         private void UpdateUI()
         {
-            if (isSelected) // 被选择
+            if (_selected) // 被选择
             {
                 PlantImage.enabled = false;
                 GrayMask.enabled = false;
                 BlackMask.enabled = true;
                 BlackMask.fillAmount = 1;
             }
-            else if (coldTimeTimer.Ready) // 冷却完毕
+            else if (_seedData.ColdTimeTimer.Ready) // 冷却完毕
             {
                 PlantImage.enabled = true;
                 GrayMask.enabled = false;
@@ -138,7 +131,7 @@ namespace TPL.PVZR.ViewControllers.Others
                 PlantImage.enabled = true;
                 GrayMask.enabled = false;
                 BlackMask.enabled = true;
-                var val = coldTimeTimer.Remaining / coldTimeTimer.Duration;
+                var val = _seedData.ColdTimeTimer.Remaining / _seedData.ColdTimeTimer.Duration;
                 BlackMask.fillAmount = val;
             }
         }

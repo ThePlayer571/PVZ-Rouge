@@ -16,8 +16,8 @@ namespace TPL.PVZR.Models
     public interface ILevelModel : IModel
     {
         // Data
-        int SunPoint { get; set; }
-        List<CardData> ChosenCardData { get; }
+        BindableProperty<int> SunPoint { get; set; }
+        List<SeedData> ChosenSeeds { get; }
 
         /// <summary>
         /// 与Scene内的坐标|每个Tilemap的坐标对应
@@ -28,6 +28,7 @@ namespace TPL.PVZR.Models
         ILevelData LevelData { get; }
 
         // Methods
+        SeedData TryGetSeedDataByIndex(int index);
         void Initialize(ILevelData levelData);
         void Reset();
     }
@@ -35,19 +36,27 @@ namespace TPL.PVZR.Models
 
     public class LevelModel : AbstractModel, ILevelModel
     {
-        public int SunPoint { get; set; }
+        public BindableProperty<int> SunPoint { get; set; }
 
-        public List<CardData> ChosenCardData { get; private set; }
+        public List<SeedData> ChosenSeeds { get; private set; }
         public Matrix<Cell> LevelMatrix { get; private set; }
 
 
         public ILevelData LevelData { get; private set; }
 
+        public SeedData TryGetSeedDataByIndex(int index)
+        {
+            if (ChosenSeeds.Count <= index) return null;
+            var target = ChosenSeeds[index - 1];
+            if (target.Index != index) throw new Exception($"ChosenSeeds中的index发生错位");
+            return target;
+        }
+
         public void Initialize(ILevelData levelData)
         {
             this.LevelData = levelData;
 
-            this.SunPoint = levelData.InitialSunPoint;
+            this.SunPoint.SetValueWithoutEvent(levelData.InitialSunPoint);
 
             this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(ReferenceHelper.LevelTilemap, levelData);
             LevelMatrixHelper.SetDebugTiles(LevelMatrix, ReferenceHelper.LevelTilemap.Debug);
@@ -55,13 +64,17 @@ namespace TPL.PVZR.Models
 
         public void Reset()
         {
-            ChosenCardData.Clear();
+            LevelData = null;
+            ChosenSeeds.Clear();
+            SunPoint.SetValueWithoutEvent(0);
+            LevelMatrix = null;
         }
 
 
         protected override void OnInit()
         {
-            ChosenCardData = new List<CardData>();
+            ChosenSeeds = new List<SeedData>();
+            SunPoint = new BindableProperty<int>(0);
         }
     }
 }

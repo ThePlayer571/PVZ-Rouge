@@ -45,7 +45,7 @@ namespace TPL.PVZR.ViewControllers.Others
             {
                 _following = true;
                 _Image.enabled = true;
-                _Image.sprite = e.SelectedSeed.CardData.CardDefinition.PlantSprite;
+                _Image.sprite = e.SelectedSeedData.CardData.CardDefinition.PlantSprite;
             }).UnRegisterWhenGameObjectDestroyed(this);
             this.RegisterEvent<DeselectEvent>(e =>
             {

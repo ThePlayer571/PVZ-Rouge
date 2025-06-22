@@ -5,6 +5,7 @@ using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Classes.Level;
 using TPL.PVZR.Core;
 using TPL.PVZR.Events;
+using TPL.PVZR.Helpers.Factory;
 using TPL.PVZR.Models;
 using TPL.PVZR.UI;
 using TPL.PVZR.ViewControllers;
@@ -82,16 +83,14 @@ namespace TPL.PVZR.Systems
                                 break;
                             case PhaseStage.LeaveNormal:
                                 // 将选卡数据转录
-                                var ChosenSeeds = _LevelModel.ChosenCardData;
                                 var chosenSeedOptions = ReferenceHelper.ChooseSeedPanel.chosenSeedOptions;
-                                //
                                 // 这里为了确保index对应，没有用List.Add（非常安全）
-                                ChosenSeeds.Resize(chosenSeedOptions.Count);
+                                _LevelModel.ChosenSeeds.Resize(chosenSeedOptions.Count);
                                 for (int i = 0; i < chosenSeedOptions.Count; i++)
                                 {
-                                    ChosenSeeds[i] = chosenSeedOptions[i].CardData;
+                                    _LevelModel.ChosenSeeds[i] =
+                                        SeedHelper.CreateSeedData(i + 1, chosenSeedOptions[i].CardData);
                                 }
-
                                 break;
                         }
 

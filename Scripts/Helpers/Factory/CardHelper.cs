@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using QAssetBundle;
 using QFramework;
+using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.ViewControllers.Others;
 using UnityEngine;
 
@@ -28,10 +29,10 @@ namespace TPL.PVZR.Classes.GameStuff
             return go;
         }
 
-        public static SeedController CreateSeedController(CardData cardData, int index)
+        public static SeedController CreateSeedController(SeedData seedData)
         {
             var go = _seedControllerPrefab.Instantiate().GetComponent<SeedController>();
-            go.Initialize(cardData, index);
+            go.Initialize(seedData);
             return go;
         }
 

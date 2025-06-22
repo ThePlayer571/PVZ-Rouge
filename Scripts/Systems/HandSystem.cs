@@ -1,5 +1,6 @@
 using System;
 using QFramework;
+using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Events.HandEvents;
 using TPL.PVZR.ViewControllers.Others;
 using UnityEngine.XR;
@@ -13,7 +14,7 @@ namespace TPL.PVZR.Systems
     public interface IHandSystem : ISystem
     {
         HandState HandState { get; }
-        SeedController PickedSeed { get; }
+        SeedData PickedSeed { get; }
     }
 
     public enum HandState
@@ -30,7 +31,7 @@ namespace TPL.PVZR.Systems
             this.RegisterEvent<SelectSeedEvent>(e =>
             {
                 if (HandState != HandState.Empty) throw new Exception($"接收到了SelectSeedEvent，但HandState：{HandState}");
-                PickedSeed = e.SelectedSeed;
+                PickedSeed = e.SelectedSeedData;
                 HandState = HandState.HaveSeed;
             });
 
@@ -47,7 +48,7 @@ namespace TPL.PVZR.Systems
             });
         }
 
-        public SeedController PickedSeed { get; set; }
+        public SeedData PickedSeed { get; set; }
         public HandState HandState { get; private set; }
     }
 }

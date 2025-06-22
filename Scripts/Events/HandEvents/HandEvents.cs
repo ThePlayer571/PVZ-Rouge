@@ -1,3 +1,4 @@
+using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Systems;
 using TPL.PVZR.ViewControllers.Others;
 
@@ -5,7 +6,7 @@ namespace TPL.PVZR.Events.HandEvents
 {
     public struct SelectSeedEvent
     {
-        public SeedController SelectedSeed;
+        public SeedData SelectedSeedData;
     }
 
     public struct DeselectEvent
