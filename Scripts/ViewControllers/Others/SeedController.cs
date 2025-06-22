@@ -7,6 +7,7 @@ using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Commands.HandCommands;
 using TPL.PVZR.Core;
 using TPL.PVZR.Events.HandEvents;
+using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -24,20 +25,24 @@ namespace TPL.PVZR.ViewControllers.Others
         [SerializeField] private Image BlackMask;
 
         private IHandSystem _HandSystem;
+        private ILevelModel _LevelModel;
 
         // 数据
         private SeedData _seedData;
 
         private void Awake()
         {
-            this._HandSystem = this.GetSystem<IHandSystem>();
+            _HandSystem = this.GetSystem<IHandSystem>();
+            _LevelModel = this.GetModel<ILevelModel>();
 
             _HandSystem.HandInfo.Register(val =>
             {
-                bool selected = (val.HandState == HandState.HaveSeed)
-                                && (val.PickedSeed.Index == this._seedData.Index);
-                UpdateUI(selected, this._seedData.ColdTimeTimer);
+                bool selected = (val.HandState == HandState.HaveSeed) && (val.PickedSeed.Index == this._seedData.Index);
+                UpdateUI(selected: selected);
             }).UnRegisterWhenGameObjectDestroyed(this);
+
+            _LevelModel.SunPoint.Register(val => { UpdateUI(currentSunpoint: val); })
+                .UnRegisterWhenGameObjectDestroyed(this);
 
             ReferenceHelper.SeedControllers.Add(this);
         }
@@ -48,7 +53,7 @@ namespace TPL.PVZR.ViewControllers.Others
             // UI
             PlantImage.sprite = seedData.CardData.CardDefinition.PlantSprite;
             SunpointCostText.text = seedData.CardData.CardDefinition.SunpointCost.ToString();
-            //
+            UpdateUI();
         }
 
         private void OnDestroy()
@@ -58,8 +63,7 @@ namespace TPL.PVZR.ViewControllers.Others
 
         private void Update()
         {
-            if (!_seedData.ColdTimeTimer.Ready || _seedData.ColdTimeTimer.JustReady)
-                UpdateUI(false, _seedData.ColdTimeTimer);
+            if (!_seedData.ColdTimeTimer.Ready || _seedData.ColdTimeTimer.JustReady) UpdateUI();
         }
 
 
@@ -99,26 +103,39 @@ namespace TPL.PVZR.ViewControllers.Others
 
         #region UI响应
 
-        private void UpdateUI(bool selected, Timer coldTimeTimer = null)
+        private void UpdateUI(bool? selected = null, int? currentSunpoint = null)
         {
+            selected ??= _HandSystem.HandInfo.Value.HandState == HandState.HaveSeed &&
+                         _HandSystem.HandInfo.Value.PickedSeed.Index == this._seedData.Index;
+            currentSunpoint ??= _LevelModel.SunPoint.Value;
+
             // 复杂逻辑：selected == true 时, coldTimeTimer可以为null
-            if (selected) // 被选择
+            if (selected.Value) // 被选择
             {
                 PlantImage.enabled = false;
-                GrayMask.enabled = false;
+                GrayMask.enabled = true;
                 BlackMask.enabled = true;
                 BlackMask.fillAmount = 1;
             }
-            else if (coldTimeTimer.Ready) // 冷却完毕
+            else if (_seedData.ColdTimeTimer.Ready) // 冷却完毕
             {
-                PlantImage.enabled = true;
-                GrayMask.enabled = false;
-                BlackMask.enabled = false;
+                if (currentSunpoint.Value < _seedData.CardData.CardDefinition.SunpointCost) // 阳光不够
+                {
+                    PlantImage.enabled = true;
+                    GrayMask.enabled = true;
+                    BlackMask.enabled = false;
+                }
+                else // 阳光充足
+                {
+                    PlantImage.enabled = true;
+                    GrayMask.enabled = false;
+                    BlackMask.enabled = false;
+                }
             }
             else // 冷却中
             {
                 PlantImage.enabled = true;
-                GrayMask.enabled = false;
+                GrayMask.enabled = true;
                 BlackMask.enabled = true;
                 var val = _seedData.ColdTimeTimer.Remaining / _seedData.ColdTimeTimer.Duration;
                 BlackMask.fillAmount = val;
