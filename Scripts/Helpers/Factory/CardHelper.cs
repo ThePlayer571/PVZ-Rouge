@@ -31,6 +31,10 @@ namespace TPL.PVZR.Classes.GameStuff
 
         public static SeedController CreateSeedController(SeedData seedData)
         {
+            if (seedData == null)
+            {
+                throw new ArgumentNullException(nameof(seedData));
+            }
             var go = _seedControllerPrefab.Instantiate().GetComponent<SeedController>();
             go.Initialize(seedData);
             return go;

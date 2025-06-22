@@ -28,30 +28,9 @@ namespace TPL.PVZR.ViewControllers.Others
         // 数据
         private SeedData _seedData;
 
-        // 变量
-        private bool _selected = false;
-
         private void Awake()
         {
             this._HandSystem = this.GetSystem<IHandSystem>();
-
-            this.RegisterEvent<SelectSeedEvent>(e =>
-            {
-                if (e.SelectedSeedData.Index == this._seedData.Index)
-                {
-                    this._selected = true;
-                    UpdateUI();
-                }
-            });
-
-            this.RegisterEvent<DeselectEvent>(e =>
-            {
-                if (this._selected)
-                {
-                    this._selected = false;
-                    UpdateUI();
-                }
-            });
 
             ReferenceHelper.SeedControllers.Add(this);
         }
@@ -64,7 +43,7 @@ namespace TPL.PVZR.ViewControllers.Others
 
         private void Update()
         {
-            if (!_seedData.ColdTimeTimer.Ready || _seedData.ColdTimeTimer.JustReady) UpdateUI();
+            if (!_seedData.ColdTimeTimer.Ready || _seedData.ColdTimeTimer.JustReady) UpdateUI(false);
         }
 
         public void Initialize(SeedData seedData)
@@ -73,6 +52,14 @@ namespace TPL.PVZR.ViewControllers.Others
             // UI
             PlantImage.sprite = seedData.CardData.CardDefinition.PlantSprite;
             SunpointCostText.text = seedData.CardData.CardDefinition.SunpointCost.ToString();
+            //
+
+            _HandSystem.HandInfo.RegisterWithInitValue(val =>
+            {
+                bool selected = (val.HandState == HandState.HaveSeed)
+                                && (val.PickedSeed.Index == this._seedData.Index);
+                UpdateUI(selected);
+            }).UnRegisterWhenGameObjectDestroyed(this);
         }
 
         #region UI交互
@@ -81,7 +68,7 @@ namespace TPL.PVZR.ViewControllers.Others
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                if (_HandSystem.HandState != HandState.Empty)
+                if (_HandSystem.HandInfo.Value.HandState != HandState.Empty)
                 {
                     this.SendCommand<DeselectCommand>();
                 }
@@ -92,7 +79,7 @@ namespace TPL.PVZR.ViewControllers.Others
             }
             else if (eventData.button == PointerEventData.InputButton.Right)
             {
-                if (_HandSystem.HandState != HandState.Empty)
+                if (_HandSystem.HandInfo.Value.HandState != HandState.Empty)
                 {
                     this.SendCommand<DeselectCommand>();
                 }
@@ -111,9 +98,9 @@ namespace TPL.PVZR.ViewControllers.Others
 
         #region UI表现
 
-        private void UpdateUI()
+        private void UpdateUI(bool selected)
         {
-            if (_selected) // 被选择
+            if (selected) // 被选择
             {
                 PlantImage.enabled = false;
                 GrayMask.enabled = false;

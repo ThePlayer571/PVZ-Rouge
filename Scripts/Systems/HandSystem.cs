@@ -13,8 +13,19 @@ namespace TPL.PVZR.Systems
     /// </summary>
     public interface IHandSystem : ISystem
     {
-        HandState HandState { get; }
-        SeedData PickedSeed { get; }
+        BindableProperty<HandInfo> HandInfo { get; }
+    }
+
+    public struct HandInfo
+    {
+        public HandState HandState;
+        public SeedData PickedSeed;
+
+        public HandInfo(HandState handState, SeedData pickedSeed)
+        {
+            this.HandState = handState;
+            this.PickedSeed = pickedSeed;
+        }
     }
 
     public enum HandState
@@ -28,27 +39,18 @@ namespace TPL.PVZR.Systems
     {
         protected override void OnInit()
         {
+            HandInfo = new BindableProperty<HandInfo>(new HandInfo(HandState.Empty, null));
+
             this.RegisterEvent<SelectSeedEvent>(e =>
             {
-                if (HandState != HandState.Empty) throw new Exception($"接收到了SelectSeedEvent，但HandState：{HandState}");
-                PickedSeed = e.SelectedSeedData;
-                HandState = HandState.HaveSeed;
+                HandInfo.Value = new HandInfo(HandState.HaveSeed, e.SelectedSeedData);
             });
 
-            this.RegisterEvent<DeselectEvent>(e =>
-            {
-                if (HandState == HandState.Empty) throw new Exception("接收到了DeselectEvent，但HandState：Empty");
-                PickedSeed = null;
-                HandState = HandState.Empty;
-            });
-            this.RegisterEvent<SelectShovelEvent>(e =>
-            {
-                if (HandState != HandState.Empty) throw new Exception($"接收到了SelectShovelEvent，但HandState：{HandState}");
-                HandState = HandState.HaveShovel;
-            });
+            this.RegisterEvent<DeselectEvent>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
+
+            this.RegisterEvent<SelectShovelEvent>(e => { HandInfo.Value = new HandInfo(HandState.HaveShovel, null); });
         }
 
-        public SeedData PickedSeed { get; set; }
-        public HandState HandState { get; private set; }
+        public BindableProperty<HandInfo> HandInfo { get; private set; }
     }
 }

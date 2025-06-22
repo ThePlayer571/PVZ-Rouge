@@ -31,7 +31,8 @@ namespace TPL.PVZR.ViewControllers.Managers
 
             _inputActions.Level.Deselect.performed += (context) =>
             {
-                if (_PhaseModel.GamePhase == GamePhase.Gameplay && _HandSystem.HandState != HandState.Empty)
+                if (_PhaseModel.GamePhase == GamePhase.Gameplay &&
+                    _HandSystem.HandInfo.Value.HandState != HandState.Empty)
                 {
                     this.SendCommand<DeselectCommand>();
                 }
@@ -52,13 +53,13 @@ namespace TPL.PVZR.ViewControllers.Managers
                 var targetSeedData = _LevelModel.TryGetSeedDataByIndex(index);
                 if (targetSeedData == null) return;
 
-                if (_HandSystem.HandState == HandState.Empty)
+                if (_HandSystem.HandInfo.Value.HandState == HandState.Empty)
                 {
                     this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(targetSeedData));
                 }
                 else
                 {
-                    if (_HandSystem.PickedSeed.Index == index) return;
+                    if (_HandSystem.HandInfo.Value.PickedSeed.Index == index) return;
                     this.SendCommand<DeselectCommand>();
                     this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(targetSeedData));
                 }

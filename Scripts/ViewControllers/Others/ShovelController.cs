@@ -2,6 +2,7 @@ using System;
 using QFramework;
 using TPL.PVZR.Commands.HandCommands;
 using TPL.PVZR.Events.HandEvents;
+using TPL.PVZR.Systems;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,22 +12,20 @@ namespace TPL.PVZR.ViewControllers.Others
     public class ShovelController : MonoBehaviour, IController, IPointerClickHandler
     {
         [SerializeField] private Image ShovelImage;
-        private bool _selected = false;
+        private IHandSystem _HandSystem;
 
         private void Awake()
         {
-            this.RegisterEvent<SelectShovelEvent>(e =>
-            {
-                if (_selected) return;
-                _selected = true;
-                ShovelImage.enabled = false;
-            }).UnRegisterWhenGameObjectDestroyed(this);
+            _HandSystem = this.GetSystem<IHandSystem>();
 
-            this.RegisterEvent<DeselectEvent>(e =>
+            _HandSystem.HandInfo.RegisterWithInitValue(val =>
             {
-                if (_selected)
+                if (val.HandState == HandState.HaveShovel)
                 {
-                    _selected = false;
+                    ShovelImage.enabled = false;
+                }
+                else
+                {
                     ShovelImage.enabled = true;
                 }
             }).UnRegisterWhenGameObjectDestroyed(this);
@@ -42,7 +41,7 @@ namespace TPL.PVZR.ViewControllers.Others
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                if (_selected)
+                if (_HandSystem.HandInfo.Value.HandState != HandState.Empty)
                 {
                     this.SendCommand<DeselectCommand>();
                 }
@@ -53,7 +52,7 @@ namespace TPL.PVZR.ViewControllers.Others
             }
             else if (eventData.button == PointerEventData.InputButton.Right)
             {
-                if (_selected)
+                if (_HandSystem.HandInfo.Value.HandState != HandState.Empty)
                 {
                     this.SendCommand<DeselectCommand>();
                 }

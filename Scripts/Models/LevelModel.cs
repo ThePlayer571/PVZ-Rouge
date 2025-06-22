@@ -46,7 +46,7 @@ namespace TPL.PVZR.Models
 
         public SeedData TryGetSeedDataByIndex(int index)
         {
-            if (ChosenSeeds.Count <= index) return null;
+            if (ChosenSeeds.Count < index) return null;
             var target = ChosenSeeds[index - 1];
             if (target.Index != index) throw new Exception($"ChosenSeeds中的index发生错位");
             return target;

@@ -2,6 +2,7 @@ using System;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Events.HandEvents;
+using TPL.PVZR.Systems;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -12,6 +13,8 @@ namespace TPL.PVZR.ViewControllers.Others
     {
         private Image _Image;
         private Sprite ShovelSprite;
+
+        private IHandSystem _HandSystem;
 
         private bool _following;
 
@@ -41,25 +44,29 @@ namespace TPL.PVZR.ViewControllers.Others
             _Image = this.GetComponent<Image>();
             ShovelSprite = resLoader.LoadSync<Sprite>(Shovel_png.BundleName, Shovel_png.Shovel);
 
-            this.RegisterEvent<SelectSeedEvent>(e =>
+            _HandSystem = this.GetSystem<IHandSystem>();
+            _HandSystem.HandInfo.RegisterWithInitValue(val =>
             {
-                _following = true;
-                _Image.enabled = true;
-                _Image.sprite = e.SelectedSeedData.CardData.CardDefinition.PlantSprite;
-            }).UnRegisterWhenGameObjectDestroyed(this);
-            this.RegisterEvent<DeselectEvent>(e =>
-            {
-                _following = false;
-                _Image.sprite = null;
-                _Image.enabled = false;
-                transform.localScale = Vector3.one;
-            }).UnRegisterWhenGameObjectDestroyed(this);
-            this.RegisterEvent<SelectShovelEvent>(e =>
-            {
-                _following = true;
-                _Image.sprite = ShovelSprite;
-                _Image.enabled = true;
-                transform.localScale = Vector3.one * 1.53f;
+                switch (val.HandState)
+                {
+                    case HandState.Empty:
+                        _following = false;
+                        _Image.sprite = null;
+                        _Image.enabled = false;
+                        transform.localScale = Vector3.one;
+                        break;
+                    case HandState.HaveSeed:
+                        _following = true;
+                        _Image.enabled = true;
+                        _Image.sprite = val.PickedSeed.CardData.CardDefinition.PlantSprite;
+                        break;
+                    case HandState.HaveShovel:
+                        _following = true;
+                        _Image.sprite = ShovelSprite;
+                        _Image.enabled = true;
+                        transform.localScale = Vector3.one * 1.53f;
+                        break;
+                }
             }).UnRegisterWhenGameObjectDestroyed(this);
         }
 

@@ -23,8 +23,8 @@ namespace TPL.PVZR.Commands.HandCommands
             // 异常处理
             if (PhaseModel.GamePhase != GamePhase.Gameplay)
                 throw new System.Exception($"在不正确的阶段执行了SelectSeedCommand：{PhaseModel.GamePhase}");
-            if (HandSystem.HandState != HandState.Empty)
-                throw new System.Exception($"执行了SelectSeedCommand，但是手的状态为：{HandSystem.HandState}");
+            if (HandSystem.HandInfo.Value.HandState != HandState.Empty)
+                throw new System.Exception($"执行了SelectSeedCommand，但是手的状态为：{HandSystem.HandInfo.Value.HandState}");
 
             // 
             this.SendEvent<SelectSeedEvent>(new SelectSeedEvent { SelectedSeedData = _selectedSeed });
