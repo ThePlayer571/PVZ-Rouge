@@ -32,18 +32,14 @@ namespace TPL.PVZR.ViewControllers.Others
         {
             this._HandSystem = this.GetSystem<IHandSystem>();
 
+            _HandSystem.HandInfo.Register(val =>
+            {
+                bool selected = (val.HandState == HandState.HaveSeed)
+                                && (val.PickedSeed.Index == this._seedData.Index);
+                UpdateUI(selected, this._seedData.ColdTimeTimer);
+            }).UnRegisterWhenGameObjectDestroyed(this);
+
             ReferenceHelper.SeedControllers.Add(this);
-        }
-
-        private void OnDestroy()
-        {
-            ReferenceHelper.SeedControllers.Remove(this);
-        }
-
-
-        private void Update()
-        {
-            if (!_seedData.ColdTimeTimer.Ready || _seedData.ColdTimeTimer.JustReady) UpdateUI(false);
         }
 
         public void Initialize(SeedData seedData)
@@ -53,14 +49,19 @@ namespace TPL.PVZR.ViewControllers.Others
             PlantImage.sprite = seedData.CardData.CardDefinition.PlantSprite;
             SunpointCostText.text = seedData.CardData.CardDefinition.SunpointCost.ToString();
             //
-
-            _HandSystem.HandInfo.RegisterWithInitValue(val =>
-            {
-                bool selected = (val.HandState == HandState.HaveSeed)
-                                && (val.PickedSeed.Index == this._seedData.Index);
-                UpdateUI(selected);
-            }).UnRegisterWhenGameObjectDestroyed(this);
         }
+
+        private void OnDestroy()
+        {
+            ReferenceHelper.SeedControllers.Remove(this);
+        }
+
+        private void Update()
+        {
+            if (!_seedData.ColdTimeTimer.Ready || _seedData.ColdTimeTimer.JustReady)
+                UpdateUI(false, _seedData.ColdTimeTimer);
+        }
+
 
         #region UI交互
 
@@ -96,10 +97,11 @@ namespace TPL.PVZR.ViewControllers.Others
 
         #endregion
 
-        #region UI表现
+        #region UI响应
 
-        private void UpdateUI(bool selected)
+        private void UpdateUI(bool selected, Timer coldTimeTimer = null)
         {
+            // 复杂逻辑：selected == true 时, coldTimeTimer可以为null
             if (selected) // 被选择
             {
                 PlantImage.enabled = false;
@@ -107,7 +109,7 @@ namespace TPL.PVZR.ViewControllers.Others
                 BlackMask.enabled = true;
                 BlackMask.fillAmount = 1;
             }
-            else if (_seedData.ColdTimeTimer.Ready) // 冷却完毕
+            else if (coldTimeTimer.Ready) // 冷却完毕
             {
                 PlantImage.enabled = true;
                 GrayMask.enabled = false;
