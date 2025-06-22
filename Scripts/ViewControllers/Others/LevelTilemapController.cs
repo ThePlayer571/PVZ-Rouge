@@ -11,6 +11,7 @@ namespace TPL.PVZR.ViewControllers.Others
         [SerializeField] public Tilemap Ground;
         [SerializeField] public Tilemap Dirt;
         [SerializeField] public Tilemap Bound;
+        [SerializeField] public Tilemap Debug;
 
         private void Awake()
         {

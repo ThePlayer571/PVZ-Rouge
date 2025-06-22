@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
+using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Classes.Level;
 using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Core;
+using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.ViewControllers.Others;
+using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace TPL.PVZR.Models
 {
@@ -14,6 +18,10 @@ namespace TPL.PVZR.Models
         // Data
         int SunPoint { get; set; }
         List<CardData> ChosenCardData { get; }
+
+        /// <summary>
+        /// 与Scene内的坐标|每个Tilemap的坐标对应
+        /// </summary>
         Matrix<Cell> LevelMatrix { get; }
 
         // Runtime Definition
@@ -38,9 +46,11 @@ namespace TPL.PVZR.Models
         public void Initialize(ILevelData levelData)
         {
             this.LevelData = levelData;
-            
+
             this.SunPoint = levelData.InitialSunPoint;
-            
+
+            this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(ReferenceHelper.LevelTilemap, levelData);
+            LevelMatrixHelper.SetDebugTiles(LevelMatrix, ReferenceHelper.LevelTilemap.Debug);
         }
 
         public void Reset()
