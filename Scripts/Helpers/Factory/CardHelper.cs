@@ -50,8 +50,8 @@ namespace TPL.PVZR.Classes.GameStuff
 
             _cardsDict = new Dictionary<PlantId, CardDefinition>()
             {
-                [PlantId.PeaShooter] = resLoader.LoadSync<CardDefinition>(Carddefinition_peashooter_asset.BundleName,
-                    Carddefinition_peashooter_asset.CardDefinition_Peashooter),
+                [PlantId.PeaShooter] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                    Carddefinition.CardDefinition_Peashooter),
             };
             _seedControllerPrefab =
                 resLoader.LoadSync<GameObject>(Seedcontroller_prefab.BundleName, Seedcontroller_prefab.SeedController);

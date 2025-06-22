@@ -1,4 +1,5 @@
 using QFramework;
+using TPL.PVZR.Events.HandEvents;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
 
@@ -21,6 +22,7 @@ namespace TPL.PVZR.Commands.HandCommands
                 throw new System.Exception($"执行了SelectShovelCommand，但是手的状态为：{HandSystem.HandState}");
 
             //
+            this.SendEvent<SelectShovelEvent>();
         }
     }
 }

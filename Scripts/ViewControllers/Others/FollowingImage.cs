@@ -1,4 +1,5 @@
 using System;
+using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Events.HandEvents;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace TPL.PVZR.ViewControllers.Others
     public class FollowingImage : MonoBehaviour, IController
     {
         private Image _Image;
+        private Sprite ShovelSprite;
 
         private bool _following;
 
@@ -35,7 +37,9 @@ namespace TPL.PVZR.ViewControllers.Others
 
         private void Awake()
         {
+            var resLoader = ResLoader.Allocate();
             _Image = this.GetComponent<Image>();
+            ShovelSprite = resLoader.LoadSync<Sprite>(Shovel_png.BundleName, Shovel_png.Shovel);
 
             this.RegisterEvent<SelectSeedEvent>(e =>
             {
@@ -48,11 +52,14 @@ namespace TPL.PVZR.ViewControllers.Others
                 _following = false;
                 _Image.sprite = null;
                 _Image.enabled = false;
+                transform.localScale = Vector3.one;
             }).UnRegisterWhenGameObjectDestroyed(this);
             this.RegisterEvent<SelectShovelEvent>(e =>
             {
                 _following = true;
-                // TODO SelectShovelEvent 这个以后再写
+                _Image.sprite = ShovelSprite;
+                _Image.enabled = true;
+                transform.localScale = Vector3.one * 1.53f;
             }).UnRegisterWhenGameObjectDestroyed(this);
         }
 

@@ -27,11 +27,10 @@ namespace TPL.PVZR.Helpers
         {
             ResKit.Init();
             var resLoader = ResLoader.Allocate();
-
             _levelDefinitionDict = new Dictionary<LevelId, LevelDefinition>
             {
-                [LevelId.DaveLawn] = resLoader.LoadSync<LevelDefinition>(Leveldefinition_davelawn_asset.BundleName,
-                    Leveldefinition_davelawn_asset.LevelDefinition_DaveLawn),
+                [LevelId.DaveLawn] = resLoader.LoadSync<LevelDefinition>(Leveldefinition.BundleName,
+                    Leveldefinition.LevelDefinition_DaveLawn),
             };
         }
     }
