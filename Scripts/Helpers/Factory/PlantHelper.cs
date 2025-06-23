@@ -32,7 +32,7 @@ namespace TPL.PVZR.Helpers
             if (_plantDict.TryGetValue(id, out var plantPrefab))
             {
                 var plant = plantPrefab
-                    .Instantiate(LevelTilemapHelper.CellToWorldBottom(position), Quaternion.identity)
+                    .Instantiate(LevelGridHelper.CellToWorldBottom(position), Quaternion.identity)
                     .GetComponent<Plant>();
                 plant.Initialize(direction);
                 return plant;

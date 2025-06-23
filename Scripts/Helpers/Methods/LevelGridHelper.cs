@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 
 namespace TPL.PVZR.Helpers.Methods
 {
-    public static class LevelTilemapHelper
+    public static class LevelGridHelper
     {
         private static Tilemap CriterionTilemap => ReferenceHelper.LevelTilemap.Ground;
 
@@ -28,7 +28,5 @@ namespace TPL.PVZR.Helpers.Methods
             Vector3 bottomCenter = cellWorldOrigin + new Vector3(cellSize.x / 2f, 0, 0);
             return new Vector2(bottomCenter.x, bottomCenter.y);
         }
-
-
     }
 }

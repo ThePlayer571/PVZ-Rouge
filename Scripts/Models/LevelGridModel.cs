@@ -20,7 +20,8 @@ namespace TPL.PVZR.Models
         // 实用方法
         bool IsValidPos(Vector2Int pos);
         bool CanSpawnPlantOn(Vector2Int pos, PlantId id);
-        Cell HandOnCell();
+        Cell GetCell(Vector2Int cellPos);
+        Cell GetCell(Vector2 worldPos);
 
         // Methods
         void Initialize(ILevelData levelData);
@@ -46,16 +47,32 @@ namespace TPL.PVZR.Models
                 var belowCell = LevelMatrix[pos.x, pos.y - 1];
                 return cell.IsEmpty && belowCell.IsPlat;
             }
-            else // 普通植物(豌豆射手)
+            else
             {
+                if (!IsValidPos(pos) && !IsValidPos(pos.Down())) return false;
+
+                var cell = LevelMatrix[pos.x, pos.y];
+                var belowCell = LevelMatrix[pos.x, pos.y - 1];
+                return cell.IsEmpty && belowCell.IsDirtPlat;
             }
 
             throw new ArgumentException($"出现未考虑的plantId: {id}");
         }
 
+        public Cell GetCell(Vector2Int cellPos)
+        {
+            return LevelMatrix[cellPos.x, cellPos.y];
+        }
+
+        public Cell GetCell(Vector2 worldPos)
+        {
+            var cellPos = LevelGridHelper.WorldToCell(worldPos);
+            return LevelMatrix[cellPos.x, cellPos.y];
+        }
+
         public Cell HandOnCell()
         {
-            var handPos = HandHelper.MouseCellPos();
+            var handPos = HandHelper.HandCellPos();
             if (!IsValidPos(handPos)) return null;
             return LevelMatrix[handPos.x, handPos.y];
         }

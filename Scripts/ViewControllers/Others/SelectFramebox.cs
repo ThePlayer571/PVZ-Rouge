@@ -25,60 +25,38 @@ namespace TPL.PVZR.ViewControllers.Others
             _PhaseModel = this.GetModel<IPhaseModel>();
         }
 
+        private bool ShouldDisplay()
+        {
+            if (HandHelper.IsHandOnUI()) return false;
+            if (_PhaseModel.GamePhase != GamePhase.Gameplay) return false;
+            switch (_HandSystem.HandInfo.Value.HandState)
+            {
+                case HandState.Empty:
+                    return HandHelper.DaveCanReachHand();
+                case HandState.HaveShovel:
+                {
+                    var handCellPos = HandHelper.HandCellPos();
+                    if (!HandHelper.DaveCanReachHand()) return false;
+                    if (!_LevelGridModel.IsValidPos(handCellPos)) return false;
+                    var handOnCell = _LevelGridModel.GetCell(handCellPos);
+                    return handOnCell.CellPlantState == CellPlantState.HavePlant;
+                }
+                case HandState.HaveSeed:
+                {
+                    var handCellPos = HandHelper.HandCellPos();
+                    if (!HandHelper.DaveCanReachHand()) return false;
+                    if (!_LevelGridModel.IsValidPos(handCellPos)) return false;
+                    var plantId = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.Id;
+                    return _LevelGridModel.CanSpawnPlantOn(handCellPos, plantId);
+                }
+            }
+
+            throw new Exception($"ShouldDisplay出错，出现未考虑的情况");
+        }
+
         private void Update()
         {
-            if (_PhaseModel.GamePhase != GamePhase.Gameplay)
-            {
-                UpdateView(false);
-            }
-            else if (_HandSystem.HandInfo.Value.HandState == HandState.Empty)
-            {
-                if (HandHelper.PlayerCanReachMouse())
-                {
-                    UpdateView(true);
-                }
-                else
-                {
-                    UpdateView(false);
-                }
-            }
-            else if (_HandSystem.HandInfo.Value.HandState == HandState.HaveShovel)
-            {
-                var handOnCell = _LevelGridModel.HandOnCell();
-
-                if (!HandHelper.PlayerCanReachMouse())
-                {
-                    UpdateView(false);
-                }
-                else if (handOnCell == null)
-                {
-                    UpdateView(false);
-                }
-                else if (handOnCell.CellPlantState == CellPlantState.HavePlant)
-                {
-                    UpdateView(true);
-                }
-                else
-                {
-                    UpdateView(false);
-                }
-            }
-            else if (_HandSystem.HandInfo.Value.HandState == HandState.HaveSeed)
-            {
-                if (!HandHelper.PlayerCanReachMouse())
-                {
-                    UpdateView(false);
-                }
-                else if (_LevelGridModel.CanSpawnPlantOn(HandHelper.MouseCellPos(),
-                             _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.Id))
-                {
-                    UpdateView(true);
-                }
-                else
-                {
-                    UpdateView(false);
-                }
-            }
+            UpdateView(ShouldDisplay());
         }
 
         private void UpdateView(bool display)
@@ -86,7 +64,7 @@ namespace TPL.PVZR.ViewControllers.Others
             if (display)
             {
                 _SpriteRenderer.enabled = true;
-                transform.position = LevelTilemapHelper.CellToWorld(HandHelper.MouseCellPos());
+                transform.position = LevelGridHelper.CellToWorld(HandHelper.HandCellPos());
             }
             else
             {
