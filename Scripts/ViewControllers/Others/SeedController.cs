@@ -7,6 +7,7 @@ using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Commands.HandCommands;
 using TPL.PVZR.Core;
 using TPL.PVZR.Events.HandEvents;
+using TPL.PVZR.Helpers;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
 using UnityEngine;
@@ -79,7 +80,18 @@ namespace TPL.PVZR.ViewControllers.Others
                 }
                 else
                 {
-                    this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(this._seedData));
+                    if (!_seedData.ColdTimeTimer.Ready)
+                    {
+                        NoticeHelper.Notice("冷却中");
+                    }
+                    else if (_LevelModel.SunPoint.Value < _seedData.CardData.CardDefinition.SunpointCost)
+                    {
+                        NoticeHelper.Notice("阳光不够");
+                    }
+                    else
+                    {
+                        this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(this._seedData));
+                    }
                 }
             }
             else if (eventData.button == PointerEventData.InputButton.Right)
