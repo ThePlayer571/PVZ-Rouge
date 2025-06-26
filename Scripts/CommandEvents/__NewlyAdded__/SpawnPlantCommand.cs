@@ -3,6 +3,7 @@ using QFramework;
 using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Core;
 using TPL.PVZR.Helpers;
+using TPL.PVZR.Helpers.Factory;
 using TPL.PVZR.Models;
 using UnityEngine;
 
@@ -33,7 +34,7 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
                 throw new Exception($"无法在此处种植植物，Pos:{_cellPos}, Plant: {_id}"); // 
 
             //
-            PlantHelper.SpawnPlant(_id, _direction, _cellPos);
+            EntityFactory.PlantFactory.SpawnPlant(_id, _direction, _cellPos);
         }
     }
 }

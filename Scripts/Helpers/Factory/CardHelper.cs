@@ -37,7 +37,9 @@ namespace TPL.PVZR.Classes.GameStuff
                 throw new ArgumentNullException(nameof(seedData));
             }
 
-            var go = _seedControllerPrefab.Instantiate(Vector3.zero, Quaternion.identity,ReferenceHelper.LevelGameplayPanel.transform).GetComponent<SeedController>();
+            var go = _seedControllerPrefab
+                .Instantiate(Vector3.zero, Quaternion.identity, ReferenceHelper.LevelGameplayPanel.transform)
+                .GetComponent<SeedController>();
             go.Initialize(seedData);
             return go;
         }
@@ -59,6 +61,8 @@ namespace TPL.PVZR.Classes.GameStuff
             {
                 [PlantId.PeaShooter] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_Peashooter),
+                [PlantId.Sunflower] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                    Carddefinition.CardDefinition_Sunflower),
             };
             _seedControllerPrefab =
                 resLoader.LoadSync<GameObject>(Seedcontroller_prefab.BundleName, Seedcontroller_prefab.SeedController);

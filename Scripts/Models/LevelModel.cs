@@ -54,7 +54,6 @@ namespace TPL.PVZR.Models
             this.SunPoint.SetValueWithoutEvent(levelData.InitialSunPoint);
 
             this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(ReferenceHelper.LevelTilemap, levelData);
-            LevelMatrixHelper.SetDebugTiles(LevelMatrix, ReferenceHelper.LevelTilemap.Debug);
         }
 
         public void Reset()

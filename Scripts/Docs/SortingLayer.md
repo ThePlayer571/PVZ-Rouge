@@ -13,32 +13,32 @@
 ### Level
 
 
-| Id             | Layer         | Order |
-| -------------- | ------------- | ----- |
-| SelectFramebox | ForeGround    | 100   |
-| Player         | MidGround     | 500   |
-| TileDirt       | MidGround     | 101   |
-| TileGround     | MidGround     | 100   |
-| TileBackGround | BackGround    | 100   |
-| TileBound      | NotClassified | 0     |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
-|                |               |       |
+| Id             | Layer         | Order   |
+| -------------- | ------------- | ------- |
+| SelectFramebox | ForeGround    | 100     |
+| Player         | MidGround     | 500     |
+| Plants         | MidGround     | 200~299 |
+| TileDirt       | MidGround     | 101     |
+| TileGround     | MidGround     | 100     |
+| TileBackGround | BackGround    | 100     |
+| TileBound      | NotClassified | 0       |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
+|                |               |         |
 
 

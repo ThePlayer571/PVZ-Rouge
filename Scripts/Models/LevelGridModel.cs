@@ -80,7 +80,6 @@ namespace TPL.PVZR.Models
         public void Initialize(ILevelData levelData)
         {
             this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(ReferenceHelper.LevelTilemap, levelData);
-            LevelMatrixHelper.SetDebugTiles(LevelMatrix, ReferenceHelper.LevelTilemap.Debug);
         }
 
         protected override void OnInit()

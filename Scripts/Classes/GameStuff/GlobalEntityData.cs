@@ -8,6 +8,7 @@ namespace TPL.PVZR.Classes.GameStuff
         public float Plant_Peashooter_ShootInterval = 2f;
         public float Plant_Peashooter_DetectInterval = 0.5f;
         public float Plant_Peashooter_ShootDistance = 20f;
+        public float Plant_Sunflower_SpawnSunInterval = 1f;
         public float Projectile_Pea_Speed = 10f;
     }
 }

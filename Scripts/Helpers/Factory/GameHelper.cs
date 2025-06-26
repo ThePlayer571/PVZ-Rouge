@@ -22,7 +22,8 @@ namespace TPL.PVZR.Helpers
                 CardHelper.CreateCardData(PlantId.PeaShooter),
                 CardHelper.CreateCardData(PlantId.PeaShooter),
                 CardHelper.CreateCardData(PlantId.PeaShooter),
-                CardHelper.CreateCardData(PlantId.PeaShooter),
+                CardHelper.CreateCardData(PlantId.Sunflower),
+                
             };
 
             return new GameData(testMazeMapData, testInventoryData);
