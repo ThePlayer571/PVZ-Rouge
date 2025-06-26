@@ -1,3 +1,4 @@
+using QFramework;
 using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Core;
@@ -13,6 +14,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
         public virtual void Initialize(Direction2 direction)
         {
             this.Direction = direction;
+
+            gameObject.LocalScaleX(direction.ToInt());
         }
 
         public void TakeAttack(Attack attack)

@@ -1,5 +1,6 @@
 using System;
 using QFramework;
+using UnityEngine.EventSystems;
 
 namespace TPL.PVZR.ViewControllers.Managers
 {
@@ -26,11 +27,23 @@ namespace TPL.PVZR.ViewControllers.Managers
         private void Update()
         {
             OnUpdate?.Invoke();
+            UpdateUIState();
         }
 
         private void FixedUpdate()
         {
             OnFixedUpdate?.Invoke();
+        }
+        
+        
+        
+        
+        public static bool IsPointerOverUI { get; private set; }
+
+        // 在主控制器Update里每帧调用
+        private static void UpdateUIState()
+        {
+            IsPointerOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
         }
     }
 }

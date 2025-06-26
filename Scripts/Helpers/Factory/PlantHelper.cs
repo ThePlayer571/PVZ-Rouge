@@ -27,12 +27,12 @@ namespace TPL.PVZR.Helpers
 
         private static Dictionary<PlantId, GameObject> _plantDict;
 
-        public static Plant SpawnPlant(PlantId id, Direction2 direction, Vector2Int position)
+        public static Plant SpawnPlant(PlantId id, Direction2 direction, Vector2Int cellPos)
         {
             if (_plantDict.TryGetValue(id, out var plantPrefab))
             {
                 var plant = plantPrefab
-                    .Instantiate(LevelGridHelper.CellToWorldBottom(position), Quaternion.identity)
+                    .Instantiate(LevelGridHelper.CellToWorldBottom(cellPos), Quaternion.identity)
                     .GetComponent<Plant>();
                 plant.Initialize(direction);
                 return plant;

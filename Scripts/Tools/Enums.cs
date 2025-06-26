@@ -14,5 +14,10 @@ namespace TPL.PVZR.Core
         {
             return direction == Direction2.Left ? Vector2.left : Vector2.right;
         }
+
+        public static int ToInt(this Direction2 direction)
+        {
+            return direction == Direction2.Left ? -1 : 1;
+        }
     }
 }

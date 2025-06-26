@@ -41,7 +41,7 @@ namespace TPL.PVZR.Models
         {
             if (id == PlantId.Flowerpot) // 花盆
             {
-                if (!IsValidPos(pos) && !IsValidPos(pos.Down())) return false;
+                if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false;
 
                 var cell = LevelMatrix[pos.x, pos.y];
                 var belowCell = LevelMatrix[pos.x, pos.y - 1];
@@ -49,7 +49,7 @@ namespace TPL.PVZR.Models
             }
             else
             {
-                if (!IsValidPos(pos) && !IsValidPos(pos.Down())) return false;
+                if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false;
 
                 var cell = LevelMatrix[pos.x, pos.y];
                 var belowCell = LevelMatrix[pos.x, pos.y - 1];

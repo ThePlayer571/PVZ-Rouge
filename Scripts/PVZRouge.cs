@@ -17,6 +17,7 @@ namespace TPL.PVZR
             this.RegisterModel<ILevelModel>(new LevelModel());
             this.RegisterModel<ILevelGridModel>(new LevelGridModel());
             this.RegisterSystem<ILevelSystem>(new LevelSystem());
+            this.RegisterSystem<ISunSystem>(new SunSystem());
             this.RegisterSystem<IHandSystem>(new HandSystem());
             this.RegisterSystem<ISeedSystem>(new SeedSystem());
 

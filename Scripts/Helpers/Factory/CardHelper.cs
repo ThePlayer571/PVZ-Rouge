@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.LevelStuff;
+using TPL.PVZR.Core;
 using TPL.PVZR.ViewControllers.Others;
 using UnityEngine;
 
@@ -35,7 +36,8 @@ namespace TPL.PVZR.Classes.GameStuff
             {
                 throw new ArgumentNullException(nameof(seedData));
             }
-            var go = _seedControllerPrefab.Instantiate().GetComponent<SeedController>();
+
+            var go = _seedControllerPrefab.Instantiate(Vector3.zero, Quaternion.identity,ReferenceHelper.LevelGameplayPanel.transform).GetComponent<SeedController>();
             go.Initialize(seedData);
             return go;
         }

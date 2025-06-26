@@ -2,10 +2,12 @@ using System;
 using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.LevelStuff;
+using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.Commands.HandCommands;
 using TPL.PVZR.Core;
 using TPL.PVZR.Events;
 using TPL.PVZR.Events.HandEvents;
+using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
 using UnityEngine;
@@ -20,14 +22,43 @@ namespace TPL.PVZR.ViewControllers.Managers
         private PlayerInputControl _inputActions;
         private IHandSystem _HandSystem;
         private ILevelModel _LevelModel;
+        private ILevelGridModel _LevelGridModel;
         private IPhaseModel _PhaseModel;
 
         public void Awake()
         {
             _HandSystem = this.GetSystem<IHandSystem>();
             _LevelModel = this.GetModel<ILevelModel>();
+            _LevelGridModel = this.GetModel<ILevelGridModel>();
             _PhaseModel = this.GetModel<IPhaseModel>();
             _inputActions = new PlayerInputControl();
+
+            _inputActions.Level.PlantingLeft.performed += context =>
+            {
+                if (_PhaseModel.GamePhase != GamePhase.Gameplay) return; // 游戏阶段正确
+                if (HandHelper.IsHandOnUI()) return; // 手不在UI上
+                if (_HandSystem.HandInfo.Value.HandState != HandState.HaveSeed) return; // 手上持有植物
+                var pos = HandHelper.HandCellPos();
+                if (!HandHelper.DaveCanReachHand()) return; // 手能够到目标位置
+                var id = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.Id;
+                if (!_LevelGridModel.CanSpawnPlantOn(pos, id)) return; // 
+
+                this.SendCommand<PlantingSeedInHandCommand>(new PlantingSeedInHandCommand(Direction2.Left));
+            };
+
+            _inputActions.Level.PlantingRight.performed += context =>
+            {
+                if (_PhaseModel.GamePhase != GamePhase.Gameplay) return; // 游戏阶段正确
+                if (HandHelper.IsHandOnUI()) return; // 手不在UI上
+                if (_HandSystem.HandInfo.Value.HandState != HandState.HaveSeed) return; // 手上持有植物
+                var pos = HandHelper.HandCellPos();
+                if (!HandHelper.DaveCanReachHand()) return; // 手能够到目标位置
+                var id = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.Id;
+                if (!_LevelGridModel.CanSpawnPlantOn(pos, id)) return; // 
+
+                this.SendCommand<PlantingSeedInHandCommand>(new PlantingSeedInHandCommand(Direction2.Right));
+                    
+            };
 
             _inputActions.Level.Deselect.performed += (context) =>
             {
@@ -65,6 +96,7 @@ namespace TPL.PVZR.ViewControllers.Managers
                 }
             }
 
+            // _inputActions的开关
             this.RegisterEvent<OnPhaseChangeEvent>(e =>
             {
                 switch (e.GamePhase)

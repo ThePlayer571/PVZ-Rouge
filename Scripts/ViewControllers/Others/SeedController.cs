@@ -54,7 +54,6 @@ namespace TPL.PVZR.ViewControllers.Others
             // UI
             PlantImage.sprite = seedData.CardData.CardDefinition.PlantSprite;
             SunpointCostText.text = seedData.CardData.CardDefinition.SunpointCost.ToString();
-            UpdateUI();
         }
 
         private void OnDestroy()

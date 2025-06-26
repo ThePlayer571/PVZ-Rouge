@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using QFramework;
+using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.Events;
 using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers.Managers;
@@ -56,6 +57,11 @@ namespace TPL.PVZR.Systems
 
                         break;
                 }
+            });
+
+            this.RegisterEvent<PlantingSeedInHandEvent>(e =>
+            {
+                e.PlantedSeed.ColdTimeTimer.Reset();
             });
         }
     }

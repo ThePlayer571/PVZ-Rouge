@@ -19,10 +19,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
             _timer = new Timer(GlobalEntityData.Plant_Peashooter_ShootInterval);
             _detectTimer = new Timer(GlobalEntityData.Plant_Peashooter_DetectInterval);
+            _layerMask = LayerMask.GetMask("Zombie", "Barrier");
         }
 
-        [SerializeField] private Timer _timer;
-        [SerializeField] private Timer _detectTimer;
+        private Timer _timer;
+        private Timer _detectTimer;
+        private int _layerMask;
 
         [SerializeField] private Transform FirePoint;
 
@@ -37,8 +39,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             {
                 _detectTimer.Reset();
                 var hit = Physics2D.Raycast(FirePoint.position, Direction.ToVector2(),
-                    GlobalEntityData.Plant_Peashooter_ShootDistance, LayerMask.GetMask("Zombie", "Barrier"));
-                if (hit.collider.CompareTag("Zombie"))
+                    GlobalEntityData.Plant_Peashooter_ShootDistance, _layerMask);
+
+                if (hit.collider && hit.collider.CompareTag("Zombie"))
                 {
                     ProjectileHelper.CreatePea(Direction);
                     _timer.Reset();

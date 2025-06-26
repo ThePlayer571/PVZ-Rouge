@@ -1,6 +1,7 @@
 using System;
 using QFramework;
 using TPL.PVZR.Classes.LevelStuff;
+using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.Events.HandEvents;
 using TPL.PVZR.ViewControllers.Others;
 using UnityEngine.XR;
@@ -49,6 +50,8 @@ namespace TPL.PVZR.Systems
             this.RegisterEvent<DeselectEvent>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
 
             this.RegisterEvent<SelectShovelEvent>(e => { HandInfo.Value = new HandInfo(HandState.HaveShovel, null); });
+
+            this.RegisterEvent<PlantingSeedInHandEvent>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
         }
 
         public BindableProperty<HandInfo> HandInfo { get; private set; }
