@@ -35,9 +35,10 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
                 throw new Exception($"无法在此处种植植物，Pos:{_cellPos}, Plant: {_id}"); // 
 
             //
-            EntityFactory.PlantFactory.SpawnPlant(_id, _direction, _cellPos);
+            var go = EntityFactory.PlantFactory.SpawnPlant(_id, _direction, _cellPos);
             var targetCell = _LevelGridModel.GetCell(_cellPos);
             targetCell.CellPlantState = CellPlantState.HavePlant;
+            targetCell.Plant = go;
         }
     }
 }

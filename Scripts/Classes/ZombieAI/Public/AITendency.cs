@@ -61,12 +61,12 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
         public Path ChooseOnePath(List<Path> paths, float factor = 0.01f)
         {
             var weights = paths.Select((p => p.Weight(this))).ToArray();
-            $"scores是{String.Join(",", weights.Select(s => s.ToString("F3")))}".LogInfo(); // 修改为三位小数输出
+            // $"scores是{String.Join(",", weights.Select(s => s.ToString("F3")))}".LogInfo(); // 修改为三位小数输出
             float minWeight = weights.Min();
 
             // 计算每个路径的score（对差值敏感）
             var scores = weights.Select(w => MathF.Exp(-(w - minWeight) * factor)).ToArray();
-            $"scores是{String.Join(",", scores.Select(s => s.ToString("F3")))}".LogInfo(); // 修改为三位小数输出
+            // $"scores是{String.Join(",", scores.Select(s => s.ToString("F3")))}".LogInfo(); // 修改为三位小数输出
             float total = scores.Sum();
             float randomValue = total * seed;
             float cumulative = 0f;

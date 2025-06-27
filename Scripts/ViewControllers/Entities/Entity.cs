@@ -3,6 +3,7 @@ using QFramework;
 using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Classes.Level;
 using TPL.PVZR.Core;
+using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Models;
 using UnityEngine;
 
@@ -75,5 +76,7 @@ namespace TPL.PVZR.ViewControllers.Entities
         {
             return PVZRouge.Interface;
         }
+
+        public Vector2Int CellPos => LevelGridHelper.WorldToCell(this.transform.position);
     }
 }

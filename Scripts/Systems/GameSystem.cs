@@ -49,7 +49,6 @@ namespace TPL.PVZR.Systems
                         {
                             case PhaseStage.EnterEarly:
                                 SceneManager.LoadScene("MazeMapScene");
-                                SceneManager.GetActiveScene().name.LogInfo();
                                 _GameModel.MazeMapController =
                                     new DaveHouseMazeMapController(_GameModel.GameData.MazeMapData);
                                 break;
@@ -58,7 +57,6 @@ namespace TPL.PVZR.Systems
                                     .DelayFrame(1) // 等待场景加载
                                     .Callback(() =>
                                     {
-                                        SceneManager.GetActiveScene().name.LogInfo();
                                         _GameModel.MazeMapController.SetMazeMapTiles();
                                     }).Start(GameManager.Instance);
                                 break;

@@ -8,18 +8,19 @@ namespace TPL.PVZR.Systems
 {
     public interface IZombieAISystem : ISystem
     {
+        IZombieAIUnit ZombieAIUnit { get; }
     }
 
     public class ZombieAISystem : AbstractSystem, IZombieAISystem
     {
-        private IZombieAIUnit _zombieAIUnit;
+        public IZombieAIUnit ZombieAIUnit { get; private set; }
         private ILevelGridModel _LevelGridModel;
 
         protected override void OnInit()
         {
             _LevelGridModel = this.GetModel<ILevelGridModel>();
 
-            _zombieAIUnit = new ZombieAIUnit();
+            ZombieAIUnit = new ZombieAIUnit();
 
             this.RegisterEvent<OnPhaseChangeEvent>(e =>
             {
@@ -29,10 +30,7 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
-                                "call AI System".LogInfo();
-                                $"_LevelGridModel.LevelMatrix is null: {_LevelGridModel.LevelMatrix is null}".LogInfo();
-                                _zombieAIUnit.InitializeFrom(_LevelGridModel.LevelMatrix);
-                                _zombieAIUnit.DebugDisplayMatrix();
+                                ZombieAIUnit.InitializeFrom(_LevelGridModel.LevelMatrix);
                                 break;
                         }
                         break;

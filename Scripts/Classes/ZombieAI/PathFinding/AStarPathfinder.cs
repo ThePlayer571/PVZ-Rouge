@@ -141,8 +141,8 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
                 }
             }
 
-            Debug.LogWarning(
-                $"Path not found, from:({startCluster.vertexA.x},{startCluster.vertexA.y})({startCluster.vertexB.x},{startCluster.vertexB.y}), to: ({end.x},{end.y})");
+            // Debug.LogWarning(
+            //     $"Path not found, from:({startCluster.vertexA.x},{startCluster.vertexA.y})({startCluster.vertexB.x},{startCluster.vertexB.y}), to: ({end.x},{end.y})");
             return null; // 或抛出异常
         }
 

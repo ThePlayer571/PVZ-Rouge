@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using QFramework;
 using TPL.PVZR.Core;
+using TPL.PVZR.Gameplay.Class.ZombieAI.Public;
 using TPL.PVZR.ViewControllers.Entities.Plants;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         protected override void OnEnter()
         {
-            mTarget.AttackArea.OnTargetStay.Register(OnAttackingAreaStay);
+            // mTarget.AttackArea.OnTargetStay.Register(OnAttackingAreaStay);
         }
 
         protected override void OnExit()
@@ -24,11 +25,30 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         protected override void OnUpdate()
         {
-            mTarget.Direction = (mTarget.transform.position.x > ReferenceHelper.Player.transform.position.x)
-                ? Direction2.Left
-                : Direction2.Right;
-            mTarget.MoveForward();
+            // 手动触发重新寻路
+            if (mTarget.triggerDebug)
+            {
+                mTarget.CachePath = mTarget._ZombieAISystem.ZombieAIUnit.FindPath(mTarget.CellPos,
+                    ReferenceHelper.Player.CellPos, mTarget.AITendency);
+                mTarget.triggerDebug = false;
+                mTarget.CurrentMoveData = mTarget.CachePath.NextTarget();
+            }
+
+            if (mTarget.CurrentMoveData == null) return;
+
+            // 更新CurrentMoveData
+            if (mTarget.CurrentMoveData.moveStage == MoveStage.FollowVertex)
+            {
+                if (mTarget.CellPos == mTarget.CurrentMoveData.target)
+                {
+                    mTarget.CurrentMoveData = mTarget.CachePath.NextTarget();
+                }
+            }
+
+            //
+            mTarget.MoveTowards(mTarget.CurrentMoveData);
         }
+
 
         private void OnAttackingAreaStay(Collider2D other)
         {

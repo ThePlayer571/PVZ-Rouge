@@ -53,6 +53,8 @@ namespace TPL.PVZR.Models
 
                 var cell = LevelMatrix[pos.x, pos.y];
                 var belowCell = LevelMatrix[pos.x, pos.y - 1];
+                if (cell == null) throw new Exception($"调用CanSpawnPlantOn时，cell为null，pos: {pos}");
+                if (belowCell == null) throw new Exception($"调用CanSpawnPlantOn时，belowCell为null，pos: {pos}.Down");
                 return cell.IsEmpty && belowCell.IsDirtPlat;
             }
 
@@ -79,7 +81,6 @@ namespace TPL.PVZR.Models
 
         public void Initialize(ILevelData levelData)
         {
-            "Call LevelGridModel.Initialize".LogInfo();
             this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(ReferenceHelper.LevelTilemap, levelData);
         }
 

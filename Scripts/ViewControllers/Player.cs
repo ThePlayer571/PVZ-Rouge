@@ -1,11 +1,14 @@
 using System;
+using QFramework;
 using TPL.PVZR.Core;
+using TPL.PVZR.Helpers.Methods;
+using TPL.PVZR.ViewControllers.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace TPL.PVZR.ViewControllers
 {
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, IEntity
     {
         private PlayerInputControl _inputActions;
         private Rigidbody2D _Rigidbody2D;
@@ -66,5 +69,12 @@ namespace TPL.PVZR.ViewControllers
 
             ReferenceHelper.Player = this;
         }
+
+        public IArchitecture GetArchitecture()
+        {
+            return PVZRouge.Interface;
+        }
+
+        public Vector2Int CellPos => LevelGridHelper.WorldToCell(this.transform.position);
     }
 }

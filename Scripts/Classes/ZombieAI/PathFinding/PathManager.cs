@@ -37,8 +37,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
             var endCluster = _zombieAIUnit.GetCluster(endVertex);
 
 
-            $"调用 GetMultiPaths({startVertex.Position}->{endVertex.Position}) | IsIdentical: {startCluster.IsIdentical(endCluster)}"
-                .LogInfo();
+            // $"调用 GetMultiPaths({startVertex.Position}->{endVertex.Position}) | IsIdentical: {startCluster.IsIdentical(endCluster)}".LogInfo();
 
             // 简单情况处理，这时不需要调用寻路算法
             if (startCluster.IsIdentical(endCluster))
@@ -89,7 +88,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
                 List<Path> siegePaths = pfa.AStarFindSiegePath(startCluster, endCluster, aiTendency);
 
                 _pathCache.AddPathRange(pathKey, siegePaths);
-                "调用了寻路算法".LogInfo();
+                // "调用了寻路算法".LogInfo();
             }
 
             // 如果已经有这条路了，直接返回

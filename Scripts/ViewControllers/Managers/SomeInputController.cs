@@ -83,6 +83,8 @@ namespace TPL.PVZR.ViewControllers.Managers
                 if (_PhaseModel.GamePhase != GamePhase.Gameplay) return;
                 var targetSeedData = _LevelModel.TryGetSeedDataByIndex(index);
                 if (targetSeedData == null) return;
+                if (!targetSeedData.ColdTimeTimer.Ready) return;
+                if (_LevelModel.SunPoint.Value < targetSeedData.CardData.CardDefinition.SunpointCost) return;
 
                 if (_HandSystem.HandInfo.Value.HandState == HandState.Empty)
                 {
