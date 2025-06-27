@@ -61,11 +61,7 @@ namespace TPL.PVZR.Systems
                                         var Player = DavePrefab.Instantiate(LevelData.LevelDefinition.InitialPlayerPos,
                                             Quaternion.identity);
                                         VirtualCamera.Follow = Player.transform;
-                                    }).Start(GameManager.Instance);
-                                break;
-                            case PhaseStage.EnterNormal:
-                                // 测试用
-                                ActionKit.Sequence()
+                                    }) // 以下测试用，记得删除
                                     .DelayFrame(2)
                                     .Callback(() => { _PhaseModel.DelayChangePhase(GamePhase.LevelInitialization); })
                                     .Delay(0.1f)
@@ -94,6 +90,7 @@ namespace TPL.PVZR.Systems
                                     _LevelModel.ChosenSeeds[i] =
                                         SeedHelper.CreateSeedData(i + 1, chosenSeedOptions[i].CardData);
                                 }
+
                                 break;
                         }
 

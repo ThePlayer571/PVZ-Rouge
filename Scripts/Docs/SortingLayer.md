@@ -17,7 +17,9 @@
 | -------------- | ------------- | ------- |
 | SelectFramebox | ForeGround    | 100     |
 | Player         | MidGround     | 500     |
-| Plants         | MidGround     | 200~299 |
+| Sun            | MidGround     | 350     |
+| Zombies        | MidGround     | 250~299 |
+| Plants         | MidGround     | 200~249 |
 | TileDirt       | MidGround     | 101     |
 | TileGround     | MidGround     | 100     |
 | TileBackGround | BackGround    | 100     |

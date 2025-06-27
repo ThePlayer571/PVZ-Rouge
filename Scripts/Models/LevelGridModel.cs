@@ -79,6 +79,7 @@ namespace TPL.PVZR.Models
 
         public void Initialize(ILevelData levelData)
         {
+            "Call LevelGridModel.Initialize".LogInfo();
             this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(ReferenceHelper.LevelTilemap, levelData);
         }
 

@@ -2,8 +2,8 @@ using TPL.PVZR.Classes.LevelStuff;
 
 namespace TPL.PVZR.ViewControllers.Entities
 {
-    public interface IAttackable
+    public interface IAttackable : IEntity
     {
-        void TakeAttack(Attack attack);
+        AttackData TakeAttack(AttackData attackData);
     }
 }

@@ -8,7 +8,7 @@ namespace TPL.PVZR.ViewControllers
     public class Player : MonoBehaviour
     {
         private PlayerInputControl _inputActions;
-        private Rigidbody2D _Rigidbody;
+        private Rigidbody2D _Rigidbody2D;
         private Collider2D _Collider;
 
         [SerializeField] private float speed;
@@ -21,12 +21,12 @@ namespace TPL.PVZR.ViewControllers
             var movement = _inputActions.Level.Movement.ReadValue<Vector2>();
             if (!Mathf.Approximately(movement.x, 0))
             {
-                _Rigidbody.AddForce(new Vector2(speed * movement.x, 0));
+                _Rigidbody2D.AddForce(new Vector2(speed * movement.x, 0));
             }
 
             // dragForce
-            var dragForce = new Vector2(-k * _Rigidbody.velocity.x, 0);
-            _Rigidbody.AddForce(dragForce);
+            var dragForce = new Vector2(-k * _Rigidbody2D.velocity.x, 0);
+            _Rigidbody2D.AddForce(dragForce);
         }
 
 
@@ -41,12 +41,12 @@ namespace TPL.PVZR.ViewControllers
             if (OnGround)
             {
                 _hasTwiceJumped = false;
-                _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, jumpForce);
+                _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x, jumpForce);
             }
             else if (!_hasTwiceJumped)
             {
                 _hasTwiceJumped = true;
-                _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, jumpForce);
+                _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x, jumpForce);
             }
             else // 已经二段跳，不能跳了
             {
@@ -56,7 +56,7 @@ namespace TPL.PVZR.ViewControllers
 
         private void Awake()
         {
-            _Rigidbody = this.GetComponent<Rigidbody2D>();
+            _Rigidbody2D = this.GetComponent<Rigidbody2D>();
             _Collider = this.GetComponent<Collider2D>();
 
             _inputActions = new PlayerInputControl();

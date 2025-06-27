@@ -1,0 +1,9 @@
+namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
+{
+    public enum ZombieState
+    {
+        DefaultTargeting,
+        Attacking,
+        Dying,
+    }
+}

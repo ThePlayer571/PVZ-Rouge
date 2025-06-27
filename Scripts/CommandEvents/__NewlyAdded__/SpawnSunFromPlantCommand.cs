@@ -29,7 +29,7 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
             var go = EntityFactory.SunFactory.SpawnSunWithJump(_plant.transform.position +
                                                                new Vector3(0, TestDataManager.Instance.StartPosOffset,
                                                                    0));
-            ActionKit.Delay(1f, () => { go.TryCollect(); }).Start(go);
+            ActionKit.Delay(2f, () => { go.TryCollect(); }).Start(go);
         }
     }
 

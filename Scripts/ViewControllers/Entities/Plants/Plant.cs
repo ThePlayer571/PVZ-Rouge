@@ -18,9 +18,10 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             gameObject.LocalScaleX(direction.ToInt());
         }
 
-        public void TakeAttack(Attack attack)
+        public AttackData TakeAttack(AttackData attackData)
         {
-            HealthPoint -= attack.Damage;
+            HealthPoint -= attackData.Damage;
+            return null;
         }
     }
 }

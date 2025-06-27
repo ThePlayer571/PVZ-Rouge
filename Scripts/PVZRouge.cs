@@ -21,6 +21,7 @@ namespace TPL.PVZR
             this.RegisterSystem<ISunSystem>(new SunSystem());
             this.RegisterSystem<IHandSystem>(new HandSystem());
             this.RegisterSystem<ISeedSystem>(new SeedSystem());
+            this.RegisterSystem<IZombieAISystem>(new ZombieAISystem());
 
             // ===== Others =====
             this.RegisterModel<IPhaseModel>(new PhaseModel());

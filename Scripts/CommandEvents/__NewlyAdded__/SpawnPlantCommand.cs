@@ -1,6 +1,7 @@
 using System;
 using QFramework;
 using TPL.PVZR.Classes.GameStuff;
+using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Core;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.Factory;
@@ -35,6 +36,8 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
 
             //
             EntityFactory.PlantFactory.SpawnPlant(_id, _direction, _cellPos);
+            var targetCell = _LevelGridModel.GetCell(_cellPos);
+            targetCell.CellPlantState = CellPlantState.HavePlant;
         }
     }
 }

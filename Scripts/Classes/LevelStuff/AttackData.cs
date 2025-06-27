@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TPL.PVZR.Classes.LevelStuff
 {
-    public class Attack
+    public class AttackData
     {
         private AttackDefinition AttackDefinition;
         // 我想或许不用让外界访问AttackDefinition，而是提供方便的方法调用
