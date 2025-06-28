@@ -9,7 +9,7 @@ namespace TPL.PVZR.Classes.GameStuff
         public PlantId Id;
         public int SunpointCost;
         public float ColdTime;
-        public bool HaveInitialColdTime;
+        public float InitialColdTime;
 
 
         // 显示

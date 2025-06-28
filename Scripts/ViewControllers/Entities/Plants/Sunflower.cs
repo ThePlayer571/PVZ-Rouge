@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public class Sunflower: Plant
+    public sealed class Sunflower: Plant
     {
         public override PlantId Id { get; } = PlantId.Sunflower;
 

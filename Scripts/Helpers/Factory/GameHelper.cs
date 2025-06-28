@@ -21,7 +21,7 @@ namespace TPL.PVZR.Helpers
             {
                 CardHelper.CreateCardData(PlantId.PeaShooter),
                 CardHelper.CreateCardData(PlantId.PeaShooter),
-                CardHelper.CreateCardData(PlantId.PeaShooter),
+                CardHelper.CreateCardData(PlantId.Wallnut),
                 CardHelper.CreateCardData(PlantId.Sunflower),
                 
             };

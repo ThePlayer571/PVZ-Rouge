@@ -48,8 +48,8 @@ namespace TPL.PVZR.Classes.GameStuff
 
 
         private static readonly Dictionary<PlantId, CardDefinition> _cardsDict;
-        private static GameObject _seedOptionControllerPrefab;
-        private static GameObject _seedControllerPrefab;
+        private static readonly GameObject _seedOptionControllerPrefab;
+        private static readonly GameObject _seedControllerPrefab;
 
         static CardHelper()
         {
@@ -63,6 +63,12 @@ namespace TPL.PVZR.Classes.GameStuff
                     Carddefinition.CardDefinition_Peashooter),
                 [PlantId.Sunflower] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_Sunflower),
+                [PlantId.Wallnut] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                    Carddefinition.CardDefinition_Wallnut),
+                [PlantId.Flowerpot] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                    Carddefinition.CardDefinition_Flowerpot),
+                [PlantId.SnowPea] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                    Carddefinition.CardDefinition_SnowPea),
             };
             _seedControllerPrefab =
                 resLoader.LoadSync<GameObject>(Seedcontroller_prefab.BundleName, Seedcontroller_prefab.SeedController);
