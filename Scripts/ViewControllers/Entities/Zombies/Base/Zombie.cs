@@ -6,6 +6,7 @@ using TPL.PVZR.Core;
 using TPL.PVZR.Gameplay.Class.ZombieAI.Public;
 using TPL.PVZR.Systems;
 using TPL.PVZR.ViewControllers.Entities.Zombies.States;
+using Unity.Collections;
 using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies
@@ -33,7 +34,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
             _ZombieAISystem = this.GetSystem<IZombieAISystem>();
 
             Direction = new BindableProperty<Direction2>();
-            
+
             // Jump
             _jumpTimer = new Timer(jumpInterval);
 
@@ -66,7 +67,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
 
         #region 属性
 
-        
+        [SerializeField] public ZombieAttackAreaController AttackArea;
+        [SerializeField] public Transform JumpDetectionPoint;
+
         protected float speed = 2f;
         protected float jumpForce = 5f;
         protected float jumpInterval = 1f;
@@ -99,7 +102,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
 
         #region 攻击
 
-        [SerializeField] public ZombieAttackAreaController AttackArea;
         private AttackData BasicAttackData;
 
         public AttackData CreateCurrentAttackData()
@@ -113,7 +115,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
 
         public AITendency AITendency { get; set; } = AITendency.Default;
         public IZombiePath CachePath { get; set; } = null;
-        public MoveData CurrentMoveData { get; set; } = null;
+        [SerializeField, ReadOnly] public MoveData CurrentMoveData = null;
 
         public void MoveTowards(MoveData moveData)
         {
@@ -133,16 +135,17 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
                         default: throw new NotImplementedException();
                     }
 
-                    var hit = Physics2D.Raycast(transform.position, Direction.Value.ToVector2(), 0.5f,
+                    var hit = Physics2D.Raycast(JumpDetectionPoint.position, Direction.Value.ToVector2(), 0.5f,
                         LayerMask.GetMask("Barrier"));
                     // ====== 临时调试代码 begin ======
 #if UNITY_EDITOR
                     Color color = hit.collider ? Color.red : Color.green;
-                    Debug.DrawLine(transform.position, transform.position + (Vector3)Direction.Value.ToVector2() * 0.5f,
+                    Debug.DrawLine(JumpDetectionPoint.position,
+                        JumpDetectionPoint.position + (Vector3)Direction.Value.ToVector2() * 0.5f,
                         color, 0.1f);
                     if (hit.collider)
                     {
-                        Debug.DrawLine(transform.position, hit.point, Color.yellow, 0.1f);
+                        Debug.DrawLine(JumpDetectionPoint.position, hit.point, Color.yellow, 0.1f);
                     }
 #endif
                     // ====== 临时调试代码 end ======
@@ -171,7 +174,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
                     break;
                 }
 
-               default: throw new NotImplementedException();
+                default: throw new NotImplementedException();
             }
         }
 
@@ -179,7 +182,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
 
         #region 跳跃
 
-        public Timer _jumpTimer;
+        public Timer _jumpTimer { get; set; }
 
 
         public void Jump()
@@ -201,6 +204,5 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
         public IZombieAISystem _ZombieAISystem { get; private set; }
 
         #endregion
-
     }
 }

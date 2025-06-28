@@ -13,5 +13,6 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
         IZombiePath FindPath(Vector2Int start, Vector2Int end, AITendency aiTendency);
         // Debug
         void DebugDisplayMatrix();
+        void DebugLogCluster(Vector2Int pos);
     }
 }

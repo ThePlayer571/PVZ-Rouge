@@ -3,6 +3,7 @@ using TPL.PVZR.Events;
 using TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding;
 using TPL.PVZR.Gameplay.Class.ZombieAI.Public;
 using TPL.PVZR.Models;
+using UnityEngine;
 
 namespace TPL.PVZR.Systems
 {
@@ -31,6 +32,8 @@ namespace TPL.PVZR.Systems
                         {
                             case PhaseStage.EnterNormal:
                                 ZombieAIUnit.InitializeFrom(_LevelGridModel.LevelMatrix);
+                                ZombieAIUnit.DebugDisplayMatrix();
+                                ZombieAIUnit.DebugLogCluster(new Vector2Int(11, 14));
                                 break;
                         }
                         break;

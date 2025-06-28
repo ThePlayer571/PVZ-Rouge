@@ -1,15 +1,18 @@
+using System;
 using TPL.PVZR.Core;
 using TPL.PVZR.Helpers.Methods;
 using UnityEngine;
 
 namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
 {
+    [Serializable]
     public class MoveData
     {
-        public readonly MoveType moveType;
-        public readonly Vector2Int target;
-        public readonly MoveStage moveStage;
+        public MoveType moveType;
+        public Vector2Int target;
+        public MoveStage moveStage;
 
+        [NonSerialized]
         private Vector2? _cachedWorldPos;
 
         public Vector2 targetWorldPos
@@ -21,6 +24,7 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
                     // 假设有一个静态工具类用于转换
                     _cachedWorldPos = LevelGridHelper.CellToWorld(target);
                 }
+
                 return _cachedWorldPos.Value;
             }
         }

@@ -532,9 +532,9 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
         public void DebugDisplayMatrix()
         {
             var tilemap = ReferenceHelper.LevelTilemap.Debug;
-            var OneHeight = ResLoader.Allocate().LoadSync<Tile>(Leveldebug.BundleName,Leveldebug.DebugOneHeight);
-            var TwoHeight = ResLoader.Allocate().LoadSync<Tile>(Leveldebug.BundleName,Leveldebug.DebugTwoHeight);
-            var Key = ResLoader.Allocate().LoadSync<Tile>(Leveldebug.BundleName,Leveldebug.DebugKey);
+            var OneHeight = ResLoader.Allocate().LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugOneHeight);
+            var TwoHeight = ResLoader.Allocate().LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugTwoHeight);
+            var Key = ResLoader.Allocate().LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugKey);
             foreach (var each in vertices)
             {
                 if (each.isKey)
@@ -553,6 +553,14 @@ namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
                     }
                 }
             }
+        }
+
+        public void DebugLogCluster(Vector2Int pos)
+        {
+            var vertex = GetVertex(pos.x, pos.y);
+            var cluster = GetCluster(vertex);
+            $"cluster of ({vertex.x},{vertex.y}) is ({cluster.vertexA.x},{cluster.vertexA.y}) and ({cluster.vertexB.x},{cluster.vertexB.y})"
+                .LogInfo();
         }
 
         public void LogAllKeyAdjacencyList()
