@@ -1,6 +1,6 @@
-using TPL.PVZR.Classes.LevelStuff;
+using TPL.PVZR.Classes.LevelStuff.Effect;
 
-namespace TPL.PVZR.ViewControllers.Entities
+namespace TPL.PVZR.ViewControllers.Entities.Interfaces
 {
     public interface IEffectable
     {

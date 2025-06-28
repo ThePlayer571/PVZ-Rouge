@@ -38,6 +38,17 @@ namespace TPL.PVZR.Classes
 
         public float Remaining => Mathf.Max(0, Duration - ElapsedTime);
 
+        public void SetElapsedTime(float elapsedTime)
+        {
+            ElapsedTime = elapsedTime;
+        }
+        
+        public void SetRemaining(float remaining)
+        {
+            ElapsedTime = Duration - remaining;
+        }
+
+
         public void ChangeDuration(float duration)
         {
             Duration = duration;

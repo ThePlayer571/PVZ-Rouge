@@ -1,7 +1,8 @@
 using TPL.PVZR.Classes.MazeMap;
-using TPL.PVZR.Classes.MazeMap.Instances.DaveHouse;
+using TPL.PVZR.Classes.MazeMap.Public;
+using TPL.PVZR.Classes.MazeMap.Public.DaveHouse;
 
-namespace TPL.PVZR.Helpers
+namespace TPL.PVZR.Helpers.Factory
 {
     public static class MazeMapHelper
     {

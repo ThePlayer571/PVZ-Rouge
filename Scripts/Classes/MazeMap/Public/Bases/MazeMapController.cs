@@ -1,13 +1,8 @@
-using System;
 using QFramework;
-using TPL.PVZR.Classes.MazeMap.Generator;
-using TPL.PVZR.Classes.MazeMap.Instances.DaveHouse;
-using TPL.PVZR.Classes.MazeMap.Public;
-using TPL.PVZR.Core;
+using TPL.PVZR.Classes.MazeMap.Interfaces;
 using TPL.PVZR.Models;
-using UnityEngine;
 
-namespace TPL.PVZR.Classes.MazeMap
+namespace TPL.PVZR.Classes.MazeMap.Public.Bases
 {
     public abstract class MazeMapController : IMazeMapController
     {

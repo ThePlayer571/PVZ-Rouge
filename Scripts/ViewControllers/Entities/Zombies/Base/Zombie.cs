@@ -2,14 +2,16 @@ using System;
 using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.LevelStuff;
-using TPL.PVZR.Core;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Public;
+using TPL.PVZR.Classes.LevelStuff.Effect;
+using TPL.PVZR.Classes.ZombieAI.Public;
 using TPL.PVZR.Systems;
+using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers.Entities.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Zombies.States;
 using Unity.Collections;
 using UnityEngine;
 
-namespace TPL.PVZR.ViewControllers.Entities.Zombies
+namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 {
     public interface IZombie : IEntity, IEffectable, IAttackable
     {

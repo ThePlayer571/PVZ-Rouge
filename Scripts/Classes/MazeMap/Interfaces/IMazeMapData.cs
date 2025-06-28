@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using TPL.PVZR.Core;
+using TPL.PVZR.Tools;
 
-namespace TPL.PVZR.Classes.MazeMap
+namespace TPL.PVZR.Classes.MazeMap.Interfaces
 {
     public interface IMazeMapData
     {

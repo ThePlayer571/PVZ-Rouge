@@ -1,5 +1,6 @@
 using System;
 using QFramework;
+using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.States

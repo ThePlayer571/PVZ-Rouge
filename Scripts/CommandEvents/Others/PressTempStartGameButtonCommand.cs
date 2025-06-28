@@ -2,7 +2,7 @@ using System;
 using QFramework;
 using TPL.PVZR.Models;
 
-namespace TPL.PVZR.Commands
+namespace TPL.PVZR.CommandEvents.Others
 {
     public class PressTempStartGameButtonCommand : AbstractCommand
     {

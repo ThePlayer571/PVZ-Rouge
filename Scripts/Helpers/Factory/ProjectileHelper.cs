@@ -1,10 +1,10 @@
 using QAssetBundle;
 using QFramework;
-using TPL.PVZR.Core;
+using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.Projectiles;
 using UnityEngine;
 
-namespace TPL.PVZR.Helpers
+namespace TPL.PVZR.Helpers.Factory
 {
     public static class ProjectileHelper
     {

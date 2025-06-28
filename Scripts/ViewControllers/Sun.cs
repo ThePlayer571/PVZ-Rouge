@@ -2,7 +2,6 @@ using System;
 using DG.Tweening;
 using QFramework;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
-using TPL.PVZR.Core;
 using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers

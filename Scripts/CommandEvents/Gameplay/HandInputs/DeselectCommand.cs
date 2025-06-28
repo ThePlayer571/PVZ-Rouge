@@ -1,9 +1,8 @@
 using QFramework;
-using TPL.PVZR.Events.HandEvents;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
 
-namespace TPL.PVZR.Commands.HandCommands
+namespace TPL.PVZR.CommandEvents.Gameplay.HandInputs
 {
     public class DeselectCommand : AbstractCommand
     {

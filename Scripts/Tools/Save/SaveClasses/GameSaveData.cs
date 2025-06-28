@@ -1,6 +1,6 @@
-using TPL.PVZR.Core.Random;
+using TPL.PVZR.Tools.Random;
 
-namespace TPL.PVZR.Core.Save.SaveClasses
+namespace TPL.PVZR.Tools.Save.SaveClasses
 {
     public class GameSaveData
     {

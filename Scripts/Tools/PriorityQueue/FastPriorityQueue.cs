@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TPL.PVZR.Core.PriorityQueue
+namespace TPL.PVZR.Tools.PriorityQueue
 {
     /// <summary>
     /// An implementation of a min-Priority Queue using a heap.  Has O(1) .Contains()!

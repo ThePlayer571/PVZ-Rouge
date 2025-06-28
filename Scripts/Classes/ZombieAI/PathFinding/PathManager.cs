@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using QFramework;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Class;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Public;
+using TPL.PVZR.Classes.ZombieAI.Class;
+using TPL.PVZR.Classes.ZombieAI.Public;
 
-namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
+namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 {
     public interface IPathManager
     {

@@ -1,7 +1,7 @@
 using QFramework;
-using TPL.PVZR.Events;
-using TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Public;
+using TPL.PVZR.Classes.ZombieAI.PathFinding;
+using TPL.PVZR.Classes.ZombieAI.Public;
+using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
 using UnityEngine;
 

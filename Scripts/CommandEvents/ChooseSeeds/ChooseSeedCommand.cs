@@ -1,15 +1,13 @@
 using System;
 using DG.Tweening;
 using QFramework;
-using TPL.PVZR.Core;
 using TPL.PVZR.Models;
-using TPL.PVZR.UI;
+using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Managers;
 using TPL.PVZR.ViewControllers.Others;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace TPL.PVZR.Commands
+namespace TPL.PVZR.CommandEvents.ChooseSeeds
 {
     public class ChooseSeedCommand : AbstractCommand
     {

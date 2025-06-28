@@ -9,6 +9,6 @@ namespace TPL.PVZR.Classes.LevelStuff
         [SerializeField] public float damage;
         [SerializeField] public float punchForce;
         [SerializeField] public bool isFrameDamage;
-        [SerializeField] public List<Effect> effects;
+        [SerializeField] public List<Effect.Effect> effects;
     }
 }

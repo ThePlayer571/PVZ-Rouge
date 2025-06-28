@@ -1,7 +1,6 @@
 using System;
 using QFramework;
-using TPL.PVZR.Commands.HandCommands;
-using TPL.PVZR.Events.HandEvents;
+using TPL.PVZR.CommandEvents.Gameplay.HandInputs;
 using TPL.PVZR.Systems;
 using UnityEngine;
 using UnityEngine.EventSystems;

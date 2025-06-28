@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using QFramework;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Class;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Public;
+using TPL.PVZR.Classes.ZombieAI.Class;
 
-namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
+namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 {
     public interface IPathCache
     {

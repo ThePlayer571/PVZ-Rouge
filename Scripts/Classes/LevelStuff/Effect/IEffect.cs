@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using QFramework;
 using UnityEngine;
 
-namespace TPL.PVZR.Classes.LevelStuff
+namespace TPL.PVZR.Classes.LevelStuff.Effect
 {
     // 半成品，因为实体的交互机制没有明晰
     // 等Entity完善了在写这个

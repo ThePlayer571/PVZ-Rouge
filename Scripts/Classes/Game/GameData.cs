@@ -1,5 +1,8 @@
+using TPL.PVZR.Classes.Game.Interfaces;
 using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Classes.MazeMap;
+using TPL.PVZR.Classes.MazeMap.Interfaces;
+using TPL.PVZR.Classes.MazeMap.Public;
 
 namespace TPL.PVZR.Classes.Game
 {

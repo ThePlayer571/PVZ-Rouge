@@ -1,6 +1,6 @@
 using QFramework;
 
-namespace TPL.PVZR.Core.Save
+namespace TPL.PVZR.Tools.Save
 {
     public interface ISaveModel : IModel
     {

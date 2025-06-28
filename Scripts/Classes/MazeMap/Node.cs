@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TPL.PVZR.Core;
 
 namespace TPL.PVZR.Classes.MazeMap
 {

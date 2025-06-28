@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Public;
+using TPL.PVZR.Classes.ZombieAI.Public;
 
-namespace TPL.PVZR.Gameplay.Class.ZombieAI.Class
+namespace TPL.PVZR.Classes.ZombieAI.Class
 {
     // Copilot
     public class EdgeWeightCalculator

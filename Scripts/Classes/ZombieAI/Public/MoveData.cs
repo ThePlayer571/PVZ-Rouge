@@ -1,9 +1,8 @@
 using System;
-using TPL.PVZR.Core;
 using TPL.PVZR.Helpers.Methods;
 using UnityEngine;
 
-namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
+namespace TPL.PVZR.Classes.ZombieAI.Public
 {
     [Serializable]
     public class MoveData

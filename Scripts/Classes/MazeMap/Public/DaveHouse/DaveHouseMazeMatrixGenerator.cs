@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using QFramework;
-using TPL.PVZR.Classes.MazeMap.Generator;
-using TPL.PVZR.Core;
-using TPL.PVZR.Core.Random;
+using TPL.PVZR.Classes.MazeMap.Public.Bases;
+using TPL.PVZR.Tools;
+using TPL.PVZR.Tools.Random;
 
-namespace TPL.PVZR.Classes.MazeMap.Instances.DaveHouse
+namespace TPL.PVZR.Classes.MazeMap.Public.DaveHouse
 {
     public class DaveHouseMazeMatrixGenerator : MazeMatrixGenerator
     {

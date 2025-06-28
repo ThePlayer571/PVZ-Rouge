@@ -2,7 +2,7 @@ using System;
 using QFramework;
 using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
-using TPL.PVZR.Events.HandEvents;
+using TPL.PVZR.CommandEvents.Gameplay.HandInputs;
 using TPL.PVZR.ViewControllers.Others;
 using UnityEngine.XR;
 

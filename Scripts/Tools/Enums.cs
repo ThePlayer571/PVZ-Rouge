@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TPL.PVZR.Core
+namespace TPL.PVZR.Tools
 {
     public enum Direction2
     {

@@ -1,9 +1,8 @@
 using TPL.PVZR.Classes.LevelStuff;
-using TPL.PVZR.Core;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Class;
+using TPL.PVZR.Tools;
 using UnityEngine;
 
-namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
+namespace TPL.PVZR.Classes.ZombieAI.Public
 {
     public interface IZombieAIUnit
     {

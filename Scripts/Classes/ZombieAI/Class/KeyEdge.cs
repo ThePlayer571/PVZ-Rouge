@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Public;
+using TPL.PVZR.Classes.ZombieAI.Public;
 
-namespace TPL.PVZR.Gameplay.Class.ZombieAI.Class
+namespace TPL.PVZR.Classes.ZombieAI.Class
 {
     /// <summary>
     /// 表示两个 KeyVertex 之间的连接

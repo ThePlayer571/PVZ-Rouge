@@ -1,15 +1,14 @@
 using System;
-using System.Data;
-using System.Linq;
 using QAssetBundle;
 using QFramework;
-using TPL.PVZR.Core;
+using TPL.PVZR.Classes.MazeMap.Interfaces;
+using TPL.PVZR.Classes.MazeMap.Public.Bases;
 using TPL.PVZR.Models;
+using TPL.PVZR.Tools;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Object = UnityEngine.Object;
 
-namespace TPL.PVZR.Classes.MazeMap.Instances.DaveHouse
+namespace TPL.PVZR.Classes.MazeMap.Public.DaveHouse
 {
     public class DaveHouseMazeMapController : MazeMapController
     {

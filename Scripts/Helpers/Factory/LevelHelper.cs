@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using QAssetBundle;
 using QFramework;
-using TPL.PVZR.Classes.Game;
+using TPL.PVZR.Classes.Game.Interfaces;
 using TPL.PVZR.Classes.Level;
 
-namespace TPL.PVZR.Helpers
+namespace TPL.PVZR.Helpers.Factory
 {
     public static class LevelHelper
     {

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using TPL.PVZR.Core.PriorityQueue;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Class;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Public;
+using TPL.PVZR.Classes.ZombieAI.Class;
+using TPL.PVZR.Classes.ZombieAI.Public;
+using TPL.PVZR.Tools.PriorityQueue;
 using UnityEngine;
 
-namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
+namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 {
     // use deepseek && ChatGPT
     public class AStarPathfinder

@@ -1,19 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.LevelStuff;
-using TPL.PVZR.Core;
-using TPL.PVZR.Core.PriorityQueue;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Class;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Public;
-using TPL.PVZR.Models;
+using TPL.PVZR.Classes.ZombieAI.Class;
+using TPL.PVZR.Classes.ZombieAI.Public;
+using TPL.PVZR.Tools;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace TPL.PVZR.Gameplay.Class.ZombieAI.PathFinding
+namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 {
     /* 必读
      * 普通vertex的附近结点有且仅有两个

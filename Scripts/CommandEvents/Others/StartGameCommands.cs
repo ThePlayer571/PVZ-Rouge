@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
 using QFramework;
-using TPL.PVZR.Classes.Game;
-using TPL.PVZR.Core.Random;
-using TPL.PVZR.Helpers;
+using TPL.PVZR.Classes.Game.Interfaces;
+using TPL.PVZR.Helpers.Factory;
 using TPL.PVZR.Models;
-using TPL.PVZR.Systems;
-using UnityEngine;
 
-namespace TPL.PVZR.Commands
+namespace TPL.PVZR.CommandEvents.Others
 {
     public class StartNewRandomGameCommand : AbstractCommand
     {

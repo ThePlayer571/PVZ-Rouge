@@ -1,13 +1,10 @@
-using System;
 using System.Collections.Generic;
-using QFramework;
 using TPL.PVZR.Classes.Game;
 using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Classes.MazeMap;
-using TPL.PVZR.Classes.MazeMap.Instances.DaveHouse;
-using TPL.PVZR.Core.Random;
+using TPL.PVZR.Tools.Random;
 
-namespace TPL.PVZR.Helpers
+namespace TPL.PVZR.Helpers.Factory
 {
     public static class GameHelper
     {

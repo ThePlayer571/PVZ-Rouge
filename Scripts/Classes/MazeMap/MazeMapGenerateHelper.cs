@@ -1,8 +1,9 @@
 using System;
-using TPL.PVZR.Classes.MazeMap.Generator;
-using TPL.PVZR.Classes.MazeMap.Instances.DaveHouse;
+using TPL.PVZR.Classes.MazeMap.Interfaces;
+using TPL.PVZR.Classes.MazeMap.Public;
+using TPL.PVZR.Classes.MazeMap.Public.DaveHouse;
 
-namespace TPL.PVZR.Classes.MazeMap.Public
+namespace TPL.PVZR.Classes.MazeMap
 {
     public static class MazeMapGenerateHelper
     {

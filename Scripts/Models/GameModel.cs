@@ -1,6 +1,8 @@
 using QFramework;
 using TPL.PVZR.Classes.Game;
+using TPL.PVZR.Classes.Game.Interfaces;
 using TPL.PVZR.Classes.MazeMap;
+using TPL.PVZR.Classes.MazeMap.Interfaces;
 
 namespace TPL.PVZR.Models
 {

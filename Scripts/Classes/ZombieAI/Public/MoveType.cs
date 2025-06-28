@@ -1,4 +1,4 @@
-namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
+namespace TPL.PVZR.Classes.ZombieAI.Public
 {
     public enum MoveType
     {

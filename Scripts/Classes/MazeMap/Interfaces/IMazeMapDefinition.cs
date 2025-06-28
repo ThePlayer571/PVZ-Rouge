@@ -1,4 +1,4 @@
-namespace TPL.PVZR.Classes.MazeMap
+namespace TPL.PVZR.Classes.MazeMap.Interfaces
 {
     public interface IMazeMapDefinition
     {

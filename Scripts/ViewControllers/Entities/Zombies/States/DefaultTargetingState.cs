@@ -1,8 +1,10 @@
 using System.Runtime.CompilerServices;
 using QFramework;
-using TPL.PVZR.Core;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Public;
+using TPL.PVZR.Classes.ZombieAI.Public;
+using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers.Entities.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Plants;
+using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.States

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using TPL.PVZR.Models;
 
-namespace TPL.PVZR.Events
+namespace TPL.PVZR.CommandEvents.Phase
 {
     public enum PhaseStage
     {

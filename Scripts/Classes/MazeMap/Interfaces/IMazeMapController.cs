@@ -1,7 +1,6 @@
 using QFramework;
-using UnityEngine;
 
-namespace TPL.PVZR.Classes.MazeMap
+namespace TPL.PVZR.Classes.MazeMap.Interfaces
 {
     public interface IMazeMapController : IController
     {

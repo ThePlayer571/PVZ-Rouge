@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TPL.PVZR.Core.Random
+namespace TPL.PVZR.Tools.Random
 {
     public sealed class DeterministicRandom
     {

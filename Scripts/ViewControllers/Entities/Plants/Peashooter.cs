@@ -1,7 +1,8 @@
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.GameStuff;
-using TPL.PVZR.Core;
 using TPL.PVZR.Helpers;
+using TPL.PVZR.Helpers.Factory;
+using TPL.PVZR.Tools;
 using UnityEngine;
 using Time = UnityEngine.Time;
 

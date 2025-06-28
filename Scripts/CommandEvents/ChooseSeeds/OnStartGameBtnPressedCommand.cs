@@ -1,8 +1,7 @@
 using QFramework;
-using TPL.PVZR.Core;
 using TPL.PVZR.Models;
 
-namespace TPL.PVZR.Commands
+namespace TPL.PVZR.CommandEvents.ChooseSeeds
 {
     public class OnStartGameBtnPressedCommand : AbstractCommand
     {

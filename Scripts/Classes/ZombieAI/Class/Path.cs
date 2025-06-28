@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Class;
-using UnityEngine;
+using TPL.PVZR.Classes.ZombieAI.Public;
 
-namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
+namespace TPL.PVZR.Classes.ZombieAI.Class
 {
     /// <summary>
     /// 表示一条路径，由多个 KeyEdge 组成

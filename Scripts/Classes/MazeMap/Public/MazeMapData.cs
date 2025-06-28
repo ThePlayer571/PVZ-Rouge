@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using TPL.PVZR.Classes.MazeMap.Public;
-using TPL.PVZR.Core;
+using TPL.PVZR.Classes.MazeMap.Interfaces;
+using TPL.PVZR.Tools;
 
-namespace TPL.PVZR.Classes.MazeMap
+namespace TPL.PVZR.Classes.MazeMap.Public
 {
     /// <summary>
     /// 实用的基类

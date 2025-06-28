@@ -1,4 +1,6 @@
-namespace TPL.PVZR.Classes.MazeMap.Instances.DaveHouse
+using TPL.PVZR.Classes.MazeMap.Interfaces;
+
+namespace TPL.PVZR.Classes.MazeMap.Public.DaveHouse
 {
     public class DaveHouseMazeMapDefinition : IMazeMapDefinition
     {

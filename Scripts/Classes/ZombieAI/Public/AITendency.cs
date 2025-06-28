@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using QFramework;
-using TPL.PVZR.Core.Random;
-using TPL.PVZR.Gameplay.Class.ZombieAI.Class;
+using TPL.PVZR.Classes.ZombieAI.Class;
+using TPL.PVZR.Tools.Random;
 
-namespace TPL.PVZR.Gameplay.Class.ZombieAI.Public
+namespace TPL.PVZR.Classes.ZombieAI.Public
 {
     /// <summary>
     /// 表示 AI 的行为倾向

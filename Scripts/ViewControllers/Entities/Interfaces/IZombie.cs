@@ -1,3 +1,3 @@
-namespace TPL.PVZR.ViewControllers.Entities.Zombies
+namespace TPL.PVZR.ViewControllers.Entities.Interfaces
 {
 }

@@ -1,7 +1,7 @@
 using TPL.PVZR.Classes.GameStuff;
-using TPL.PVZR.Classes.MazeMap;
+using TPL.PVZR.Classes.MazeMap.Interfaces;
 
-namespace TPL.PVZR.Classes.Game
+namespace TPL.PVZR.Classes.Game.Interfaces
 {
     public interface IGameData
     {

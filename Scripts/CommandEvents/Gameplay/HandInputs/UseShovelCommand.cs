@@ -1,13 +1,12 @@
 using System;
 using QFramework;
 using TPL.PVZR.Classes.LevelStuff;
-using TPL.PVZR.Events.HandEvents;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
 using UnityEngine;
 
-namespace TPL.PVZR.CommandEvents.__NewlyAdded__
+namespace TPL.PVZR.CommandEvents.Gameplay.HandInputs
 {
     public class UseShovelCommand : AbstractCommand
     {

@@ -1,8 +1,9 @@
 using QFramework;
 using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Classes.LevelStuff;
-using TPL.PVZR.Core;
 using TPL.PVZR.Models;
+using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers.Entities.Interfaces;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {

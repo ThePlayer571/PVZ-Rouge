@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace TPL.PVZR.Gameplay.Class.ZombieAI.Class
+namespace TPL.PVZR.Classes.ZombieAI.Class
 {
     public enum AllowedPassHeight
     {

@@ -1,4 +1,4 @@
-﻿namespace TPL.PVZR.Core.PriorityQueue
+﻿namespace TPL.PVZR.Tools.PriorityQueue
 {
     public class FastPriorityQueueNode
     {

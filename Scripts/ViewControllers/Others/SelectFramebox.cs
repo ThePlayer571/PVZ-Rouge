@@ -1,7 +1,6 @@
 using System;
 using QFramework;
 using TPL.PVZR.Classes.LevelStuff;
-using TPL.PVZR.Events;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;

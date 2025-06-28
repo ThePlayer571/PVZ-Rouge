@@ -1,12 +1,10 @@
 using System;
 using QFramework;
 using TPL.PVZR.Classes.LevelStuff;
-using TPL.PVZR.Events.HandEvents;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
-using TPL.PVZR.ViewControllers.Others;
 
-namespace TPL.PVZR.Commands.HandCommands
+namespace TPL.PVZR.CommandEvents.Gameplay.HandInputs
 {
     public class SelectSeedCommand : AbstractCommand
     {

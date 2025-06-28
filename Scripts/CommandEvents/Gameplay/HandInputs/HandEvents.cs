@@ -1,9 +1,7 @@
 using TPL.PVZR.Classes.LevelStuff;
-using TPL.PVZR.Core;
-using TPL.PVZR.Systems;
-using TPL.PVZR.ViewControllers.Others;
+using TPL.PVZR.Tools;
 
-namespace TPL.PVZR.Events.HandEvents
+namespace TPL.PVZR.CommandEvents.Gameplay.HandInputs
 {
     public struct SelectSeedEvent
     {

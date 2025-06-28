@@ -1,4 +1,4 @@
-namespace TPL.PVZR.Core.Save
+namespace TPL.PVZR.Tools.Save
 {
     public enum SaveKey
     {

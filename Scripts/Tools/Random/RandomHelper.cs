@@ -1,6 +1,6 @@
-using TPL.PVZR.Core.Save.SaveClasses;
+using TPL.PVZR.Tools.Save.SaveClasses;
 
-namespace TPL.PVZR.Core.Random
+namespace TPL.PVZR.Tools.Random
 {
     public static class RandomHelper
     {

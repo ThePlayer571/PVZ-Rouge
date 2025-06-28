@@ -18,6 +18,7 @@ namespace TPL.PVZR.Classes.LevelStuff
             this.CardData = cardData;
 
             this.ColdTimeTimer = new Timer(cardData.CardDefinition.ColdTime);
+            this.ColdTimeTimer.SetRemaining(CardData.CardDefinition.InitialColdTime);
         }
     }
 }

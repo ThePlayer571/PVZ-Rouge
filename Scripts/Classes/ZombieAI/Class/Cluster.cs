@@ -1,6 +1,6 @@
 using System;
 
-namespace TPL.PVZR.Gameplay.Class.ZombieAI.Class
+namespace TPL.PVZR.Classes.ZombieAI.Class
 {
     public class Cluster
     {
