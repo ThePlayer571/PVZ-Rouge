@@ -1,16 +1,15 @@
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.GameStuff;
-using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.Factory;
 using TPL.PVZR.Tools;
 using UnityEngine;
-using Time = UnityEngine.Time;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public class Peashooter : Plant
+    public class SnowPea : Plant
     {
-        public override PlantId Id { get; } = PlantId.PeaShooter;
+        public override PlantId Id { get; } = PlantId.SnowPea;
+
 
         public override void Initialize(Direction2 direction)
         {
@@ -22,7 +21,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             _layerMask = LayerMask.GetMask("Zombie", "Barrier");
         }
 
-        private Timer _timer;
+        [SerializeField] private Timer _timer;
         private Timer _detectTimer;
         private int _layerMask;
 
@@ -43,7 +42,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
                 if (hit.collider && hit.collider.CompareTag("Zombie"))
                 {
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction, FirePoint.position);
+                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.FrozenPea, Direction, FirePoint.position);
                     _timer.Reset();
                 }
             }

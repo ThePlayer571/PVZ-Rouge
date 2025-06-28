@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 {
-    public abstract class Projectile : Entity
+    public abstract class Projectile : Entity, IProjectile
     {
         protected override void Awake()
         {

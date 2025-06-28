@@ -18,6 +18,7 @@
 | SelectFramebox | ForeGround    | 100     |
 | Player         | MidGround     | 500     |
 | Sun            | MidGround     | 350     |
+| Projectile     | MidGround     | 300~349 |
 | Zombies        | MidGround     | 250~299 |
 | Plants         | MidGround     | 200~249 |
 | TileDirt       | MidGround     | 101     |

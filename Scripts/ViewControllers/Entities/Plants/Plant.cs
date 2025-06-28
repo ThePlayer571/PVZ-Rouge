@@ -3,11 +3,10 @@ using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
-using TPL.PVZR.ViewControllers.Entities.Interfaces;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public abstract class Plant : Entity, IAttackable
+    public abstract class Plant : Entity, IPlant
     {
         public abstract PlantId Id { get; }
         public Direction2 Direction { get; protected set; }

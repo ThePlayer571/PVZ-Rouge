@@ -11,5 +11,7 @@ namespace TPL.PVZR.Classes.GameStuff
         public float Plant_Sunflower_SpawnSunInterval = 24f;
         public float Plant_Wallnut_Health = 4000f;
         public float Projectile_Pea_Speed = 10f;
+        public float Projectile_Pea_Damage = 20f;
+        public float Projectile_Pea_PunchForce = 1f;
     }
 }

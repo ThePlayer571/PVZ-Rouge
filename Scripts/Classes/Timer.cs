@@ -1,4 +1,5 @@
 using System;
+using Unity.Collections;
 using UnityEngine;
 
 namespace TPL.PVZR.Classes
@@ -42,7 +43,7 @@ namespace TPL.PVZR.Classes
         {
             ElapsedTime = elapsedTime;
         }
-        
+
         public void SetRemaining(float remaining)
         {
             ElapsedTime = Duration - remaining;

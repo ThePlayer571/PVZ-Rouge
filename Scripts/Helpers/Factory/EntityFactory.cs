@@ -9,6 +9,7 @@ using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
 using TPL.PVZR.ViewControllers;
 using TPL.PVZR.ViewControllers.Entities.Plants;
+using TPL.PVZR.ViewControllers.Entities.Projectiles;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
@@ -53,10 +54,11 @@ namespace TPL.PVZR.Helpers.Factory
                     [PlantId.Sunflower] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Sunflower),
                     [PlantId.Wallnut] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Wallnut),
                     [PlantId.Flowerpot] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Flowerpot),
+                    [PlantId.SnowPea] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.SnowPea),
                 };
             }
 
-            private static Dictionary<PlantId, GameObject> _plantDict;
+            private static readonly Dictionary<PlantId, GameObject> _plantDict;
 
             public static Plant SpawnPlant(PlantId id, Direction2 direction, Vector2Int cellPos)
             {
@@ -74,5 +76,50 @@ namespace TPL.PVZR.Helpers.Factory
                 }
             }
         }
+
+
+        public static class ProjectileFactory
+        {
+            static ProjectileFactory()
+            {
+                "call static init, ProjectileFactory".LogInfo();
+                _projectileDict =
+                    new Dictionary<ProjectileId, GameObject>
+                    {
+                        [ProjectileId.Pea] = _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.Pea),
+                        [ProjectileId.FrozenPea] =
+                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.FrozenPea)
+                    };
+            }
+
+            private static Dictionary<ProjectileId, GameObject> _projectileDict;
+
+            public static Projectile CreatePea(ProjectileId id, Direction2 direction, Vector2 pos)
+            {
+                if (_projectileDict.TryGetValue(id, out var projectilePrefab))
+                {
+                    var peaLikeInit = projectilePrefab.GetComponent<IPeaLikeInit>();
+                    if (peaLikeInit == null)
+                        throw new Exception($"Prefab未实现IPeaLikeInit接口: {projectilePrefab.name}");
+
+                    var go = projectilePrefab.Instantiate(pos, Quaternion.identity).GetComponent<IPeaLikeInit>();
+                    go.Initialize(direction);
+
+                    // 返回Projectile基类
+                    var projectile = go as Projectile;
+                    return projectile;
+                }
+                else
+                {
+                    throw new ArgumentException($"未考虑的投射物类型：{id}");
+                }
+            }
+        }
+    }
+
+    public enum ProjectileId
+    {
+        Pea,
+        FrozenPea
     }
 }

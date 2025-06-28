@@ -13,10 +13,6 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 {
-    public interface IZombie : IEntity, IEffectable, IAttackable
-    {
-    }
-
     public abstract class Zombie : Entity, IZombie
     {
         #region 调试
