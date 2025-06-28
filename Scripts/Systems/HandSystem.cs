@@ -52,6 +52,8 @@ namespace TPL.PVZR.Systems
             this.RegisterEvent<SelectShovelEvent>(e => { HandInfo.Value = new HandInfo(HandState.HaveShovel, null); });
 
             this.RegisterEvent<PlantingSeedInHandEvent>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
+
+            this.RegisterEvent<UseShovelEvent>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
         }
 
         public BindableProperty<HandInfo> HandInfo { get; private set; }

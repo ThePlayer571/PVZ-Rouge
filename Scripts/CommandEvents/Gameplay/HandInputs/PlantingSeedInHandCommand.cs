@@ -1,6 +1,7 @@
 using System;
 using QFramework;
 using TPL.PVZR.Core;
+using TPL.PVZR.Events.HandEvents;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
@@ -37,7 +38,7 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
             if (!_LevelGridModel.CanSpawnPlantOn(cellPos, id))
                 throw new Exception($"无法在此处种植植物，Pos:{cellPos}, Plant: {id}"); // 
 
-            this.SendEvent(new PlantingSeedInHandEvent
+            this.SendEvent<PlantingSeedInHandEvent>(new PlantingSeedInHandEvent
                 { Direction = _direction, PlantedSeed = _HandSystem.HandInfo.Value.PickedSeed });
             this.SendCommand<SpawnPlantCommand>(new SpawnPlantCommand(id, cellPos, _direction));
         }

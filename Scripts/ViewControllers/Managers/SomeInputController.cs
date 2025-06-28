@@ -57,7 +57,6 @@ namespace TPL.PVZR.ViewControllers.Managers
                 if (!_LevelGridModel.CanSpawnPlantOn(pos, id)) return; // 
 
                 this.SendCommand<PlantingSeedInHandCommand>(new PlantingSeedInHandCommand(Direction2.Right));
-                    
             };
 
             _inputActions.Level.Deselect.performed += (context) =>
@@ -66,6 +65,37 @@ namespace TPL.PVZR.ViewControllers.Managers
                     _HandSystem.HandInfo.Value.HandState != HandState.Empty)
                 {
                     this.SendCommand<DeselectCommand>();
+                }
+            };
+
+            _inputActions.Level.UseShovel.performed += context =>
+            {
+                // 异常处理
+                if (_PhaseModel.GamePhase != GamePhase.Gameplay) return; // 游戏阶段正确
+                if (HandHelper.IsHandOnUI()) return; // 手不在UI上
+                if (_HandSystem.HandInfo.Value.HandState != HandState.HaveShovel) return; // 手上持有铲子
+                var position = HandHelper.HandCellPos();
+                if (!_LevelGridModel.IsValidPos(position)) return; // 手在地图内部
+                var targetCell = _LevelGridModel.LevelMatrix[position.x, position.y];
+                if (targetCell.CellPlantState != CellPlantState.HavePlant) return;
+                //
+                this.SendCommand<UseShovelCommand>(new UseShovelCommand(position));
+            };
+
+            _inputActions.Level.SelectShovel.performed += context =>
+            {
+                if (_PhaseModel.GamePhase != GamePhase.Gameplay) return;
+
+                if (_HandSystem.HandInfo.Value.HandState == HandState.Empty)
+                {
+                    this.SendCommand<SelectShovelCommand>();
+                }
+                else if (_HandSystem.HandInfo.Value.HandState == HandState.HaveShovel) return;
+                
+                else if (_HandSystem.HandInfo.Value.HandState == HandState.HaveSeed)
+                {
+                    this.SendCommand<DeselectCommand>();
+                    this.SendCommand<SelectShovelCommand>();
                 }
             };
 
@@ -85,12 +115,16 @@ namespace TPL.PVZR.ViewControllers.Managers
                 if (targetSeedData == null) return;
                 if (!targetSeedData.ColdTimeTimer.Ready) return;
                 if (_LevelModel.SunPoint.Value < targetSeedData.CardData.CardDefinition.SunpointCost) return;
-
                 if (_HandSystem.HandInfo.Value.HandState == HandState.Empty)
                 {
                     this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(targetSeedData));
                 }
-                else
+                else if (_HandSystem.HandInfo.Value.HandState == HandState.HaveShovel)
+                {
+                    this.SendCommand<DeselectCommand>();
+                    this.SendCommand<SelectSeedCommand>(new SelectSeedCommand(targetSeedData));
+                }
+                else if (_HandSystem.HandInfo.Value.HandState == HandState.HaveSeed)
                 {
                     if (_HandSystem.HandInfo.Value.PickedSeed.Index == index) return;
                     this.SendCommand<DeselectCommand>();

@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities
 {
-    public class Entity : MonoBehaviour, IEntity
+    public abstract class Entity : MonoBehaviour, IEntity
     {
         // 
         protected ILevelModel _LevelModel { get; private set; }
@@ -78,5 +78,10 @@ namespace TPL.PVZR.ViewControllers.Entities
         }
 
         public Vector2Int CellPos => LevelGridHelper.WorldToCell(this.transform.position);
+
+        public virtual void Remove()
+        {
+            gameObject.DestroySelf();
+        }
     }
 }

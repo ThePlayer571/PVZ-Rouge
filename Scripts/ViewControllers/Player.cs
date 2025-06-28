@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 namespace TPL.PVZR.ViewControllers
 {
     public class Player : MonoBehaviour, IEntity
+    
     {
         private PlayerInputControl _inputActions;
         private Rigidbody2D _Rigidbody2D;
@@ -76,5 +77,9 @@ namespace TPL.PVZR.ViewControllers
         }
 
         public Vector2Int CellPos => LevelGridHelper.WorldToCell(this.transform.position);
+        public void Remove()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
