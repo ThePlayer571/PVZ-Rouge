@@ -57,7 +57,7 @@ namespace TPL.PVZR.ViewControllers.Others
                     case HandState.HaveSeed:
                         _following = true;
                         _Image.enabled = true;
-                        _Image.sprite = val.PickedSeed.CardData.CardDefinition.PlantSprite;
+                        _Image.sprite = val.PickedSeed.CardData.CardDefinition.FollowingSprite;
                         break;
                     case HandState.HaveShovel:
                         _following = true;

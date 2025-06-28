@@ -4,6 +4,7 @@ using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities;
 using TPL.PVZR.ViewControllers.Entities.Interfaces;
+using TPL.PVZR.ViewControllers.Entities.Plants;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -42,7 +43,21 @@ namespace TPL.PVZR.ViewControllers
             var start = new Vector2(this.transform.position.x, _Collider.bounds.min.y);
             var size = new Vector2(0.5f, 0.02f);
             bool OnGround = Physics2D.OverlapBox(start, size, 0, LayerMask.GetMask("Barrier"));
-            
+
+            if (!OnGround)
+            {
+                // 检查Plant层是否有Flowerpot
+                var colliders = Physics2D.OverlapBoxAll(start, size, 0, LayerMask.GetMask("Plant"));
+                foreach (var col in colliders)
+                {
+                    if (col.GetComponent<Flowerpot>() != null)
+                    {
+                        OnGround = true;
+                        break;
+                    }
+                }
+            }
+
             if (OnGround)
             {
                 _hasTwiceJumped = false;

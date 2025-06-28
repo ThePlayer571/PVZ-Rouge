@@ -52,6 +52,7 @@ namespace TPL.PVZR.Helpers.Factory
                     [PlantId.PeaShooter] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Peashooter),
                     [PlantId.Sunflower] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Sunflower),
                     [PlantId.Wallnut] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Wallnut),
+                    [PlantId.Flowerpot] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Flowerpot),
                 };
             }
 
