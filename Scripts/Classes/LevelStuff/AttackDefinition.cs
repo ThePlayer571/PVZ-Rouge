@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TPL.PVZR.Classes.LevelStuff.Effect;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -10,5 +11,6 @@ namespace TPL.PVZR.Classes.LevelStuff
         [SerializeField] public float damage;
         [SerializeField] public float punchForce;
         [SerializeField] public bool isFrameDamage;
+        [SerializeField] public List<EffectDefinition> effects;
     }
 }

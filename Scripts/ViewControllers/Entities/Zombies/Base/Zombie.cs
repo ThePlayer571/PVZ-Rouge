@@ -4,12 +4,14 @@ using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Classes.LevelStuff.Effect;
 using TPL.PVZR.Classes.ZombieAI.Public;
+using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Systems;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Zombies.States;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 {
@@ -21,27 +23,23 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #endregion
 
-        #region AI / 行为主控
-
-        public IAttackable AttackingTarget { get; set; }
+        #region 生命周期函数
 
         protected override void Awake()
         {
             base.Awake();
 
             _ZombieAISystem = this.GetSystem<IZombieAISystem>();
-
+            
+            
+            // 血量
+            Health = new BindableProperty<float>();
+            // 移动
             Direction = new BindableProperty<Direction2>();
-
-            // Jump
-            _jumpTimer = new Timer(jumpInterval);
-
-            // FSM
+            // 跳跃
+            _jumpTimer = new Timer(Global.Zombie_Default_JumpInterval);
+            // AI / 行为主控
             _FSM = new FSM<ZombieState>();
-            _FSM.AddState(ZombieState.DefaultTargeting, new DefaultTargetingState(_FSM, this));
-            _FSM.AddState(ZombieState.Attacking, new AttackingState(_FSM, this));
-
-            _FSM.StartState(ZombieState.DefaultTargeting);
         }
 
         protected override void Update()
@@ -59,19 +57,46 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             _Rigidbody2D.AddForce(dragForce);
         }
 
+        #endregion
+
+        #region AI / 行为主控
+
         private FSM<ZombieState> _FSM;
+        public IAttackable AttackingTarget;
+
+        protected virtual void SetUpFSM()
+        {
+            _FSM.AddState(ZombieState.DefaultTargeting, new DefaultTargetingState(_FSM, this));
+            _FSM.AddState(ZombieState.Attacking, new AttackingState(_FSM, this));
+
+            _FSM.StartState(ZombieState.DefaultTargeting);
+        }
+
+        /// <summary>
+        /// 定义：能用于对象池的初始化方法
+        /// </summary>
+        protected virtual void Initialize()
+        {
+            SetUpFSM();
+        }
 
         #endregion
 
         #region 属性
 
+        // Designer
         [SerializeField] public ZombieAttackAreaController AttackArea;
         [SerializeField] public Transform JumpDetectionPoint;
+        public IZombieAISystem _ZombieAISystem;
 
-        protected float speed = 2f;
-        protected float jumpForce = 5f;
-        protected float jumpInterval = 1f;
+        // 基础属性
+        public float baseSpeed = 2f;
+        public float baseJumpForce = 5f;
+        public AttackData baseAttackData = null;
+
+        // 变量
         public BindableProperty<Direction2> Direction;
+        public BindableProperty<float> Health;
 
         #endregion
 
@@ -80,7 +105,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         protected EffectGroup effectGroup;
 
 
-        public void TakeEffect(Effect effect)
+        public void TakeEffect(EffectData effectData)
         {
             throw new System.NotImplementedException();
         }
@@ -88,8 +113,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         #endregion
 
         #region 血量
-
-        protected float health;
 
         public AttackData TakeAttack(AttackData attackData)
         {
@@ -100,11 +123,23 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #region 攻击
 
-        private AttackData BasicAttackData;
-
-        public AttackData CreateCurrentAttackData()
+        public AttackData CreateAttackData()
         {
-            throw new NotImplementedException();
+            var attackData = new AttackData(baseAttackData);
+
+            foreach (var effectData in effectGroup)
+            {
+                switch (effectData.effectId)
+                {
+                    case EffectId.Chill:
+                        attackData.MultiplyDamage(EffectHelper.Zombie_Chill_Factor(effectData.level));
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return attackData;
         }
 
         #endregion
@@ -156,7 +191,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     this.Direction.Value = (transform.position.x > targetPos.x)
                         ? Direction2.Left
                         : Direction2.Right;
-                    _Rigidbody2D.AddForce(Direction.Value.ToVector2() * speed);
+                    _Rigidbody2D.AddForce(Direction.Value.ToVector2() * baseSpeed);
                     break;
                 }
                 case MoveType.Fall:
@@ -168,7 +203,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     this.Direction.Value = (transform.position.x > CurrentMoveData.targetWorldPos.x)
                         ? Direction2.Left
                         : Direction2.Right;
-                    _Rigidbody2D.AddForce(Direction.Value.ToVector2() * speed);
+                    _Rigidbody2D.AddForce(Direction.Value.ToVector2() * baseSpeed);
                     break;
                 }
 
@@ -180,12 +215,17 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #region 跳跃
 
+        public float GetJumpForce()
+        {
+            return baseJumpForce;
+        }
+
         public Timer _jumpTimer { get; set; }
 
 
         public void Jump()
         {
-            _Rigidbody2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            _Rigidbody2D.AddForce(Vector2.up * baseJumpForce, ForceMode2D.Impulse);
             _jumpTimer.Reset();
         }
 
@@ -194,12 +234,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             if (!_jumpTimer.Ready) return;
             Jump();
         }
-
-        #endregion
-
-        #region 引用
-
-        public IZombieAISystem _ZombieAISystem { get; private set; }
 
         #endregion
     }

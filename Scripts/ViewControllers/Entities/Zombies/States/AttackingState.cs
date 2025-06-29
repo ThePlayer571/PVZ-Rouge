@@ -20,7 +20,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         protected override void OnUpdate()
         {
-            mTarget.AttackingTarget.TakeAttack(mTarget.CreateCurrentAttackData());
+            mTarget.AttackingTarget.TakeAttack(mTarget.CreateAttackData());
         }
 
         protected override void OnExit()

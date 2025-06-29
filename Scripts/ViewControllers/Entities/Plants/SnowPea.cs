@@ -1,6 +1,7 @@
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Helpers.Factory;
+using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Tools;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             this.HealthPoint = GlobalEntityData.Plant_Default_Health;
 
             _timer = new Timer(GlobalEntityData.Plant_Peashooter_ShootInterval);
-            _detectTimer = new Timer(GlobalEntityData.Plant_Peashooter_DetectInterval);
+            _detectTimer = new Timer(Global.Plant_Peashooter_DetectInterval);
             _layerMask = LayerMask.GetMask("Zombie", "Barrier");
         }
 

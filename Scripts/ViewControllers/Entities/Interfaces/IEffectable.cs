@@ -4,6 +4,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Interfaces
 {
     public interface IEffectable
     {
-        void TakeEffect(Effect effect);
+        void TakeEffect(EffectData effectData);
     }
 }

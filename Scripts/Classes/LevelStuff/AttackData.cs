@@ -10,6 +10,11 @@ namespace TPL.PVZR.Classes.LevelStuff
         // 我想或许不用让外界访问AttackDefinition，而是提供方便的方法调用
 
 
+        public void MultiplyDamage(float factor)
+        {
+            damage *= factor;
+        }
+
         public float Damage
         {
             get
@@ -25,6 +30,15 @@ namespace TPL.PVZR.Classes.LevelStuff
             }
         }
 
+        #region 构造函数
+
+        public AttackData(AttackData other)
+        {
+            this.damage = other.damage;
+            this.punchForce = other.punchForce;
+            this.isFrameDamage = other.isFrameDamage;
+        }
+
         public AttackData(float damage, float punchForce, bool isFrameDamage)
         {
             this.damage = damage;
@@ -38,5 +52,7 @@ namespace TPL.PVZR.Classes.LevelStuff
             this.punchForce = attackDefinition.punchForce;
             this.isFrameDamage = attackDefinition.isFrameDamage;
         }
+
+        #endregion
     }
 }
