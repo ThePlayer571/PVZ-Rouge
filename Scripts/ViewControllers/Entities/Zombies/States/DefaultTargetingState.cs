@@ -17,7 +17,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         protected override void OnEnter()
         {
-            // mTarget.AttackArea.OnTargetStay.Register(OnAttackingAreaStay);
+            mTarget.AttackArea.OnTargetStay.Register(OnAttackingAreaStay);
         }
 
         protected override void OnExit()
@@ -27,17 +27,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         protected override void OnUpdate()
         {
-            // 手动触发重新寻路
-            if (mTarget.triggerDebug)
-            {
-                mTarget.CachePath = mTarget._ZombieAISystem.ZombieAIUnit.FindPath(mTarget.CellPos,
-                    ReferenceHelper.Player.CellPos, mTarget.AITendency);
-                mTarget.triggerDebug = false;
-                mTarget.CurrentMoveData = mTarget.CachePath.NextTarget();
-            }
-
-            if (mTarget.CurrentMoveData == null) return;
-
             // 更新CurrentMoveData
             if (mTarget.CurrentMoveData.moveStage == MoveStage.FollowVertex)
             {
@@ -46,7 +35,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
                     mTarget.CurrentMoveData = mTarget.CachePath.NextTarget();
                 }
             }
-
             //
             mTarget.MoveTowards(mTarget.CurrentMoveData);
         }

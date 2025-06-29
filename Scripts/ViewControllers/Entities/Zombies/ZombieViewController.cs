@@ -15,7 +15,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
         {
             Zombie = zombie.GetComponent<Zombie>();
 
-            Zombie.Direction.Register(direction => { Zombie.transform.LocalScaleX(direction.ToInt()); })
+            Zombie.Direction.RegisterWithInitValue(direction => { Zombie.transform.LocalScaleX(direction.ToInt()); })
                 .UnRegisterWhenGameObjectDestroyed(this);
         }
 

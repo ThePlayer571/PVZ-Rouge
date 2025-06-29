@@ -30,14 +30,17 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             base.Awake();
 
             _ZombieAISystem = this.GetSystem<IZombieAISystem>();
-            
-            
+
+
             // 血量
             Health = new BindableProperty<float>();
             // 移动
             Direction = new BindableProperty<Direction2>();
             // 跳跃
             _jumpTimer = new Timer(Global.Zombie_Default_JumpInterval);
+
+            effectGroup = new EffectGroup();
+
             // AI / 行为主控
             _FSM = new FSM<ZombieState>();
         }
@@ -48,6 +51,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             //
             _FSM.Update();
             _jumpTimer.Update(Time.deltaTime);
+            effectGroup.Update(Time.deltaTime);
         }
 
         private void FixedUpdate()
@@ -73,11 +77,13 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         }
 
         /// <summary>
-        /// 定义：能用于对象池的初始化方法
+        /// 定义：初始化，能用于对象池的初始化方法
         /// </summary>
-        protected virtual void Initialize()
+        public virtual void Initialize()
         {
+            transform.position.LogInfo();
             SetUpFSM();
+            FindPath();
         }
 
         #endregion
@@ -105,9 +111,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         protected EffectGroup effectGroup;
 
 
-        public void TakeEffect(EffectData effectData)
+        public void GiveEffect(EffectData effectData)
         {
-            throw new System.NotImplementedException();
+            effectGroup.GiveEffect(effectData);
         }
 
         #endregion
@@ -116,7 +122,15 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         public AttackData TakeAttack(AttackData attackData)
         {
-            throw new NotImplementedException();
+            if (attackData == null) return null;
+            Health.Value = Mathf.Clamp(Health.Value - attackData.Damage, 0, Mathf.Infinity);
+            _Rigidbody2D.AddForce(attackData.Punch(_Rigidbody2D.position), ForceMode2D.Impulse);
+            foreach (var effectData in attackData.Effects)
+            {
+                this.GiveEffect(effectData);
+            }
+
+            return null;
         }
 
         #endregion
@@ -146,9 +160,15 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #region 移动
 
-        public AITendency AITendency { get; set; } = AITendency.Default;
-        public IZombiePath CachePath { get; set; } = null;
+        public AITendency AITendency = AITendency.Default;
+        public IZombiePath CachePath = null;
         [SerializeField, ReadOnly] public MoveData CurrentMoveData = null;
+
+        public void FindPath()
+        {
+            CachePath = _ZombieAISystem.ZombieAIUnit.FindPath(CellPos, ReferenceHelper.Player.CellPos, AITendency);
+            CurrentMoveData = CachePath.NextTarget();
+        }
 
         public void MoveTowards(MoveData moveData)
         {
@@ -167,6 +187,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                             break;
                         default: throw new NotImplementedException();
                     }
+
+                    targetPos.LogInfo();
+                    CellPos.LogInfo();
 
                     var hit = Physics2D.Raycast(JumpDetectionPoint.position, Direction.Value.ToVector2(), 0.5f,
                         LayerMask.GetMask("Barrier"));

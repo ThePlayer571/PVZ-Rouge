@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using QFramework;
 using TPL.PVZR.Classes.ZombieAI.Class;
 using TPL.PVZR.Tools.Random;
 
@@ -59,6 +60,9 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
         /// <returns>选择的路径</returns>
         public Path ChooseOnePath(List<Path> paths, float factor = 0.01f)
         {
+            if (paths == null || paths.Count == 0) throw new ArgumentException("路径列表不能为空");
+            if (paths.Count == 1) return paths.First();
+
             var weights = paths.Select((p => p.Weight(this))).ToArray();
             // $"scores是{String.Join(",", weights.Select(s => s.ToString("F3")))}".LogInfo(); // 修改为三位小数输出
             float minWeight = weights.Min();
@@ -97,13 +101,13 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
             this.mainAI = mainAI;
             this.minPassHeight = minPassHeight;
             seed = (float)RandomHelper.Default.Value;
+            
+            $"this seed is {seed}".LogInfo();
         }
 
         #endregion
 
         #region override
-
-        
 
         public override int GetHashCode()
         {
@@ -121,6 +125,7 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
             // seed不参与Equals计算
             throw new Exception();
         }
+
         #endregion
     }
 }

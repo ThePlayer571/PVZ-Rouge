@@ -17,9 +17,10 @@ namespace TPL.PVZR.Helpers.Factory
             testInventoryData.Cards = new List<CardData>()
             {
                 CardHelper.CreateCardData(PlantId.Flowerpot),
-                CardHelper.CreateCardData(PlantId.Flowerpot),
-                CardHelper.CreateCardData(PlantId.Flowerpot),
+                CardHelper.CreateCardData(PlantId.Sunflower),
+                CardHelper.CreateCardData(PlantId.PeaShooter),
                 CardHelper.CreateCardData(PlantId.SnowPea),
+                CardHelper.CreateCardData(PlantId.Wallnut),
             };
 
             return new GameData(testMazeMapData, testInventoryData);

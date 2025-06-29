@@ -32,8 +32,11 @@ namespace TPL.PVZR.Systems
                         {
                             case PhaseStage.EnterNormal:
                                 ZombieAIUnit.InitializeFrom(_LevelGridModel.LevelMatrix);
+                                // ZombieAIUnit.DebugDisplayMatrix();
+                                // ZombieAIUnit.DebugLogCluster(new Vector2Int(11, 14));
                                 break;
                         }
+
                         break;
                 }
             });

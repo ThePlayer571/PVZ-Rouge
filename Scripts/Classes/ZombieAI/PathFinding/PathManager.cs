@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using QFramework;
 using TPL.PVZR.Classes.ZombieAI.Class;
 using TPL.PVZR.Classes.ZombieAI.Public;
 
@@ -41,12 +42,15 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
             // 简单情况处理，这时不需要调用寻路算法
             if (startCluster.IsIdentical(endCluster))
             {
+                "find identiacal".LogInfo();
                 var _ = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(startVertex, endVertex);
                 return new List<Path> { new Path(_) };
             }
 
             if (startCluster.GetIntersection(endCluster, out var intersection))
             {
+                "find intersection".LogInfo();
+
                 var path = new Path();
 
                 var firstEdge = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(startVertex, intersection);
@@ -94,8 +98,11 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 
                     if (endVertex == keyVertexEnd) end = null;
                     else if (endVertex.isKey)
-                        end = _zombieAIUnit.keyAdjacencyList[endVertex]
-                            .First(keyEdge => keyEdge.From == keyVertexEnd);
+                    {
+                        var otherEndVertex = endCluster.vertexA == endVertex ? endCluster.vertexB : endCluster.vertexA;
+                        end = _zombieAIUnit.keyAdjacencyList[otherEndVertex]
+                            .First(keyEdge => keyEdge.To == endVertex);
+                    }
                     else
                     {
                         if (endVertex == endCluster.vertexA)

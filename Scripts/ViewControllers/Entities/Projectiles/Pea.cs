@@ -22,7 +22,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             {
                 if (other.collider.CompareTag("Zombie"))
                 {
-                    other.collider.GetComponent<Zombie>().TakeAttack(AttackHelper.CreateAttackData(AttackId.Pea));
+                    var attackData = AttackHelper.CreateAttackData(AttackId.Pea).WithPunchFrom(transform.position);
+                    other.collider.GetComponent<Zombie>().TakeAttack(attackData);
                 }
 
                 this.Remove();

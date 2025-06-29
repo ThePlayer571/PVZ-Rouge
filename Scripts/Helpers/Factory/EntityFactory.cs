@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using QAssetBundle;
 using QFramework;
+using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.GameStuff;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Tools;
@@ -10,6 +11,7 @@ using TPL.PVZR.Tools.Random;
 using TPL.PVZR.ViewControllers;
 using TPL.PVZR.ViewControllers.Entities.Plants;
 using TPL.PVZR.ViewControllers.Entities.Projectiles;
+using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
@@ -77,6 +79,32 @@ namespace TPL.PVZR.Helpers.Factory
             }
         }
 
+        public static class ZombieFactory
+        {
+            static ZombieFactory()
+            {
+                _zombieDict = new Dictionary<ZombieId, GameObject>
+                {
+                    [ZombieId.NormalZombie] = _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.NormalZombie),
+                };
+            }
+
+            private static readonly Dictionary<ZombieId, GameObject> _zombieDict;
+
+            public static Zombie SpawnZombie(ZombieId id, Vector2 pos)
+            {
+                if (_zombieDict.TryGetValue(id, out var zombiePrefab))
+                {
+                    var zombie = zombiePrefab.Instantiate(pos, Quaternion.identity).GetComponent<Zombie>();
+                    zombie.Initialize();
+                    return zombie;
+                }
+                else
+                {
+                    throw new ArgumentException($"未考虑的僵尸类型：{id}");
+                }
+            }
+        }
 
         public static class ProjectileFactory
         {
@@ -115,11 +143,5 @@ namespace TPL.PVZR.Helpers.Factory
                 }
             }
         }
-    }
-
-    public enum ProjectileId
-    {
-        Pea,
-        FrozenPea
     }
 }
