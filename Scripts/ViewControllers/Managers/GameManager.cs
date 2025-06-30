@@ -12,10 +12,19 @@ namespace TPL.PVZR.ViewControllers.Managers
     {
         private void OnGUI()
         {
-            // TODO 创造一个按钮，按下后调用一个函数
-            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 10, 120, 40), "测试按钮"))
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 10, 120, 40), "平地"))
             {
                 var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(32, 9));
+                EntityFactory.ZombieFactory.SpawnZombie(ZombieId.NormalZombie, pos);
+            }
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 60, 120, 40), "二楼"))
+            {
+                var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(14, 14));
+                EntityFactory.ZombieFactory.SpawnZombie(ZombieId.NormalZombie, pos);
+            }
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 110, 120, 40), "屋顶"))
+            {
+                var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(10, 23));
                 EntityFactory.ZombieFactory.SpawnZombie(ZombieId.NormalZombie, pos);
             }
         }

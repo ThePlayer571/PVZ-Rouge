@@ -4,6 +4,7 @@ using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.LevelStuff;
 using TPL.PVZR.Classes.LevelStuff.Effect;
 using TPL.PVZR.Classes.ZombieAI.Public;
+using TPL.PVZR.CommandEvents.SHit;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Systems;
 using TPL.PVZR.Tools;
@@ -43,6 +44,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
             // AI / 行为主控
             _FSM = new FSM<ZombieState>();
+            this.RegisterEvent<OnPlayerChangeCluster>(e => _timeToFindPath = true)
+                .UnRegisterWhenGameObjectDestroyed(this);
         }
 
         protected override void Update()
@@ -56,7 +59,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         private void FixedUpdate()
         {
-            // dragForce
+            // 水平方向的拉力
             var dragForce = new Vector2(-5 * _Rigidbody2D.velocity.x, 0);
             _Rigidbody2D.AddForce(dragForce);
         }
@@ -81,9 +84,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         /// </summary>
         public virtual void Initialize()
         {
-            transform.position.LogInfo();
             SetUpFSM();
-            FindPath();
         }
 
         #endregion
@@ -96,9 +97,57 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         public IZombieAISystem _ZombieAISystem;
 
         // 基础属性
+        public abstract ZombieId Id { get; }
+
         public float baseSpeed = 2f;
         public float baseJumpForce = 5f;
         public AttackData baseAttackData = null;
+
+        #region 当前属性（考虑Effect后）
+
+        public AttackData CreateAttackData()
+        {
+            var attackData = new AttackData(baseAttackData);
+
+            foreach (var effectData in effectGroup)
+            {
+                switch (effectData.effectId)
+                {
+                    case EffectId.Chill:
+                        attackData.MultiplyDamage(EffectHelper.Zombie_Chill_AttackFactor(effectData.level));
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return attackData;
+        }
+
+        public float GetSpeed()
+        {
+            var speed = baseSpeed;
+            foreach (var effectData in effectGroup)
+            {
+                switch (effectData.effectId)
+                {
+                    case EffectId.Chill:
+                        speed *= EffectHelper.Zombie_Chill_SpeedFactor(effectData.level);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return speed;
+        }
+
+        public float GetJumpForce()
+        {
+            return baseJumpForce;
+        }
+
+        #endregion
 
         // 变量
         public BindableProperty<Direction2> Direction;
@@ -137,40 +186,24 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #region 攻击
 
-        public AttackData CreateAttackData()
-        {
-            var attackData = new AttackData(baseAttackData);
-
-            foreach (var effectData in effectGroup)
-            {
-                switch (effectData.effectId)
-                {
-                    case EffectId.Chill:
-                        attackData.MultiplyDamage(EffectHelper.Zombie_Chill_Factor(effectData.level));
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            return attackData;
-        }
-
         #endregion
 
         #region 移动
 
+        public bool _timeToFindPath = false;
         public AITendency AITendency = AITendency.Default;
         public IZombiePath CachePath = null;
         [SerializeField, ReadOnly] public MoveData CurrentMoveData = null;
 
-        public void FindPath()
+
+        [Unsafe("调用此方法前，请确保路径百分百能被找到，不然会出错误")]
+        public void FindPath(Vector2Int targetPos)
         {
-            CachePath = _ZombieAISystem.ZombieAIUnit.FindPath(CellPos, ReferenceHelper.Player.CellPos, AITendency);
+            CachePath = _ZombieAISystem.ZombieAIUnit.FindPath(CellPos, targetPos, AITendency);
             CurrentMoveData = CachePath.NextTarget();
         }
 
-        public void MoveTowards(MoveData moveData)
+        public virtual void MoveTowards(MoveData moveData)
         {
             switch (moveData.moveType)
             {
@@ -187,9 +220,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                             break;
                         default: throw new NotImplementedException();
                     }
-
-                    targetPos.LogInfo();
-                    CellPos.LogInfo();
 
                     var hit = Physics2D.Raycast(JumpDetectionPoint.position, Direction.Value.ToVector2(), 0.5f,
                         LayerMask.GetMask("Barrier"));
@@ -214,7 +244,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     this.Direction.Value = (transform.position.x > targetPos.x)
                         ? Direction2.Left
                         : Direction2.Right;
-                    _Rigidbody2D.AddForce(Direction.Value.ToVector2() * baseSpeed);
+                    _Rigidbody2D.AddForce(Direction.Value.ToVector2() * this.GetSpeed());
                     break;
                 }
                 case MoveType.Fall:
@@ -226,11 +256,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     this.Direction.Value = (transform.position.x > CurrentMoveData.targetWorldPos.x)
                         ? Direction2.Left
                         : Direction2.Right;
-                    _Rigidbody2D.AddForce(Direction.Value.ToVector2() * baseSpeed);
+                    _Rigidbody2D.AddForce(Direction.Value.ToVector2() * this.GetSpeed());
                     break;
                 }
 
-                default: throw new NotImplementedException();
+                default: return;
             }
         }
 
@@ -238,17 +268,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #region 跳跃
 
-        public float GetJumpForce()
-        {
-            return baseJumpForce;
-        }
-
         public Timer _jumpTimer { get; set; }
 
 
         public void Jump()
         {
-            _Rigidbody2D.AddForce(Vector2.up * baseJumpForce, ForceMode2D.Impulse);
+            _Rigidbody2D.AddForce(Vector2.up * this.GetJumpForce(), ForceMode2D.Impulse);
             _jumpTimer.Reset();
         }
 

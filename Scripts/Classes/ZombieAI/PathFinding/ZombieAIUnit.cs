@@ -38,6 +38,19 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
             return new ZombiePath(path);
         }
 
+        public Cluster GetClusterSafely(Vector2Int pos)
+        {
+            Vertex vertex = mapMatrix[pos.x, pos.y];
+            if (vertex == null) return null;
+            else return GetCluster(vertex);
+        }
+
+        public Vertex GetVertexSafely(Vector2Int pos)
+        {
+            Vertex vertex = mapMatrix[pos.x, pos.y];
+            return vertex;
+        }
+
         public Vertex GetVertex(int x, int y)
         {
             return mapMatrix[x, y] ?? throw new ArgumentException("该位置不存在结点");

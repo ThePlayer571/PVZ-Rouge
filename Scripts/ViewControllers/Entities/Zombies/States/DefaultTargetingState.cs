@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using QFramework;
 using TPL.PVZR.Classes.ZombieAI.Public;
+using TPL.PVZR.CommandEvents.SHit;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Plants;
@@ -17,16 +18,23 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         protected override void OnEnter()
         {
-            mTarget.AttackArea.OnTargetStay.Register(OnAttackingAreaStay);
+            mTarget.FindPath(mTarget._ZombieAISystem.PlayerVertexPos);
         }
 
         protected override void OnExit()
         {
-            mTarget.AttackArea.OnTargetStay.UnRegister(OnAttackingAreaStay);
         }
 
         protected override void OnUpdate()
         {
+            // 
+            bool allowRefind = mTarget._ZombieAISystem.ZombieAIUnit.GetVertexSafely(mTarget.CellPos) != null;
+            if (allowRefind && mTarget._timeToFindPath)
+            {
+                mTarget._timeToFindPath = false;
+                mTarget.FindPath(mTarget._ZombieAISystem.PlayerVertexPos);
+            }
+
             // 更新CurrentMoveData
             if (mTarget.CurrentMoveData.moveStage == MoveStage.FollowVertex)
             {
@@ -35,6 +43,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
                     mTarget.CurrentMoveData = mTarget.CachePath.NextTarget();
                 }
             }
+
             //
             mTarget.MoveTowards(mTarget.CurrentMoveData);
         }
