@@ -40,7 +40,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
         public AttackData TakeAttack(AttackData attackData)
         {
             HealthPoint = Mathf.Clamp(HealthPoint - attackData.Damage, 0, Mathf.Infinity);
-            if (HealthPoint <= 0) Die();
+            if (HealthPoint <= 0) DieWith(attackData);
             return null;
         }
 
@@ -48,7 +48,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
         #region 实体生命周期
 
-        public override void Die()
+        public override void DieWith(AttackData attackData)
         {
             Remove();
         }

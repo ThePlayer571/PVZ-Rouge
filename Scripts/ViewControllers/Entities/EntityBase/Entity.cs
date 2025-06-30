@@ -1,5 +1,6 @@
 using QFramework;
 using TPL.PVZR.Classes.DataClasses;
+using TPL.PVZR.Classes.DataClasses.Attack;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Models;
@@ -42,13 +43,13 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
 
         public virtual void Kill()
         {
-            Die();
+            DieWith(null);
         }
 
         /// <summary>
         /// 将实体致死（自然的死亡，与Spawn对应）
         /// </summary>
-        public virtual void Die()
+        public virtual void DieWith(AttackData attackData)
         {
             Remove();
         }

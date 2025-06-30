@@ -25,8 +25,19 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
 
             Zombie.Direction.RegisterWithInitValue(direction => { Zombie.transform.LocalScaleX(direction.ToInt()); })
                 .UnRegisterWhenGameObjectDestroyed(this);
+
+            Zombie.OnDieWith.Register(attackData =>
+            {
+                "call oon de with".LogInfo();
+                var children =
+                    transform.GetComponentsInChildren<ZombieViewComponentController>();
+                foreach (var child in children)
+                {
+                    child.DisassembleWithForce(attackData.Punch(child.transform.position));
+                }
+            }).UnRegisterWhenGameObjectDestroyed(this);
         }
-        
+
         private float currentRotation;
 
         private FSM<ZombieState> ViewFSM;
@@ -39,10 +50,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
         {
             ViewFSM = new FSM<ZombieState>();
             ViewFSM.State(ZombieState.DefaultTargeting)
-                .OnEnter(() =>
-                {
-                    _Animator.SetTrigger("EnterDefaultTargeting");
-                })
+                .OnEnter(() => { _Animator.SetTrigger("EnterDefaultTargeting"); })
                 .OnUpdate(() =>
                 {
                     targetRotation = Mathf.Clamp(Mathf.Abs(Zombie._Rigidbody2D.velocity.x), 0, 1) * 10f;

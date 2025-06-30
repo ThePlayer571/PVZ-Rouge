@@ -96,6 +96,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         // Designer
         [SerializeField] public ZombieAttackAreaController AttackArea;
         [SerializeField] public Transform JumpDetectionPoint;
+        [SerializeField] public Transform MassCenter;
         public IZombieAISystem _ZombieAISystem;
 
         // 基础属性
@@ -154,6 +155,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         // 变量
         public BindableProperty<Direction2> Direction;
         public BindableProperty<float> Health;
+        
+        // 事件
+        public EasyEvent<AttackData> OnDieWith = new();
 
         #endregion
 
@@ -175,11 +179,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         {
             if (attackData == null) return null;
             Health.Value = Mathf.Clamp(Health.Value - attackData.Damage, 0, Mathf.Infinity);
-            _Rigidbody2D.AddForce(attackData.Punch(_Rigidbody2D.position), ForceMode2D.Impulse);
+            // !!!! 如果出现bug（力的生成和实际位置不一致）请看这里：质心不是Rigidbody2D
+            _Rigidbody2D.AddForce(attackData.Punch(MassCenter.position), ForceMode2D.Impulse);
             foreach (var effectData in attackData.Effects)
             {
                 this.GiveEffect(effectData);
             }
+            
+            if (Health.Value <= 0) DieWith(attackData);
 
             return null;
         }
@@ -188,8 +195,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #region 实体生命周期
 
-        public override void Die()
+        public override void DieWith(AttackData attackData)
         {
+            OnDieWith.Trigger(attackData);
             this.Remove();
         }
 

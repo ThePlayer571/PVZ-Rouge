@@ -14,14 +14,19 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             _Rigidbody.velocity = GlobalEntityData.Projectile_Pea_Speed * direction.ToVector2();
         }
 
+        private bool _attacked = false;
+
         protected override void Awake()
         {
             base.Awake();
 
             this.OnCollisionEnter2DEvent.Register(other =>
             {
+                if (_attacked) return;
+
                 if (other.collider.CompareTag("Zombie"))
                 {
+                    _attacked = true;
                     var attackData = AttackHelper.CreateAttackData(AttackId.Pea).WithPunchFrom(transform.position);
                     other.collider.GetComponent<Zombie>().TakeAttack(attackData);
                 }

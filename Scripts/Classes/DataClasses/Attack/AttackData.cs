@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using QFramework;
 using TPL.PVZR.Classes.DataClasses.Effect;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
     {
         private float damage;
         private float punchForce;
+        private PunchType punchType;
         private bool isFrameDamage;
         private List<EffectData> effects;
         // 我想或许不用让外界访问AttackDefinition，而是提供方便的方法调用
@@ -51,7 +53,19 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
 
         public Vector2 Punch(Vector2 punchTo)
         {
-            var direction = (punchTo - punchFrom).normalized;
+            Vector2 direction;
+            switch (punchType)
+            {
+                case PunchType.Free:
+                    direction = (punchTo - punchFrom).normalized;
+                    break;
+                case PunchType.ConstrainHorizontal:
+                    direction = (punchTo - punchFrom).x > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
+                    break;
+                default: throw new NotImplementedException();
+            }
+
+            $"{direction * punchForce}".LogInfo();
             return direction * punchForce;
         }
 
@@ -65,6 +79,7 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
         {
             this.damage = other.damage;
             this.punchForce = other.punchForce;
+            this.punchType = other.punchType;
             this.isFrameDamage = other.isFrameDamage;
             this.effects = other.effects.ToList();
         }
@@ -82,6 +97,7 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
         {
             this.damage = attackDefinition.damage;
             this.punchForce = attackDefinition.punchForce;
+            this.punchType = attackDefinition.punchType;
             this.isFrameDamage = attackDefinition.isFrameDamage;
             this.effects = attackDefinition.effects.Select(definition => new EffectData(definition)).ToList();
         }
