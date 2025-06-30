@@ -10,13 +10,20 @@ namespace TPL.PVZR.Classes.DataClasses.Effect
 
         public void GiveEffect(EffectData effectData)
         {
-            foreach (var oldEffectData in _effects.Where(oldEffectData =>
-                         (oldEffectData.effectId == effectData.effectId)
-                         && ((effectData.level > oldEffectData.level) ||
-                             (effectData.level == oldEffectData.level &&
-                              effectData.timer.Remaining > oldEffectData.timer.Remaining))))
+            // 可覆盖的效果
+            var existingEffect = _effects.FirstOrDefault(oldEffectData =>
+                (oldEffectData.effectId == effectData.effectId));
+            if (existingEffect == null)
             {
-                _effects.Remove(oldEffectData);
+                _effects.Add(effectData);
+            }
+            else if (
+                (effectData.level > existingEffect.level) ||
+                (effectData.level == existingEffect.level &&
+                 effectData.timer.Remaining > existingEffect.timer.Remaining)
+            )
+            {
+                _effects.Remove(existingEffect);
                 _effects.Add(effectData);
             }
         }

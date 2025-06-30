@@ -142,6 +142,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                 }
             }
 
+            speed.LogInfo();
             return speed;
         }
 
@@ -155,7 +156,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         // 变量
         public BindableProperty<Direction2> Direction;
         public BindableProperty<float> Health;
-        
+
         // 事件
         public EasyEvent<AttackData> OnDieWith = new();
 
@@ -177,6 +178,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         public AttackData TakeAttack(AttackData attackData)
         {
+            $"{attackData.Effects.Count}".LogInfo();
             if (attackData == null) return null;
             Health.Value = Mathf.Clamp(Health.Value - attackData.Damage, 0, Mathf.Infinity);
             // !!!! 如果出现bug（力的生成和实际位置不一致）请看这里：质心不是Rigidbody2D
@@ -185,7 +187,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             {
                 this.GiveEffect(effectData);
             }
-            
+
             if (Health.Value <= 0) DieWith(attackData);
 
             return null;
