@@ -1,3 +1,4 @@
+using TPL.PVZR.ViewControllers.Entities.EntityBase;
 using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Projectiles

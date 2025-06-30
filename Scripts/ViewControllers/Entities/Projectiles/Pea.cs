@@ -1,6 +1,6 @@
 using QFramework;
-using TPL.PVZR.Classes.LevelStuff;
-using TPL.PVZR.Helpers.Factory;
+using TPL.PVZR.Classes.DataClasses.Attack;
+using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using UnityEngine;

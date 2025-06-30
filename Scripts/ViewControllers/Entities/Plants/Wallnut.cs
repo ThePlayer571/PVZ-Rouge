@@ -1,4 +1,4 @@
-using TPL.PVZR.Classes.GameStuff;
+using TPL.PVZR.Classes;
 using TPL.PVZR.Tools;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants

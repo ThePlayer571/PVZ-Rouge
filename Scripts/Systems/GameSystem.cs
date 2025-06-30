@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using QFramework;
-using TPL.PVZR.Classes.Game;
-using TPL.PVZR.Classes.Level;
+using TPL.PVZR.Classes.DataClasses.Game;
+using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.MazeMap;
 using TPL.PVZR.Classes.MazeMap.Public.DaveHouse;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers;
-using TPL.PVZR.Helpers.Factory;
+using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers.Managers;
 using TPL.PVZR.ViewControllers.UI;

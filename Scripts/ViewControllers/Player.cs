@@ -3,7 +3,7 @@ using QFramework;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities;
-using TPL.PVZR.ViewControllers.Entities.Interfaces;
+using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Plants;
 using UnityEngine;
 using UnityEngine.InputSystem;

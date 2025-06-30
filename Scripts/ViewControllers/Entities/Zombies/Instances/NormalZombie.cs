@@ -1,5 +1,6 @@
 using TPL.PVZR.Classes;
-using TPL.PVZR.Helpers.Factory;
+using TPL.PVZR.Classes.DataClasses.Attack;
+using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances

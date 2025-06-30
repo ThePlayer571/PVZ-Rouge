@@ -1,7 +1,7 @@
 using System;
 using QFramework;
 using TPL.PVZR.Classes;
-using TPL.PVZR.Helpers.Factory;
+using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.Methods;
 using UnityEngine;
 using UnityEngine.EventSystems;

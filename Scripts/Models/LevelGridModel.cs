@@ -1,8 +1,8 @@
 using System;
 using QFramework;
-using TPL.PVZR.Classes.GameStuff;
-using TPL.PVZR.Classes.Level;
-using TPL.PVZR.Classes.LevelStuff;
+using TPL.PVZR.Classes;
+using TPL.PVZR.Classes.DataClasses;
+using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Tools;
 using UnityEngine;

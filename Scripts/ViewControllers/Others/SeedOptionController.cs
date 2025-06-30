@@ -1,7 +1,7 @@
 using QFramework;
 using TMPro;
-using TPL.PVZR.Classes.GameStuff;
-using TPL.PVZR.CommandEvents.ChooseSeeds;
+using TPL.PVZR.Classes.DataClasses.Card;
+using TPL.PVZR.CommandEvents.Level_ChooseSeeds;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;

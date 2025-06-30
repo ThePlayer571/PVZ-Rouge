@@ -1,6 +1,6 @@
 using System;
 using QFramework;
-using TPL.PVZR.Helpers.Factory;
+using TPL.PVZR.Helpers;
 using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers;
 using TPL.PVZR.ViewControllers.Entities.Plants;
