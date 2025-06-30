@@ -44,16 +44,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             effectGroup = new EffectGroup();
 
             // AI / 行为主控
-            _FSM = new FSM<ZombieState>();
-            this.RegisterEvent<OnPlayerChangeCluster>(e => _timeToFindPath = true)
-                .UnRegisterWhenGameObjectDestroyed(this);
+            FSM = new FSM<ZombieState>();
         }
 
         protected override void Update()
         {
             base.Update();
             //
-            _FSM.Update();
+            FSM.Update();
             _jumpTimer.Update(Time.deltaTime);
             effectGroup.Update(Time.deltaTime);
         }
@@ -61,7 +59,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         private void FixedUpdate()
         {
             // 水平方向的拉力
-            var dragForce = new Vector2(-5 * _Rigidbody2D.velocity.x, 0);
+            var dragForce = new Vector2(-10 * _Rigidbody2D.velocity.x, 0);
             _Rigidbody2D.AddForce(dragForce);
         }
 
@@ -69,15 +67,15 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #region AI / 行为主控
 
-        private FSM<ZombieState> _FSM;
+        public FSM<ZombieState> FSM;
         public IAttackable AttackingTarget;
 
         protected virtual void SetUpFSM()
         {
-            _FSM.AddState(ZombieState.DefaultTargeting, new DefaultTargetingState(_FSM, this));
-            _FSM.AddState(ZombieState.Attacking, new AttackingState(_FSM, this));
+            FSM.AddState(ZombieState.DefaultTargeting, new DefaultTargetingState(FSM, this));
+            FSM.AddState(ZombieState.Attacking, new AttackingState(FSM, this));
 
-            _FSM.StartState(ZombieState.DefaultTargeting);
+            FSM.StartState(ZombieState.DefaultTargeting);
         }
 
         /// <summary>
@@ -86,11 +84,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         public virtual void Initialize()
         {
             SetUpFSM();
+            // AI
+            this.RegisterEvent<OnPlayerChangeCluster>(e => _timeToFindPath = true)
+                .UnRegisterWhenGameObjectDestroyed(this);
         }
 
         #endregion
 
-        #region 属性
+        #region 字段
 
         // Designer
         [SerializeField] public ZombieAttackAreaController AttackArea;
@@ -100,8 +101,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         // 基础属性
         public abstract ZombieId Id { get; }
 
-        public float baseSpeed = 2f;
-        public float baseJumpForce = 5f;
+        [NonSerialized] public float baseSpeed = 1.2f;
+        [NonSerialized] public float baseJumpForce = 5f;
         public AttackData baseAttackData = null;
 
         #region 当前属性（考虑Effect后）
@@ -168,7 +169,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #endregion
 
-        #region 血量
+        #region 被攻击
 
         public AttackData TakeAttack(AttackData attackData)
         {
@@ -185,7 +186,17 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #endregion
 
-        #region 攻击
+        #region 实体生命周期
+
+        public override void Die()
+        {
+            this.Remove();
+        }
+
+        public override void Kill()
+        {
+            this.Health.Value = 0;
+        }
 
         #endregion
 

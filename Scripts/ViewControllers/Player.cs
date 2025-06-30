@@ -1,5 +1,6 @@
 using System;
 using QFramework;
+using TPL.PVZR.Classes.DataClasses.Attack;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities;
@@ -10,8 +11,12 @@ using UnityEngine.InputSystem;
 
 namespace TPL.PVZR.ViewControllers
 {
-    public class Player : MonoBehaviour, IEntity
-    
+    public interface IPlayer : IEntity, IAttackable
+    {
+    }
+
+    public class Player : MonoBehaviour, IPlayer
+
     {
         private PlayerInputControl _inputActions;
         private Rigidbody2D _Rigidbody2D;
@@ -93,7 +98,24 @@ namespace TPL.PVZR.ViewControllers
         }
 
         public Vector2Int CellPos => LevelGridHelper.WorldToCell(this.transform.position);
+
+
+        public AttackData TakeAttack(AttackData attackData)
+        {
+            return null;
+        }
+
+        public void Kill()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Remove()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dead()
         {
             throw new NotImplementedException();
         }

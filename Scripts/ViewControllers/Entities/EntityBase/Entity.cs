@@ -10,7 +10,8 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
 {
     public abstract class Entity : MonoBehaviour, IEntity
     {
-        // 
+        #region 字段
+
         protected ILevelModel _LevelModel { get; private set; }
         protected ILevelData LevelData => _LevelModel.LevelData;
         protected IPhaseModel _PhaseModel { get; private set; }
@@ -18,6 +19,8 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
 
         //
         public Rigidbody2D _Rigidbody2D { get; private set; }
+
+        #endregion
 
         #region Unity生命周期
 
@@ -35,6 +38,31 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
 
         #endregion
 
+        #region 实体生命周期
+
+        public virtual void Kill()
+        {
+            Die();
+        }
+
+        /// <summary>
+        /// 将实体致死（自然的死亡，与Spawn对应）
+        /// </summary>
+        public virtual void Die()
+        {
+            Remove();
+        }
+
+        /// <summary>
+        /// 将实体从场景中移除（不包含动画/事件等）
+        /// </summary>
+        public virtual void Remove()
+        {
+            gameObject.DestroySelf();
+        }
+
+        #endregion
+
         #region 碰撞事件
 
         public EasyEvent<Collider2D> OnTriggerEnterEvent = new EasyEvent<Collider2D>();
@@ -48,22 +76,27 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
         {
             OnTriggerEnterEvent.Trigger(other);
         }
+
         private void OnTriggerExit2D(Collider2D other)
         {
             OnTriggerExitEvent.Trigger(other);
         }
+
         private void OnTriggerStay2D(Collider2D other)
         {
             OnTriggerStayEvent.Trigger(other);
         }
+
         private void OnCollisionEnter2D(Collision2D other)
         {
             OnCollisionEnter2DEvent.Trigger(other);
         }
+
         private void OnCollisionStay2D(Collision2D other)
         {
             OnCollisionStay2DEvent.Trigger(other);
         }
+
         private void OnCollisionExit2D(Collision2D other)
         {
             OnCollisionExit2DEvent.Trigger(other);
@@ -77,10 +110,5 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
         }
 
         public Vector2Int CellPos => LevelGridHelper.WorldToCell(this.transform.position);
-
-        public virtual void Remove()
-        {
-            gameObject.DestroySelf();
-        }
     }
 }

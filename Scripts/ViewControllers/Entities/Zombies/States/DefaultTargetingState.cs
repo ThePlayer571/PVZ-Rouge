@@ -18,10 +18,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
         protected override void OnEnter()
         {
             mTarget.FindPath(mTarget._ZombieAISystem.PlayerVertexPos);
+            mTarget.AttackArea.OnTargetStay.Register(OnAttackingAreaStay);
         }
 
         protected override void OnExit()
         {
+            mTarget.AttackArea.OnTargetStay.UnRegister(OnAttackingAreaStay);
         }
 
         protected override void OnUpdate()

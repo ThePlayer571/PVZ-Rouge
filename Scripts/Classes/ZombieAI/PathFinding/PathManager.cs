@@ -42,15 +42,12 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
             // 简单情况处理，这时不需要调用寻路算法
             if (startCluster.IsIdentical(endCluster))
             {
-                "find identiacal".LogInfo();
                 var _ = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(startVertex, endVertex);
                 return new List<Path> { new Path(_) };
             }
 
             if (startCluster.GetIntersection(endCluster, out var intersection))
             {
-                "find intersection".LogInfo();
-
                 var path = new Path();
 
                 var firstEdge = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(startVertex, intersection);

@@ -1,5 +1,6 @@
 using System;
 using QFramework;
+using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using UnityEngine;
 
@@ -30,7 +31,10 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         private void OnAttackingAreaExit(Collider2D other)
         {
-            if (ReferenceEquals(other, mTarget.AttackingTarget))
+            var attackable = other.GetComponent<IAttackable>();
+            if (attackable == null) return;
+
+            if (ReferenceEquals(attackable, mTarget.AttackingTarget))
             {
                 mTarget.AttackingTarget = null;
                 mFSM.ChangeState(ZombieState.DefaultTargeting);

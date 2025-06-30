@@ -6,6 +6,6 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces
     public interface IEntity : IController
     {
         Vector2Int CellPos { get; }
-        void Remove();
+        void Kill();
     }
 }

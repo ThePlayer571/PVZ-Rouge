@@ -101,8 +101,6 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
             this.mainAI = mainAI;
             this.minPassHeight = minPassHeight;
             seed = (float)RandomHelper.Default.Value;
-            
-            $"this seed is {seed}".LogInfo();
         }
 
         #endregion
