@@ -30,7 +30,7 @@ namespace TPL.PVZR.Systems
         {
             var playerCellPos = ReferenceHelper.Player.CellPos;
             var playerCurrentVertex = ZombieAIUnit.GetVertexSafely(playerCellPos);
-            
+
             // 初始化设置
             if (_playerVertexOnLastFrame == null)
             {
@@ -39,20 +39,23 @@ namespace TPL.PVZR.Systems
             // 常规
             else
             {
-                var playerLastCellPos = new Vector2Int(_playerVertexOnLastFrame.x, _playerVertexOnLastFrame.y);
-                var playerLastCluster = ZombieAIUnit.GetClusterSafely(playerLastCellPos);
+                // 重新寻路
+
+                var playerLastCluster = ZombieAIUnit.GetClusterSafely(_playerVertexOnLastFrame.Position);
+
                 var playerCurrentCluster = ZombieAIUnit.GetClusterSafely(playerCellPos);
-                
+
                 bool shouldRefindPath =
                     playerCurrentCluster != null && !playerLastCluster.IsIdentical(playerCurrentCluster);
                 if (shouldRefindPath)
                 {
-                    var playerCurrentCellPos = new Vector2Int(playerCurrentVertex.x, playerCurrentVertex.y);
-
                     _playerVertexOnLastFrame = playerCurrentVertex;
                     this.SendEvent<OnPlayerChangeCluster>();
                 }
             }
+
+            // 更新玩家位置
+            if (playerCurrentVertex != null) _playerVertexOnLastFrame = playerCurrentVertex;
         }
 
         protected override void OnInit()

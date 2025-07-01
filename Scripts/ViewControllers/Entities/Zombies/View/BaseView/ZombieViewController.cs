@@ -51,8 +51,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
                 }).UnRegisterWhenGameObjectDestroyed(this);
 
                 // 盔甲相关
-                $"Zombie.ZombieArmorList.Count: {Zombie.ZombieArmorList.Count}".LogInfo();
-                $"zombieArmorViews,Count: {zombieArmorViews.Count}".LogInfo();
                 for (int i = 0; i < Zombie.ZombieArmorList.Count; i++)
                 {
                     var target = zombieArmorViews[i];
@@ -84,7 +82,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
                 })
                 .OnUpdate(() =>
                 {
-                    "update".LogInfo();
                     targetRotation = Mathf.Clamp(Mathf.Abs(Zombie._Rigidbody2D.velocity.x), 0, 1) * 10f;
                     currentRotation = Mathf.Lerp(currentRotation, targetRotation,
                         Time.deltaTime * rotationChangeFactor);

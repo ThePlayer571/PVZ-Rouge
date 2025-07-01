@@ -221,7 +221,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         [SerializeField, ReadOnly] public MoveData CurrentMoveData = null;
 
 
-        [Unsafe("调用此方法前，请确保路径百分百能被找到，不然会出错误")]
+        [Unsafe("调用此方法前，请确保路径百分百能被找到，不然会出错误。安全的调用方法：_timeToFindPath = true，然后让FSM自动响应")]
         public void FindPath(Vector2Int targetPos)
         {
             CachePath = _ZombieAISystem.ZombieAIUnit.FindPath(CellPos, targetPos, AITendency);
@@ -263,7 +263,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     if (hit.collider) TryJump();
 
                     float distance = Mathf.Abs(transform.position.x - targetPos.x);
-                    if (distance < 0.1f) return;
+                    if (distance < Global.Zombie_Default_PathFindStopMinDistance) return;
 
 
                     this.Direction.Value = (transform.position.x > targetPos.x)
@@ -275,7 +275,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                 case MoveType.Fall:
                 {
                     float distance = Mathf.Abs(transform.position.x - CurrentMoveData.targetWorldPos.x);
-                    if (distance < 0.1f) return;
+                    if (distance < Global.Zombie_Default_PathFindStopMinDistance) return;
 
 
                     this.Direction.Value = (transform.position.x > CurrentMoveData.targetWorldPos.x)

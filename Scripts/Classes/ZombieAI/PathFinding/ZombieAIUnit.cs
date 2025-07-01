@@ -53,7 +53,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 
         public Vertex GetVertex(int x, int y)
         {
-            return mapMatrix[x, y] ?? throw new ArgumentException("该位置不存在结点");
+            return mapMatrix[x, y] ?? throw new ArgumentException($"该位置不存在结点: ({x},{y})");
         }
 
         public ZombieAIUnit()

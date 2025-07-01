@@ -17,7 +17,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         protected override void OnEnter()
         {
-            mTarget.FindPath(mTarget._ZombieAISystem.PlayerVertexPos);
+            mTarget._timeToFindPath = true;
             mTarget.AttackArea.OnTargetStay.Register(OnAttackingAreaStay);
         }
 
