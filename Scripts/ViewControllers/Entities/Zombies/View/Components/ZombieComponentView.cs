@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies
 {
-    public class ZombieViewComponentController : MonoBehaviour
+    public class ZombieComponentView : MonoBehaviour
     {
-        [SerializeField] private SpriteRenderer SpriteRenderer;
-        [SerializeField] private Rigidbody2D Rigidbody2D;
-        [SerializeField] private Collider2D Collider2D;
+        [SerializeField] protected SpriteRenderer SpriteRenderer;
+        [SerializeField] protected Rigidbody2D Rigidbody2D;
+        [SerializeField] protected Collider2D Collider2D;
 
-        private const float factor = 0.5f;
+        protected const float factor = 0.5f;
 
         public void DisassembleWithForce(Vector2 force)
         {

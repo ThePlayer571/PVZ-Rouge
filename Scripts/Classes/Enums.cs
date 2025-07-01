@@ -9,6 +9,7 @@ namespace TPL.PVZR.Classes
     public enum ZombieId
     {
         NormalZombie,
+        ConeheadZombie
     }
 
     public enum PlantId

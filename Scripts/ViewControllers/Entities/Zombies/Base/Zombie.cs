@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses.Attack;
@@ -11,6 +12,7 @@ using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Zombies.States;
+using TPL.PVZR.ViewControllers.Entities.Zombies.ZombieArmor;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -87,6 +89,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             // AI
             this.RegisterEvent<OnPlayerChangeCluster>(e => _timeToFindPath = true)
                 .UnRegisterWhenGameObjectDestroyed(this);
+
+            ActionKit.DelayFrame(1, OnInitialized.Trigger).Start(this);
         }
 
         #endregion
@@ -142,7 +146,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                 }
             }
 
-            speed.LogInfo();
             return speed;
         }
 
@@ -158,7 +161,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         public BindableProperty<float> Health;
 
         // 事件
-        public EasyEvent<AttackData> OnDieWith = new();
+        public EasyEvent<AttackData> OnDieFrom = new();
+        public EasyEvent OnInitialized = new();
 
         #endregion
 
@@ -176,9 +180,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #region 被攻击
 
-        public AttackData TakeAttack(AttackData attackData)
+        public virtual AttackData TakeAttack(AttackData attackData)
         {
-            $"{attackData.Effects.Count}".LogInfo();
             if (attackData == null) return null;
             Health.Value = Mathf.Clamp(Health.Value - attackData.Damage, 0, Mathf.Infinity);
             // !!!! 如果出现bug（力的生成和实际位置不一致）请看这里：质心不是Rigidbody2D
@@ -199,7 +202,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         public override void DieWith(AttackData attackData)
         {
-            OnDieWith.Trigger(attackData);
+            OnDieFrom.Trigger(attackData);
             this.Remove();
         }
 
@@ -304,6 +307,15 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             if (!_jumpTimer.Ready) return;
             Jump();
         }
+
+        #endregion
+
+        #region 盔甲
+
+        /// <summary>
+        /// 存在盔甲则必须放到这里面，用于与外界数据交换
+        /// </summary>
+        public readonly List<ZombieArmorData> ZombieArmorList = new List<ZombieArmorData>();
 
         #endregion
     }

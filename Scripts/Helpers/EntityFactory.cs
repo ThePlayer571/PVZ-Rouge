@@ -85,6 +85,7 @@ namespace TPL.PVZR.Helpers
                 _zombieDict = new Dictionary<ZombieId, GameObject>
                 {
                     [ZombieId.NormalZombie] = _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.NormalZombie),
+                    [ZombieId.ConeheadZombie] = _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.ConeheadZombie),
                 };
             }
 
@@ -109,7 +110,6 @@ namespace TPL.PVZR.Helpers
         {
             static ProjectileFactory()
             {
-                "call static init, ProjectileFactory".LogInfo();
                 _projectileDict =
                     new Dictionary<ProjectileId, GameObject>
                     {

@@ -25,6 +25,18 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
             damage *= factor;
             return this;
         }
+        
+        public AttackData SubDamage(float value)
+        {
+            damage -= value;
+            return this;
+        }
+        
+        public AttackData MultiplyPunchForce(float factor)
+        {
+            punchForce *= factor;
+            return this;
+        }
 
         public AttackData WithPunchFrom(Vector2 punchFrom)
         {
@@ -65,7 +77,6 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
                 default: throw new NotImplementedException();
             }
 
-            $"{direction * punchForce}".LogInfo();
             return direction * punchForce;
         }
 

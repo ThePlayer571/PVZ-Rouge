@@ -27,6 +27,11 @@ namespace TPL.PVZR.ViewControllers.Managers
                 var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(10, 23));
                 EntityFactory.ZombieFactory.SpawnZombie(ZombieId.NormalZombie, pos);
             }
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 160, 120, 40), "测试按钮"))
+            {
+                var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(32, 9));
+                EntityFactory.ZombieFactory.SpawnZombie(ZombieId.ConeheadZombie, pos);
+            }
         }
 
 
