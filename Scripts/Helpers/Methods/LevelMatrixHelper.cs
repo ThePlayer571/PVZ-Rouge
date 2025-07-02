@@ -14,10 +14,10 @@ namespace TPL.PVZR.Helpers.Methods
         public static Matrix<Cell> BakeLevelMatrix(LevelTilemapController LevelTileMap, ILevelData levelData)
         {
             var LevelMatrix =
-                new Matrix<Cell>(levelData.LevelDefinition.MapSize.x, levelData.LevelDefinition.MapSize.y);
-            for (int x = 0; x < levelData.LevelDefinition.MapSize.x; x++)
+                new Matrix<Cell>(levelData.MapSize.x, levelData.MapSize.y);
+            for (int x = 0; x < levelData.MapSize.x; x++)
             {
-                for (int y = 0; y < levelData.LevelDefinition.MapSize.y; y++)
+                for (int y = 0; y < levelData.MapSize.y; y++)
                 {
                     var pos = new Vector3Int(x, y, 0);
                     var cell = new Cell(x, y);

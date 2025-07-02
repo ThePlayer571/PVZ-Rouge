@@ -41,13 +41,26 @@ namespace TPL.PVZR.Tools
         public void SetElapsedTime(float elapsedTime)
         {
             ElapsedTime = elapsedTime;
+            UpdateReadyState();
         }
 
         public void SetRemaining(float remaining)
         {
             ElapsedTime = Duration - remaining;
+            UpdateReadyState();
         }
 
+        private void UpdateReadyState()
+        {
+            bool wasReady = Ready;
+            Ready = ElapsedTime >= Duration;
+            
+            // 如果从非Ready状态变为Ready状态，设置justReady为true
+            if (!wasReady && Ready)
+            {
+                justReady = true;
+            }
+        }
 
         public void ChangeDuration(float duration)
         {

@@ -2,6 +2,7 @@ using Cinemachine;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Level;
+using TPL.PVZR.CommandEvents.Level_Gameplay.Waves;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Models;
@@ -46,7 +47,11 @@ namespace TPL.PVZR.Systems
                                 SceneManager.LoadScene("LevelScene");
                                 ActionKit.Sequence()
                                     .DelayFrame(1) // 等待场景加载
-                                    .Callback(() => { LevelData.LevelDefinition.LevelPrefab.Instantiate(); })
+                                    .Callback(() =>
+                                    {
+                                        var levelSet = LevelData.LevelPrefab.Instantiate();
+                                        // TODO 地图生成算法
+                                    })
                                     .DelayFrame(1) // 等待LevelPrefab加载
                                     .Callback(() =>
                                     {
@@ -57,7 +62,7 @@ namespace TPL.PVZR.Systems
                                             Dave_prefab.Dave);
                                         //
                                         var VirtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
-                                        var Player = DavePrefab.Instantiate(LevelData.LevelDefinition.InitialPlayerPos,
+                                        var Player = DavePrefab.Instantiate(LevelData.InitialPlayerPos,
                                             Quaternion.identity);
                                         VirtualCamera.Follow = Player.transform;
                                     }) // 以下测试用，记得删除
@@ -111,6 +116,15 @@ namespace TPL.PVZR.Systems
                                         _PhaseModel.DelayChangePhase(GamePhase.Gameplay);
                                     })
                                     .Start(GameManager.Instance);
+                                break;
+                        }
+
+                        break;
+                    case GamePhase.Gameplay:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.EnterLate:
+                                this.SendEvent<OnWaveStart>(new OnWaveStart { Wave = 10 });
                                 break;
                         }
 

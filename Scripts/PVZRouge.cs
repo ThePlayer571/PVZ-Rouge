@@ -21,6 +21,7 @@ namespace TPL.PVZR
             this.RegisterSystem<IHandSystem>(new HandSystem());
             this.RegisterSystem<ISeedSystem>(new SeedSystem());
             this.RegisterSystem<IZombieAISystem>(new ZombieAISystem());
+            this.RegisterSystem<IZombieSpawnSystem>(new ZombieSpawnSystem());
 
             // ===== Others =====
             this.RegisterModel<IPhaseModel>(new PhaseModel());
