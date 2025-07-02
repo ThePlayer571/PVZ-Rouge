@@ -318,5 +318,20 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         public readonly List<ZombieArmorData> ZombieArmorList = new List<ZombieArmorData>();
 
         #endregion
+
+        #region SortingLayer(Temp)
+
+        //TODO 这是僵尸SortingLayer的临时解决方案，等其他模块有类似需求再改为统一的
+
+        private static int sortingLayer { get; set; } = 0;
+
+        public static int AllocateSortingLayer()
+        {
+            sortingLayer += 10;
+            if (sortingLayer > 30000) sortingLayer = 0;
+            return sortingLayer;
+        }
+
+        #endregion
     }
 }

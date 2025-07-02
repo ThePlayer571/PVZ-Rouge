@@ -7,7 +7,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
 {
     public class ZombieComponentView : MonoBehaviour
     {
-        [SerializeField] protected SpriteRenderer SpriteRenderer;
+        [SerializeField] public SpriteRenderer SpriteRenderer;
         [SerializeField] protected Rigidbody2D Rigidbody2D;
         [SerializeField] protected Collider2D Collider2D;
 

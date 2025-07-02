@@ -5,6 +5,7 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses.Game.Interfaces;
 using TPL.PVZR.Classes.ZombieSpawner;
 using UnityEngine;
+using UnityEngineInternal;
 
 namespace TPL.PVZR.Classes.DataClasses.Level
 {
@@ -56,6 +57,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             {
                 case DifficultyGrowthType.Linear:
                     return BaseValue * (0.7f + wave * 0.3f);
+                case DifficultyGrowthType.Quadratic:
+                    return BaseValue * (0.04f * Mathf.Pow(wave, 2f) + 0.1f * wave + 0.86f);
             }
 
             throw new NotImplementedException();
@@ -70,6 +73,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         public float DurationOfWave(int wave)
         {
+            if (wave == TotalWaveCount) return Mathf.Infinity;
+            
             float offset = 0;
             if (HugeWaves.Contains(wave)) offset += HugeWaveDurationOffset;
 
@@ -105,6 +110,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
                 );
                 result.Add(info);
             }
+
             return result;
         }
 
@@ -135,7 +141,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
             this.WaveDurations = levelDefinition.WaveDurations;
             this.HugeWaveDurationOffset = levelDefinition.HugeWaveDurationOffset;
-            
+
             this.PosDef = levelDefinition.PosDef;
             this.ZombieSpawnConfigs = levelDefinition.ZombieSpawnConfigs;
         }

@@ -37,7 +37,7 @@ namespace TPL.PVZR.Systems
                     }
 
                     var info = task.GetRandomZombieSpawnInfo();
-                    Spawn(info);
+                    if (info != null) Spawn(info);
                 }
             }
         }
@@ -57,7 +57,7 @@ namespace TPL.PVZR.Systems
         protected override void OnInit()
         {
             _LevelModel = this.GetModel<ILevelModel>();
-            
+
             ActiveTasks = new List<ZombieSpawnTask>();
             SpawnTimer = new Timer(0.5f);
 

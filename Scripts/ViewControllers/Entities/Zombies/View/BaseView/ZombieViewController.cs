@@ -35,6 +35,17 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
                     .RegisterWithInitValue(direction => { Zombie.transform.LocalScaleX(direction.ToInt()); })
                     .UnRegisterWhenGameObjectDestroyed(this);
 
+                // SortingLayer
+                var baseOrder = Zombie.AllocateSortingLayer();
+                foreach (var zombieComponentView in zombieComponentViews)
+                {
+                    zombieComponentView.SpriteRenderer.sortingOrder += baseOrder;
+                }
+                foreach (var zombieArmorView in zombieArmorViews.Where(z => z != null))
+                {
+                    zombieArmorView.SpriteRenderer.sortingOrder += baseOrder;
+                }
+                
                 // 死亡动画
                 Zombie.OnDieFrom.Register(attackData =>
                 {

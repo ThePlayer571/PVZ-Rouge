@@ -22,6 +22,7 @@ namespace TPL.PVZR
             this.RegisterSystem<ISeedSystem>(new SeedSystem());
             this.RegisterSystem<IZombieAISystem>(new ZombieAISystem());
             this.RegisterSystem<IZombieSpawnSystem>(new ZombieSpawnSystem());
+            this.RegisterSystem<IWaveSystem>(new WaveSystem());
 
             // ===== Others =====
             this.RegisterModel<IPhaseModel>(new PhaseModel());
