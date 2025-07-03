@@ -4,6 +4,7 @@ using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Game.Interfaces;
 using TPL.PVZR.Classes.ZombieSpawner;
+using TPL.PVZR.Tools.Random;
 using UnityEngine;
 using UnityEngineInternal;
 
@@ -33,6 +34,16 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public Vector2Int MapSize { get; }
         public Vector2 InitialPlayerPos { get; }
         public GameObject LevelPrefab { get; }
+
+        private List<SerializableKeyValuePair<Vector2Int, Vector2Int>> SunFallPositions { get; }
+
+        public Vector2Int GetRandomSunFallCellPos()
+        {
+            var region = RandomHelper.Default.RandomChoose(SunFallPositions);
+            var x = RandomHelper.Default.Range(region.Key.x, region.Value.x + 1);
+            var y = RandomHelper.Default.Range(region.Key.y, region.Value.y + 1);
+            return new Vector2Int(x, y);
+        }
 
         #endregion
 
@@ -74,7 +85,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public float DurationOfWave(int wave)
         {
             if (wave == TotalWaveCount) return Mathf.Infinity;
-            
+
             float offset = 0;
             if (HugeWaves.Contains(wave)) offset += HugeWaveDurationOffset;
 
@@ -131,6 +142,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             this.MapSize = levelDefinition.MapSize;
             this.InitialPlayerPos = levelDefinition.InitialPlayerPos;
             this.LevelPrefab = levelDefinition.LevelPrefab;
+            this.SunFallPositions = levelDefinition.SunFallPositions;
 
             this.TotalWaveCount = levelDefinition.TotalWaveCount;
             this.HugeWaves = levelDefinition.HugeWaves;

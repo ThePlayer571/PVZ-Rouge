@@ -35,12 +35,41 @@ namespace TPL.PVZR.Helpers
 
             private static GameObject _sunPrefab;
 
-            public static Sun SpawnSunWithJump(Vector2 position)
+            public static Sun SpawnSunWithJump(Vector2 position, bool autoCollect = true)
             {
                 var go = _sunPrefab.Instantiate(position, Quaternion.identity).GetComponent<Sun>();
                 Vector3 endPos = new Vector3(position.x + (RandomHelper.Default.Range(-0.5f, 0.5f)),
                     position.y + (RandomHelper.Default.Range(0f, 0.2f)), 0);
                 go.transform.DOJump(endPos, TestDataManager.Instance.Power, 1, 0.5f);
+
+                if (autoCollect)
+                {
+                    ActionKit.Delay(2f, () => { go.TryCollect(); }).Start(go);
+                }
+
+                return go;
+            }
+
+            public static Sun SpawnSunWithFall(Vector2 targetPosition, bool autoCollect = true)
+            {
+                const float topOffset = 1f;
+                // 从屏幕顶端之上开始
+                var topY = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane)).y;
+                var startPosition = new Vector3(targetPosition.x, topY + topOffset, 0);
+
+                var go = _sunPrefab.Instantiate(startPosition, Quaternion.identity).GetComponent<Sun>();
+
+                // 匀速缓慢掉落到目标位置
+                var distance = topY - targetPosition.y;
+                var duration = distance / TestDataManager.Instance.FallSpeed;
+
+                go.transform.DOMove(targetPosition, duration).SetEase(Ease.OutQuint);
+
+                if (autoCollect)
+                {
+                    ActionKit.Delay(duration + 2f, () => { go.TryCollect(); }).Start(go);
+                }
+
                 return go;
             }
         }
@@ -85,7 +114,8 @@ namespace TPL.PVZR.Helpers
                 _zombieDict = new Dictionary<ZombieId, GameObject>
                 {
                     [ZombieId.NormalZombie] = _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.NormalZombie),
-                    [ZombieId.ConeheadZombie] = _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.ConeheadZombie),
+                    [ZombieId.ConeheadZombie] =
+                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.ConeheadZombie),
                 };
             }
 

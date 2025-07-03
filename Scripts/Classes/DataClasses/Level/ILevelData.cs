@@ -19,6 +19,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         Vector2Int MapSize { get; }
         Vector2 InitialPlayerPos { get; }
         GameObject LevelPrefab { get; }
+        Vector2Int GetRandomSunFallCellPos();
 
         #endregion
 

@@ -19,6 +19,10 @@ namespace TPL.PVZR.Helpers.ClassCreator
             testInventoryData.Cards = new List<CardData>()
             {
                 CardHelper.CreateCardData(PlantId.Flowerpot),
+                CardHelper.CreateCardData(PlantId.Flowerpot),
+                CardHelper.CreateCardData(PlantId.Flowerpot),
+                CardHelper.CreateCardData(PlantId.Flowerpot),
+                CardHelper.CreateCardData(PlantId.Flowerpot),
                 CardHelper.CreateCardData(PlantId.Sunflower),
                 CardHelper.CreateCardData(PlantId.PeaShooter),
                 CardHelper.CreateCardData(PlantId.PeaShooter),

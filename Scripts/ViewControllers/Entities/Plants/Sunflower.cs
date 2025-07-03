@@ -17,6 +17,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             this.HealthPoint = GlobalEntityData.Plant_Default_Health;
 
             _sunTimer = new Timer(GlobalEntityData.Plant_Sunflower_SpawnSunInterval);
+            _sunTimer.SetRemaining(GlobalEntityData.Plant_Sunflower_InitialSpawnSunInterval);
         }
 
         protected override void Update()

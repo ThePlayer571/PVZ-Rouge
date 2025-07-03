@@ -61,6 +61,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public Vector2 InitialPlayerPos;
         public GameObject LevelPrefab;
         public MapGenerationAlgorithmId MapGenerationAlgorithmId = MapGenerationAlgorithmId.None;
+        public List<SerializableKeyValuePair<Vector2Int, Vector2Int>> SunFallPositions;
 
         [Header("Difficulty")] public float BaseValue; // 第一波的强度
         public DifficultyGrowthType DifficultyGrowthType;

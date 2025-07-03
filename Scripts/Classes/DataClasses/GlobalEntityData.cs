@@ -6,6 +6,7 @@ namespace TPL.PVZR.Classes.DataClasses
         public float Plant_Peashooter_ShootInterval = 1.5f;
         public float Plant_Peashooter_ShootDistance = 20f;
         public float Plant_Sunflower_SpawnSunInterval = 24f;
+        public float Plant_Sunflower_InitialSpawnSunInterval = 5f;
         public float Plant_Wallnut_Health = 4000f;
         
         public float Projectile_Pea_Speed = 10f;

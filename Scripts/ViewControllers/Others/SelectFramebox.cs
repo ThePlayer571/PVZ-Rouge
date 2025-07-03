@@ -44,7 +44,10 @@ namespace TPL.PVZR.ViewControllers.Others
                 {
                     var handCellPos = HandHelper.HandCellPos();
                     if (!HandHelper.DaveCanReachHand()) return false;
-                    if (!_LevelGridModel.IsValidPos(handCellPos)) return false;
+                    if (!_LevelGridModel.IsValidPos(handCellPos))
+                    {
+                        return false;
+                    }
                     var plantId = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.Id;
                     return _LevelGridModel.CanSpawnPlantOn(handCellPos, plantId);
                 }

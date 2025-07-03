@@ -151,7 +151,6 @@ namespace TPL.PVZR.Classes.MazeMap.Public.DaveHouse
             {
                 var level = MazeMapDefinition.levelCount;
                 var row = level * 2;
-                var levelCount = 1;
                 List<int> keyNodes = new List<int>();
                 var col = RandomHelper.MazeMap.RandomChoose(Enumerable.Range(0, MazeMapDefinition.colCount));
                 var node = mazeMatrix[row, col];

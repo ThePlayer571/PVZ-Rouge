@@ -124,7 +124,7 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterLate:
-                                this.SendEvent<OnWaveStart>(new OnWaveStart { Wave = 10 });
+                                // this.SendEvent<OnWaveStart>(new OnWaveStart { Wave = 10 });
                                 break;
                         }
 

@@ -3,12 +3,14 @@ using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.Methods;
+using TPL.PVZR.Models;
+using TPL.PVZR.Tools;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace TPL.PVZR.ViewControllers.Managers
 {
-    public class GameManager : MonoSingleton<GameManager>
+    public class GameManager : MonoSingleton<GameManager>, ICanGetModel
     {
         private void OnGUI()
         {
@@ -31,6 +33,19 @@ namespace TPL.PVZR.ViewControllers.Managers
             {
                 var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(32, 9));
                 EntityFactory.ZombieFactory.SpawnZombie(ZombieId.ConeheadZombie, pos);
+            }
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 210, 120, 40), "戴夫位置生成阳光"))
+            {
+                var pos = ReferenceHelper.Player.transform.position;
+                EntityFactory.SunFactory.SpawnSunWithFall(pos);
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                var LevelGridModel = this.GetModel<ILevelGridModel>();
+                var handPos = HandHelper.HandCellPos();
+                var handCell = LevelGridModel.GetCell(handPos);
+                $"手所在的Cell信息：pos: {handPos}, TileState: {handCell.CellTileState}, PlantState: {handCell.CellPlantState}".LogInfo();
             }
         }
 
@@ -71,6 +86,11 @@ namespace TPL.PVZR.ViewControllers.Managers
         private static void UpdateUIState()
         {
             IsPointerOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+        }
+
+        public IArchitecture GetArchitecture()
+        {
+            return PVZRouge.Interface;
         }
     }
 }
