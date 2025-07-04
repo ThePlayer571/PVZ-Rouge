@@ -21,10 +21,14 @@ namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
 
         protected override void OnExecute()
         {
-            // 异常处理
             var PhaseModel = this.GetModel<IPhaseModel>();
+            var GameModel = this.GetModel<IGameModel>();
+            
+            // 异常处理
             if (PhaseModel.GamePhase != GamePhase.ChooseSeeds)
                 throw new System.Exception($"在不正确的阶段执行ChooseSeedCommand：{PhaseModel.GamePhase}");
+            if (ReferenceHelper.ChooseSeedPanel.chosenSeedOptions.Count >=
+                GameModel.GameData.InventoryData.SeedSlotCount) return;
             if (seed.IsSelected == true) throw new Exception("尝试选择一个已经被选择的种子");
 
             // 数据操作

@@ -25,6 +25,7 @@
 | TileDirt          | MidGround     | 101                  |
 | TileGround        | MidGround     | 100                  |
 | TileBackGround    | BackGround    | 100                  |
+| BackGround        | BackGround    | 50~59                |
 | TileBound         | NotClassified | 0                    |
 |                   |               |                      |
 |                   |               |                      |

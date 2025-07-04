@@ -29,7 +29,12 @@ namespace TPL.PVZR.Systems
         private void UpdatePlayerCluster()
         {
             var playerCellPos = ReferenceHelper.Player.CellPos;
-            var playerCurrentVertex = ZombieAIUnit.GetVertexSafely(playerCellPos);
+            Vertex playerCurrentVertex = ZombieAIUnit.GetVertexSafely(playerCellPos);
+            while (playerCurrentVertex == null && playerCellPos.y >= 0)
+            {
+                playerCellPos.y--;
+                playerCurrentVertex = ZombieAIUnit.GetVertexSafely(playerCellPos);
+            }
 
             // 初始化设置
             if (_playerVertexOnLastFrame == null)
@@ -40,7 +45,6 @@ namespace TPL.PVZR.Systems
             else
             {
                 // 重新寻路
-
                 var playerLastCluster = ZombieAIUnit.GetClusterSafely(_playerVertexOnLastFrame.Position);
 
                 var playerCurrentCluster = ZombieAIUnit.GetClusterSafely(playerCellPos);

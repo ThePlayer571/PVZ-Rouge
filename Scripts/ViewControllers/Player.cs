@@ -43,29 +43,36 @@ namespace TPL.PVZR.ViewControllers
 
         private bool _hasTwiceJumped = false; // 已经进行二段跳
 
-        private void Jump()
+        private bool IsOnGround
         {
-            var start = new Vector2(this.transform.position.x, _Collider.bounds.min.y);
-            var size = new Vector2(0.5f, 0.02f);
-            bool OnGround = Physics2D.OverlapBox(start, size, 0, LayerMask.GetMask("Barrier"));
-
-            if (!OnGround)
+            get
             {
-                // 检查Plant层是否有Flowerpot
-                var colliders = Physics2D.OverlapBoxAll(start, size, 0, LayerMask.GetMask("Plant"));
-                foreach (var col in colliders)
+                var start = new Vector2(this.transform.position.x, _Collider.bounds.min.y);
+                var size = new Vector2(0.5f, 0.02f);
+                bool OnGround = Physics2D.OverlapBox(start, size, 0, LayerMask.GetMask("Barrier"));
+
+                if (!OnGround)
                 {
-                    if (col.GetComponent<Flowerpot>() != null)
+                    // 检查Plant层是否有Flowerpot
+                    var colliders = Physics2D.OverlapBoxAll(start, size, 0, LayerMask.GetMask("Plant"));
+                    foreach (var col in colliders)
                     {
-                        OnGround = true;
-                        break;
+                        if (col.GetComponent<Flowerpot>() != null)
+                        {
+                            OnGround = true;
+                            break;
+                        }
                     }
                 }
-            }
 
-            if (OnGround)
+                return OnGround;
+            }
+        }
+
+        private void Jump()
+        {
+            if (IsOnGround)
             {
-                _hasTwiceJumped = false;
                 _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x, jumpForce);
             }
             else if (!_hasTwiceJumped)
@@ -76,6 +83,14 @@ namespace TPL.PVZR.ViewControllers
             else // 已经二段跳，不能跳了
             {
                 // do nothing
+            }
+        }
+
+        private void Update()
+        {
+            if (_hasTwiceJumped && IsOnGround)
+            {
+                _hasTwiceJumped = false;
             }
         }
 

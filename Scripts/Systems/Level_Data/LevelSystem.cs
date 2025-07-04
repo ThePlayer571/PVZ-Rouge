@@ -2,6 +2,7 @@ using Cinemachine;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Level;
+using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.CommandEvents.Level_Gameplay.Waves;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.ClassCreator;
@@ -65,7 +66,11 @@ namespace TPL.PVZR.Systems
                                         var Player = DavePrefab.Instantiate(LevelData.InitialPlayerPos,
                                             Quaternion.identity);
                                         VirtualCamera.Follow = Player.transform;
-                                    }) // 以下测试用，记得删除
+                                        VirtualCamera.PreviousStateIsValid = false;
+                                    })
+                                    .DelayFrame(1)
+                                    .Callback(() => { this.SendEvent<OnLevelGameObjectPrepared>(); })
+                                    // 以下测试用，记得删除
                                     .DelayFrame(2)
                                     .Callback(() => { _PhaseModel.DelayChangePhase(GamePhase.LevelInitialization); })
                                     .Delay(0.1f)

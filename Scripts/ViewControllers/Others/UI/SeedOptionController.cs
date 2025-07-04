@@ -1,7 +1,10 @@
+using System;
 using QFramework;
 using TMPro;
 using TPL.PVZR.Classes.DataClasses.Card;
 using TPL.PVZR.CommandEvents.Level_ChooseSeeds;
+using TPL.PVZR.Models;
+using TPL.PVZR.Tools;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -10,10 +13,13 @@ namespace TPL.PVZR.ViewControllers.Others
 {
     public class SeedOptionController : MonoBehaviour, IController, IPointerClickHandler
     {
-        public bool IsSelected = false;
         [SerializeField] public Transform View;
         [SerializeField] private Image PlantImage;
         [SerializeField] private TextMeshProUGUI SunpointCostText;
+        public IGameModel _GameModel;
+        
+        public bool IsSelected = false;
+        public CardData CardData;
 
         public void Initialize(CardData cardData)
         {
@@ -23,7 +29,11 @@ namespace TPL.PVZR.ViewControllers.Others
         }
         
         
-        public CardData CardData;
+
+        private void Awake()
+        {
+            this._GameModel = this.GetModel<IGameModel>();
+        }
 
         public IArchitecture GetArchitecture()
         {
@@ -34,6 +44,8 @@ namespace TPL.PVZR.ViewControllers.Others
         {
             if (!IsSelected)
             {
+                if (ReferenceHelper.ChooseSeedPanel.chosenSeedOptions.Count >=
+                    _GameModel.GameData.InventoryData.SeedSlotCount) return;
                 this.SendCommand<ChooseSeedCommand>(new ChooseSeedCommand(this));
             }
             else
