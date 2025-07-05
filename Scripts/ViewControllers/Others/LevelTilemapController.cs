@@ -10,6 +10,7 @@ namespace TPL.PVZR.ViewControllers.Others
         [SerializeField] public Tilemap BackGround;
         [SerializeField] public Tilemap Ground;
         [SerializeField] public Tilemap Dirt;
+        [SerializeField] public Tilemap Ladder;
         [SerializeField] public Tilemap Bound;
         [SerializeField] public Tilemap Debug;
 

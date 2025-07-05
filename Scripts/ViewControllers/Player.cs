@@ -25,6 +25,10 @@ namespace TPL.PVZR.ViewControllers
         [SerializeField] private float speed;
         [SerializeField] private float jumpForce;
         [SerializeField] private float k;
+        [SerializeField] private float climbSpeed;
+
+        [SerializeField] private CollisionDetector JumpDetector;
+        [SerializeField] private CollisionDetector LadderDetector;
 
         private void FixedUpdate()
         {
@@ -43,35 +47,9 @@ namespace TPL.PVZR.ViewControllers
 
         private bool _hasTwiceJumped = false; // 已经进行二段跳
 
-        private bool IsOnGround
-        {
-            get
-            {
-                var start = new Vector2(this.transform.position.x, _Collider.bounds.min.y);
-                var size = new Vector2(0.5f, 0.02f);
-                bool OnGround = Physics2D.OverlapBox(start, size, 0, LayerMask.GetMask("Barrier"));
-
-                if (!OnGround)
-                {
-                    // 检查Plant层是否有Flowerpot
-                    var colliders = Physics2D.OverlapBoxAll(start, size, 0, LayerMask.GetMask("Plant"));
-                    foreach (var col in colliders)
-                    {
-                        if (col.GetComponent<Flowerpot>() != null)
-                        {
-                            OnGround = true;
-                            break;
-                        }
-                    }
-                }
-
-                return OnGround;
-            }
-        }
-
         private void Jump()
         {
-            if (IsOnGround)
+            if (JumpDetector.HasTarget)
             {
                 _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x, jumpForce);
             }
@@ -86,11 +64,21 @@ namespace TPL.PVZR.ViewControllers
             }
         }
 
+        private void ClimbLadder()
+        {
+            _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x, climbSpeed);
+        }
+
         private void Update()
         {
-            if (_hasTwiceJumped && IsOnGround)
+            if (_hasTwiceJumped && JumpDetector.HasTarget)
             {
                 _hasTwiceJumped = false;
+            }
+
+            if (_inputActions.Level.Movement.ReadValue<Vector2>().y == 1 && LadderDetector.HasTarget)
+            {
+                ClimbLadder();
             }
         }
 
@@ -99,6 +87,15 @@ namespace TPL.PVZR.ViewControllers
             _Rigidbody2D = this.GetComponent<Rigidbody2D>();
             _Collider = this.GetComponent<Collider2D>();
 
+            JumpDetector.TargetPredicate = (collider2D) =>
+            {
+                if (collider2D.IsInLayerMask(LayerMask.GetMask("Barrier"))) return true;
+                if (collider2D.IsInLayerMask(LayerMask.GetMask("Plant")) &&
+                    collider2D.GetComponent<Flowerpot>() != null) return true;
+                return false;
+            };
+
+
             _inputActions = new PlayerInputControl();
             _inputActions.Level.Enable();
 
@@ -106,6 +103,9 @@ namespace TPL.PVZR.ViewControllers
 
             ReferenceHelper.Player = this;
         }
+
+
+        #region 接口
 
         public IArchitecture GetArchitecture()
         {
@@ -134,5 +134,7 @@ namespace TPL.PVZR.ViewControllers
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }
