@@ -25,6 +25,7 @@ namespace TPL.PVZR.Helpers.Methods
                     if (LevelTileMap.Bound.HasTile(pos)) cell.CellTileState = CellTileState.Bound;
                     else if (LevelTileMap.Ground.HasTile(pos)) cell.CellTileState = CellTileState.Barrier;
                     else if (LevelTileMap.Dirt.HasTile(pos)) cell.CellTileState = CellTileState.Dirt;
+                    else if (LevelTileMap.Ladder.HasTile(pos)) cell.CellTileState = CellTileState.Ladder;
                     else cell.CellTileState = CellTileState.Empty;
                 }
             }
@@ -38,6 +39,7 @@ namespace TPL.PVZR.Helpers.Methods
             var resLoader = ResLoader.Allocate();
             var dirt = resLoader.LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugDirt);
             var barrier = resLoader.LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugBarrier);
+            var climbable = resLoader.LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugLadder);
             for (int x = 0; x < LevelMatrix.Rows; x++)
             {
                 for (int y = 0; y < LevelMatrix.Columns; y++)
@@ -46,6 +48,8 @@ namespace TPL.PVZR.Helpers.Methods
                         DebugTilemap.SetTile(new Vector3Int(x, y, 0), dirt);
                     else if (LevelMatrix[x, y].CellTileState == CellTileState.Barrier)
                         DebugTilemap.SetTile(new Vector3Int(x, y, 0), barrier);
+                    else if (LevelMatrix[x, y].CellTileState == CellTileState.Ladder)
+                        DebugTilemap.SetTile(new Vector3Int(x, y, 0), climbable);
                 }
             }
         }

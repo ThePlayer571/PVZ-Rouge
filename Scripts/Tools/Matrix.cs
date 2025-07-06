@@ -135,7 +135,7 @@ namespace TPL.PVZR.Tools
         /// <param name="row">中心行索引</param>
         /// <param name="column">中心列索引</param>
         /// <returns>可枚举的邻居元素集合</returns>
-        public IEnumerable<T> GetNeighbors(int row, int column)
+        public IEnumerable<T> GetNeighbors(int row, int column, bool includeSelf = true)
         {
             ValidateIndex(row, column);
 
@@ -152,6 +152,42 @@ namespace TPL.PVZR.Tools
                     int neighborCol = column + jOffset;
                     if (neighborCol < 0 || neighborCol >= Columns) continue;
 
+                    // 如果不包含自身，跳过中心点
+                    if (!includeSelf && iOffset == 0 && jOffset == 0) continue;
+
+                    yield return _data[neighborRow, neighborCol];
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取指定位置直接相邻的四格（上下左右）
+        /// </summary>
+        /// <param name="row">中心行索引</param>
+        /// <param name="column">中心列索引</param>
+        /// <param name="includeSelf">是否包含自身</param>
+        /// <returns>可枚举的直接邻居元素集合</returns>
+        public IEnumerable<T> GetDirectNeighbors(int row, int column, bool includeSelf = true)
+        {
+            ValidateIndex(row, column);
+
+            // 四个方向的偏移量：上、下、左、右
+            int[,] directions = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+            // 如果包含自身，先返回中心点
+            if (includeSelf)
+            {
+                yield return _data[row, column];
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                int neighborRow = row + directions[i, 0];
+                int neighborCol = column + directions[i, 1];
+
+                if (neighborRow >= 0 && neighborRow < Rows && 
+                    neighborCol >= 0 && neighborCol < Columns)
+                {
                     yield return _data[neighborRow, neighborCol];
                 }
             }

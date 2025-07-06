@@ -100,8 +100,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         // Designer
         [SerializeField] public ZombieAttackAreaController AttackArea;
         [SerializeField] public Transform JumpDetectionPoint;
+        [SerializeField] public CollisionDetector ClimbDetector;
         [SerializeField] public Transform MassCenter;
+        [SerializeField] public Transform CorePos;
         public IZombieAISystem _ZombieAISystem;
+
+        public override Vector2 CoreWorldPos => CorePos.position;
 
         // 基础属性
         public abstract ZombieId Id { get; }
@@ -228,23 +232,40 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             CurrentMoveData = CachePath.NextTarget();
         }
 
+        public void MoveForward()
+        {
+            // TODO 
+        }
+
+        public void ClimbLadder()
+        {
+            if (ClimbDetector.HasTarget)
+            {
+                _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x,
+                    GlobalEntityData.Zombie_Default_ClimbSpeed);
+            }
+        }
+
+        public void HoldOnLadder()
+        {
+            if (ClimbDetector.HasTarget)
+            {
+                _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x, 0);
+            }
+        }
+
         public virtual void MoveTowards(MoveData moveData)
         {
             switch (moveData.moveType)
             {
                 case MoveType.WalkJump:
                 {
-                    Vector2 targetPos;
-                    switch (moveData.moveStage)
+                    Vector2 targetPos = moveData.moveStage switch
                     {
-                        case MoveStage.FollowVertex:
-                            targetPos = moveData.targetWorldPos;
-                            break;
-                        case MoveStage.FindDave:
-                            targetPos = ReferenceHelper.Player.transform.position;
-                            break;
-                        default: throw new NotImplementedException();
-                    }
+                        MoveStage.FollowVertex => moveData.targetWorldPos,
+                        MoveStage.FindDave => ReferenceHelper.Player.transform.position,
+                        _ => throw new NotImplementedException()
+                    };
 
                     var hit = Physics2D.Raycast(JumpDetectionPoint.position, Direction.Value.ToVector2(), 0.5f,
                         LayerMask.GetMask("Barrier"));
@@ -284,7 +305,65 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     _Rigidbody2D.AddForce(Direction.Value.ToVector2() * this.GetSpeed());
                     break;
                 }
+                case MoveType.ClimbLadder:
+                {
+                    Vector2 targetPos = moveData.moveStage switch
+                    {
+                        MoveStage.FollowVertex => moveData.targetWorldPos,
+                        MoveStage.FindDave => ReferenceHelper.Player.transform.position,
+                        _ => throw new NotImplementedException()
+                    };
+                    float distanceX = Mathf.Abs(transform.position.x - targetPos.x);
+                    float distanceY = Mathf.Abs(transform.position.y - targetPos.y);
+                    if (distanceX > Global.Zombie_Default_PathFindStopMinDistance)
+                    {
+                        this.Direction.Value = (transform.position.x > targetPos.x)
+                            ? Direction2.Left
+                            : Direction2.Right;
+                        _Rigidbody2D.AddForce(Direction.Value.ToVector2() * this.GetSpeed());
+                    }
 
+                    if (distanceY > Global.Zombie_Default_PathFindStopMinDistance)
+                    {
+                        bool toUp = transform.position.y < targetPos.y;
+                        if (toUp)
+                        {
+                            ClimbLadder();
+                        }
+                    }
+
+                    break;
+                }
+                case MoveType.ClimbWalkJump:
+                {
+                    Vector2 targetPos = moveData.moveStage switch
+                    {
+                        MoveStage.FollowVertex => moveData.targetWorldPos,
+                        // MoveStage.FindDave => ReferenceHelper.Player.transform.position, // 禁用
+                        _ => throw new NotImplementedException()
+                    };
+
+                    float distanceX = Mathf.Abs(transform.position.x - targetPos.x);
+                    float distanceY = Mathf.Abs(transform.position.y - targetPos.y);
+                    if (distanceX > Global.Zombie_Default_PathFindStopMinDistance)
+                    {
+                        this.Direction.Value = (transform.position.x > targetPos.x)
+                            ? Direction2.Left
+                            : Direction2.Right;
+                        _Rigidbody2D.AddForce(Direction.Value.ToVector2() * this.GetSpeed());
+                    }
+
+                    if (distanceY > Global.Zombie_Default_PathFindStopMinDistance)
+                    {
+                        bool toUp = transform.position.y < targetPos.y;
+                        if (toUp && ClimbDetector.HasTarget)
+                        {
+                            ClimbLadder();
+                        }
+                    }
+
+                    break;
+                }
                 default: return;
             }
         }

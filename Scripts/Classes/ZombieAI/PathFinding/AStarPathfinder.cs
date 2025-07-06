@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using QFramework;
 using TPL.PVZR.Classes.ZombieAI.Class;
 using TPL.PVZR.Classes.ZombieAI.Public;
 using TPL.PVZR.Tools.PriorityQueue;
@@ -129,7 +130,15 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                             neighborNode.fromEdge = edge;
                             neighborNode.parent = current;
                             neighborNode.gCost = tentativeGCost;
-                            frontier.UpdatePriority(neighborNode, neighborNode.fCost);
+                            try
+                            {
+                                frontier.UpdatePriority(neighborNode, neighborNode.fCost);
+                            }
+                            catch
+                            {
+                                $"未处理的错误：neighborNode: {neighborNode.vertex.Position}\n未处理的原因：无法找到稳定复现的方法, 错误信息指向问题的根源是DaveLawn(18,9)的neighborNode不在优先队列里"
+                                    .LogWarning();
+                            }
                         }
                     }
                     else

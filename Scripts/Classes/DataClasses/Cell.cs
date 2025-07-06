@@ -24,6 +24,8 @@ namespace TPL.PVZR.Classes.DataClasses
             CellTileState is CellTileState.Barrier or CellTileState.Barrier or CellTileState.Dirt ||
             (CellPlantState is CellPlantState.HavePlant && Plant.Id is PlantId.Flowerpot);
 
+        public bool IsClimbable => // 可以攀爬的平台
+            CellTileState is CellTileState.Ladder;
 
         public Cell(int x, int y)
         {

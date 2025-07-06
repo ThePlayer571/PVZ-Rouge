@@ -7,7 +7,8 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
         Fall,
         Water,
         HumanLadder,
-        ClimbLadder
+        ClimbLadder,
+        ClimbWalkJump,
     }
 
     public enum MoveStage

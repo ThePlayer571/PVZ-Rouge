@@ -29,6 +29,8 @@ namespace TPL.PVZR.Models
 
     public class LevelGridModel : AbstractModel, ILevelGridModel
     {
+        #region 实用方法
+
         public bool IsValidPos(Vector2Int pos)
         {
             if (pos.x < 0 || pos.y < 0) return false;
@@ -54,7 +56,7 @@ namespace TPL.PVZR.Models
                 var cell = LevelMatrix[pos.x, pos.y];
                 var belowCell = LevelMatrix[pos.x, pos.y - 1];
                 if (cell == null) throw new Exception($"调用CanSpawnPlantOn时，cell为null，pos: {pos}");
-                if (belowCell == null) throw new Exception($"调用CanSpawnPlantOn时，belowCell为null，pos: {pos}.Down");       
+                if (belowCell == null) throw new Exception($"调用CanSpawnPlantOn时，belowCell为null，pos: {pos}.Down");
                 return cell.IsEmpty && belowCell.IsDirtPlat;
             }
 
@@ -72,9 +74,12 @@ namespace TPL.PVZR.Models
             return LevelMatrix[cellPos.x, cellPos.y];
         }
 
+        #endregion
+
         public void Initialize(ILevelData levelData)
         {
             this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(ReferenceHelper.LevelTilemap, levelData);
+            // LevelMatrixHelper.SetDebugTiles(LevelMatrix, ReferenceHelper.LevelTilemap.Debug);
         }
 
         protected override void OnInit()

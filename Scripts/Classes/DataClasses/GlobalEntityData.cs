@@ -12,6 +12,7 @@ namespace TPL.PVZR.Classes.DataClasses
         public float Projectile_Pea_Speed = 10f;
 
         public float Zombie_Default_Health = 181f;
+        public float Zombie_Default_ClimbSpeed = 1.5f;
 
         // 性能相关，本来不该放到这里的
     }

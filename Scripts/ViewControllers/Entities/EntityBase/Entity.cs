@@ -110,6 +110,7 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
             return PVZRouge.Interface;
         }
 
+        public virtual Vector2 CoreWorldPos => transform.position;
         public Vector2Int CellPos => LevelGridHelper.WorldToCell(this.transform.position);
     }
 }

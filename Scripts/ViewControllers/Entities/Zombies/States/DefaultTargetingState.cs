@@ -42,6 +42,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
                 if (mTarget.CellPos == mTarget.CurrentMoveData.target)
                 {
                     mTarget.CurrentMoveData = mTarget.CachePath.NextTarget();
+                    $"新的目标点: {mTarget.CurrentMoveData.target}, {mTarget.CurrentMoveData.moveType}, {mTarget.CurrentMoveData.moveStage}"
+                        .LogInfo();
                 }
             }
 

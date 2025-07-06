@@ -38,7 +38,14 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
                 }
             }
 
-            moveQueue.Enqueue(new MoveData(path.keyEdges.Last().moveType, Vector2Int.zero, MoveStage.FindDave));
+            // FindDave仅支持WalkJump和ClimbLadder
+            var moveType = path.keyEdges.Last().moveType switch
+            {
+                MoveType.ClimbLadder => MoveType.ClimbLadder,
+                _ => MoveType.WalkJump
+            };
+
+            moveQueue.Enqueue(new MoveData(moveType, Vector2Int.zero, MoveStage.FindDave));
         }
     }
 }

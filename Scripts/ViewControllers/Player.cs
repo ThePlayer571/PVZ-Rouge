@@ -39,6 +39,11 @@ namespace TPL.PVZR.ViewControllers
                 _Rigidbody2D.AddForce(new Vector2(speed * movement.x, 0));
             }
 
+            if (movement.y > 0 && LadderDetector.HasTarget)
+            {
+                ClimbLadder();
+            }
+
             // dragForce
             var dragForce = new Vector2(-k * _Rigidbody2D.velocity.x, 0);
             _Rigidbody2D.AddForce(dragForce);
@@ -74,11 +79,6 @@ namespace TPL.PVZR.ViewControllers
             if (_hasTwiceJumped && JumpDetector.HasTarget)
             {
                 _hasTwiceJumped = false;
-            }
-
-            if (_inputActions.Level.Movement.ReadValue<Vector2>().y == 1 && LadderDetector.HasTarget)
-            {
-                ClimbLadder();
             }
         }
 

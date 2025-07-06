@@ -13,7 +13,10 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
         #region 字段与属性
 
         public List<Edge> includeEdges { get; private set; } = new();
+
         public MoveType moveType { get; private set; }
+
+
         public AllowedPassHeight allowedPassHeight { get; private set; }
         public Vertex From => includeEdges.First().From;
         public Vertex To => includeEdges.Last().To;
@@ -65,7 +68,9 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
         public KeyEdge AddEdge(Edge edge)
         {
             // moveType
-            if (this.moveType != MoveType.NotSet && this.moveType != edge.moveType) throw new Exception("无法添加不同类型的边");
+            if (this.moveType != MoveType.NotSet && this.moveType != edge.moveType)
+                throw new Exception(
+                    $"无法添加不同类型的边. current: ({From.Position})->({To.Position}), {this.moveType}; new: ({edge.From.Position})->({edge.To.Position}), {edge.moveType}");
             if (this.moveType == MoveType.NotSet) this.moveType = edge.moveType;
 
             // allowedPassHeight
@@ -87,10 +92,10 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
 
         #region 构造函数
 
-        public KeyEdge()
+        public KeyEdge(MoveType moveType = MoveType.NotSet)
         {
             includeEdges = new List<Edge>();
-            this.moveType = MoveType.NotSet;
+            this.moveType = moveType;
             this.allowedPassHeight = AllowedPassHeight.TwoAndMore;
         }
 
