@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.Classes.ZombieSpawner;
 using UnityEngine;
 
@@ -46,6 +47,12 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         #region ZombieSpawn
 
         List<ZombieSpawnInfo> ZombieSpawnInfosOfWave(int wave);
+
+        #endregion
+
+        #region Loot
+
+        public LootPool LootPool { get; }
 
         #endregion
     }

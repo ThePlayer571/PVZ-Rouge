@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.CommandEvents.Phase;
+using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Models;
 
 namespace TPL.PVZR.Systems
@@ -29,8 +31,11 @@ namespace TPL.PVZR.Systems
 
         #endregion
 
-        private void WriteLoots()
+        private void WriteLoots(LootPool lootPool, int count)
         {
+            _lootList.Clear();
+            var loots = lootPool.GetRandomLoot(count).Select(lootInfo => LootHelper.CreateLootData(lootInfo));
+            _lootList.AddRange(loots);
         }
 
         private void ClearLootList()
@@ -38,22 +43,16 @@ namespace TPL.PVZR.Systems
             _lootList.Clear();
         }
 
+        private ILevelModel _LevelModel;
 
         protected override void OnInit()
         {
+            _LevelModel = this.GetModel<ILevelModel>();
+
             this.RegisterEvent<OnPhaseChangeEvent>(e =>
             {
                 switch (e.GamePhase)
                 {
-                    case GamePhase.ChooseLoots:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterEarly:
-                                "生成数据".LogInfo();
-                                break;
-                        }
-
-                        break;
                 }
             });
         }

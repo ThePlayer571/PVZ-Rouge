@@ -21,7 +21,7 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
         protected override void OnExecute()
         {
             var _PhaseModel = this.GetModel<IPhaseModel>();
-            if (_PhaseModel.GamePhase != GamePhase.Gameplay)
+            if (_PhaseModel.GamePhase is not (GamePhase.Gameplay or GamePhase.AllEnemyKilled))
                 throw new Exception($"尝试调用SpawnSunFromPlantCommand，但GameState: {_PhaseModel.GamePhase}"); // 游戏阶段正确
             if (_plant == null)
                 throw new ArgumentException("尝试调用SpawnSunFromPlantCommand，但Plant对象为null"); // Plant对象不为null

@@ -105,7 +105,7 @@ namespace TPL.PVZR.Models
             [GamePhase.PreInitialization] = new[] { GamePhase.BeforeStart },
             [GamePhase.MainMenu] = new[] { GamePhase.PreInitialization },
             [GamePhase.GameInitialization] = new[] { GamePhase.MainMenu },
-            [GamePhase.MazeMapInitialization] = new[] { GamePhase.GameInitialization },
+            [GamePhase.MazeMapInitialization] = new[] { GamePhase.GameInitialization, GamePhase.LevelExiting },
             [GamePhase.MazeMap] = new[] { GamePhase.MazeMapInitialization },
             [GamePhase.LevelPreInitialization] = new[] { GamePhase.MazeMap },
             [GamePhase.LevelInitialization] = new[] { GamePhase.LevelPreInitialization },
@@ -113,9 +113,8 @@ namespace TPL.PVZR.Models
             [GamePhase.ReadyToStart] = new[] { GamePhase.ChooseSeeds },
             [GamePhase.Gameplay] = new[] { GamePhase.ReadyToStart },
             [GamePhase.AllEnemyKilled] = new[] { GamePhase.Gameplay },
-            [GamePhase.ChooseLoots] = new[] { GamePhase.AllEnemyKilled },
             [GamePhase.GameOverDefeat] = new[] { GamePhase.Gameplay },
-            [GamePhase.LevelExiting] = new[] { GamePhase.ChooseLoots },
+            [GamePhase.LevelExiting] = new[] { GamePhase.AllEnemyKilled },
         };
 
         #endregion

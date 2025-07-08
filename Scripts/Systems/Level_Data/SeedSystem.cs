@@ -28,6 +28,16 @@ namespace TPL.PVZR.Systems
             }
         }
 
+        private void StartRunning()
+        {
+            GameManager.ExecuteOnUpdate(Update);
+        }
+
+        private void StopRunning()
+        {
+            GameManager.StopOnUpdate(Update);
+        }
+
         private ILevelModel _LevelModel;
 
 
@@ -43,7 +53,7 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
-                                GameManager.ExecuteOnUpdate(Update);
+                                StartRunning();
                                 break;
                         }
 
@@ -52,7 +62,7 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
-                                GameManager.StopOnUpdate(Update);
+                                StopRunning();
                                 break;
                         }
 
@@ -60,10 +70,7 @@ namespace TPL.PVZR.Systems
                 }
             });
 
-            this.RegisterEvent<PlantingSeedInHandEvent>(e =>
-            {
-                e.PlantedSeed.ColdTimeTimer.Reset();
-            });
+            this.RegisterEvent<PlantingSeedInHandEvent>(e => { e.PlantedSeed.ColdTimeTimer.Reset(); });
         }
     }
 }

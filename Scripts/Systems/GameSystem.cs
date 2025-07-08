@@ -56,22 +56,13 @@ namespace TPL.PVZR.Systems
                             case PhaseStage.EnterNormal:
                                 ActionKit.Sequence()
                                     .DelayFrame(1) // 等待场景加载
-                                    .Callback(() =>
-                                    {
-                                        _GameModel.MazeMapController.SetMazeMapTiles();
-                                    }).Start(GameManager.Instance);
+                                    .Callback(() => { _GameModel.MazeMapController.SetMazeMapTiles(); })
+                                    .Start(GameManager.Instance);
                                 break;
                             case PhaseStage.EnterLate:
                                 ActionKit.Sequence()
                                     .DelayFrame(2)
                                     .Callback(() => { _PhaseModel.DelayChangePhase(GamePhase.MazeMap); })
-                                    .Delay(1)
-                                    .Callback(() =>
-                                    {
-                                        _PhaseModel.DelayChangePhase(GamePhase.LevelPreInitialization,
-                                            new Dictionary<string, object>
-                                                { { "LevelData", LevelHelper.CreateLevelData(_GameModel.GameData, LevelId.DaveLawn) } });
-                                    })
                                     .Start(GameManager.Instance);
                                 break;
                                 break;

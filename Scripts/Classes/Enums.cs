@@ -14,6 +14,7 @@ namespace TPL.PVZR.Classes
 
     public enum PlantId
     {
+        NotSet,
         PeaShooter,
         Sunflower,
         Wallnut,

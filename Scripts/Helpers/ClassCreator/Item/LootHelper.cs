@@ -1,3 +1,4 @@
+using System;
 using TPL.PVZR.Classes.DataClasses.Card;
 using TPL.PVZR.Classes.DataClasses.Loot;
 
@@ -5,9 +6,16 @@ namespace TPL.PVZR.Helpers.ClassCreator
 {
     public static class LootHelper
     {
-        public static LootData CreateLootData(CardData cardData)
+        public static LootData CreateLootData(LootInfo lootInfo)
         {
-            return new LootData(LootType.Card) { CardData = cardData };
+            switch (lootInfo.LootType)
+            {
+                case LootType.Card:
+                    var cardData = CardHelper.CreateCardData(lootInfo.PlantId);
+                    return new LootData(LootType.Card) { CardData = cardData };
+            }
+
+            throw new NotImplementedException($"未考虑的lootType: {lootInfo.LootType}");
         }
     }
 }

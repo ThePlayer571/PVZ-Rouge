@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using QFramework;
@@ -48,10 +49,16 @@ namespace TPL.PVZR.Systems
             EntityFactory.ZombieFactory.SpawnZombie(info.ZombieId, info.SpawnPosition);
         }
 
-        private void Reset()
+        private void StartRunning()
         {
+            GameManager.ExecuteOnUpdate(Update);
         }
 
+        private void StopRunning()
+        {
+            GameManager.StopOnUpdate(Update);
+            if (ActiveTasks.Count != 0) throw new Exception("ActiveTasks尚未清空为0，ZombieSpawnSystem就尝试停止运行");
+        }
 
         private ILevelModel _LevelModel;
 
@@ -70,11 +77,10 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
-                                GameManager.ExecuteOnUpdate(Update);
+                                StartRunning();
                                 break;
                             case PhaseStage.LeaveNormal:
-                                GameManager.StopOnUpdate(Update);
-                                Reset();
+                                StopRunning();
                                 break;
                         }
 

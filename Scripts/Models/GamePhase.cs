@@ -27,7 +27,6 @@ namespace TPL.PVZR.Models
         ReadyToStart,
         Gameplay,
         AllEnemyKilled,
-        ChooseLoots,
         LevelExiting,
 
         RandomEvent, // 随机事件（包括商店/问号房间）

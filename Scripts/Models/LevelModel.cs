@@ -33,7 +33,6 @@ namespace TPL.PVZR.Models
         public BindableProperty<int> SunPoint { get; set; }
 
         public List<SeedData> ChosenSeeds { get; private set; }
-        public Matrix<Cell> LevelMatrix { get; private set; }
 
 
         public ILevelData LevelData { get; private set; }
@@ -51,8 +50,6 @@ namespace TPL.PVZR.Models
             this.LevelData = levelData;
 
             this.SunPoint.SetValueWithoutEvent(levelData.InitialSunPoint);
-
-            this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(ReferenceHelper.LevelTilemap, levelData);
         }
 
         public void Reset()
@@ -60,7 +57,6 @@ namespace TPL.PVZR.Models
             LevelData = null;
             ChosenSeeds.Clear();
             SunPoint.SetValueWithoutEvent(0);
-            LevelMatrix = null;
         }
 
 

@@ -25,6 +25,7 @@ namespace TPL.PVZR.Models
 
         // Methods
         void Initialize(ILevelData levelData);
+        void Reset();
     }
 
     public class LevelGridModel : AbstractModel, ILevelGridModel
@@ -80,6 +81,11 @@ namespace TPL.PVZR.Models
         {
             this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(ReferenceHelper.LevelTilemap, levelData);
             // LevelMatrixHelper.SetDebugTiles(LevelMatrix, ReferenceHelper.LevelTilemap.Debug);
+        }
+
+        public void Reset()
+        {
+            this.LevelMatrix = null;
         }
 
         protected override void OnInit()

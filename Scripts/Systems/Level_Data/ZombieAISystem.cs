@@ -62,11 +62,24 @@ namespace TPL.PVZR.Systems
             if (playerCurrentVertex != null) _playerVertexOnLastFrame = playerCurrentVertex;
         }
 
+        private void StartRunning()
+        {
+            GameManager.ExecuteOnUpdate(UpdatePlayerCluster);
+            ZombieAIUnit = new ZombieAIUnit();
+            ZombieAIUnit.InitializeFrom(_LevelGridModel.LevelMatrix);
+            // ZombieAIUnit.DebugDisplayMatrix();
+            // ZombieAIUnit.DebugLogCluster(new Vector2Int(11, 14));
+        }
+
+        private void StopRunning()
+        {
+            GameManager.StopOnUpdate(UpdatePlayerCluster);
+            ZombieAIUnit = null;
+        }
+
         protected override void OnInit()
         {
             _LevelGridModel = this.GetModel<ILevelGridModel>();
-
-            ZombieAIUnit = new ZombieAIUnit();
 
             this.RegisterEvent<OnPhaseChangeEvent>(e =>
             {
@@ -76,11 +89,16 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
-                                ZombieAIUnit.InitializeFrom(_LevelGridModel.LevelMatrix);
-                                // ZombieAIUnit.DebugDisplayMatrix();
-                                // ZombieAIUnit.DebugLogCluster(new Vector2Int(11, 14));
+                                StartRunning();
+                                break;
+                        }
 
-                                GameManager.ExecuteOnUpdate(UpdatePlayerCluster);
+                        break;
+                    case GamePhase.LevelExiting:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.EnterNormal:
+                                StopRunning();
                                 break;
                         }
 

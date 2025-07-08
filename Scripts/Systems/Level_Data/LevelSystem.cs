@@ -134,6 +134,21 @@ namespace TPL.PVZR.Systems
                         }
 
                         break;
+                    case GamePhase.LevelExiting:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.EnterLate:
+                                _PhaseModel.DelayChangePhase(GamePhase.MazeMapInitialization);
+                                break;
+                            case PhaseStage.LeaveNormal:
+                                _LevelModel.Reset();
+                                _LevelGridModel.Reset();
+
+                                UIKit.ClosePanel<UILevelGameplayPanel>();
+                                break;
+                        }
+
+                        break;
                 }
             });
         }

@@ -3,6 +3,8 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs;
+using TPL.PVZR.CommandEvents.Phase;
+using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers.Others;
 using UnityEngine.XR;
 
@@ -42,6 +44,24 @@ namespace TPL.PVZR.Systems
         {
             HandInfo = new BindableProperty<HandInfo>(new HandInfo(HandState.Empty, null));
 
+            this.RegisterEvent<OnPhaseChangeEvent>(e =>
+            {
+                switch (e.GamePhase)
+                {
+                    case GamePhase.LevelExiting:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.LeaveNormal:
+                                HandInfo.Value = new HandInfo(HandState.Empty, null);
+                                break;
+                        }
+
+                        break;
+                }
+            });
+
+            #region 关卡内触发事件
+
             this.RegisterEvent<SelectSeedEvent>(e =>
             {
                 HandInfo.Value = new HandInfo(HandState.HaveSeed, e.SelectedSeedData);
@@ -54,6 +74,8 @@ namespace TPL.PVZR.Systems
             this.RegisterEvent<PlantingSeedInHandEvent>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
 
             this.RegisterEvent<UseShovelEvent>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
+
+            #endregion
         }
 
         public BindableProperty<HandInfo> HandInfo { get; private set; }

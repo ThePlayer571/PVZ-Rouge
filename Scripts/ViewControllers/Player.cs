@@ -83,6 +83,11 @@ namespace TPL.PVZR.ViewControllers
             }
         }
 
+        private void OnDestroy()
+        {
+            _inputActions.Level.Disable();
+        }
+
         private void Awake()
         {
             _Rigidbody2D = this.GetComponent<Rigidbody2D>();

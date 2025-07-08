@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes;
+using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Helpers;
+using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
@@ -52,6 +55,15 @@ namespace TPL.PVZR.ViewControllers.Managers
                 {
                     zombie.Kill();
                 }
+            }
+
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 310, 120, 40), "开始游戏"))
+            {
+                var _PhaseModel = this.GetModel<IPhaseModel>();
+                var _GameModel = this.GetModel<IGameModel>();
+                _PhaseModel.DelayChangePhase(GamePhase.LevelPreInitialization,
+                    new Dictionary<string, object>
+                        { { "LevelData", LevelHelper.CreateLevelData(_GameModel.GameData, LevelId.DaveLawn) } });
             }
 
             if (Input.GetKeyDown(KeyCode.LeftShift))

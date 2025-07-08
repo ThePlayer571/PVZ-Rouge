@@ -15,6 +15,7 @@
 
 | Id                | Layer         | Order                |
 | ----------------- | ------------- | -------------------- |
+| LevelEndObject    | ForeGround    | 200                  |
 | SelectFramebox    | ForeGround    | 100                  |
 | Zombies           | Zombie        | 0~30010(by Allocate) |
 | Player            | MidGround     | 500                  |
