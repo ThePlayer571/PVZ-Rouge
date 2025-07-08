@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TPL.PVZR.Classes.DataClasses.Loot;
 using UnityEngine;
 
 namespace TPL.PVZR.Classes.DataClasses.Level
@@ -75,6 +76,6 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         [Header("ZombieSpawn")] public List<SerializableKeyValuePair<ZombieSpawnPosId, Vector2>> PosDef;
         public List<ZombieSpawnConfig> ZombieSpawnConfigs;
 
-        // [Header("Loot")]
+        [Header("Loot")] public List<LootGenerateInfo> LootGenerateInfos;
     }
 }

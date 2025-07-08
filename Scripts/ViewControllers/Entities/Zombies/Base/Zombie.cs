@@ -5,7 +5,9 @@ using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses.Attack;
 using TPL.PVZR.Classes.DataClasses.Effect;
 using TPL.PVZR.Classes.ZombieAI.Public;
+using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents._NotClassified_;
+using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Systems;
 using TPL.PVZR.Tools;
@@ -207,12 +209,13 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         public override void DieWith(AttackData attackData)
         {
             OnDieFrom.Trigger(attackData);
+            this.SendCommand<OnZombieDeathCommand>(new OnZombieDeathCommand(this));
             this.Remove();
         }
 
         public override void Kill()
         {
-            this.Health.Value = 0;
+            DieWith(AttackHelper.CreateAttackData(AttackId.Void));
         }
 
         #endregion

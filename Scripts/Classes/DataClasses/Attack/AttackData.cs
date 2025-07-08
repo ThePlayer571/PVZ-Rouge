@@ -25,13 +25,13 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
             damage *= factor;
             return this;
         }
-        
+
         public AttackData SubDamage(float value)
         {
             damage -= value;
             return this;
         }
-        
+
         public AttackData MultiplyPunchForce(float factor)
         {
             punchForce *= factor;
@@ -98,10 +98,6 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
         public AttackData(float damage, float punchForce, bool isFrameDamage)
         {
             throw new NotImplementedException();
-            this.damage = damage;
-            this.punchForce = punchForce;
-            this.isFrameDamage = isFrameDamage;
-            this.effects = new List<EffectData>();
         }
 
         public AttackData(AttackDefinition attackDefinition)

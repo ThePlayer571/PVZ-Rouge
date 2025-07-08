@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Helpers;
@@ -19,25 +20,38 @@ namespace TPL.PVZR.ViewControllers.Managers
                 var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(32, 9));
                 EntityFactory.ZombieFactory.SpawnZombie(ZombieId.NormalZombie, pos);
             }
+
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 60, 120, 40), "二楼"))
             {
                 var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(14, 14));
                 EntityFactory.ZombieFactory.SpawnZombie(ZombieId.NormalZombie, pos);
             }
+
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 110, 120, 40), "屋顶"))
             {
                 var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(10, 23));
                 EntityFactory.ZombieFactory.SpawnZombie(ZombieId.NormalZombie, pos);
             }
+
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 160, 120, 40), "测试按钮"))
             {
                 var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(32, 9));
                 EntityFactory.ZombieFactory.SpawnZombie(ZombieId.ConeheadZombie, pos);
             }
+
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 210, 120, 40), "戴夫位置生成阳光"))
             {
                 var pos = ReferenceHelper.Player.transform.position;
                 EntityFactory.SunFactory.SpawnSunWithFall(pos);
+            }
+
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 260, 120, 40), "杀死所有僵尸"))
+            {
+                var list = EntityFactory.ZombieFactory.ActiveZombies.ToList();
+                foreach (var zombie in list)
+                {
+                    zombie.Kill();
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -45,7 +59,8 @@ namespace TPL.PVZR.ViewControllers.Managers
                 var LevelGridModel = this.GetModel<ILevelGridModel>();
                 var handPos = HandHelper.HandCellPos();
                 var handCell = LevelGridModel.GetCell(handPos);
-                $"手所在的Cell信息：pos: {handPos}, TileState: {handCell.CellTileState}, PlantState: {handCell.CellPlantState}".LogInfo();
+                $"手所在的Cell信息：pos: {handPos}, TileState: {handCell.CellTileState}, PlantState: {handCell.CellPlantState}"
+                    .LogInfo();
             }
         }
 

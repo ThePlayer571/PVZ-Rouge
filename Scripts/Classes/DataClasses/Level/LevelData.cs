@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Game.Interfaces;
+using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.Classes.ZombieSpawner;
 using TPL.PVZR.Tools.Random;
 using UnityEngine;
@@ -127,6 +128,12 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         #endregion
 
+        #region Loot
+
+        public LootPool LootPool { get; }
+
+        #endregion
+
         #endregion
 
 
@@ -156,6 +163,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
             this.PosDef = levelDefinition.PosDef;
             this.ZombieSpawnConfigs = levelDefinition.ZombieSpawnConfigs;
+
+            this.LootPool = new LootPool(levelDefinition.LootGenerateInfos);
         }
 
         #region Private

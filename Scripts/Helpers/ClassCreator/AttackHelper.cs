@@ -15,6 +15,8 @@ namespace TPL.PVZR.Helpers.ClassCreator
             var resLoader = ResLoader.Allocate();
             _attackDict = new Dictionary<AttackId, AttackDefinition>()
             {
+                [AttackId.Void] = resLoader.LoadSync<AttackDefinition>(Attackdefinition.BundleName,
+                    Attackdefinition.AttackDefinition_Void),
                 [AttackId.Pea] = resLoader.LoadSync<AttackDefinition>(Attackdefinition.BundleName,
                     Attackdefinition.AttackDefinition_Pea),
                 [AttackId.FrozenPea] = resLoader.LoadSync<AttackDefinition>(Attackdefinition.BundleName,

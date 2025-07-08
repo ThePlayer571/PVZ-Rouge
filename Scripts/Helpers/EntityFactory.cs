@@ -109,6 +109,8 @@ namespace TPL.PVZR.Helpers
 
         public static class ZombieFactory
         {
+            public static HashSet<Zombie> ActiveZombies = new();
+
             static ZombieFactory()
             {
                 _zombieDict = new Dictionary<ZombieId, GameObject>
@@ -127,12 +129,19 @@ namespace TPL.PVZR.Helpers
                 {
                     var zombie = zombiePrefab.Instantiate(pos, Quaternion.identity).GetComponent<Zombie>();
                     zombie.Initialize();
+
+                    ActiveZombies.Add(zombie);
                     return zombie;
                 }
                 else
                 {
                     throw new ArgumentException($"未考虑的僵尸类型：{id}");
                 }
+            }
+
+            public static void RemoveZombie(Zombie zombie)
+            {
+                ActiveZombies.Remove(zombie);
             }
         }
 

@@ -36,7 +36,8 @@ namespace TPL.PVZR.ViewControllers
             var movement = _inputActions.Level.Movement.ReadValue<Vector2>();
             if (!Mathf.Approximately(movement.x, 0))
             {
-                _Rigidbody2D.AddForce(new Vector2(speed * movement.x, 0));
+                var direction = movement.x > 0 ? 1 : -1;
+                _Rigidbody2D.AddForce(new Vector2(speed * direction, 0));
             }
 
             if (movement.y > 0 && LadderDetector.HasTarget)

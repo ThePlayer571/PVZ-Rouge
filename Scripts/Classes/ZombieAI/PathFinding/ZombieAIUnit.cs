@@ -35,7 +35,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
             var endVertex = this.GetVertex(end.x, end.y);
 
             var path = _pathManager.GetOnePath(startVertex, endVertex, aiTendency);
-            LogThePath(path);
+            // LogThePath(path);
             return new ZombiePath(path);
         }
 
@@ -118,16 +118,16 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                 }
             }
 
-            foreach (var vertex in vertices)
-            {
-                string output = $"({vertex.x}, {vertex.y})：";
-                foreach (var edge in adjacencyList[vertex])
-                {
-                    output += $" ({edge.To.x}, {edge.To.y}, {edge.moveType})";
-                }
-
-                output.LogInfo();
-            }
+            // foreach (var vertex in vertices)
+            // {
+            //     string output = $"({vertex.x}, {vertex.y})：";
+            //     foreach (var edge in adjacencyList[vertex])
+            //     {
+            //         output += $" ({edge.To.x}, {edge.To.y}, {edge.moveType})";
+            //     }
+            //
+            //     output.LogInfo();
+            // }
 
             #region 一大坨调试代码
 
@@ -142,16 +142,16 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
             //     output.LogInfo();
             // }
 
-            foreach (var doubledKey in keyVertices.GroupBy(keyVertex => keyVertex).Where(group => group.Count() > 1))
-            {
-                $"发现重复的关键结点({doubledKey.First().x},{doubledKey.First().y}), 数量是{doubledKey.Count()}, 已成功去重".LogError();
-            }
-
+            // foreach (var doubledKey in keyVertices.GroupBy(keyVertex => keyVertex).Where(group => group.Count() > 1))
+            // {
+            //     $"发现重复的关键结点({doubledKey.First().x},{doubledKey.First().y}), 数量是{doubledKey.Count()}, 已成功去重".LogError();
+            // }
+// 以防万一的去重
             keyVertices = keyVertices.Distinct().ToList();
-            foreach (var vertex in keyVertices)
-            {
-                $"Key: {vertex.Position}, {vertex.VertexType}".LogInfo();
-            }
+            // foreach (var vertex in keyVertices)
+            // {
+            //     $"Key: {vertex.Position}, {vertex.VertexType}".LogInfo();
+            // }
 
             #endregion
 

@@ -15,6 +15,7 @@ namespace TPL.PVZR.Systems
 {
     public interface IZombieSpawnSystem : ISystem
     {
+        public int ActiveTasksCount { get; }
     }
 
     public class ZombieSpawnSystem : AbstractSystem, IZombieSpawnSystem
@@ -89,5 +90,7 @@ namespace TPL.PVZR.Systems
                 ActiveTasks.Add(task);
             });
         }
+
+        public int ActiveTasksCount => ActiveTasks.Count;
     }
 }

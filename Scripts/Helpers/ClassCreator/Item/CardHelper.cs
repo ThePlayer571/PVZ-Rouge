@@ -15,14 +15,14 @@ namespace TPL.PVZR.Helpers.ClassCreator
     {
         #region Public
 
-        public static CardData CreateCardData(PlantId id)
+        public static CardData CreateCardData(PlantId id, PlantVariant variant = PlantVariant.V0)
         {
-            if (_cardsDict.TryGetValue(id, out var cardDefinition))
+            if (_cardsDict.TryGetValue((id, variant), out var cardDefinition))
             {
                 return new CardData(cardDefinition);
             }
 
-            throw new ArgumentException($"未考虑的PlantId：{id}");
+            throw new ArgumentException($"未考虑的PlantId和PlantVariant组合：{id}, {variant}");
         }
 
         public static SeedOptionController CreateSeedOptionController(CardData cardData)
@@ -49,7 +49,7 @@ namespace TPL.PVZR.Helpers.ClassCreator
         #endregion
 
 
-        private static readonly Dictionary<PlantId, CardDefinition> _cardsDict;
+        private static readonly Dictionary<(PlantId, PlantVariant), CardDefinition> _cardsDict;
         private static readonly GameObject _seedOptionControllerPrefab;
         private static readonly GameObject _seedControllerPrefab;
 
@@ -58,18 +58,17 @@ namespace TPL.PVZR.Helpers.ClassCreator
             ResKit.Init();
             var resLoader = ResLoader.Allocate();
 
-
-            _cardsDict = new Dictionary<PlantId, CardDefinition>()
+            _cardsDict = new Dictionary<(PlantId, PlantVariant), CardDefinition>()
             {
-                [PlantId.PeaShooter] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                [(PlantId.PeaShooter, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_Peashooter),
-                [PlantId.Sunflower] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                [(PlantId.Sunflower, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_Sunflower),
-                [PlantId.Wallnut] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                [(PlantId.Wallnut, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_Wallnut),
-                [PlantId.Flowerpot] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                [(PlantId.Flowerpot, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_Flowerpot),
-                [PlantId.SnowPea] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                [(PlantId.SnowPea, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_SnowPea),
             };
             _seedControllerPrefab =
