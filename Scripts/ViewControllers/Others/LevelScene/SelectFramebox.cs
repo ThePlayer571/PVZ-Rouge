@@ -3,10 +3,10 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Models;
-using TPL.PVZR.Systems;
+using TPL.PVZR.Systems.Level_Data;
 using UnityEngine;
 
-namespace TPL.PVZR.ViewControllers.Others
+namespace TPL.PVZR.ViewControllers.Others.LevelScene
 {
     public class SelectFramebox : MonoBehaviour, IController
     {

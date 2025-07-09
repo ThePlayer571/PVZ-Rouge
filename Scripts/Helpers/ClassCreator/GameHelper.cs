@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses;
-using TPL.PVZR.Classes.DataClasses.Card;
 using TPL.PVZR.Classes.DataClasses.Game;
+using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Classes.MazeMap;
-using TPL.PVZR.Classes.MazeMap.New;
+using TPL.PVZR.Helpers.ClassCreator.Item;
 using TPL.PVZR.Tools.Random;
 
 namespace TPL.PVZR.Helpers.ClassCreator

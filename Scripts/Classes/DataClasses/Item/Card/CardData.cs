@@ -1,6 +1,4 @@
-using TPL.PVZR.Classes.DataClasses.Item;
-
-namespace TPL.PVZR.Classes.DataClasses.Card
+namespace TPL.PVZR.Classes.DataClasses.Item.Card
 {
     public class CardData : ItemData
     {

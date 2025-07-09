@@ -12,7 +12,7 @@ using TPL.PVZR.Tools.Random;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
-namespace TPL.PVZR.Systems
+namespace TPL.PVZR.Systems.Level_Event
 {
     public interface IZombieSpawnSystem : ISystem
     {

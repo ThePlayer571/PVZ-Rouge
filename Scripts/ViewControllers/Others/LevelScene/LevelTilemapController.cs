@@ -1,9 +1,8 @@
-using System;
 using TPL.PVZR.Tools;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace TPL.PVZR.ViewControllers.Others
+namespace TPL.PVZR.ViewControllers.Others.LevelScene
 {
     public class LevelTilemapController : MonoBehaviour
     {

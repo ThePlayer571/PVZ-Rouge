@@ -1,6 +1,5 @@
 using QFramework;
 using TPL.PVZR.Classes.MazeMap;
-using TPL.PVZR.Classes.MazeMap.New;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers.Managers;

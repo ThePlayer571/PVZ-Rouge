@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TPL.PVZR.ViewControllers.Entities.Zombies.ZombieArmor
+namespace TPL.PVZR.Classes.DataClasses.ZombieArmor
 {
     [CreateAssetMenu(fileName = "ZombieArmorDefinition_", menuName = "PVZR/ZombieArmorDefinition", order = 3)]
     public class ZombieArmorDefinition : ScriptableObject

@@ -5,6 +5,7 @@ using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Managers;
 using TPL.PVZR.ViewControllers.Others;
+using TPL.PVZR.ViewControllers.Others.UI;
 using UnityEngine;
 
 namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds

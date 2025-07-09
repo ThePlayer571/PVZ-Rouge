@@ -1,9 +1,9 @@
 using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses.Attack;
+using TPL.PVZR.Classes.DataClasses.ZombieArmor;
 using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
-using TPL.PVZR.ViewControllers.Entities.Zombies.ZombieArmor;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
 {

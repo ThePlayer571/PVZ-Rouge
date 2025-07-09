@@ -1,10 +1,9 @@
-using System;
 using QFramework;
 using TMPro;
 using TPL.PVZR.Models;
 using UnityEngine;
 
-namespace TPL.PVZR.ViewControllers.Others
+namespace TPL.PVZR.ViewControllers.Others.UI
 {
     public class SunpointController : MonoBehaviour,IController
     {

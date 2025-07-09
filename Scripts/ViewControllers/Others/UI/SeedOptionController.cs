@@ -1,7 +1,6 @@
-using System;
 using QFramework;
 using TMPro;
-using TPL.PVZR.Classes.DataClasses.Card;
+using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.CommandEvents.Level_ChooseSeeds;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
@@ -9,7 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace TPL.PVZR.ViewControllers.Others
+namespace TPL.PVZR.ViewControllers.Others.UI
 {
     public class SeedOptionController : MonoBehaviour, IController, IPointerClickHandler
     {

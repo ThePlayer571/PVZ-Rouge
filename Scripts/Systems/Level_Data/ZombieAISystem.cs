@@ -1,4 +1,3 @@
-using System;
 using QFramework;
 using TPL.PVZR.Classes.ZombieAI.Class;
 using TPL.PVZR.Classes.ZombieAI.PathFinding;
@@ -10,7 +9,7 @@ using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
-namespace TPL.PVZR.Systems
+namespace TPL.PVZR.Systems.Level_Data
 {
     public interface IZombieAISystem : ISystem
     {

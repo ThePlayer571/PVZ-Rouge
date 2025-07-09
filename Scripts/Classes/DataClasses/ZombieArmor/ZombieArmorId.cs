@@ -1,4 +1,4 @@
-namespace TPL.PVZR.ViewControllers.Entities.Zombies.ZombieArmor
+namespace TPL.PVZR.Classes.DataClasses.ZombieArmor
 {
     public enum ZombieArmorId
     {

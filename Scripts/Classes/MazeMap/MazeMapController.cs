@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TPL.PVZR.Classes.MazeMap.New.Controllers;
+using TPL.PVZR.Classes.MazeMap.Controllers;
 using TPL.PVZR.Tools;
 
-namespace TPL.PVZR.Classes.MazeMap.New
+namespace TPL.PVZR.Classes.MazeMap
 {
     public interface IMazeMapController
     {

@@ -6,7 +6,7 @@ using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
-namespace TPL.PVZR.Systems
+namespace TPL.PVZR.Systems.Level_Event
 {
     public interface IWaveSystem : ISystem
     {

@@ -2,6 +2,7 @@ using TPL.PVZR.Classes;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using UnityEngine;
 using Time = UnityEngine.Time;
 

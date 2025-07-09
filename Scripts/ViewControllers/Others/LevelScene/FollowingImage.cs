@@ -1,12 +1,11 @@
-using System;
 using QAssetBundle;
 using QFramework;
-using TPL.PVZR.Systems;
+using TPL.PVZR.Systems.Level_Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-namespace TPL.PVZR.ViewControllers.Others
+namespace TPL.PVZR.ViewControllers.Others.LevelScene
 {
     public class FollowingImage : MonoBehaviour, IController
     {

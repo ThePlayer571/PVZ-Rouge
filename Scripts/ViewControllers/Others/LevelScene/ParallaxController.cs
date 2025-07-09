@@ -1,10 +1,9 @@
-using System.Collections.Generic;
-using QFramework;
-using UnityEngine;
 using Cinemachine;
+using QFramework;
 using TPL.PVZR.CommandEvents._NotClassified_;
+using UnityEngine;
 
-namespace TPL.PVZR.ViewControllers.Others
+namespace TPL.PVZR.ViewControllers.Others.LevelScene
 {
     public class ParallaxController : MonoBehaviour, IController
     {

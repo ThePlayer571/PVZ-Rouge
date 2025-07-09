@@ -7,7 +7,7 @@ using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase;
 using UnityEngine;
 
-namespace TPL.PVZR.ViewControllers.Entities.Plants
+namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
 {
     public abstract class Plant : Entity, IPlant
     {

@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using TPL.PVZR.Classes.DataClasses.Level;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace TPL.PVZR.Classes.MazeMap.New
+namespace TPL.PVZR.Classes.MazeMap
 {
     public enum GameDifficulty
     {

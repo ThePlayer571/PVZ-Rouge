@@ -1,18 +1,16 @@
-using System;
 using QFramework;
 using TMPro;
-using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Models;
-using TPL.PVZR.Systems;
+using TPL.PVZR.Systems.Level_Data;
 using TPL.PVZR.Tools;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace TPL.PVZR.ViewControllers.Others
+namespace TPL.PVZR.ViewControllers.Others.UI
 {
     public class SeedController : MonoBehaviour, IController, IPointerClickHandler, IPointerEnterHandler,
         IPointerExitHandler

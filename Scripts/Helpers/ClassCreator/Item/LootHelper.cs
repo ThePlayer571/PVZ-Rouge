@@ -1,8 +1,7 @@
 using System;
-using TPL.PVZR.Classes.DataClasses.Card;
 using TPL.PVZR.Classes.DataClasses.Loot;
 
-namespace TPL.PVZR.Helpers.ClassCreator
+namespace TPL.PVZR.Helpers.ClassCreator.Item
 {
     public static class LootHelper
     {

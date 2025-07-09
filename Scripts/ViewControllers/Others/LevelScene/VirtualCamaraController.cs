@@ -2,7 +2,7 @@ using Cinemachine;
 using QFramework;
 using UnityEngine;
 
-namespace TPL.PVZR.ViewControllers.Others
+namespace TPL.PVZR.ViewControllers.Others.LevelScene
 {
     public class VirtualCameraController : MonoBehaviour, IController
     {

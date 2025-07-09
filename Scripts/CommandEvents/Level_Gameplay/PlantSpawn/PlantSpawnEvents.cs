@@ -1,4 +1,4 @@
-namespace TPL.PVZR.CommandEvents.__NewlyAdded__
+namespace TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn
 {
 
     public struct SpawnPlantEvent

@@ -1,4 +1,4 @@
-using TPL.PVZR.Classes.DataClasses.Card;
+using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Tools;
 
 namespace TPL.PVZR.Classes.DataClasses

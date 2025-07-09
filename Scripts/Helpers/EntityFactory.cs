@@ -9,6 +9,7 @@ using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
 using TPL.PVZR.ViewControllers;
 using TPL.PVZR.ViewControllers.Entities.Plants;
+using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using TPL.PVZR.ViewControllers.Entities.Projectiles;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using TPL.PVZR.ViewControllers.Managers;

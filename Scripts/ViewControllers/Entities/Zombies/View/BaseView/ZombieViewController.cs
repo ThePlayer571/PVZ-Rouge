@@ -1,14 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using QFramework;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using TPL.PVZR.ViewControllers.Entities.Zombies.States;
-using TPL.PVZR.ViewControllers.Entities.Zombies.ZombieArmor;
+using TPL.PVZR.ViewControllers.Entities.Zombies.View.Components;
 using UnityEngine;
 
-namespace TPL.PVZR.ViewControllers.Entities.Zombies
+namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.BaseView
 {
     public class ZombieViewController : MonoBehaviour
     {

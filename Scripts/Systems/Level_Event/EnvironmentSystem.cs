@@ -4,11 +4,10 @@ using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
-using TPL.PVZR.ViewControllers.Entities.EntityBase;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
-namespace TPL.PVZR.Systems
+namespace TPL.PVZR.Systems.Level_Event
 {
     public interface IEnvironmentSystem : ISystem
     {

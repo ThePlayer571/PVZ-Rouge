@@ -1,4 +1,4 @@
-namespace TPL.PVZR.Classes.DataClasses.Card
+namespace TPL.PVZR.Classes.DataClasses.Item.Card
 {
     public enum CardQuality
     {

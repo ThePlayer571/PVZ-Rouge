@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.MazeMap;
-using TPL.PVZR.Classes.MazeMap.New;
 
 namespace TPL.PVZR.Helpers.ClassCreator
 {

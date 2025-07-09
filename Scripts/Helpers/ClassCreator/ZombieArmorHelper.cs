@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Attack;
-using TPL.PVZR.ViewControllers.Entities.Zombies.ZombieArmor;
+using TPL.PVZR.Classes.DataClasses.ZombieArmor;
 
 namespace TPL.PVZR.Helpers.ClassCreator
 {

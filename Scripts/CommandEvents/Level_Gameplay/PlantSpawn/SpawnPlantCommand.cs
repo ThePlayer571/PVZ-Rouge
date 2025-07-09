@@ -7,7 +7,7 @@ using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
 using UnityEngine;
 
-namespace TPL.PVZR.CommandEvents.__NewlyAdded__
+namespace TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn
 {
     public class SpawnPlantCommand : AbstractCommand
     {

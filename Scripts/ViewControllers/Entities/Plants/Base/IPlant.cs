@@ -2,7 +2,7 @@ using TPL.PVZR.Classes;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 
-namespace TPL.PVZR.ViewControllers.Entities.Plants
+namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
 {
     public interface IPlant : IEntity, IAttackable
     {

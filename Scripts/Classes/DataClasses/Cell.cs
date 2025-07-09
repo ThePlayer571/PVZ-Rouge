@@ -1,4 +1,5 @@
 using TPL.PVZR.ViewControllers.Entities.Plants;
+using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 
 namespace TPL.PVZR.Classes.DataClasses
 {

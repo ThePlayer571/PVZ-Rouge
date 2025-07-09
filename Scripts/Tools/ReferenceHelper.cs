@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using TPL.PVZR.ViewControllers;
 using TPL.PVZR.ViewControllers.Others;
+using TPL.PVZR.ViewControllers.Others.LevelScene;
+using TPL.PVZR.ViewControllers.Others.UI;
 using TPL.PVZR.ViewControllers.UI;
 
 namespace TPL.PVZR.Tools

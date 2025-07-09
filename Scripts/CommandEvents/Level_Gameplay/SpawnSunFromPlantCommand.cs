@@ -3,11 +3,11 @@ using QFramework;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers;
-using TPL.PVZR.ViewControllers.Entities.Plants;
+using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
-namespace TPL.PVZR.CommandEvents.__NewlyAdded__
+namespace TPL.PVZR.CommandEvents.Level_Gameplay
 {
     public class SpawnSunFromPlantCommand : AbstractCommand
     {

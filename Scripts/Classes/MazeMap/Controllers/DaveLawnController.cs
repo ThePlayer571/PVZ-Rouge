@@ -8,7 +8,7 @@ using TPL.PVZR.Tools.Random;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace TPL.PVZR.Classes.MazeMap.New.Controllers
+namespace TPL.PVZR.Classes.MazeMap.Controllers
 {
     public class DaveLawnController : MazeMapController
     {

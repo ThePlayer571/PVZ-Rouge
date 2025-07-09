@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using TPL.PVZR.Classes.DataClasses.Card;
+using TPL.PVZR.Classes.DataClasses.Item.Card;
 
 namespace TPL.PVZR.Classes.DataClasses
 {

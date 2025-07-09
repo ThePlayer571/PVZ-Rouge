@@ -3,7 +3,7 @@ using TPL.PVZR.Classes.DataClasses.Attack;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using UnityEngine;
 
-namespace TPL.PVZR.ViewControllers.Entities.Zombies.ZombieArmor
+namespace TPL.PVZR.Classes.DataClasses.ZombieArmor
 {
     public class ZombieArmorData : IAttackable
     {

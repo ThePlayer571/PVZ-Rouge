@@ -1,12 +1,11 @@
-using System;
 using QFramework;
 using TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs;
-using TPL.PVZR.Systems;
+using TPL.PVZR.Systems.Level_Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace TPL.PVZR.ViewControllers.Others
+namespace TPL.PVZR.ViewControllers.Others.UI
 {
     public class ShovelController : MonoBehaviour, IController, IPointerClickHandler
     {

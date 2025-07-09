@@ -4,12 +4,12 @@ using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses;
-using TPL.PVZR.Classes.DataClasses.Card;
+using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Tools;
-using TPL.PVZR.ViewControllers.Others;
+using TPL.PVZR.ViewControllers.Others.UI;
 using UnityEngine;
 
-namespace TPL.PVZR.Helpers.ClassCreator
+namespace TPL.PVZR.Helpers.ClassCreator.Item
 {
     public static class CardHelper
     {

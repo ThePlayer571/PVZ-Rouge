@@ -1,9 +1,8 @@
 using QFramework;
-using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs;
 using TPL.PVZR.Models;
 
-namespace TPL.PVZR.Systems
+namespace TPL.PVZR.Systems.Level_Data
 {
     public interface ISunSystem : ISystem
     {

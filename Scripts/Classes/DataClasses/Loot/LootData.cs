@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TPL.PVZR.Classes.DataClasses.Item.Card;
 using UnityEngine;
-using TPL.PVZR.Classes.DataClasses.Card;
 using TPL.PVZR.Tools.Random;
 
 namespace TPL.PVZR.Classes.DataClasses.Loot

@@ -1,14 +1,13 @@
-using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Models;
-using TPL.PVZR.Systems;
+using TPL.PVZR.Systems.Level_Event;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TPL.PVZR.ViewControllers.Others
+namespace TPL.PVZR.ViewControllers.Others.UI
 {
     public class LevelStateBarPanelController : MonoBehaviour, IController
     {

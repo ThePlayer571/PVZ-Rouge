@@ -1,5 +1,5 @@
 using TPL.PVZR.Classes.DataClasses;
-using TPL.PVZR.Classes.DataClasses.Card;
+using TPL.PVZR.Classes.DataClasses.Item.Card;
 
 namespace TPL.PVZR.Helpers.ClassCreator
 {

@@ -1,9 +1,8 @@
-using System;
 using DG.Tweening;
 using QFramework;
 using UnityEngine;
 
-namespace TPL.PVZR.ViewControllers.Entities.Zombies
+namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.Components
 {
     public class ZombieComponentView : MonoBehaviour
     {

@@ -3,7 +3,6 @@ using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.CommandEvents._NotClassified_;
-using TPL.PVZR.CommandEvents.Level_Gameplay.Waves;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Models;
@@ -14,7 +13,7 @@ using TPL.PVZR.ViewControllers.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace TPL.PVZR.Systems
+namespace TPL.PVZR.Systems.Level_Data
 {
     public interface ILevelSystem : ISystem
     {

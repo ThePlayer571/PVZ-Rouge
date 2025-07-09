@@ -4,6 +4,7 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.ClassCreator;
+using TPL.PVZR.Helpers.ClassCreator.Item;
 using TPL.PVZR.Models;
 
 namespace TPL.PVZR.Systems
