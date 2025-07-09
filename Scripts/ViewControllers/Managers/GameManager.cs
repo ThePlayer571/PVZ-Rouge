@@ -63,7 +63,7 @@ namespace TPL.PVZR.ViewControllers.Managers
                 var _GameModel = this.GetModel<IGameModel>();
                 _PhaseModel.DelayChangePhase(GamePhase.LevelPreInitialization,
                     new Dictionary<string, object>
-                        { { "LevelData", LevelHelper.CreateLevelData(_GameModel.GameData, LevelId.DaveLawn) } });
+                        { { "LevelData", LevelHelper.CreateLevelData(_GameModel.GameData, LevelId.Dave_Lawn) } });
             }
 
             if (Input.GetKeyDown(KeyCode.LeftShift))

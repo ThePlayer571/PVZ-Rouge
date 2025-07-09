@@ -1,10 +1,10 @@
-using TPL.PVZR.Classes.MazeMap.Interfaces;
+using TPL.PVZR.Classes.MazeMap.New;
 
 namespace TPL.PVZR.Classes.DataClasses.Game.Interfaces
 {
     public interface IGameData
     {
-        IMazeMapData MazeMapData { get; set; }
+        MazeMapData MazeMapData { get; set; }
         InventoryData InventoryData { get; set; }
         GlobalEntityData GlobalEntityData { get; set; }
     }

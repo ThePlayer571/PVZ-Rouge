@@ -29,7 +29,7 @@ namespace TPL.PVZR.Helpers.ClassCreator
             var resLoader = ResLoader.Allocate();
             _levelDefinitionDict = new Dictionary<LevelId, LevelDefinition>
             {
-                [LevelId.DaveLawn] = resLoader.LoadSync<LevelDefinition>(Leveldefinition.BundleName,
+                [LevelId.Dave_Lawn] = resLoader.LoadSync<LevelDefinition>(Leveldefinition.BundleName,
                     Leveldefinition.LevelDefinition_DaveLawn),
             };
         }

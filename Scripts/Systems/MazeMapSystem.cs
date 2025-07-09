@@ -1,6 +1,6 @@
 using QFramework;
-using TPL.PVZR.Classes.MazeMap.Interfaces;
-using TPL.PVZR.Classes.MazeMap.Public.DaveHouse;
+using TPL.PVZR.Classes.MazeMap;
+using TPL.PVZR.Classes.MazeMap.New;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers.Managers;
@@ -34,7 +34,8 @@ namespace TPL.PVZR.Systems
                         {
                             case PhaseStage.EnterEarly:
                                 SceneManager.LoadScene("MazeMapScene");
-                                _MazeMapController = new DaveHouseMazeMapController(_GameModel.GameData.MazeMapData);
+                                _MazeMapController = MazeMapController.CreateController(_GameModel.GameData.MazeMapData);
+                                _MazeMapController.GenerateMazeMatrix();
                                 break;
                             case PhaseStage.EnterNormal:
                                 ActionKit.Sequence()
