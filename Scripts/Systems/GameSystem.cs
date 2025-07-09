@@ -45,30 +45,6 @@ namespace TPL.PVZR.Systems
                         }
 
                         break;
-                    case GamePhase.MazeMapInitialization:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterEarly:
-                                SceneManager.LoadScene("MazeMapScene");
-                                _GameModel.MazeMapController =
-                                    new DaveHouseMazeMapController(_GameModel.GameData.MazeMapData);
-                                break;
-                            case PhaseStage.EnterNormal:
-                                ActionKit.Sequence()
-                                    .DelayFrame(1) // 等待场景加载
-                                    .Callback(() => { _GameModel.MazeMapController.SetMazeMapTiles(); })
-                                    .Start(GameManager.Instance);
-                                break;
-                            case PhaseStage.EnterLate:
-                                ActionKit.Sequence()
-                                    .DelayFrame(2)
-                                    .Callback(() => { _PhaseModel.DelayChangePhase(GamePhase.MazeMap); })
-                                    .Start(GameManager.Instance);
-                                break;
-                                break;
-                        }
-
-                        break;
                 }
             });
         }

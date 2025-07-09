@@ -46,7 +46,7 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
             var _PhaseModel = this.GetModel<IPhaseModel>();
             var _LevelModel = this.GetModel<ILevelModel>();
 
-            if (_PhaseModel.GamePhase != GamePhase.Gameplay)
+            if (_PhaseModel.GamePhase is not (GamePhase.Gameplay or GamePhase.AllEnemyKilled))
                 throw new Exception($"尝试调用CollectSunCommand，但GameState: {_PhaseModel.GamePhase}"); // 游戏阶段正确
             if (_sun == null) throw new ArgumentException("尝试调用CollectSunCommand，但Sun对象为null"); // Sun对象不为null
 
