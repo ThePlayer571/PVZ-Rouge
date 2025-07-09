@@ -77,5 +77,6 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public List<ZombieSpawnConfig> ZombieSpawnConfigs;
 
         [Header("Loot")] public List<LootGenerateInfo> LootGenerateInfos;
+        public float LootValue;
     }
 }

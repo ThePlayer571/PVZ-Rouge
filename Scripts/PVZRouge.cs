@@ -16,6 +16,7 @@ namespace TPL.PVZR
             this.RegisterModel<IGameModel>(new GameModel());
             this.RegisterSystem<IMazeMapSystem>(new MazeMapSystem());
             this.RegisterSystem<IInventorySystem>(new InventorySystem());
+            this.RegisterSystem<IAwardSystem>(new AwardSystem());
 
             // ===== Level =====
             this.RegisterModel<ILevelModel>(new LevelModel());

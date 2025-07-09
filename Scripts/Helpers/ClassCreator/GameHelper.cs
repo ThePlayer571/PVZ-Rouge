@@ -19,22 +19,6 @@ namespace TPL.PVZR.Helpers.ClassCreator
             var testInventoryData = new InventoryData();
             testInventoryData.Cards = new List<CardData>()
             {
-                CardHelper.CreateCardData(PlantId.Flowerpot),
-                CardHelper.CreateCardData(PlantId.Flowerpot),
-                CardHelper.CreateCardData(PlantId.Flowerpot),
-                CardHelper.CreateCardData(PlantId.Flowerpot),
-                CardHelper.CreateCardData(PlantId.Flowerpot),
-                CardHelper.CreateCardData(PlantId.Sunflower),
-                CardHelper.CreateCardData(PlantId.Sunflower),
-                CardHelper.CreateCardData(PlantId.PeaShooter),
-                CardHelper.CreateCardData(PlantId.PeaShooter),
-                CardHelper.CreateCardData(PlantId.PeaShooter),
-                CardHelper.CreateCardData(PlantId.PeaShooter),
-                CardHelper.CreateCardData(PlantId.PeaShooter),
-                CardHelper.CreateCardData(PlantId.PeaShooter),
-                CardHelper.CreateCardData(PlantId.PeaShooter),
-                CardHelper.CreateCardData(PlantId.SnowPea),
-                CardHelper.CreateCardData(PlantId.Wallnut),
             };
 
             return new GameData(testMazeMapData, testInventoryData);

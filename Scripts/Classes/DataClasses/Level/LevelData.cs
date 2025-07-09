@@ -130,7 +130,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         #region Loot
 
-        public LootPool LootPool { get; }
+        public List<LootGenerateInfo> LootGenerateInfos { get; }
+        public float LootValue { get; }
 
         #endregion
 
@@ -164,7 +165,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             this.PosDef = levelDefinition.PosDef;
             this.ZombieSpawnConfigs = levelDefinition.ZombieSpawnConfigs;
 
-            this.LootPool = new LootPool(levelDefinition.LootGenerateInfos);
+            this.LootGenerateInfos = levelDefinition.LootGenerateInfos;
+            this.LootValue = levelDefinition.LootValue;
         }
 
         #region Private

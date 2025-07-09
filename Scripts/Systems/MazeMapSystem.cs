@@ -3,6 +3,7 @@ using TPL.PVZR.Classes.MazeMap;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers.Managers;
+using TPL.PVZR.ViewControllers.UI;
 using UnityEngine.SceneManagement;
 
 namespace TPL.PVZR.Systems
@@ -32,21 +33,42 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterEarly:
+                                // 加载场景
                                 SceneManager.LoadScene("MazeMapScene");
-                                _MazeMapController = MazeMapController.CreateController(_GameModel.GameData.MazeMapData);
+
+                                // MazeController数据结构生成
+                                _MazeMapController =
+                                    MazeMapController.CreateController(_GameModel.GameData.MazeMapData);
                                 _MazeMapController.GenerateMazeMatrix();
+
+                                // UI界面
+                                UIKit.OpenPanel<UIMazeMapPanel>();
+
                                 break;
                             case PhaseStage.EnterNormal:
                                 ActionKit.Sequence()
                                     .DelayFrame(1) // 等待场景加载
-                                    .Callback(() => { _MazeMapController.SetMazeMapTiles(); })
+                                    .Callback(() =>
+                                    {
+                                        // 设置场景
+                                        _MazeMapController.SetMazeMapTiles();
+                                    })
+                                    .Callback(() => { _PhaseModel.DelayChangePhase(GamePhase.MazeMap); })
                                     .Start(GameManager.Instance);
                                 break;
                             case PhaseStage.EnterLate:
                                 ActionKit.Sequence()
                                     .DelayFrame(2)
-                                    .Callback(() => { _PhaseModel.DelayChangePhase(GamePhase.MazeMap); })
                                     .Start(GameManager.Instance);
+                                break;
+                        }
+
+                        break;
+                    case GamePhase.MazeMap:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.LeaveNormal:
+                                UIKit.ClosePanel<UIMazeMapPanel>();
                                 break;
                         }
 

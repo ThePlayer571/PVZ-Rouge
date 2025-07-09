@@ -52,7 +52,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         #region Loot
 
-        public LootPool LootPool { get; }
+        List<LootGenerateInfo> LootGenerateInfos { get; }
+        float LootValue { get; }
 
         #endregion
     }
