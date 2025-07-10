@@ -15,11 +15,11 @@ namespace TPL.PVZR.Helpers.ClassCreator.Item
     {
         #region Public
 
-        public static CardData CreateCardData(PlantId id, PlantVariant variant = PlantVariant.V0)
+        public static CardData CreateCardData(PlantId id, PlantVariant variant = PlantVariant.V0, bool locked = false)
         {
             if (_cardsDict.TryGetValue((id, variant), out var cardDefinition))
             {
-                return new CardData(cardDefinition);
+                return new CardData(cardDefinition, locked);
             }
 
             throw new ArgumentException($"未考虑的PlantId和PlantVariant组合：{id}, {variant}");

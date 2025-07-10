@@ -1,5 +1,6 @@
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Loot;
+using TPL.PVZR.Helpers;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
 
@@ -18,11 +19,14 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
         {
             var AwardSystem = this.GetSystem<IAwardSystem>();
             var GameModel = this.GetModel<IGameModel>();
+
+            var awards = AwardSystem.GetLootGroupOfIndex(index);
             var inventory = GameModel.GameData.InventoryData;
 
-            var award = AwardSystem.GetLootGroupOfIndex(index);
-            foreach (var lootData in award)
+            foreach (var lootData in awards)
             {
+                if (!inventory.Cards.HasSlot()) break;
+
                 switch (lootData.LootType)
                 {
                     case LootType.Card:

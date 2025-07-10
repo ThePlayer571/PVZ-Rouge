@@ -9,12 +9,14 @@ namespace TPL.PVZR.ViewControllers.Others.UI.ItemView
     {
         [SerializeField] private TextMeshProUGUI SunpointText;
         [SerializeField] private Image PlantImage;
+        [SerializeField] private Image LockedImage;
 
 
         public void Initialize(CardData cardData)
         {
             SunpointText.text = cardData.CardDefinition.SunpointCost.ToString();
             PlantImage.sprite = cardData.CardDefinition.PlantSprite;
+            LockedImage.enabled = cardData.Locked;
         }
     }
 }

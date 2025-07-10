@@ -4,6 +4,7 @@ using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.CommandEvents.Level_ChooseSeeds;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers.Others.UI.ItemView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -12,22 +13,18 @@ namespace TPL.PVZR.ViewControllers.Others.UI
 {
     public class SeedOptionController : MonoBehaviour, IController, IPointerClickHandler
     {
-        [SerializeField] public Transform View;
-        [SerializeField] private Image PlantImage;
-        [SerializeField] private TextMeshProUGUI SunpointCostText;
-        public IGameModel _GameModel;
-        
+        [SerializeField] public CardView cardView;
+        private IGameModel _GameModel;
+
         public bool IsSelected = false;
         public CardData CardData;
 
         public void Initialize(CardData cardData)
         {
             this.CardData = cardData;
-            PlantImage.sprite = cardData.CardDefinition.PlantSprite;
-            SunpointCostText.text = cardData.CardDefinition.SunpointCost.ToString();
+            cardView.Initialize(cardData);
         }
-        
-        
+
 
         private void Awake()
         {

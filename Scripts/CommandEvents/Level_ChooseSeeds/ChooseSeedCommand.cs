@@ -42,7 +42,7 @@ namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
                 {
                     // View
                     movingView = GameObject.Instantiate(
-                        seed.View.gameObject,
+                        seed.cardView.gameObject,
                         seed.transform.position,
                         Quaternion.identity,
                         seed.transform
@@ -50,7 +50,7 @@ namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
                     );
                     movingView.transform.SetParent(ReferenceHelper.ChooseSeedPanel.transform);
                     // Seed
-                    seed.View.gameObject.SetActive(false);
+                    seed.cardView.gameObject.SetActive(false);
                     seed.IsSelected = true;
                     seed.transform.SetParent(ReferenceHelper.ChooseSeedPanel.ChosenSeeds);
                 })
@@ -62,7 +62,7 @@ namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
                         // View
                         GameObject.Destroy(movingView);
                         // Seed
-                        seed.View.gameObject.SetActive(true);
+                        seed.cardView.gameObject.SetActive(true);
                     });
                 })
                 .Start(GameManager.Instance);

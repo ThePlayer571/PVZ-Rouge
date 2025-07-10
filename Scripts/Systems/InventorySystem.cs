@@ -30,7 +30,8 @@ namespace TPL.PVZR.Systems
                                 foreach (var chosenCard in
                                          _LevelModel.ChosenSeeds.Select(seedData => seedData.CardData))
                                 {
-                                    _GameModel.GameData.InventoryData.Cards.Remove(chosenCard);
+                                    if (!chosenCard.Locked)
+                                        _GameModel.GameData.InventoryData.Cards.Remove(chosenCard);
                                 }
 
                                 break;

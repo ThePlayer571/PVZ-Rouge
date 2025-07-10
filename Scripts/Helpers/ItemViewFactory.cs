@@ -1,6 +1,7 @@
 using System;
 using QAssetBundle;
 using QFramework;
+using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.ViewControllers.Others.UI.ItemView;
 using UnityEngine;
@@ -24,13 +25,18 @@ namespace TPL.PVZR.Helpers
             {
                 case LootType.Card:
                 {
-                    var go = _cardViewPrefab.Instantiate();
-                    go.GetComponent<CardView>().Initialize(lootData.CardData);
-                    return go;
+                    return CreateItemView(lootData.CardData);
                 }
             }
 
             throw new NotImplementedException();
+        }
+
+        public static GameObject CreateItemView(CardData cardData)
+        {
+            var go = _cardViewPrefab.Instantiate();
+            go.GetComponent<CardView>().Initialize(cardData);
+            return go;
         }
     }
 }

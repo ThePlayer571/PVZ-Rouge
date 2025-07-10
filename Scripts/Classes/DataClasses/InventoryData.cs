@@ -1,17 +1,16 @@
 using System.Collections.Generic;
+using QFramework;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
 
 namespace TPL.PVZR.Classes.DataClasses
 {
-    
-    
     public class InventoryData
     {
         // 玩家属性
         public int InitialSunPoint { get; set; } = 50;
         public int SeedSlotCount { get; set; } = 6;
-        
+
         // 玩家卡牌
-        public List<CardData> Cards { get; set; } = new List<CardData>();
+        public BindableList<CardData> Cards { get; set; } = new BindableList<CardData>();
     }
 }

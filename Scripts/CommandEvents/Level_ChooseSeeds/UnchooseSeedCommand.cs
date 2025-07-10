@@ -10,8 +10,6 @@ using UnityEngine;
 
 namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
 {
-    //TODO 恢复异常处理，为了测试暂时注释掉了
-
     public class UnchooseSeedCommand : AbstractCommand
     {
         public UnchooseSeedCommand(SeedOptionController seed)
@@ -41,14 +39,14 @@ namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
                 {
                     // View
                     movingView = GameObject.Instantiate(
-                        seed.View.gameObject,
+                        seed.cardView.gameObject,
                         seed.transform.position,
                         Quaternion.identity,
                         seed.transform
                     );
                     movingView.transform.SetParent(ReferenceHelper.ChooseSeedPanel.transform);
                     // Seed
-                    seed.View.gameObject.SetActive(false);
+                    seed.cardView.gameObject.SetActive(false);
                     seed.IsSelected = false;
                     seed.transform.SetParent(ReferenceHelper.ChooseSeedPanel.InventorySeeds);
                 })
@@ -60,7 +58,7 @@ namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
                         // View
                         GameObject.Destroy(movingView);
                         // Seed
-                        seed.View.gameObject.SetActive(true);
+                        seed.cardView.gameObject.SetActive(true);
                     });
                 })
                 .Start(GameManager.Instance);
