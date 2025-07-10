@@ -20,6 +20,7 @@ namespace TPL.PVZR.Helpers.ClassCreator
             testInventoryData.Cards.Add(CardHelper.CreateCardData(PlantId.PeaShooter, locked: true));
             testInventoryData.Cards.Add(CardHelper.CreateCardData(PlantId.Sunflower, locked: true));
             testInventoryData.Cards.Add(CardHelper.CreateCardData(PlantId.Flowerpot, locked: true));
+            testInventoryData.Cards.Add(CardHelper.CreateCardData(PlantId.Marigold, locked: true));
 
             return new GameData(testMazeMapData, testInventoryData);
         }

@@ -2,16 +2,16 @@ using System;
 using DG.Tweening;
 using QFramework;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
-using TPL.PVZR.CommandEvents.Level_Gameplay;
 using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers
 {
-    public sealed class Sun : MonoBehaviour, IController
+    public sealed class Coin : MonoBehaviour, IController
     {
         private SpriteRenderer _SpriteRenderer;
         private bool _isCollected = false;
-        public int SunPoint { get; private set; } = 25; // 以后把Sun做成接口，可以创建各种Sun（比如大阳光/月光）
+
+        public int value;
 
 
         private void Awake()
@@ -19,6 +19,11 @@ namespace TPL.PVZR.ViewControllers
             _SpriteRenderer = this.GetComponent<SpriteRenderer>();
         }
 
+        public void Initialize(Sprite sprite, int value)
+        {
+            _SpriteRenderer.sprite = sprite;
+            this.value = value;
+        }
 
         public void OnCollected()
         {
@@ -32,10 +37,11 @@ namespace TPL.PVZR.ViewControllers
             });
         }
 
+
         public void TryCollect()
         {
             if (_isCollected) return; // 如果已经被收集了，就不再执行收集逻辑
-            this.SendCommand<CollectSunCommand>(new CollectSunCommand(this));
+            this.SendCommand<CollectCoinCommand>(new CollectCoinCommand(this));
         }
 
         private void OnMouseEnter()

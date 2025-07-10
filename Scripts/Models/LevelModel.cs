@@ -15,8 +15,9 @@ namespace TPL.PVZR.Models
     public interface ILevelModel : IModel
     {
         // Data
-        BindableProperty<int> SunPoint { get; set; }
+        BindableProperty<int> SunPoint { get; }
         List<SeedData> ChosenSeeds { get; }
+        BindableProperty<int> CurrentWave { get; }
 
         // Runtime Definition
         ILevelData LevelData { get; }
@@ -30,9 +31,10 @@ namespace TPL.PVZR.Models
 
     public class LevelModel : AbstractModel, ILevelModel
     {
-        public BindableProperty<int> SunPoint { get; set; }
+        public BindableProperty<int> SunPoint { get; private set; }
 
         public List<SeedData> ChosenSeeds { get; private set; }
+        public BindableProperty<int> CurrentWave { get; private set; }
 
 
         public ILevelData LevelData { get; private set; }
@@ -50,6 +52,7 @@ namespace TPL.PVZR.Models
             this.LevelData = levelData;
 
             this.SunPoint.SetValueWithoutEvent(levelData.InitialSunPoint);
+            CurrentWave.Value = 0;
         }
 
         public void Reset()
@@ -63,6 +66,7 @@ namespace TPL.PVZR.Models
         protected override void OnInit()
         {
             ChosenSeeds = new List<SeedData>();
+            CurrentWave = new BindableProperty<int>(0);
             SunPoint = new BindableProperty<int>(0);
         }
     }

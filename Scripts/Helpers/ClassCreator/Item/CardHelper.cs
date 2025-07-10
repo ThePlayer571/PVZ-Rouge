@@ -70,6 +70,8 @@ namespace TPL.PVZR.Helpers.ClassCreator.Item
                     Carddefinition.CardDefinition_Flowerpot),
                 [(PlantId.SnowPea, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_SnowPea),
+                [(PlantId.Marigold, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                    Carddefinition.CardDefinition_Marigold),
             };
             _seedControllerPrefab =
                 resLoader.LoadSync<GameObject>(Seedcontroller_prefab.BundleName, Seedcontroller_prefab.SeedController);

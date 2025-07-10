@@ -17,9 +17,10 @@
 | ----------------- | ------------- | -------------------- |
 | LevelEndObject    | ForeGround    | 200                  |
 | SelectFramebox    | ForeGround    | 100                  |
+| Sun               | ForeGround    | 10                   |
+| Coin              | ForeGround    | 10                   |
 | Zombies           | Zombie        | 0~30010(by Allocate) |
 | Player            | MidGround     | 500                  |
-| Sun               | MidGround     | 350                  |
 | Projectile        | MidGround     | 300~349              |
 | (Obstacle)Zombies | MidGround     | 250~299(260)         |
 | Plants            | MidGround     | 200~249(210)         |

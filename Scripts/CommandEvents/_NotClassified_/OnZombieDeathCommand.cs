@@ -21,7 +21,6 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
         protected override void OnExecute()
         {
             var _PhaseModel = this.GetModel<IPhaseModel>();
-            var _WaveSystem = this.GetSystem<IWaveSystem>();
             var _LevelModel = this.GetModel<ILevelModel>();
             var _ZombieSpawnSystem = this.GetSystem<IZombieSpawnSystem>();
 
@@ -33,7 +32,7 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
             EntityFactory.ZombieFactory.RemoveZombie(zombie);
 
             // 尝试结束关卡
-            bool pass = _WaveSystem.CurrentWave.Value == _LevelModel.LevelData.TotalWaveCount &&
+            bool pass = _LevelModel.CurrentWave.Value == _LevelModel.LevelData.TotalWaveCount &&
                         _ZombieSpawnSystem.ActiveTasksCount == 0 &&
                         EntityFactory.ZombieFactory.ActiveZombies.Count == 0;
             if (pass)

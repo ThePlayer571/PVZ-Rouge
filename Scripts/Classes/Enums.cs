@@ -20,16 +20,18 @@ namespace TPL.PVZR.Classes
         Wallnut,
         Flowerpot,
         SnowPea,
-        CherryBoom,
-        PotatoMine,
-        Blover,
-        CabbagePult,
-        Cactus,
-        Caltrop,
-        CornPult,
-        MelonPult,
-        RepeaterPea,
-        SplitPea,
-        Chomper
+        Marigold,
+        
+        // CherryBoom,
+        // PotatoMine,
+        // Blover,
+        // CabbagePult,
+        // Cactus,
+        // Caltrop,
+        // CornPult,
+        // MelonPult,
+        // RepeaterPea,
+        // SplitPea,
+        // Chomper
     }
 }

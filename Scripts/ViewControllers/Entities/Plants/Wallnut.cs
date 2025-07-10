@@ -9,9 +9,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
     {
         public override PlantId Id { get; } = PlantId.Wallnut;
 
-        public override void Initialize(Direction2 direction)
+        protected override void OnInit()
         {
-            base.Initialize(direction);
             HealthPoint = GlobalEntityData.Plant_Wallnut_Health;
         }
     }

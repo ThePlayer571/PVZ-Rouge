@@ -13,7 +13,6 @@ namespace TPL.PVZR.ViewControllers.Others.UI
     {
         [SerializeField] private Image Fill;
         [SerializeField] private RectTransform Flags;
-        private IWaveSystem _WaveSystem;
         private ILevelModel _LevelModel;
 
         private const float FlagStartX = -46;
@@ -41,12 +40,11 @@ namespace TPL.PVZR.ViewControllers.Others.UI
 
         private void Awake()
         {
-            _WaveSystem = this.GetSystem<IWaveSystem>();
             _LevelModel = this.GetModel<ILevelModel>();
             
             _flagsDict = new Dictionary<int, RectTransform>();
 
-            _WaveSystem.CurrentWave.Register(wave =>
+            _LevelModel.CurrentWave.Register(wave =>
                 {
                     // 进度条
                     var rate = (float)wave / _LevelModel.LevelData.TotalWaveCount;

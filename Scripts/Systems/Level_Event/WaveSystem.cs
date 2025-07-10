@@ -10,7 +10,6 @@ namespace TPL.PVZR.Systems.Level_Event
 {
     public interface IWaveSystem : ISystem
     {
-        BindableProperty<int> CurrentWave { get; }
     }
 
     public class WaveSystem : AbstractSystem, IWaveSystem
@@ -21,15 +20,15 @@ namespace TPL.PVZR.Systems.Level_Event
 
             if (WaveTimer.Ready)
             {
-                CurrentWave.Value++;
-                WaveTimer.SetRemaining(_LevelModel.LevelData.DurationOfWave(CurrentWave.Value));
-                this.SendEvent<OnWaveStart>(new OnWaveStart { Wave = CurrentWave.Value });
+                _LevelModel.   CurrentWave.Value++;
+                WaveTimer.SetRemaining(_LevelModel.LevelData.DurationOfWave(_LevelModel.CurrentWave.Value));
+                this.SendEvent<OnWaveStart>(new OnWaveStart { Wave = _LevelModel.CurrentWave.Value });
             }
         }
 
         private void StartRunning()
         {
-            CurrentWave.Value = 0;
+            _LevelModel. CurrentWave.Value = 0;
             WaveTimer.SetRemaining(_LevelModel.LevelData.DurationOfWave(0));
             
             GameManager.ExecuteOnUpdate(Update);
@@ -41,7 +40,6 @@ namespace TPL.PVZR.Systems.Level_Event
         }
 
         private ILevelModel _LevelModel;
-        public BindableProperty<int> CurrentWave { get; private set; }
 
         private Timer WaveTimer;
 
@@ -49,7 +47,6 @@ namespace TPL.PVZR.Systems.Level_Event
         {
             _LevelModel = this.GetModel<ILevelModel>();
 
-            CurrentWave = new BindableProperty<int>(0);
             WaveTimer = new Timer(0);
 
             this.RegisterEvent<OnPhaseChangeEvent>(e =>

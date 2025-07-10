@@ -6,11 +6,11 @@ namespace TPL.PVZR.Classes.DataClasses
 {
     public class InventoryData
     {
-        // 玩家属性
         public int InitialSunPoint { get; set; } = 50;
         public int SeedSlotCount { get; set; } = 6;
+        public BindableProperty<int> Coins { get; set; } = new(100);
 
-        // 玩家卡牌
+        // Cards
         public BindableList<CardData> Cards { get; set; } = new BindableList<CardData>();
     }
 }

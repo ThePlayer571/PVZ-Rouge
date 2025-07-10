@@ -28,12 +28,15 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
 
         #endregion
 
-        public virtual void Initialize(Direction2 direction)
+        public void Initialize(Direction2 direction)
         {
             this.Direction = direction;
-
             gameObject.LocalScaleX(direction.ToInt());
+            
+            OnInit();
         }
+
+        protected abstract void OnInit();
 
         #region 被攻击
 

@@ -4,6 +4,7 @@ using DG.Tweening;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes;
+using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
@@ -19,7 +20,7 @@ namespace TPL.PVZR.Helpers
 {
     public static class EntityFactory
     {
-        private static ResLoader _resLoader;
+        private static readonly ResLoader _resLoader;
 
         static EntityFactory()
         {
@@ -75,6 +76,42 @@ namespace TPL.PVZR.Helpers
             }
         }
 
+        public static class CoinFactory
+        {
+            private static GameObject _silverCoinPrefab;
+            private static GameObject _goldCoinPrefab;
+
+            static CoinFactory()
+            {
+                _silverCoinPrefab =
+                    _resLoader.LoadSync<GameObject>(Coinsilver_prefab.BundleName, Coinsilver_prefab.CoinSilver);
+                _goldCoinPrefab = _resLoader.LoadSync<GameObject>(Coingold_prefab.BundleName, Coingold_prefab.CoinGold);
+            }
+
+            public static Coin SpawnCoinWithJump(CoinId coinId, Vector2 position, bool autoCollect = true)
+            {
+                var prefab = coinId switch
+                {
+                    CoinId.Silver => _silverCoinPrefab,
+                    CoinId.Gold => _goldCoinPrefab,
+                    _ => throw new ArgumentException($"未考虑的硬币类型：{coinId}")
+                };
+                var go = prefab.Instantiate(position, Quaternion.identity).GetComponent<Coin>();
+
+                Vector3 endPos = new Vector3(position.x + (RandomHelper.Default.Range(-0.5f, 0.5f)),
+                    position.y + (RandomHelper.Default.Range(0f, 0.2f)), 0);
+                go.transform.DOJump(endPos, TestDataManager.Instance.Power, 1, 0.5f);
+
+                if (autoCollect)
+                {
+                    ActionKit.Delay(2f, () => { go.TryCollect(); }).Start(go);
+                }
+
+                return go;
+            }
+        }
+
+
         public static class PlantFactory
         {
             static PlantFactory()
@@ -86,6 +123,7 @@ namespace TPL.PVZR.Helpers
                     [PlantId.Wallnut] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Wallnut),
                     [PlantId.Flowerpot] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Flowerpot),
                     [PlantId.SnowPea] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.SnowPea),
+                    [PlantId.Marigold] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Marigold),
                 };
             }
 
