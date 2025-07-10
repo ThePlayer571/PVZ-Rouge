@@ -6,6 +6,7 @@ using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Helpers.ClassCreator.Item;
 using TPL.PVZR.Models;
+using TPL.PVZR.Tools;
 
 namespace TPL.PVZR.Systems
 {
@@ -42,8 +43,8 @@ namespace TPL.PVZR.Systems
             HasAward = true;
             for (int i = 0; i < count; i++)
             {
-                var lootPool = new LootPool(infos, value);
-                var chosenLoots = lootPool.GetAllRemainingLoots()
+                var randomPool = new RandomPool<LootGenerateInfo, LootInfo>(infos, value);
+                var chosenLoots = randomPool.GetAllRemainingOutputs()
                     .Select(lootInfo => LootHelper.CreateLootData(lootInfo));
                 _lootGroupList.Add(chosenLoots.ToList());
             }

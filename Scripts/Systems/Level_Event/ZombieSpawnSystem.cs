@@ -21,7 +21,7 @@ namespace TPL.PVZR.Systems.Level_Event
 
     public class ZombieSpawnSystem : AbstractSystem, IZombieSpawnSystem
     {
-        private List<ZombieSpawnTask> ActiveTasks;
+        private List<RandomPool<ZombieSpawnInfo, ZombieSpawnInfo>> ActiveTasks;
         private Timer SpawnTimer;
 
         private void Update()
@@ -38,7 +38,7 @@ namespace TPL.PVZR.Systems.Level_Event
                         continue;
                     }
 
-                    var info = task.GetRandomZombieSpawnInfo();
+                    var info = task.GetRandomOutput();
                     if (info != null) Spawn(info);
                 }
             }
@@ -66,7 +66,7 @@ namespace TPL.PVZR.Systems.Level_Event
         {
             _LevelModel = this.GetModel<ILevelModel>();
 
-            ActiveTasks = new List<ZombieSpawnTask>();
+            ActiveTasks = new List<RandomPool<ZombieSpawnInfo, ZombieSpawnInfo>>();
             SpawnTimer = new Timer(0.5f);
 
             this.RegisterEvent<OnPhaseChangeEvent>(e =>
@@ -90,9 +90,9 @@ namespace TPL.PVZR.Systems.Level_Event
 
             this.RegisterEvent<OnWaveStart>(e =>
             {
-                var infos = _LevelModel.LevelData.ZombieSpawnInfosOfWave(e.Wave);
+                List<ZombieSpawnInfo> infos = _LevelModel.LevelData.ZombieSpawnInfosOfWave(e.Wave);
                 var value = _LevelModel.LevelData.ValueOfWave(e.Wave);
-                var task = new ZombieSpawnTask(infos, value);
+                var task = new RandomPool<ZombieSpawnInfo, ZombieSpawnInfo>(infos, value);
                 ActiveTasks.Add(task);
             });
         }
