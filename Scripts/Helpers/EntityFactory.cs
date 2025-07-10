@@ -116,22 +116,28 @@ namespace TPL.PVZR.Helpers
         {
             static PlantFactory()
             {
-                _plantDict = new Dictionary<PlantId, GameObject>
+                _plantDict = new Dictionary<PlantDef, GameObject>
                 {
-                    [PlantId.PeaShooter] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Peashooter),
-                    [PlantId.Sunflower] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Sunflower),
-                    [PlantId.Wallnut] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Wallnut),
-                    [PlantId.Flowerpot] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Flowerpot),
-                    [PlantId.SnowPea] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.SnowPea),
-                    [PlantId.Marigold] = _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Marigold),
+                    [new PlantDef(PlantId.PeaShooter, PlantVariant.V0)] =
+                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Peashooter),
+                    [new PlantDef(PlantId.Sunflower, PlantVariant.V0)] = 
+                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Sunflower),
+                    [new PlantDef(PlantId.Wallnut, PlantVariant.V0)] = 
+                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Wallnut),
+                    [new PlantDef(PlantId.Flowerpot, PlantVariant.V0)] = 
+                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Flowerpot),
+                    [new PlantDef(PlantId.SnowPea, PlantVariant.V0)] = 
+                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.SnowPea),
+                    [new PlantDef(PlantId.Marigold, PlantVariant.V0)] = 
+                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Marigold),
                 };
             }
 
-            private static readonly Dictionary<PlantId, GameObject> _plantDict;
+            private static readonly Dictionary<PlantDef, GameObject> _plantDict;
 
-            public static Plant SpawnPlant(PlantId id, Direction2 direction, Vector2Int cellPos)
+            public static Plant SpawnPlant(PlantDef def, Direction2 direction, Vector2Int cellPos)
             {
-                if (_plantDict.TryGetValue(id, out var plantPrefab))
+                if (_plantDict.TryGetValue(def, out var plantPrefab))
                 {
                     var plant = plantPrefab
                         .Instantiate(LevelGridHelper.CellToWorldBottom(cellPos), Quaternion.identity)
@@ -141,7 +147,7 @@ namespace TPL.PVZR.Helpers
                 }
                 else
                 {
-                    throw new ArgumentException($"未考虑的植物类型：{id}");
+                    throw new ArgumentException($"未考虑的植物类型：{def}");
                 }
             }
         }

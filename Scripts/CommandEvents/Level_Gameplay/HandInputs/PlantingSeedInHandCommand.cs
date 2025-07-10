@@ -35,13 +35,13 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs
             var cellPos = HandHelper.HandCellPos();
             if (!HandHelper.DaveCanReach(cellPos))
                 throw new Exception($"尝试调用SpawnPlantCommand，但是手够不到植物种植处"); // 手能够到目标位置
-            var id = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.Id;
-            if (!_LevelGridModel.CanSpawnPlantOn(cellPos, id))
-                throw new Exception($"无法在此处种植植物，Pos:{cellPos}, Plant: {id}"); // 
+            var def = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.PlantDef;
+            if (!_LevelGridModel.CanSpawnPlantOn(cellPos, def))
+                throw new Exception($"无法在此处种植植物，Pos:{cellPos}, Plant: {def}"); // 
 
             this.SendEvent<PlantingSeedInHandEvent>(new PlantingSeedInHandEvent
                 { Direction = _direction, PlantedSeed = _HandSystem.HandInfo.Value.PickedSeed });
-            this.SendCommand<SpawnPlantCommand>(new SpawnPlantCommand(id, cellPos, _direction));
+            this.SendCommand<SpawnPlantCommand>(new SpawnPlantCommand(def, cellPos, _direction));
         }
     }
 }

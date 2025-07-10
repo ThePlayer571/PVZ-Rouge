@@ -1,3 +1,6 @@
+using System;
+using TPL.PVZR.Classes.DataClasses.Item.Card;
+
 namespace TPL.PVZR.Classes
 {
     public enum ProjectileId
@@ -12,6 +15,44 @@ namespace TPL.PVZR.Classes
         ConeheadZombie
     }
 
+    [Serializable]
+    public struct PlantDef : IEquatable<PlantDef>
+    {
+        public PlantId Id;
+        public PlantVariant Variant;
+
+        public PlantDef(PlantId id, PlantVariant variant)
+        {
+            Id = id;
+            Variant = variant;
+        }
+
+        public bool Equals(PlantDef other)
+        {
+            return Id == other.Id && Variant == other.Variant;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PlantDef other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Variant);
+        }
+
+        public static bool operator ==(PlantDef left, PlantDef right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(PlantDef left, PlantDef right)
+        {
+            return !left.Equals(right);
+        }
+    }
+
     public enum PlantId
     {
         NotSet,
@@ -21,7 +62,7 @@ namespace TPL.PVZR.Classes
         Flowerpot,
         SnowPea,
         Marigold,
-        
+    
         // CherryBoom,
         // PotatoMine,
         // Blover,
@@ -33,5 +74,19 @@ namespace TPL.PVZR.Classes
         // RepeaterPea,
         // SplitPea,
         // Chomper
+    }
+    
+    public enum PlantVariant
+    {
+        V0,
+        V1,
+        V2,
+        V3,
+        V4,
+        V5,
+        V6,
+        V7,
+        V8,
+        V9
     }
 }

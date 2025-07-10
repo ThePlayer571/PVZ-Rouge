@@ -48,8 +48,8 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
                     {
                         return false;
                     }
-                    var plantId = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.Id;
-                    return _LevelGridModel.CanSpawnPlantOn(handCellPos, plantId);
+                    var plantDef = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.PlantDef;
+                    return _LevelGridModel.CanSpawnPlantOn(handCellPos, plantDef);
                 }
             }
 

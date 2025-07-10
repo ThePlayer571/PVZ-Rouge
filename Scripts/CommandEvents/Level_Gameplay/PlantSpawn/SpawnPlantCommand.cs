@@ -11,14 +11,14 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn
 {
     public class SpawnPlantCommand : AbstractCommand
     {
-        public SpawnPlantCommand(PlantId id, Vector2Int cellPos, Direction2 direction)
+        public SpawnPlantCommand(PlantDef def, Vector2Int cellPos, Direction2 direction)
         {
-            this._id = id;
+            this._def = def;
             this._cellPos = cellPos;
             this._direction = direction;
         }
 
-        private PlantId _id;
+        private PlantDef _def;
         private Vector2Int _cellPos;
         private Direction2 _direction;
 
@@ -30,11 +30,11 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn
             // 异常处理
             if (_PhaseModel.GamePhase != GamePhase.Gameplay)
                 throw new Exception($"尝试调用SpawnPlantCommand，但GameState: {_PhaseModel.GamePhase}"); // 游戏阶段正确
-            if (!_LevelGridModel.CanSpawnPlantOn(_cellPos, _id))
-                throw new Exception($"无法在此处种植植物，Pos:{_cellPos}, Plant: {_id}"); // 
+            if (!_LevelGridModel.CanSpawnPlantOn(_cellPos, _def))
+                throw new Exception($"无法在此处种植植物，Pos:{_cellPos}, Plant: {_def}"); // 
 
             //
-            var go = EntityFactory.PlantFactory.SpawnPlant(_id, _direction, _cellPos);
+            var go = EntityFactory.PlantFactory.SpawnPlant(_def, _direction, _cellPos);
             var targetCell = _LevelGridModel.GetCell(_cellPos);
             targetCell.CellPlantState = CellPlantState.HavePlant;
             targetCell.Plant = go;

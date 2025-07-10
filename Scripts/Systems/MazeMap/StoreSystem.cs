@@ -34,7 +34,7 @@ namespace TPL.PVZR.Systems
                             case PhaseStage.EnterNormal:
                                 var ownedPlants = _GameModel.GameData.InventoryData.Cards
                                     .Where(cardData => !cardData.Locked)
-                                    .Select(cardData => cardData.CardDefinition.Id)
+                                    .Select(cardData => cardData.CardDefinition.PlantDef.Id)
                                     .ToHashSet();
 
                                 var recipePool = RecipeHelper.GetRelatedRecipes(ownedPlants);

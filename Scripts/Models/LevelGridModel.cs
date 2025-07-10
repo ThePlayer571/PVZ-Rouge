@@ -19,7 +19,7 @@ namespace TPL.PVZR.Models
 
         // 实用方法
         bool IsValidPos(Vector2Int pos);
-        bool CanSpawnPlantOn(Vector2Int pos, PlantId id);
+        bool CanSpawnPlantOn(Vector2Int pos, PlantDef def);
         Cell GetCell(Vector2Int cellPos);
         Cell GetCell(Vector2 worldPos);
 
@@ -40,9 +40,9 @@ namespace TPL.PVZR.Models
             return true;
         }
 
-        public bool CanSpawnPlantOn(Vector2Int pos, PlantId id)
+        public bool CanSpawnPlantOn(Vector2Int pos, PlantDef def)
         {
-            if (id == PlantId.Flowerpot) // 花盆
+            if (def.Id == PlantId.Flowerpot) // 花盆
             {
                 if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false;
 
@@ -60,8 +60,6 @@ namespace TPL.PVZR.Models
                 if (belowCell == null) throw new Exception($"调用CanSpawnPlantOn时，belowCell为null，pos: {pos}.Down");
                 return cell.IsEmpty && belowCell.IsDirtPlat;
             }
-
-            throw new ArgumentException($"出现未考虑的plantId: {id}");
         }
 
         public Cell GetCell(Vector2Int cellPos)

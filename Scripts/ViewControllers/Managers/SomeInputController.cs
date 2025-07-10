@@ -40,8 +40,8 @@ namespace TPL.PVZR.ViewControllers.Managers
                 if (_HandSystem.HandInfo.Value.HandState != HandState.HaveSeed) return; // 手上持有植物
                 var pos = HandHelper.HandCellPos();
                 if (!HandHelper.DaveCanReachHand()) return; // 手能够到目标位置
-                var id = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.Id;
-                if (!_LevelGridModel.CanSpawnPlantOn(pos, id)) return; // 
+                var def = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.PlantDef;
+                if (!_LevelGridModel.CanSpawnPlantOn(pos, def)) return; // 
 
                 this.SendCommand<PlantingSeedInHandCommand>(new PlantingSeedInHandCommand(Direction2.Left));
             };
@@ -53,8 +53,8 @@ namespace TPL.PVZR.ViewControllers.Managers
                 if (_HandSystem.HandInfo.Value.HandState != HandState.HaveSeed) return; // 手上持有植物
                 var pos = HandHelper.HandCellPos();
                 if (!HandHelper.DaveCanReachHand()) return; // 手能够到目标位置
-                var id = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.Id;
-                if (!_LevelGridModel.CanSpawnPlantOn(pos, id)) return; // 
+                var def = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.PlantDef;
+                if (!_LevelGridModel.CanSpawnPlantOn(pos, def)) return; // 
 
                 this.SendCommand<PlantingSeedInHandCommand>(new PlantingSeedInHandCommand(Direction2.Right));
             };
