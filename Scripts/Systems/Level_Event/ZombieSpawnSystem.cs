@@ -92,7 +92,7 @@ namespace TPL.PVZR.Systems.Level_Event
             {
                 List<ZombieSpawnInfo> infos = _LevelModel.LevelData.ZombieSpawnInfosOfWave(e.Wave);
                 var value = _LevelModel.LevelData.ValueOfWave(e.Wave);
-                var task = new RandomPool<ZombieSpawnInfo, ZombieSpawnInfo>(infos, value);
+                var task = new RandomPool<ZombieSpawnInfo, ZombieSpawnInfo>(infos, value, RandomHelper.Default);
                 ActiveTasks.Add(task);
             });
         }

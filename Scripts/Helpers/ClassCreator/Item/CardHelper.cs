@@ -25,6 +25,16 @@ namespace TPL.PVZR.Helpers.ClassCreator.Item
             throw new ArgumentException($"未考虑的PlantId和PlantVariant组合：{id}, {variant}");
         }
 
+        public static CardDefinition GetCardDefinition(PlantId id, PlantVariant variant = PlantVariant.V0)
+        {
+            if (_cardsDict.TryGetValue((id, variant), out var cardDefinition))
+            {
+                return cardDefinition;
+            }
+
+            throw new ArgumentException($"未考虑的PlantId和PlantVariant组合：{id}, {variant}");
+        }
+
         public static SeedOptionController CreateSeedOptionController(CardData cardData)
         {
             var go = _seedOptionControllerPrefab.Instantiate().GetComponent<SeedOptionController>();

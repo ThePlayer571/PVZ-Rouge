@@ -18,5 +18,12 @@ namespace TPL.PVZR.ViewControllers.Others.UI.ItemView
             PlantImage.sprite = cardData.CardDefinition.PlantSprite;
             LockedImage.enabled = cardData.Locked;
         }
+
+        public void Initialize(CardDefinition cardDefinition, bool locked = false)
+        {
+            SunpointText.text = cardDefinition.SunpointCost.ToString();
+            PlantImage.sprite = cardDefinition.PlantSprite;
+            LockedImage.enabled = locked;
+        }
     }
 }

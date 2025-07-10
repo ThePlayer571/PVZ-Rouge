@@ -5,10 +5,10 @@ namespace TPL.PVZR.Classes.DataClasses.Loot
 {
     public class LootData
     {
-        public LootType LootType { get; set; }
-        public CardData CardData { get; set; }
+        public LootType LootType { get; }
+        public CardData CardData { get; }
 
-        public LootData(LootType lootType)
+        public LootData(LootType lootType, CardData cardData = null)
         {
             LootType = lootType;
         }

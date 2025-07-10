@@ -3,7 +3,9 @@ using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses.Recipe;
+using TPL.PVZR.Helpers.ClassCreator.Item;
 using TPL.PVZR.Tools;
+using TPL.PVZR.Tools.Random;
 
 namespace TPL.PVZR.Helpers.ClassCreator
 {
@@ -33,7 +35,7 @@ namespace TPL.PVZR.Helpers.ClassCreator
                 }
             }
 
-            return new RandomPool<RecipeGenerateInfo, RecipeInfo>(relatedRecipes, 1);
+            return new RandomPool<RecipeGenerateInfo, RecipeInfo>(relatedRecipes, 1, RandomHelper.Game);
         }
     }
 }

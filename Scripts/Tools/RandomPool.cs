@@ -34,16 +34,18 @@ namespace TPL.PVZR.Tools
         private readonly List<TGenerateInfo> availableInfos;
         private float remainingValue;
         private readonly float allowedValueOffset;
+        private readonly DeterministicRandom Random;
 
         #endregion
 
         #region Constructor
 
-        public RandomPool(List<TGenerateInfo> infos, float totalValue)
+        public RandomPool(List<TGenerateInfo> infos, float value, DeterministicRandom random)
         {
             availableInfos = infos.ToList();
-            remainingValue = totalValue;
-            allowedValueOffset = totalValue * ValueOffsetRatio;
+            remainingValue = value;
+            allowedValueOffset = value * ValueOffsetRatio;
+            Random = random;
         }
 
         #endregion
@@ -99,11 +101,11 @@ namespace TPL.PVZR.Tools
             return results;
         }
 
-        public List<TOutput> GetRandomOutputs(int maxCount)
+        public List<TOutput> GetRandomOutputs(int count)
         {
             List<TOutput> results = new List<TOutput>();
             
-            for (int i = 0; i < maxCount && !IsFinished; i++)
+            for (int i = 0; i < count && !IsFinished; i++)
             {
                 var output = GetRandomOutput();
                 if (output != null)
@@ -119,6 +121,7 @@ namespace TPL.PVZR.Tools
             return results;
         }
 
+
         #endregion
 
         #region Private Methods
@@ -127,13 +130,13 @@ namespace TPL.PVZR.Tools
         private TGenerateInfo SelectRandomInfo()
         {
             var totalWeight = availableInfos.Sum(item => item.Weight);
-            var randomWeight = RandomHelper.Default.Value * totalWeight;
+            var chosenWeight = Random.Value * totalWeight;
 
-            var accumulatedWeight = 0f;
+            var currentWeight = 0f;
             foreach (var info in availableInfos)
             {
-                accumulatedWeight += info.Weight;
-                if (accumulatedWeight >= randomWeight)
+                currentWeight += info.Weight;
+                if (currentWeight >= chosenWeight)
                 {
                     return info;
                 }
@@ -149,9 +152,9 @@ namespace TPL.PVZR.Tools
         }
 
         /// <summary>消耗价值并检查是否完成</summary>
-        private void ConsumeValue(float valueToConsume)
+        private void ConsumeValue(float value)
         {
-            remainingValue -= valueToConsume;
+            remainingValue -= value;
             if (remainingValue < allowedValueOffset)
             {
                 IsFinished = true;

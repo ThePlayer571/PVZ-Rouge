@@ -11,7 +11,7 @@ namespace TPL.PVZR.Helpers.ClassCreator.Item
             {
                 case LootType.Card:
                     var cardData = CardHelper.CreateCardData(lootInfo.PlantId);
-                    return new LootData(LootType.Card) { CardData = cardData };
+                    return new LootData(LootType.Card, cardData: cardData);
             }
 
             throw new NotImplementedException($"未考虑的lootType: {lootInfo.LootType}");

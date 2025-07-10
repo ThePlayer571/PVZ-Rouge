@@ -7,6 +7,7 @@ using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Helpers.ClassCreator.Item;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
+using TPL.PVZR.Tools.Random;
 
 namespace TPL.PVZR.Systems
 {
@@ -38,12 +39,11 @@ namespace TPL.PVZR.Systems
 
         private void WriteLoots(List<LootGenerateInfo> infos, float value, int count)
         {
-            "Call Writre".LogInfo();
             _lootGroupList.Clear();
             HasAward = true;
             for (int i = 0; i < count; i++)
             {
-                var randomPool = new RandomPool<LootGenerateInfo, LootInfo>(infos, value);
+                var randomPool = new RandomPool<LootGenerateInfo, LootInfo>(infos, value, RandomHelper.Game);
                 var chosenLoots = randomPool.GetAllRemainingOutputs()
                     .Select(lootInfo => LootHelper.CreateLootData(lootInfo));
                 _lootGroupList.Add(chosenLoots.ToList());

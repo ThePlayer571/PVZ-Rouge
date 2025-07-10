@@ -1,8 +1,10 @@
 using System;
 using QAssetBundle;
 using QFramework;
+using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Classes.DataClasses.Loot;
+using TPL.PVZR.Helpers.ClassCreator.Item;
 using TPL.PVZR.ViewControllers.Others.UI.ItemView;
 using UnityEngine;
 
@@ -36,6 +38,14 @@ namespace TPL.PVZR.Helpers
         {
             var go = _cardViewPrefab.Instantiate();
             go.GetComponent<CardView>().Initialize(cardData);
+            return go;
+        }
+
+        public static GameObject CreateItemView(PlantId plantId)
+        {
+            var cardDefinition = CardHelper.GetCardDefinition(plantId);
+            var go = _cardViewPrefab.Instantiate();
+            go.GetComponent<CardView>().Initialize(cardDefinition);
             return go;
         }
     }
