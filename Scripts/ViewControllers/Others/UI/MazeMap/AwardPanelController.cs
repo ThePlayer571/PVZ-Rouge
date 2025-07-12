@@ -31,7 +31,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
             toggle.onValueChanged.AddListener(Display);
 
             if (!_AwardSystem.HasAward) return;
-            for (int index = 1; index <= 3; index++)
+            for (int index = 0; index < 3; index++)
             {
                 // 创建Choice节点
                 var Choice = AwardChoicePrefab.Instantiate().GetComponent<Button>();
@@ -42,7 +42,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                 choices.Add(Choice);
 
                 // 初始化Choice的View
-                var loots = _AwardSystem.GetLootGroupOfIndex(index);
+                var loots = _AwardSystem.GetLootGroupByIndex(index);
                 foreach (var loot in loots)
                 {
                     var go = ItemViewFactory.CreateItemView(loot);
@@ -78,7 +78,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
         private void OnDestroy()
         {
             toggle.onValueChanged.RemoveListener(Display);
-            
+
             foreach (var choice in choices)
             {
                 choice.onClick.RemoveAllListeners();

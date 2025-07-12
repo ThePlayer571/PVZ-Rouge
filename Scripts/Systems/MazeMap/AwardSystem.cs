@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Loot;
+using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Helpers.ClassCreator.Item;
@@ -13,7 +14,8 @@ namespace TPL.PVZR.Systems
 {
     public interface IAwardSystem : ISystem
     {
-        List<LootData> GetLootGroupOfIndex(int index);
+        IReadOnlyList<LootData> GetLootGroupByIndex(int index);
+        bool IsAwardAvailable { get; }
         bool HasAward { get; }
     }
 
@@ -23,15 +25,12 @@ namespace TPL.PVZR.Systems
 
         private List<List<LootData>> _lootGroupList = new();
 
-        public List<LootData> GetLootGroupOfIndex(int index)
+        public IReadOnlyList<LootData> GetLootGroupByIndex(int index)
         {
-            if (index < 1 || index > _lootGroupList.Count)
-            {
-                throw new System.ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
-            }
-
-            return _lootGroupList[index - 1];
+            return _lootGroupList[index];
         }
+
+        public bool IsAwardAvailable { get; private set; } = false;
 
         public bool HasAward { get; private set; } = false;
 
@@ -57,10 +56,12 @@ namespace TPL.PVZR.Systems
         }
 
         private ILevelModel _LevelModel;
+        private IGameModel _GameModel;
 
         protected override void OnInit()
         {
             _LevelModel = this.GetModel<ILevelModel>();
+            _GameModel = this.GetModel<IGameModel>();
 
             this.RegisterEvent<OnPhaseChangeEvent>(e =>
             {
@@ -70,6 +71,7 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
+                                IsAwardAvailable = true;
                                 WriteLoots(_LevelModel.LevelData.LootGenerateInfos, _LevelModel.LevelData.LootValue, 3);
                                 break;
                         }
@@ -84,6 +86,25 @@ namespace TPL.PVZR.Systems
                         }
 
                         break;
+                }
+            });
+
+            this.RegisterEvent<ChooseAwardEvent>(e =>
+            {
+                IsAwardAvailable = false;
+                var awards = GetLootGroupByIndex(e.index);
+                var inventory = _GameModel.GameData.InventoryData;
+
+                foreach (var lootData in awards)
+                {
+                    if (!inventory.HasAvailableCardSlots()) break;
+
+                    switch (lootData.LootType)
+                    {
+                        case LootType.Card:
+                            inventory.AddCard(lootData.CardData);
+                            break;
+                    }
                 }
             });
         }

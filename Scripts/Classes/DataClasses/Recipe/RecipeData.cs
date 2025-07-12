@@ -11,12 +11,14 @@ namespace TPL.PVZR.Classes.DataClasses.Recipe
         public List<PlantId> consumeCards { get; }
         public int consumeCoins { get; }
         public LootData output { get; }
+        public bool used { get; set; }
 
         public RecipeData(RecipeInfo info)
         {
             consumeCards = info.ingredients.cards;
             consumeCoins = RandomHelper.Game.Range(info.ingredients.coinRange.x, info.ingredients.coinRange.y + 1);
             output = LootHelper.CreateLootData(info.output);
+            used = false;
         }
     }
 }

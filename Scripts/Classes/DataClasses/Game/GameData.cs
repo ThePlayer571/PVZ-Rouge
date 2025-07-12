@@ -6,13 +6,13 @@ namespace TPL.PVZR.Classes.DataClasses.Game
     public class GameData : IGameData
     {
         public MazeMapData MazeMapData { get; set; }
-        public InventoryData InventoryData { get; set; }
+        public IInventoryData InventoryData { get; set; }
         public GlobalEntityData GlobalEntityData { get; set; }
 
 
         //
 
-        public GameData(MazeMapData mazeMapData, InventoryData inventoryData)
+        public GameData(MazeMapData mazeMapData, IInventoryData inventoryData)
         {
             this.MazeMapData = mazeMapData;
             this.InventoryData = inventoryData;

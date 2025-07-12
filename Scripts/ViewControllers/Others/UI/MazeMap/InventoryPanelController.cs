@@ -48,10 +48,10 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
             }
 
             // 卡牌显示 - 卡牌变化事件
-            _GameModel.GameData.InventoryData.Cards.OnAdd.Register((index, cardData) => { CreateCardView(cardData); }
-            ).UnRegisterWhenGameObjectDestroyed(this);
-            _GameModel.GameData.InventoryData.Cards.OnRemove
-                .Register((index, cardDara) => { RemoveCardView(cardDara); })
+            _GameModel.GameData.InventoryData.OnCardAdded.Register(CreateCardView)
+                .UnRegisterWhenGameObjectDestroyed(this);
+            _GameModel.GameData.InventoryData.OnCardRemoved
+                .Register(RemoveCardView)
                 .UnRegisterWhenGameObjectDestroyed(this);
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using QFramework;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.Helpers;
+using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,11 +20,13 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
         [SerializeField] private GameObject TradePrefab;
 
         private IStoreSystem _StoreSystem;
+        private IGameModel _GameModel;
         private List<RecipeTradeNode> TradeList = new();
 
         private void Awake()
         {
             _StoreSystem = this.GetSystem<IStoreSystem>();
+            _GameModel = this.GetModel<IGameModel>();
         }
 
         private void Start()
@@ -32,20 +35,14 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
             mainToggle.onValueChanged.AddListener(Display);
 
             // 创建Trades
-            foreach (var recipeData in _StoreSystem.ActiveRecipes)
+            for (int index = 0; index < 8; index++)
             {
+                var recipeData = _StoreSystem.GetRecipeByIndex(index);
                 // 创建Trade节点
                 var trade = TradePrefab.Instantiate().GetComponent<RecipeTradeNode>();
                 trade.transform.SetParent(Trades, false);
                 trade.Show();
                 TradeList.Add(trade);
-
-                // 订阅交易事件
-                var capturedRecipeData = recipeData;
-                trade.TradeBtn.onClick.AddListener(() =>
-                {
-                    this.SendCommand<BarterCommand>(new BarterCommand(capturedRecipeData));
-                });
 
                 // 填充Ingredients
                 foreach (var consumePlant in recipeData.consumeCards)
@@ -57,7 +54,49 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                 // 填充Output
                 var outputCard = ItemViewFactory.CreateItemView(recipeData.output);
                 outputCard.transform.SetParent(trade.Output, false);
+
+                // 初始化UI
+                trade.TradeBtn.interactable =
+                    !recipeData.used && _GameModel.GameData.InventoryData.CanAfford(recipeData);
+
+                // == 事件订阅
+                // 交易事件
+                var capturedIndex = index;
+                trade.TradeBtn.onClick.AddListener(() =>
+                {
+                    var recipe = _StoreSystem.GetRecipeByIndex(capturedIndex);
+                    if (recipe.used || !_GameModel.GameData.InventoryData.CanAfford(recipe)) return;
+
+                    this.SendCommand<BarterCommand>(new BarterCommand(capturedIndex));
+                    
+                    // UI改变
+                    outputCard.Hide();
+                });
             }
+
+            // UI更新事件
+            _GameModel.GameData.InventoryData.OnCardAdded.Register((card) =>
+                {
+                    for (int index = 0; index < 8; index++)
+                    {
+                        var tradeNode = TradeList[index];
+                        var recipeData = _StoreSystem.GetRecipeByIndex(index);
+                        tradeNode.TradeBtn.interactable =
+                            !recipeData.used && _GameModel.GameData.InventoryData.CanAfford(recipeData);
+                    }
+                }
+            ).UnRegisterWhenGameObjectDestroyed(this);
+            _GameModel.GameData.InventoryData.OnCardRemoved.Register((card) =>
+                {
+                    for (int index = 0; index < 8; index++)
+                    {
+                        var tradeNode = TradeList[index];
+                        var recipeData = _StoreSystem.GetRecipeByIndex(index);
+                        tradeNode.TradeBtn.interactable =
+                            !recipeData.used && _GameModel.GameData.InventoryData.CanAfford(recipeData);
+                    }
+                }
+            ).UnRegisterWhenGameObjectDestroyed(this);
         }
 
         private void OnDestroy()
