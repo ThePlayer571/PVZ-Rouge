@@ -3,16 +3,19 @@ using TPL.PVZR.Classes.DataClasses.Item.Card;
 
 namespace TPL.PVZR.Classes
 {
+    [Serializable]
     public enum ProjectileId
     {
-        Pea,
-        FrozenPea
+        Pea = 0,
+        FrozenPea = 1,
+        MungBean = 2,
     }
 
+    [Serializable]
     public enum ZombieId
     {
-        NormalZombie,
-        ConeheadZombie
+        NormalZombie = 0,
+        ConeheadZombie = 1,
     }
 
     [Serializable]
@@ -53,15 +56,16 @@ namespace TPL.PVZR.Classes
         }
     }
 
+    [Serializable]
     public enum PlantId
     {
-        NotSet,
-        PeaShooter,
-        Sunflower,
-        Wallnut,
-        Flowerpot,
-        SnowPea,
-        Marigold,
+        NotSet = 0,
+        PeaShooter = 1,
+        Sunflower = 2,
+        Wallnut = 3,
+        Flowerpot = 4,
+        SnowPea = 5,
+        Marigold = 6,
     
         // CherryBoom,
         // PotatoMine,
@@ -76,17 +80,18 @@ namespace TPL.PVZR.Classes
         // Chomper
     }
     
+    [Serializable]
     public enum PlantVariant
     {
-        V0,
-        V1,
-        V2,
-        V3,
-        V4,
-        V5,
-        V6,
-        V7,
-        V8,
-        V9
+        V0 = 0,
+        V1 = 1,
+        V2 = 2,
+        V3 = 3,
+        V4 = 4,
+        V5 = 5,
+        V6 = 6,
+        V7 = 7,
+        V8 = 8,
+        V9 = 9,
     }
 }

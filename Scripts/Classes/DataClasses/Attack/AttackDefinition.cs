@@ -4,9 +4,11 @@ using UnityEngine;
 
 namespace TPL.PVZR.Classes.DataClasses.Attack
 {
+    [System.Serializable]
     public enum PunchType
     {
-        Free, ConstrainHorizontal
+        Free = 0,
+        ConstrainHorizontal = 1,
     }
     
     [CreateAssetMenu(fileName = "AttackDefinition_", menuName = "PVZR/AttackDefinition", order = 2)]

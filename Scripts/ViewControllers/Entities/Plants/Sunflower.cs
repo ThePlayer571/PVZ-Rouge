@@ -11,7 +11,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
     public sealed class Sunflower: Plant
     {
-        public override PlantId Id { get; } = PlantId.Sunflower;
+        public override PlantDef Def { get; } = new PlantDef(PlantId.Sunflower, PlantVariant.V0);
 
         protected override void OnInit()
         {

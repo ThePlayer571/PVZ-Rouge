@@ -6,5 +6,6 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
         Pea,
         FrozenPea,
         NormalZombie,
+        MungBean,
     }
 }

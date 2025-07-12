@@ -9,7 +9,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
     public sealed class Flowerpot : Plant
     {
-        public override PlantId Id { get; } = PlantId.Flowerpot;
+        public override PlantDef Def { get; } = new PlantDef(PlantId.Flowerpot, PlantVariant.V0);
 
         protected override void OnInit()
         {
@@ -29,6 +29,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                     plant.Remove();
                 }
             }
+
             base.Remove();
         }
     }

@@ -6,7 +6,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
 {
     public interface IPlant : IEntity, IAttackable
     {
-        PlantId Id { get; }
+        PlantDef Def { get; }
         Direction2 Direction { get; }
         float HealthPoint { get; }
 

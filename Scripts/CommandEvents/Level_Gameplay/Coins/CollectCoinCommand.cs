@@ -5,11 +5,12 @@ using TPL.PVZR.ViewControllers;
 
 namespace TPL.PVZR.CommandEvents.__NewlyAdded__
 {
+    [Serializable]
     public enum CoinId
     {
-        Silver,
-        Gold,
-        Diamond
+        Silver = 0,
+        Gold = 1,
+        Diamond = 2,
     }
 
     public class CollectCoinCommand : AbstractCommand

@@ -10,7 +10,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
     public class Peashooter : Plant
     {
-        public override PlantId Id { get; } = PlantId.PeaShooter;
+        public override PlantDef Def { get; } = new PlantDef(PlantId.PeaShooter, PlantVariant.V0);
 
         protected override void OnInit()
         {

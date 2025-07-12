@@ -19,11 +19,11 @@ namespace TPL.PVZR.Classes.DataClasses
 
         public bool IsDirtPlat => // 可以种植物的平台
             CellTileState == CellTileState.Dirt ||
-            (CellPlantState == CellPlantState.HavePlant && Plant.Id == PlantId.Flowerpot);
+            (CellPlantState == CellPlantState.HavePlant && Plant.Def.Id == PlantId.Flowerpot);
 
         public bool IsPlat => // 可以站的平台
             CellTileState is CellTileState.Barrier or CellTileState.Barrier or CellTileState.Dirt ||
-            (CellPlantState is CellPlantState.HavePlant && Plant.Id is PlantId.Flowerpot);
+            (CellPlantState is CellPlantState.HavePlant && Plant.Def.Id is PlantId.Flowerpot);
 
         public bool IsClimbable => // 可以攀爬的平台
             CellTileState is CellTileState.Ladder;

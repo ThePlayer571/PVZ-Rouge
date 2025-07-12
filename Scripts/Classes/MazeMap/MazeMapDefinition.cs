@@ -5,25 +5,27 @@ using UnityEngine;
 
 namespace TPL.PVZR.Classes.MazeMap
 {
+    [Serializable]
     public enum GameDifficulty
     {
-        N0,
+        N0 = 0,
     }
-
+    
+    [Serializable]
     public enum SpotDifficulty
     {
-        Normal_1,
-        Normal_2,
-        Normal_3,
-        Normal_4,
-        Normal_5,
-        Elite_1,
-        Elite_2,
-        Elite_3,
-        Elite_4,
-        Elite_5,
-        Boss_1,
-        Boss_2,
+        Normal_1 = 0,
+        Normal_2 = 1,
+        Normal_3 = 2,
+        Normal_4 = 3,
+        Normal_5 = 4,
+        Elite_1 = 5,
+        Elite_2 = 6,
+        Elite_3 = 7,
+        Elite_4 = 8,
+        Elite_5 = 9,
+        Boss_1 = 10,
+        Boss_2 = 11,
     }
 
     [Serializable]

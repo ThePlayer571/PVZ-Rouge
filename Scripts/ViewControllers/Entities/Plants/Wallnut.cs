@@ -5,9 +5,8 @@ using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
     public sealed class Wallnut : Plant
-
     {
-        public override PlantId Id { get; } = PlantId.Wallnut;
+        public override PlantDef Def { get; } = new PlantDef(PlantId.Wallnut, PlantVariant.V0);
 
         protected override void OnInit()
         {

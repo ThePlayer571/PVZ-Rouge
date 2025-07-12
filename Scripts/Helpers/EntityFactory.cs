@@ -28,6 +28,8 @@ namespace TPL.PVZR.Helpers
             _resLoader = ResLoader.Allocate();
         }
 
+        #region SunFactory
+
         public static class SunFactory
         {
             static SunFactory()
@@ -76,6 +78,10 @@ namespace TPL.PVZR.Helpers
             }
         }
 
+        #endregion
+
+        #region CoinFactory
+
         public static class CoinFactory
         {
             private static GameObject _silverCoinPrefab;
@@ -111,6 +117,9 @@ namespace TPL.PVZR.Helpers
             }
         }
 
+        #endregion
+
+        #region PlantFactory
 
         public static class PlantFactory
         {
@@ -120,15 +129,17 @@ namespace TPL.PVZR.Helpers
                 {
                     [new PlantDef(PlantId.PeaShooter, PlantVariant.V0)] =
                         _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Peashooter),
-                    [new PlantDef(PlantId.Sunflower, PlantVariant.V0)] = 
+                    [new PlantDef(PlantId.PeaShooter, PlantVariant.V1)] =
+                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.MungBeanShooter),
+                    [new PlantDef(PlantId.Sunflower, PlantVariant.V0)] =
                         _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Sunflower),
-                    [new PlantDef(PlantId.Wallnut, PlantVariant.V0)] = 
+                    [new PlantDef(PlantId.Wallnut, PlantVariant.V0)] =
                         _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Wallnut),
-                    [new PlantDef(PlantId.Flowerpot, PlantVariant.V0)] = 
+                    [new PlantDef(PlantId.Flowerpot, PlantVariant.V0)] =
                         _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Flowerpot),
-                    [new PlantDef(PlantId.SnowPea, PlantVariant.V0)] = 
+                    [new PlantDef(PlantId.SnowPea, PlantVariant.V0)] =
                         _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.SnowPea),
-                    [new PlantDef(PlantId.Marigold, PlantVariant.V0)] = 
+                    [new PlantDef(PlantId.Marigold, PlantVariant.V0)] =
                         _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Marigold),
                 };
             }
@@ -151,6 +162,10 @@ namespace TPL.PVZR.Helpers
                 }
             }
         }
+
+        #endregion
+
+        #region ZombieFactory
 
         public static class ZombieFactory
         {
@@ -190,6 +205,10 @@ namespace TPL.PVZR.Helpers
             }
         }
 
+        #endregion
+
+        #region ProjectileFactory
+
         public static class ProjectileFactory
         {
             static ProjectileFactory()
@@ -199,7 +218,9 @@ namespace TPL.PVZR.Helpers
                     {
                         [ProjectileId.Pea] = _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.Pea),
                         [ProjectileId.FrozenPea] =
-                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.FrozenPea)
+                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.FrozenPea),
+                        [ProjectileId.MungBean] =
+                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.MungBean)
                     };
             }
 
@@ -226,5 +247,7 @@ namespace TPL.PVZR.Helpers
                 }
             }
         }
+
+        #endregion
     }
 }

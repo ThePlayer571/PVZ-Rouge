@@ -20,7 +20,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
         #region 字段
 
         // 基础属性
-        public abstract PlantId Id { get; }
+        public abstract PlantDef Def { get; }
 
         // 变量
         public Direction2 Direction { get; protected set; }
