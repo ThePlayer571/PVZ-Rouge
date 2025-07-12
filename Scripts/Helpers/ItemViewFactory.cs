@@ -43,7 +43,7 @@ namespace TPL.PVZR.Helpers
 
         public static GameObject CreateItemView(PlantId plantId)
         {
-            var cardDefinition = CardHelper.GetCardDefinition(plantId);
+            var cardDefinition = CardHelper.GetCardDefinition(new PlantDef(plantId, PlantVariant.V0));
             var go = _cardViewPrefab.Instantiate();
             go.GetComponent<CardView>().Initialize(cardDefinition);
             return go;

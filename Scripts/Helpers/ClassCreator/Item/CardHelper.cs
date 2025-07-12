@@ -15,24 +15,24 @@ namespace TPL.PVZR.Helpers.ClassCreator.Item
     {
         #region Public
 
-        public static CardData CreateCardData(PlantId id, PlantVariant variant = PlantVariant.V0, bool locked = false)
+        public static CardData CreateCardData(PlantDef plantDef, bool locked = false)
         {
-            if (_cardsDict.TryGetValue((id, variant), out var cardDefinition))
+            if (_cardsDict.TryGetValue(plantDef, out var cardDefinition))
             {
                 return new CardData(cardDefinition, locked);
             }
 
-            throw new ArgumentException($"未考虑的PlantId和PlantVariant组合：{id}, {variant}");
+            throw new ArgumentException($"未考虑的PlantId和PlantVariant组合：{plantDef.Id}, {plantDef.Variant}");
         }
 
-        public static CardDefinition GetCardDefinition(PlantId id, PlantVariant variant = PlantVariant.V0)
+        public static CardDefinition GetCardDefinition(PlantDef plantDef)
         {
-            if (_cardsDict.TryGetValue((id, variant), out var cardDefinition))
+            if (_cardsDict.TryGetValue(plantDef, out var cardDefinition))
             {
                 return cardDefinition;
             }
 
-            throw new ArgumentException($"未考虑的PlantId和PlantVariant组合：{id}, {variant}");
+            throw new ArgumentException($"未考虑的PlantId和PlantVariant组合：{plantDef.Id}, {plantDef.Variant}");
         }
 
         public static SeedOptionController CreateSeedOptionController(CardData cardData)
@@ -59,7 +59,7 @@ namespace TPL.PVZR.Helpers.ClassCreator.Item
         #endregion
 
 
-        private static readonly Dictionary<(PlantId, PlantVariant), CardDefinition> _cardsDict;
+        private static readonly Dictionary<PlantDef, CardDefinition> _cardsDict;
         private static readonly GameObject _seedOptionControllerPrefab;
         private static readonly GameObject _seedControllerPrefab;
 
@@ -68,19 +68,19 @@ namespace TPL.PVZR.Helpers.ClassCreator.Item
             ResKit.Init();
             var resLoader = ResLoader.Allocate();
 
-            _cardsDict = new Dictionary<(PlantId, PlantVariant), CardDefinition>()
+            _cardsDict = new Dictionary<PlantDef, CardDefinition>()
             {
-                [(PlantId.PeaShooter, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                [new PlantDef(PlantId.PeaShooter, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_Peashooter),
-                [(PlantId.Sunflower, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                [new PlantDef(PlantId.Sunflower, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_Sunflower),
-                [(PlantId.Wallnut, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                [new PlantDef(PlantId.Wallnut, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_Wallnut),
-                [(PlantId.Flowerpot, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                [new PlantDef(PlantId.Flowerpot, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_Flowerpot),
-                [(PlantId.SnowPea, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                [new PlantDef(PlantId.SnowPea, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_SnowPea),
-                [(PlantId.Marigold, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
+                [new PlantDef(PlantId.Marigold, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
                     Carddefinition.CardDefinition_Marigold),
             };
             _seedControllerPrefab =

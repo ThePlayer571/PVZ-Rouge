@@ -78,6 +78,11 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
         private void OnDestroy()
         {
             toggle.onValueChanged.RemoveListener(Display);
+            
+            foreach (var choice in choices)
+            {
+                choice.onClick.RemoveAllListeners();
+            }
         }
 
         public IArchitecture GetArchitecture()

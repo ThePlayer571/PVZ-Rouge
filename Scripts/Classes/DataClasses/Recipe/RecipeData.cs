@@ -15,7 +15,7 @@ namespace TPL.PVZR.Classes.DataClasses.Recipe
         public RecipeData(RecipeInfo info)
         {
             consumeCards = info.ingredients.cards;
-            consumeCoins = RandomHelper.Game.Range(info.ingredients.coinRange.x, info.ingredients.coinRange.y);
+            consumeCoins = RandomHelper.Game.Range(info.ingredients.coinRange.x, info.ingredients.coinRange.y + 1);
             output = LootHelper.CreateLootData(info.output);
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses.Loot;
 
 namespace TPL.PVZR.Helpers.ClassCreator.Item
@@ -10,7 +11,8 @@ namespace TPL.PVZR.Helpers.ClassCreator.Item
             switch (lootInfo.LootType)
             {
                 case LootType.Card:
-                    var cardData = CardHelper.CreateCardData(lootInfo.PlantId);
+                    // TODO plantId
+                    var cardData = CardHelper.CreateCardData(new PlantDef(lootInfo.PlantId, PlantVariant.V0));
                     return new LootData(LootType.Card, cardData: cardData);
             }
 

@@ -17,10 +17,11 @@ namespace TPL.PVZR.Helpers.ClassCreator
             //
             var testMazeMapData = MazeMapHelper.CreateMazeMapData(MazeMapId.DaveLawn, GameDifficulty.N0, seed.Value);
             var testInventoryData = new InventoryData();
-            testInventoryData.Cards.Add(CardHelper.CreateCardData(PlantId.PeaShooter, locked: true));
-            testInventoryData.Cards.Add(CardHelper.CreateCardData(PlantId.Sunflower, locked: true));
-            testInventoryData.Cards.Add(CardHelper.CreateCardData(PlantId.Flowerpot, locked: true));
-            testInventoryData.Cards.Add(CardHelper.CreateCardData(PlantId.Marigold, locked: true));
+            testInventoryData.Cards.Add(CardHelper.CreateCardData(new PlantDef(PlantId.PeaShooter, PlantVariant.V0), locked: true));
+            testInventoryData.Cards.Add(CardHelper.CreateCardData(new PlantDef(PlantId.PeaShooter, PlantVariant.V0), locked: false));
+            testInventoryData.Cards.Add(CardHelper.CreateCardData(new PlantDef(PlantId.Sunflower, PlantVariant.V0), locked: true));
+            testInventoryData.Cards.Add(CardHelper.CreateCardData(new PlantDef(PlantId.Flowerpot, PlantVariant.V0), locked: true));
+            testInventoryData.Cards.Add(CardHelper.CreateCardData(new PlantDef(PlantId.Marigold, PlantVariant.V0), locked: true));
 
             return new GameData(testMazeMapData, testInventoryData);
         }

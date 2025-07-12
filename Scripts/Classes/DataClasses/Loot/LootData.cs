@@ -11,6 +11,7 @@ namespace TPL.PVZR.Classes.DataClasses.Loot
         public LootData(LootType lootType, CardData cardData = null)
         {
             LootType = lootType;
+            CardData = cardData;
         }
     }
 }
