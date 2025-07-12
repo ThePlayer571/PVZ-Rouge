@@ -23,29 +23,25 @@ namespace TPL.PVZR.Helpers
 
         public static GameObject CreateItemView(LootData lootData)
         {
-            switch (lootData.LootType)
+            return lootData.LootType switch
             {
-                case LootType.Card:
-                {
-                    return CreateItemView(lootData.CardData);
-                }
-            }
-
-            throw new NotImplementedException();
+                LootType.Card => CreateItemView(lootData.CardData),
+                _ => throw new ArgumentException()
+            };
         }
 
         public static GameObject CreateItemView(CardData cardData)
         {
             var go = _cardViewPrefab.Instantiate();
-            go.GetComponent<CardView>().Initialize(cardData);
+            go.GetComponent<CardViewController>().Initialize(cardData);
             return go;
         }
 
         public static GameObject CreateItemView(PlantId plantId)
         {
-            var cardDefinition = CardHelper.GetCardDefinition(new PlantDef(plantId, PlantVariant.V0));
+            var cardDefinition = CardHelper.GetCardDefinition(PlantBookHelper.GetPlantDef(plantId));
             var go = _cardViewPrefab.Instantiate();
-            go.GetComponent<CardView>().Initialize(cardDefinition);
+            go.GetComponent<CardViewController>().Initialize(cardDefinition);
             return go;
         }
     }

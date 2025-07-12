@@ -11,12 +11,11 @@ namespace TPL.PVZR.Helpers.ClassCreator.Item
             switch (lootInfo.LootType)
             {
                 case LootType.Card:
-                    // TODO plantId
-                    var cardData = CardHelper.CreateCardData(new PlantDef(lootInfo.PlantId, PlantVariant.V0));
+                    var cardData = CardHelper.CreateCardData(PlantBookHelper.GetPlantDef(lootInfo.PlantId));
                     return new LootData(LootType.Card, cardData: cardData);
             }
 
-            throw new NotImplementedException($"未考虑的lootType: {lootInfo.LootType}");
+            throw new ArgumentException($"未考虑的lootType: {lootInfo.LootType}");
         }
     }
 }

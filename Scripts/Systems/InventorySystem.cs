@@ -38,6 +38,15 @@ namespace TPL.PVZR.Systems
                         }
 
                         break;
+                    case GamePhase.MazeMap:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.LeaveLate:
+                                _GameModel.GameData.InventoryData.SortCards();
+                                break;
+                        }
+
+                        break;
                 }
             });
         }

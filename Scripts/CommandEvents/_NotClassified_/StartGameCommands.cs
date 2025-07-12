@@ -21,16 +21,6 @@ namespace TPL.PVZR.CommandEvents._NotClassified_
             // 开始游戏
             PhaseModel.ChangePhase(GamePhase.GameInitialization,
                 new Dictionary<string, object> { { "GameData", GameData } });
-            
-        }
-    }
-
-
-    public class StartGameCommand : AbstractCommand
-    {
-        protected override void OnExecute()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

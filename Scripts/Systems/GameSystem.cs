@@ -7,6 +7,7 @@ using TPL.PVZR.Classes.MazeMap;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.ClassCreator;
+using TPL.PVZR.Helpers.ClassCreator.Item;
 using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers.Managers;
 using TPL.PVZR.ViewControllers.UI;
@@ -37,6 +38,7 @@ namespace TPL.PVZR.Systems
                         {
                             case PhaseStage.EnterEarly:
                                 _GameModel.GameData = e.Parameters["GameData"] as GameData;
+                                PlantBookHelper.SetInventory(_GameModel.GameData.InventoryData);
                                 break;
                             case PhaseStage.EnterLate:
                                 _PhaseModel.DelayChangePhase(GamePhase.MazeMapInitialization);

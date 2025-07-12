@@ -7,13 +7,14 @@ using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Others.UI.ItemView;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace TPL.PVZR.ViewControllers.Others.UI
 {
     public class SeedOptionController : MonoBehaviour, IController, IPointerClickHandler
     {
-        [SerializeField] public CardView cardView;
+        [SerializeField] public CardViewController cardView;
         private IGameModel _GameModel;
 
         public bool IsSelected = false;

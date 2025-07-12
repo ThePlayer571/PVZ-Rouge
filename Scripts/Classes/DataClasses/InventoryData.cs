@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
+using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
 using TPL.PVZR.Classes.DataClasses.Recipe;
 
 namespace TPL.PVZR.Classes.DataClasses
@@ -12,11 +13,17 @@ namespace TPL.PVZR.Classes.DataClasses
         int SeedSlotCount { get; set; }
         BindableProperty<int> Coins { get; set; }
         IReadOnlyList<CardData> Cards { get; }
+        IReadOnlyList<PlantBookData> PlantBooks { get; }
 
         void AddCard(CardData cardData);
         void RemoveCard(CardData cardData);
+        void SortCards();
+        void AddPlantBook(PlantBookData plantBookData);
+        void RemovePlantBook(PlantBookData plantBookData);
         EasyEvent<CardData> OnCardAdded { get; }
         EasyEvent<CardData> OnCardRemoved { get; }
+        EasyEvent<PlantBookData> OnPlantBookAdded { get; }
+        EasyEvent<PlantBookData> OnPlantBookRemoved { get; }
 
         bool HasAvailableCardSlots(int count = 1);
         bool CanAfford(RecipeData recipe);
@@ -46,16 +53,19 @@ namespace TPL.PVZR.Classes.DataClasses
         public BindableProperty<int> Coins { get; set; } = new(DefaultCoins);
 
         private readonly BindableList<CardData> _cards = new();
+        private readonly BindableList<PlantBookData> _plantBooks = new();
 
         public IReadOnlyList<CardData> Cards => _cards;
+        public IReadOnlyList<PlantBookData> PlantBooks => _plantBooks;
 
         #endregion
 
         #region Events
 
         public EasyEvent<CardData> OnCardAdded { get; } = new();
-
         public EasyEvent<CardData> OnCardRemoved { get; } = new();
+        public EasyEvent<PlantBookData> OnPlantBookAdded { get; } = new();
+        public EasyEvent<PlantBookData> OnPlantBookRemoved { get; } = new();
 
         #endregion
 
@@ -63,12 +73,15 @@ namespace TPL.PVZR.Classes.DataClasses
 
         public void AddCard(CardData cardData)
         {
-            if (!ValidateCardData(cardData))
+            if (cardData == null)
+            {
+                "卡牌数据不能为空".LogError();
                 return;
+            }
 
             if (!CanAddCard())
             {
-                UnityEngine.Debug.LogWarning($"已达到卡牌数量上限 ({MaxCardCount})，无法添加更多卡牌");
+                $"已达到卡牌数量上限 ({MaxCardCount})，无法添加更多卡牌".LogWarning();
                 return;
             }
 
@@ -78,8 +91,11 @@ namespace TPL.PVZR.Classes.DataClasses
 
         public void RemoveCard(CardData cardData)
         {
-            if (!ValidateCardData(cardData))
+            if (cardData == null)
+            {
+                "卡牌数据不能为空".LogError();
                 return;
+            }
 
             if (_cards.Remove(cardData))
             {
@@ -87,17 +103,66 @@ namespace TPL.PVZR.Classes.DataClasses
             }
             else
             {
-                UnityEngine.Debug.LogWarning("未找到要移除的卡牌");
+                "未找到要移除的卡牌".LogWarning();
+            }
+        }
+
+        public void AddPlantBook(PlantBookData plantBookData)
+        {
+            if (plantBookData == null)
+            {
+                "植物秘籍数据不能为空".LogError();
+                return;
+            }
+
+            if (PlantBooks.Any(book => book.Id == plantBookData.Id))
+            {
+                $"已存在相同的秘籍，无法添加，id: {plantBookData.Id}".LogError();
+                return;
+            }
+
+            _plantBooks.Add(plantBookData);
+            OnPlantBookAdded.Trigger(plantBookData);
+        }
+
+        public void RemovePlantBook(PlantBookData plantBookData)
+        {
+            if (plantBookData == null)
+            {
+                "植物秘籍数据不能为空".LogError();
+                return;
+            }
+
+            if (_plantBooks.Remove(plantBookData))
+            {
+                OnPlantBookRemoved.Trigger(plantBookData);
+            }
+            else
+            {
+                "未找到要移除的植物秘籍".LogWarning();
+            }
+        }
+
+        public void SortCards()
+        {
+            if (_cards.Count <= 1) return;
+
+            var sortedCards = _cards
+                .OrderByDescending(card => card.Locked)  // Locked的在前面
+                .ThenBy(card => card.CardDefinition.PlantDef.Id)  // 按PlantId从小到大
+                .ToList();
+
+            // 清空原列表并重新添加排序后的卡牌
+            _cards.Clear();
+            foreach (var card in sortedCards)
+            {
+                _cards.Add(card);
             }
         }
 
         public bool HasAvailableCardSlots(int count = 1)
         {
-            if (count <= 0)
-            {
-                UnityEngine.Debug.LogWarning("检查的卡牌数量必须大于0");
-                return false;
-            }
+            if (count <= 0) return true;
 
             return _cards.Count + count <= MaxCardCount;
         }
@@ -114,6 +179,10 @@ namespace TPL.PVZR.Classes.DataClasses
                 var ownedCount = _cards.Count(card => card.CardDefinition.PlantDef.Id == cardId && !card.Locked);
                 if (consumeCount > ownedCount) return false;
             }
+
+            // 背包空位
+            if (!HasAvailableCardSlots(1 - recipe.consumeCards.Count)) return false;
+
             //
             return true;
         }
@@ -122,21 +191,11 @@ namespace TPL.PVZR.Classes.DataClasses
 
         #region Private Methods
 
-        private bool ValidateCardData(CardData cardData)
-        {
-            if (cardData == null)
-            {
-                UnityEngine.Debug.LogError("卡牌数据不能为空");
-                return false;
-            }
-
-            return true;
-        }
-
         private bool CanAddCard()
         {
             return _cards.Count < MaxCardCount;
         }
+
 
         #endregion
     }

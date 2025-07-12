@@ -74,7 +74,7 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
                 case PunchType.ConstrainHorizontal:
                     direction = (punchTo - punchFrom).x > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
                     break;
-                default: throw new NotImplementedException();
+                default: throw new ArgumentException();
             }
 
             return direction * punchForce;
@@ -97,7 +97,7 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
 
         public AttackData(float damage, float punchForce, bool isFrameDamage)
         {
-            throw new NotImplementedException();
+            throw new ArgumentException();
         }
 
         public AttackData(AttackDefinition attackDefinition)

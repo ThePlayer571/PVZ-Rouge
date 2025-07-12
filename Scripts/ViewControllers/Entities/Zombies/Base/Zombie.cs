@@ -238,7 +238,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         public void MoveForward()
         {
-            // TODO 
+            _Rigidbody2D.AddForce(Direction.Value.ToVector2() * this.GetSpeed());
         }
 
         public void ClimbLadder()
@@ -268,7 +268,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     {
                         MoveStage.FollowVertex => moveData.targetWorldPos,
                         MoveStage.FindDave => ReferenceHelper.Player.transform.position,
-                        _ => throw new NotImplementedException()
+                        _ => throw new ArgumentException($"不支持的MoveStage: {moveData.moveStage}")
                     };
 
                     var hit = Physics2D.Raycast(JumpDetectionPoint.position, Direction.Value.ToVector2(), 0.5f,
@@ -294,7 +294,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     this.Direction.Value = (transform.position.x > targetPos.x)
                         ? Direction2.Left
                         : Direction2.Right;
-                    _Rigidbody2D.AddForce(Direction.Value.ToVector2() * this.GetSpeed());
+                    MoveForward();
                     break;
                 }
                 case MoveType.Fall:
@@ -306,7 +306,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     this.Direction.Value = (transform.position.x > CurrentMoveData.targetWorldPos.x)
                         ? Direction2.Left
                         : Direction2.Right;
-                    _Rigidbody2D.AddForce(Direction.Value.ToVector2() * this.GetSpeed());
+                    MoveForward();
                     break;
                 }
                 case MoveType.ClimbLadder:
@@ -315,7 +315,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     {
                         MoveStage.FollowVertex => moveData.targetWorldPos,
                         MoveStage.FindDave => ReferenceHelper.Player.transform.position,
-                        _ => throw new NotImplementedException()
+                        _ => throw new ArgumentException($"不支持的MoveStage: {moveData.moveStage}")
                     };
                     float distanceX = Mathf.Abs(transform.position.x - targetPos.x);
                     float distanceY = Mathf.Abs(transform.position.y - targetPos.y);
@@ -324,7 +324,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                         this.Direction.Value = (transform.position.x > targetPos.x)
                             ? Direction2.Left
                             : Direction2.Right;
-                        _Rigidbody2D.AddForce(Direction.Value.ToVector2() * this.GetSpeed());
+                        MoveForward();
                     }
 
                     if (distanceY > Global.Zombie_Default_PathFindStopMinDistance)
@@ -344,7 +344,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     {
                         MoveStage.FollowVertex => moveData.targetWorldPos,
                         // MoveStage.FindDave => ReferenceHelper.Player.transform.position, // 禁用
-                        _ => throw new NotImplementedException()
+                        _ => throw new ArgumentException($"不支持的MoveStage: {moveData.moveStage}")
                     };
 
                     float distanceX = Mathf.Abs(transform.position.x - targetPos.x);
@@ -354,7 +354,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                         this.Direction.Value = (transform.position.x > targetPos.x)
                             ? Direction2.Left
                             : Direction2.Right;
-                        _Rigidbody2D.AddForce(Direction.Value.ToVector2() * this.GetSpeed());
+                        MoveForward();
                     }
 
                     if (distanceY > Global.Zombie_Default_PathFindStopMinDistance)

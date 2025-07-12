@@ -65,15 +65,12 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         {
             if (HugeWaves.Contains(wave)) wave += 10;
 
-            switch (DifficultyGrowthType)
+            return DifficultyGrowthType switch
             {
-                case DifficultyGrowthType.Linear:
-                    return BaseValue * (0.7f + wave * 0.3f);
-                case DifficultyGrowthType.Quadratic:
-                    return BaseValue * (0.04f * Mathf.Pow(wave, 2f) + 0.1f * wave + 0.86f);
-            }
-
-            throw new NotImplementedException();
+                DifficultyGrowthType.Linear => BaseValue * (0.7f + wave * 0.3f),
+                DifficultyGrowthType.Quadratic => BaseValue * (0.04f * Mathf.Pow(wave, 2f) + 0.1f * wave + 0.86f),
+                _ => throw new ArgumentException()
+            };
         }
 
         #endregion

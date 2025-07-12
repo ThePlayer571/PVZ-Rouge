@@ -641,7 +641,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                 return cluster;
             }
 
-            throw new NotImplementedException($"_clusterCache未包含所有Vertex导致出错，这个Vertex是({vertex.x},{vertex.y})");
+            throw new ArgumentException($"_clusterCache未包含所有Vertex导致出错，这个Vertex是({vertex.x},{vertex.y})");
         }
 
         #endregion

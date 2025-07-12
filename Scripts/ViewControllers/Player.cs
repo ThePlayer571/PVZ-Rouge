@@ -131,16 +131,6 @@ namespace TPL.PVZR.ViewControllers
             throw new NotImplementedException();
         }
 
-        public void Remove()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dead()
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
     }
 }
