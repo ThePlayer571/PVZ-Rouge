@@ -4,12 +4,6 @@ using UnityEngine;
 
 namespace TPL.PVZR.Classes.DataClasses.Loot
 {
-    public enum PlantBookId
-    {
-        NotSet = 0,
-        MungBeanBook = 1,
-    }
-
     public class LootData
     {
         public LootType LootType { get; }

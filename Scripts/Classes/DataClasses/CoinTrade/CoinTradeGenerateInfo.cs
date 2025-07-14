@@ -1,0 +1,16 @@
+using System;
+using TPL.PVZR.Tools;
+
+namespace TPL.PVZR.Classes.DataClasses
+{
+    [Serializable]
+    public class CoinTradeGenerateInfo : IGenerateInfo<CoinTradeInfo>
+    {
+        public float weight;
+        public CoinTradeInfo coinTradeInfo;
+
+        public float Value => 0;
+        public float Weight => weight;
+        public CoinTradeInfo Output => coinTradeInfo;
+    }
+}

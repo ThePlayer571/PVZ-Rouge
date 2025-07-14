@@ -19,13 +19,13 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
         [SerializeField] private RectTransform Trades;
         [SerializeField] private GameObject TradePrefab;
 
-        private IStoreSystem _StoreSystem;
+        private IRecipeStoreSystem _RecipeStoreSystem;
         private IGameModel _GameModel;
         private List<RecipeTradeNode> TradeList = new();
 
         private void Awake()
         {
-            _StoreSystem = this.GetSystem<IStoreSystem>();
+            _RecipeStoreSystem = this.GetSystem<IRecipeStoreSystem>();
             _GameModel = this.GetModel<IGameModel>();
         }
 
@@ -37,7 +37,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
             // 创建Trades
             for (int index = 0; index < 8; index++)
             {
-                var recipeData = _StoreSystem.GetRecipeByIndex(index);
+                var recipeData = _RecipeStoreSystem.GetRecipeByIndex(index);
                 // 创建Trade节点
                 var trade = TradePrefab.Instantiate().GetComponent<RecipeTradeNode>();
                 trade.transform.SetParent(Trades, false);
@@ -71,7 +71,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                 var capturedIndex = index;
                 trade.TradeBtn.onClick.AddListener(() =>
                 {
-                    var recipe = _StoreSystem.GetRecipeByIndex(capturedIndex);
+                    var recipe = _RecipeStoreSystem.GetRecipeByIndex(capturedIndex);
                     if (recipe.used || !_GameModel.GameData.InventoryData.CanAfford(recipe)) return;
 
                     this.SendCommand<BarterCommand>(new BarterCommand(capturedIndex));
@@ -87,7 +87,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                     for (int index = 0; index < 8; index++)
                     {
                         var tradeNode = TradeList[index];
-                        var recipeData = _StoreSystem.GetRecipeByIndex(index);
+                        var recipeData = _RecipeStoreSystem.GetRecipeByIndex(index);
                         tradeNode.TradeBtn.interactable =
                             !recipeData.used && _GameModel.GameData.InventoryData.CanAfford(recipeData);
                     }
@@ -98,7 +98,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                     for (int index = 0; index < 8; index++)
                     {
                         var tradeNode = TradeList[index];
-                        var recipeData = _StoreSystem.GetRecipeByIndex(index);
+                        var recipeData = _RecipeStoreSystem.GetRecipeByIndex(index);
                         tradeNode.TradeBtn.interactable =
                             !recipeData.used && _GameModel.GameData.InventoryData.CanAfford(recipeData);
                     }
@@ -110,6 +110,11 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
         {
             toggle.onValueChanged.RemoveListener(Display);
             mainToggle.onValueChanged.RemoveListener(Display);
+            
+            foreach (var trade in TradeList)
+            {
+                trade.TradeBtn.onClick.RemoveAllListeners();
+            }
         }
 
         private void Display(bool val)

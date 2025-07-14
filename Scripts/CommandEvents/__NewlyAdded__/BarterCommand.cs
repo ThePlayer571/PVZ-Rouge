@@ -26,9 +26,9 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
         protected override void OnExecute()
         {
             var _GameModel = this.GetModel<IGameModel>();
-            var _StoreSystem = this.GetSystem<IStoreSystem>();
+            var _StoreSystem = this.GetSystem<IRecipeStoreSystem>();
 
-            // 检测物品是否足够
+            // 异常处理
             var recipe = _StoreSystem.GetRecipeByIndex(_index);
             var inventory = _GameModel.GameData.InventoryData;
             if (recipe.used) throw new Exception($"配方已经使用过，index: {_index}");

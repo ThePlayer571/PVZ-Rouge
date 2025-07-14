@@ -12,12 +12,12 @@ using TPL.PVZR.Models;
 
 namespace TPL.PVZR.Systems
 {
-    public interface IStoreSystem : ISystem
+    public interface IRecipeStoreSystem : ISystem
     {
         RecipeData GetRecipeByIndex(int index);
     }
 
-    public class StoreSystem : AbstractSystem, IStoreSystem
+    public class RecipeStoreSystem : AbstractSystem, IRecipeStoreSystem
     {
         private IGameModel _GameModel;
 
