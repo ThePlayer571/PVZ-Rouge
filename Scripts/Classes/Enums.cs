@@ -66,7 +66,8 @@ namespace TPL.PVZR.Classes
         Flowerpot = 4,
         SnowPea = 5,
         Marigold = 6,
-    
+        Repeater = 7,
+
         // CherryBoom,
         // PotatoMine,
         // Blover,
@@ -75,11 +76,10 @@ namespace TPL.PVZR.Classes
         // Caltrop,
         // CornPult,
         // MelonPult,
-        // RepeaterPea,
         // SplitPea,
         // Chomper
     }
-    
+
     [Serializable]
     public enum PlantVariant
     {

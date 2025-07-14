@@ -9,5 +9,11 @@ namespace TPL.PVZR.Classes.DataClasses.Loot
 
         // Type: Card
         public PlantId PlantId;
+        
+        // Type: PlantBook
+        public PlantBookId PlantBookId;
+        
+        // Type: Coin
+        public int CoinAmount;
     }
 }

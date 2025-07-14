@@ -1,0 +1,25 @@
+using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
+using TPL.PVZR.Classes.DataClasses.Loot;
+using TPL.PVZR.Helpers.ClassCreator.Item;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace TPL.PVZR.ViewControllers.Others.UI.ItemView
+{
+    public class PlantBookViewController : MonoBehaviour
+    {
+        [SerializeField] private Image plantImage;
+
+        public void Initialize(PlantBookData data)
+        {
+            plantImage.sprite = data.Icon;
+        }
+
+        public void Initialize(PlantBookId plantBookId)
+        {
+            var definition = PlantBookHelper.GetPlantBookDefinition(plantBookId);
+
+            plantImage.sprite = definition.Icon;
+        }
+    }
+}

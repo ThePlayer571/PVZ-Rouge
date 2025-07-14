@@ -4,6 +4,7 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
 using TPL.PVZR.Classes.DataClasses.Recipe;
+using TPL.PVZR.Helpers.ClassCreator.Item;
 
 namespace TPL.PVZR.Classes.DataClasses
 {
@@ -109,6 +110,7 @@ namespace TPL.PVZR.Classes.DataClasses
 
         public void AddPlantBook(PlantBookData plantBookData)
         {
+            // 异常处理
             if (plantBookData == null)
             {
                 "植物秘籍数据不能为空".LogError();
@@ -121,7 +123,16 @@ namespace TPL.PVZR.Classes.DataClasses
                 return;
             }
 
+            // 修改数据
             _plantBooks.Add(plantBookData);
+
+            var newDefinition = CardHelper.GetCardDefinition(new PlantDef(plantBookData.Id, plantBookData.Variant));
+            foreach (var cardData in _cards.Where(cardData => cardData.CardDefinition.PlantDef.Id == plantBookData.Id))
+            {
+                cardData.CardDefinition = newDefinition;
+            }
+
+            // 事件
             OnPlantBookAdded.Trigger(plantBookData);
         }
 
@@ -148,8 +159,8 @@ namespace TPL.PVZR.Classes.DataClasses
             if (_cards.Count <= 1) return;
 
             var sortedCards = _cards
-                .OrderByDescending(card => card.Locked)  // Locked的在前面
-                .ThenBy(card => card.CardDefinition.PlantDef.Id)  // 按PlantId从小到大
+                .OrderByDescending(card => card.Locked) // Locked的在前面
+                .ThenBy(card => card.CardDefinition.PlantDef.Id) // 按PlantId从小到大
                 .ToList();
 
             // 清空原列表并重新添加排序后的卡牌
@@ -195,7 +206,6 @@ namespace TPL.PVZR.Classes.DataClasses
         {
             return _cards.Count < MaxCardCount;
         }
-
 
         #endregion
     }

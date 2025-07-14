@@ -44,11 +44,18 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                 trade.Show();
                 TradeList.Add(trade);
 
-                // 填充Ingredients
+                // 填充Ingredients (不要调换顺序，我希望按照这个顺序显示)
+                // plant
                 foreach (var consumePlant in recipeData.consumeCards)
                 {
                     var cardView = ItemViewFactory.CreateItemView(consumePlant);
                     cardView.transform.SetParent(trade.Ingredients, false);
+                }
+                // coin
+                if (recipeData.consumeCoins > 0)
+                {
+                    var coinView = ItemViewFactory.CreateItemView(recipeData.consumeCoins);
+                    coinView.transform.SetParent(trade.Ingredients, false);
                 }
 
                 // 填充Output

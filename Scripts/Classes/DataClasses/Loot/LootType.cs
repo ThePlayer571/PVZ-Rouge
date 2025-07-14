@@ -2,6 +2,8 @@ namespace TPL.PVZR.Classes.DataClasses.Loot
 {
     public enum LootType
     {
-        Card
+        Card = 0,
+        PlantBook = 1,
+        Coin = 2,
     }
 }

@@ -1,17 +1,21 @@
+using UnityEngine;
+
 namespace TPL.PVZR.Classes.DataClasses.Item.PlantBook
 {
     public class PlantBookData : ItemData
     {
         public override ItemType ItemType { get; } = ItemType.PlantBook;
         
-        
-        public PlantId Id { get; }
-        public PlantVariant Variant { get; }
+        private PlantBookDefinition Definition { get; }
 
-        public PlantBookData(PlantBookInfo info)
+        public PlantBookData(PlantBookDefinition definition)
         {
-            Id = info.Id;
-            Variant = info.Variant;
+            Definition = definition;
         }
+        
+        // 便捷属性访问器
+        public Sprite Icon => Definition.Icon;
+        public PlantId Id => Definition.Id;
+        public PlantVariant Variant => Definition.Variant;
     }
 }

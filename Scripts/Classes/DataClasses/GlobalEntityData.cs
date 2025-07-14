@@ -11,12 +11,11 @@ namespace TPL.PVZR.Classes.DataClasses
         public float Plant_Wallnut_Health = 4000f;
         public float Plant_Marigold_SpawnCoinInterval = 24f;
         public float Plant_Marigold_InitialSpawnCoinInterval = 1f;
+        public float Plant_Repeater_PeaInterval = 0.2f;
 
         public float Projectile_Pea_Speed = 10f;
 
         public float Zombie_Default_Health = 181f;
         public float Zombie_Default_ClimbSpeed = 1.5f;
-
-        // 性能相关，本来不该放到这里的
     }
 }

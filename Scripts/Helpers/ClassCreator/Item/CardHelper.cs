@@ -5,6 +5,7 @@ using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
+using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Others.UI;
 using UnityEngine;
@@ -68,21 +69,14 @@ namespace TPL.PVZR.Helpers.ClassCreator.Item
             ResKit.Init();
             var resLoader = ResLoader.Allocate();
 
-            _cardsDict = new Dictionary<PlantDef, CardDefinition>()
+            var cardDataListConfig = resLoader.LoadSync<CardDataListConfig>(Listconfigs.BundleName, Listconfigs.CardDataListConfig);
+            
+            _cardsDict = new Dictionary<PlantDef, CardDefinition>();
+            foreach (var pair in cardDataListConfig.cardDict)
             {
-                [new PlantDef(PlantId.PeaShooter, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
-                    Carddefinition.CardDefinition_Peashooter),
-                [new PlantDef(PlantId.Sunflower, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
-                    Carddefinition.CardDefinition_Sunflower),
-                [new PlantDef(PlantId.Wallnut, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
-                    Carddefinition.CardDefinition_Wallnut),
-                [new PlantDef(PlantId.Flowerpot, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
-                    Carddefinition.CardDefinition_Flowerpot),
-                [new PlantDef(PlantId.SnowPea, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
-                    Carddefinition.CardDefinition_SnowPea),
-                [new PlantDef(PlantId.Marigold, PlantVariant.V0)] = resLoader.LoadSync<CardDefinition>(Carddefinition.BundleName,
-                    Carddefinition.CardDefinition_Marigold),
-            };
+                _cardsDict[pair.Key] = pair.Value;
+            }
+
             _seedControllerPrefab =
                 resLoader.LoadSync<GameObject>(Seedcontroller_prefab.BundleName, Seedcontroller_prefab.SeedController);
             _seedOptionControllerPrefab =

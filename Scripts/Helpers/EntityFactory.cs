@@ -141,6 +141,8 @@ namespace TPL.PVZR.Helpers
                         _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.SnowPea),
                     [new PlantDef(PlantId.Marigold, PlantVariant.V0)] =
                         _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Marigold),
+                    [new PlantDef(PlantId.Repeater, PlantVariant.V0)] =
+                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Repeater),
                 };
             }
 

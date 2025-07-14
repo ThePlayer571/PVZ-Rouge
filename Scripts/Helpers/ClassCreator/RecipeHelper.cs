@@ -14,11 +14,11 @@ namespace TPL.PVZR.Helpers.ClassCreator
         static RecipeHelper()
         {
             var resLoader = ResLoader.Allocate();
-            Default = resLoader.LoadSync<RecipeListDefinition>(Recipelistdefinition.BundleName,
-                Recipelistdefinition.RecipeListDefinition_Default);
+            Default = resLoader.LoadSync<RecipeListConfig>(Listconfigs.BundleName,
+                Listconfigs.RecipeListDefinition_Default);
         }
 
-        private static RecipeListDefinition Default;
+        private static RecipeListConfig Default;
 
         public static RandomPool<RecipeGenerateInfo, RecipeInfo> GetRelatedRecipes(HashSet<PlantId> plantIds)
         {

@@ -39,6 +39,13 @@ namespace TPL.PVZR.Systems
         private void WriteLoots(List<LootGenerateInfo> infos, float value, int count)
         {
             _lootGroupList.Clear();
+
+            // 筛选：已经拥有的PlantBook不会被加入
+            infos = infos.Where(info =>
+                info.lootInfo.LootType != LootType.PlantBook ||
+                _GameModel.GameData.InventoryData.PlantBooks.All(pb => pb.Id != info.lootInfo.PlantId)).ToList();
+
+
             HasAward = true;
             for (int i = 0; i < count; i++)
             {
@@ -102,7 +109,15 @@ namespace TPL.PVZR.Systems
                     switch (lootData.LootType)
                     {
                         case LootType.Card:
-                            inventory.AddCard(lootData.CardData);
+                            var cardData = CardHelper.CreateCardData(PlantBookHelper.GetPlantDef(lootData.PlantId));
+                            inventory.AddCard(cardData);
+                            break;
+                        case LootType.PlantBook:
+                            var plantBookData = PlantBookHelper.CreatePlantBookData(lootData.PlantBookId);
+                            inventory.AddPlantBook(plantBookData);
+                            break;
+                        case LootType.Coin:
+                            inventory.Coins.Value += lootData.CoinAmount;
                             break;
                     }
                 }

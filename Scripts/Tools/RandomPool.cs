@@ -9,6 +9,7 @@ namespace TPL.PVZR.Tools
         float Value { get; }
         float Weight { get; }
         TOutput Output { get; }
+        bool OnlyOnce => false;
     }
 
     public class RandomPool<TGenerateInfo, TOutput>
@@ -67,6 +68,17 @@ namespace TPL.PVZR.Tools
                 if (IsInfoAffordable(selectedInfo))
                 {
                     ConsumeValue(selectedInfo.Value);
+                    
+                    // 如果该物品只能被抽取一次，则从可用列表中移除
+                    if (selectedInfo.OnlyOnce)
+                    {
+                        availableInfos.Remove(selectedInfo);
+                        if (availableInfos.Count == 0)
+                        {
+                            IsFinished = true;
+                        }
+                    }
+                    
                     return selectedInfo.Output;
                 }
                 else
@@ -79,7 +91,7 @@ namespace TPL.PVZR.Tools
         }
 
         /// <summary>
-        /// 获取所有剩余的输出对象
+        /// 获取所���剩余的输出对象
         /// </summary>
         public List<TOutput> GetAllRemainingOutputs()
         {
@@ -161,7 +173,7 @@ namespace TPL.PVZR.Tools
             }
         }
 
-        /// <summary>移除不可承受的信息项</summary>
+        /// <summary>移除���可承受的信息项</summary>
         private void RemoveUnaffordableInfo(TGenerateInfo info)
         {
             availableInfos.Remove(info);

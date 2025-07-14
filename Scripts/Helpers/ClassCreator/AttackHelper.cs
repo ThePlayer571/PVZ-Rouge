@@ -23,6 +23,8 @@ namespace TPL.PVZR.Helpers.ClassCreator
                     Attackdefinition.AttackDefinition_FrozenPea),
                 [AttackId.NormalZombie] = resLoader.LoadSync<AttackDefinition>(Attackdefinition.BundleName,
                     Attackdefinition.AttackDefinition_NormalZombie),
+                [AttackId.MungBean] = resLoader.LoadSync<AttackDefinition>(Attackdefinition.BundleName,
+                    Attackdefinition.AttackDefinition_MungBean),
             };
         }
 

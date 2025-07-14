@@ -86,7 +86,10 @@ namespace TPL.PVZR.Systems
                 }
 
                 // 添加
-                _GameModel.GameData.InventoryData.AddCard(recipe.output.CardData);
+                {
+                    var cardData = CardHelper.CreateCardData(PlantBookHelper.GetPlantDef(recipe.output.PlantId));
+                    _GameModel.GameData.InventoryData.AddCard(cardData);
+                }
             });
         }
 
