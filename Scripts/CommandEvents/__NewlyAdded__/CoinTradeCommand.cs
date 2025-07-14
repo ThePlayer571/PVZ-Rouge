@@ -29,7 +29,7 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
             // 异常处理
             var trade = _CoinStoreSystem.GetCoinTradeByIndex(_index);
             var inventory = _GameModel.GameData.InventoryData;
-            if (trade.used) throw new Exception($"已经进行过交易，index: {_index}");
+            if (trade.Used) throw new Exception($"已经进行过交易，index: {_index}");
             if (inventory.Coins.Value < trade.CoinAmount)
                 throw new Exception($"金币不足，无法进行交易，index: {_index}");
 

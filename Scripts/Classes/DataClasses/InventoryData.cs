@@ -28,6 +28,7 @@ namespace TPL.PVZR.Classes.DataClasses
 
         bool HasAvailableCardSlots(int count = 1);
         bool CanAfford(RecipeData recipe);
+        bool HasTradableCard(PlantId plantId);
     }
 
 
@@ -196,6 +197,11 @@ namespace TPL.PVZR.Classes.DataClasses
 
             //
             return true;
+        }
+
+        public bool HasTradableCard(PlantId plantId)
+        {
+            return _cards.Any(cardData => !cardData.Locked && cardData.CardDefinition.PlantDef.Id == plantId);
         }
 
         #endregion

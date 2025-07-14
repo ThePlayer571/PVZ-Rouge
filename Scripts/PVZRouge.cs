@@ -19,6 +19,7 @@ namespace TPL.PVZR
             this.RegisterSystem<IAwardSystem>(new AwardSystem());
             this.RegisterSystem<IRecipeStoreSystem>(new RecipeStoreSystem());
             this.RegisterSystem<ICoinStoreSystem>(new CoinStoreSystem());
+            this.RegisterSystem<ISellStoreSystem>(new SellStoreSystem());
 
             // ===== Level =====
             this.RegisterModel<ILevelModel>(new LevelModel());

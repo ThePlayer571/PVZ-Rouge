@@ -34,7 +34,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
             toggle.onValueChanged.AddListener(Display);
             mainToggle.onValueChanged.AddListener(Display);
 
-            for (int index = 0; index < 15; index++)
+            for (int index = 0; index < 10; index++)
             {
                 var tradeData = _CoinStoreSystem.GetCoinTradeByIndex(index);
                 // 创建Trade节点
@@ -51,7 +51,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                 // 初始化UI
                 _GameModel.GameData.InventoryData.Coins.RegisterWithInitValue(val =>
                 {
-                    trade.TradeBtn.interactable = val >= tradeData.CoinAmount && !tradeData.used;
+                    trade.TradeBtn.interactable = val >= tradeData.CoinAmount && !tradeData.Used;
                 }).UnRegisterWhenGameObjectDestroyed(this);
                 
                 // == 交易事件
@@ -64,6 +64,18 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                         lootView.Hide();
                     }
                 );
+            }
+        }
+
+        private void OnDestroy()
+        {
+            toggle.onValueChanged.RemoveListener(Display);
+            mainToggle.onValueChanged.RemoveListener(Display);
+            
+            // 清理TradeList
+            foreach (var trade in TradeList)
+            {
+                trade.TradeBtn.onClick.RemoveAllListeners();
             }
         }
 

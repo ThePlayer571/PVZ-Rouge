@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using QFramework;
+using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
@@ -8,30 +9,59 @@ using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Helpers.ClassCreator.Item;
 using TPL.PVZR.Models;
+using TPL.PVZR.Tools.Random;
 
 namespace TPL.PVZR.Systems
 {
-    public interface ICoinStoreSystem : ISystem
+    public interface ISellStoreSystem : ISystem
     {
         CoinTradeData GetCoinTradeByIndex(int index);
     }
 
-    public class CoinStoreSystem : AbstractSystem, ICoinStoreSystem
+
+    public class SellStoreSystem : AbstractSystem, ISellStoreSystem
     {
         private IGameModel _GameModel;
+
+        private void AutoWriteIndex(int index)
+        {
+            _activeTrades[index] = GetRandomCoinTradeData();
+        }
 
         private void AutoWriteCoinTrades()
         {
             _activeTrades.Clear();
 
-            var pool = CoinTradeHelper.GetAllCoinTradePool();
-            var _ = pool.GetRandomOutputs(10).Select(info => new CoinTradeData(info));
-            _activeTrades.AddRange(_);
+            for (int i = 0; i < 5; i++)
+            {
+                var coinTradeData = GetRandomCoinTradeData();
+                _activeTrades.Add(coinTradeData);
+            }
+        }
+
+        private CoinTradeData GetRandomCoinTradeData()
+        {
+            if (_GameModel.GameData.InventoryData.Cards.All(cardData => cardData.Locked))
+            {
+                var chosenPlant = RandomHelper.Game.RandomChoose(
+                    _GameModel.GameData.InventoryData.Cards
+                        .Select(cardData => cardData.CardDefinition.PlantDef.Id));
+                return CoinTradeHelper.CreateCoinTradeData(chosenPlant, 0.4f);
+            }
+            else
+            {
+                var chosenPlant = RandomHelper.Game.RandomChoose(
+                    _GameModel.GameData.InventoryData.Cards
+                        .Where(data => !data.Locked)
+                        .Select(cardData => cardData.CardDefinition.PlantDef.Id));
+                return CoinTradeHelper.CreateCoinTradeData(chosenPlant, 0.4f);
+            }
         }
 
         private void ClearCoinTrades()
         {
             _activeTrades.Clear();
+            Available = false;
         }
 
 
@@ -66,29 +96,20 @@ namespace TPL.PVZR.Systems
                 }
             });
 
-            this.RegisterEvent<CoinTradeEvent>(e =>
+            this.RegisterEvent<SellTradeEvent>(e =>
             {
-                var tradeData = GetCoinTradeByIndex(e.index);
-                tradeData.Used = true;
+                var trade = GetCoinTradeByIndex(e.index);
                 var inventory = _GameModel.GameData.InventoryData;
 
                 // 消耗
-                inventory.Coins.Value -= tradeData.CoinAmount;
+                inventory.RemoveCard(inventory.Cards.First(cardData =>
+                    !cardData.Locked && cardData.CardDefinition.PlantDef.Id == trade.LootData.PlantId));
 
                 // 添加
-                switch (tradeData.LootData.LootType)
-                {
-                    case LootType.Card:
-                        var cardData =
-                            CardHelper.CreateCardData(PlantBookHelper.GetPlantDef(tradeData.LootData.PlantId));
-                        inventory.AddCard(cardData);
-                        break;
-                    case LootType.PlantBook:
-                        var plantBookData =
-                            PlantBookHelper.CreatePlantBookData(tradeData.LootData.PlantBookId);
-                        inventory.AddPlantBook(plantBookData);
-                        break;
-                }
+                inventory.Coins.Value += trade.CoinAmount;
+
+                // 重新生成售卖对象
+                AutoWriteIndex(e.index);
             });
         }
 
@@ -96,5 +117,7 @@ namespace TPL.PVZR.Systems
         {
             return _activeTrades[index];
         }
+
+        public bool Available { get; private set; }
     }
 }
