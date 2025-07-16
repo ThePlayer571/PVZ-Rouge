@@ -77,6 +77,8 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
                 default: throw new ArgumentException();
             }
 
+            $"获取Punch: from: {punchFrom}, to: {punchTo}, direction: {direction}".LogInfo();
+
             return direction * punchForce;
         }
 

@@ -38,6 +38,7 @@ namespace TPL.PVZR.Helpers.ClassCreator
                 _coinTrades.Add(new CoinTradeGenerateInfo
                 {
                     weight = 10,
+                    onlyOnce = true,
                     coinTradeInfo = new CoinTradeInfo
                     {
                         coinAmount = plantBook.Value,

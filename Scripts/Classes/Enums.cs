@@ -67,16 +67,16 @@ namespace TPL.PVZR.Classes
         SnowPea = 5,
         Marigold = 6,
         Repeater = 7,
+        PotatoMine = 8,
+        CherryBomb = 9,
+        SplitPea = 10,
+        Cactus = 11,
 
-        // CherryBoom,
-        // PotatoMine,
         // Blover,
         // CabbagePult,
-        // Cactus,
         // Caltrop,
         // CornPult,
         // MelonPult,
-        // SplitPea,
         // Chomper
     }
 

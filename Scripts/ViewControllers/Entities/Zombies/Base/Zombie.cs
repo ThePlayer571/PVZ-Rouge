@@ -86,7 +86,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         /// <summary>
         /// 定义：初始化，能用于对象池的初始化方法
         /// </summary>
-        public virtual void Initialize()
+        public void Initialize()
         {
             SetUpFSM();
             // AI
@@ -94,6 +94,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                 .UnRegisterWhenGameObjectDestroyed(this);
 
             ActionKit.DelayFrame(1, OnInitialized.Trigger).Start(this);
+            //
+            OnInit();
         }
 
         #endregion
@@ -207,16 +209,17 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #region 实体生命周期
 
+        public abstract void OnInit();
+        
         public override void DieWith(AttackData attackData)
         {
             OnDieFrom.Trigger(attackData);
             this.SendCommand<OnZombieDeathCommand>(new OnZombieDeathCommand(this));
-            this.Remove();
         }
 
-        public override void Kill()
+        public override void Remove()
         {
-            DieWith(AttackHelper.CreateAttackData(AttackId.Void));
+            throw new Exception("僵尸的移除应该交给ZombieFactory");
         }
 
         #endregion

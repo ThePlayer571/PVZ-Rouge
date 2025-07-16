@@ -7,5 +7,7 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
         FrozenPea,
         NormalZombie,
         MungBean,
+        PotatoMineExplosion,
+        CherryBombExplosion,
     }
 }

@@ -40,7 +40,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
 
         #region 被攻击
 
-        public AttackData TakeAttack(AttackData attackData)
+        public virtual AttackData TakeAttack(AttackData attackData)
         {
             HealthPoint = Mathf.Clamp(HealthPoint - attackData.Damage, 0, Mathf.Infinity);
             if (HealthPoint <= 0) DieWith(attackData);

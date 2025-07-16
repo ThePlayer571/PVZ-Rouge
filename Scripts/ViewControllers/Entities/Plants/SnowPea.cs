@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public class SnowPea : Plant
+    public sealed class SnowPea : Plant
     {
         public override PlantDef Def { get; } = new PlantDef(PlantId.SnowPea, PlantVariant.V0);
 

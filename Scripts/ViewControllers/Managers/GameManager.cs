@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses.Level;
@@ -8,13 +9,14 @@ using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Models;
+using TPL.PVZR.Systems.Level_Data;
 using TPL.PVZR.Tools;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace TPL.PVZR.ViewControllers.Managers
 {
-    public class GameManager : MonoSingleton<GameManager>, ICanGetModel
+    public class GameManager : MonoSingleton<GameManager>, ICanGetModel, ICanGetSystem
     {
         private void OnGUI()
         {
@@ -64,6 +66,13 @@ namespace TPL.PVZR.ViewControllers.Managers
                 _PhaseModel.DelayChangePhase(GamePhase.LevelPreInitialization,
                     new Dictionary<string, object>
                         { { "LevelData", LevelHelper.CreateLevelData(_GameModel.GameData, LevelId.Dave_Lawn) } });
+            }
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 360, 120, 40), "重置冷却时间"))
+            {
+                foreach (var seed in this.GetModel<ILevelModel>().ChosenSeeds)
+                {
+                    seed.ColdTimeTimer.SetRemaining(0);
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.LeftShift))

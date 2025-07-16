@@ -22,6 +22,10 @@ namespace TPL.PVZR.Helpers.ClassCreator
             testInventoryData.AddCard(CardHelper.CreateCardData(new PlantDef(PlantId.Sunflower, PlantVariant.V0), locked: true));
             testInventoryData.AddCard(CardHelper.CreateCardData(new PlantDef(PlantId.Flowerpot, PlantVariant.V0), locked: true));
             testInventoryData.AddCard(CardHelper.CreateCardData(new PlantDef(PlantId.Marigold, PlantVariant.V0), locked: true));
+            testInventoryData.AddCard(CardHelper.CreateCardData(new PlantDef(PlantId.PotatoMine, PlantVariant.V0), locked: false));
+            testInventoryData.AddCard(CardHelper.CreateCardData(new PlantDef(PlantId.CherryBomb, PlantVariant.V0), locked: false));
+            testInventoryData.AddCard(CardHelper.CreateCardData(new PlantDef(PlantId.SplitPea, PlantVariant.V0), locked: false));
+            testInventoryData.AddCard(CardHelper.CreateCardData(new PlantDef(PlantId.Cactus, PlantVariant.V0), locked: false));
 
             return new GameData(testMazeMapData, testInventoryData);
         }

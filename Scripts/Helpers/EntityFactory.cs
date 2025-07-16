@@ -143,6 +143,10 @@ namespace TPL.PVZR.Helpers
                         _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Marigold),
                     [new PlantDef(PlantId.Repeater, PlantVariant.V0)] =
                         _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Repeater),
+                    [new PlantDef(PlantId.PotatoMine, PlantVariant.V0)] =
+                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.PotatoMine),
+                    [new PlantDef(PlantId.CherryBomb, PlantVariant.V0)] =
+                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.CherryBomb),
                 };
             }
 
@@ -203,6 +207,7 @@ namespace TPL.PVZR.Helpers
 
             public static void RemoveZombie(Zombie zombie)
             {
+                zombie.DestroySelf();
                 ActiveZombies.Remove(zombie);
             }
         }

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public class MungBeanShooter : Plant
+    public  sealed class MungBeanShooter : Plant
     {
         public override PlantDef Def { get; } = new PlantDef(PlantId.PeaShooter, PlantVariant.V1);
 

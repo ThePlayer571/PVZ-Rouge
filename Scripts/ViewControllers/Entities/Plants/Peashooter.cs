@@ -8,7 +8,7 @@ using Time = UnityEngine.Time;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public class Peashooter : Plant
+    public sealed class Peashooter : Plant
     {
         public override PlantDef Def { get; } = new PlantDef(PlantId.PeaShooter, PlantVariant.V0);
 

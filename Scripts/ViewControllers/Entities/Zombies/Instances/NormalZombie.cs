@@ -9,10 +9,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
     {
         public override ZombieId Id { get; } = ZombieId.NormalZombie;
 
-        public override void Initialize()
+        public override void OnInit()
         {
-            base.Initialize();
-
             baseAttackData = AttackHelper.CreateAttackData(AttackId.NormalZombie);
             Health.Value = GlobalEntityData.Zombie_Default_Health;
         }

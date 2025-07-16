@@ -13,10 +13,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
 
         public ZombieArmorData armorData;
 
-        public override void Initialize()
+        public override void OnInit()
         {
-            base.Initialize();
-
             baseAttackData = AttackHelper.CreateAttackData(AttackId.NormalZombie);
             Health.Value = GlobalEntityData.Zombie_Default_Health;
 
@@ -28,7 +26,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
         {
             attackData = armorData.TakeAttack(attackData);
             base.TakeAttack(attackData);
-            
+
             return null;
         }
     }

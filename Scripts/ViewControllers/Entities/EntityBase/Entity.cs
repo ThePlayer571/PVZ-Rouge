@@ -2,6 +2,7 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Classes.DataClasses.Attack;
 using TPL.PVZR.Classes.DataClasses.Level;
+using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
@@ -43,7 +44,7 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
 
         public virtual void Kill()
         {
-            DieWith(null);
+            DieWith(AttackHelper.CreateAttackData(AttackId.Void));
         }
 
         /// <summary>
@@ -54,6 +55,8 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
             Remove();
         }
 
+        // todo 应该：实体不具备remove函数（实体只处理形象的逻辑，比如Diewith）
+        // 尽量放到Factory里面处理（不过暂时不需要）
         /// <summary>
         /// 将实体从场景中移除（不包含动画/事件等）
         /// </summary>

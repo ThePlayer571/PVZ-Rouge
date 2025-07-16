@@ -17,7 +17,8 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "DOTween.dll",
-        "JetBrains.Rider.PathLocator.dll"
+        "JetBrains.Rider.PathLocator.dll",
+        "Newtonsoft.Json.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
