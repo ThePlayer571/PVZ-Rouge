@@ -4,6 +4,7 @@ using DG.Tweening;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes;
+using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.Helpers.Methods;
 using TPL.PVZR.Tools;
@@ -125,29 +126,13 @@ namespace TPL.PVZR.Helpers
         {
             static PlantFactory()
             {
-                _plantDict = new Dictionary<PlantDef, GameObject>
+                var list = _resLoader.LoadSync<PlantConfigList>(Listconfigs.BundleName, Listconfigs.PlantConfigList)
+                    .plantConfigs;
+                _plantDict = new Dictionary<PlantDef, GameObject>();
+                foreach (var config in list)
                 {
-                    [new PlantDef(PlantId.PeaShooter, PlantVariant.V0)] =
-                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Peashooter),
-                    [new PlantDef(PlantId.PeaShooter, PlantVariant.V1)] =
-                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.MungBeanShooter),
-                    [new PlantDef(PlantId.Sunflower, PlantVariant.V0)] =
-                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Sunflower),
-                    [new PlantDef(PlantId.Wallnut, PlantVariant.V0)] =
-                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Wallnut),
-                    [new PlantDef(PlantId.Flowerpot, PlantVariant.V0)] =
-                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Flowerpot),
-                    [new PlantDef(PlantId.SnowPea, PlantVariant.V0)] =
-                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.SnowPea),
-                    [new PlantDef(PlantId.Marigold, PlantVariant.V0)] =
-                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Marigold),
-                    [new PlantDef(PlantId.Repeater, PlantVariant.V0)] =
-                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.Repeater),
-                    [new PlantDef(PlantId.PotatoMine, PlantVariant.V0)] =
-                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.PotatoMine),
-                    [new PlantDef(PlantId.CherryBomb, PlantVariant.V0)] =
-                        _resLoader.LoadSync<GameObject>(Plants.BundleName, Plants.CherryBomb),
-                };
+                    _plantDict[config.def] = config.prefab;
+                }
             }
 
             private static readonly Dictionary<PlantDef, GameObject> _plantDict;
@@ -223,11 +208,14 @@ namespace TPL.PVZR.Helpers
                 _projectileDict =
                     new Dictionary<ProjectileId, GameObject>
                     {
-                        [ProjectileId.Pea] = _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.Pea),
+                        [ProjectileId.Pea] =
+                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.Pea),
                         [ProjectileId.FrozenPea] =
                             _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.FrozenPea),
                         [ProjectileId.MungBean] =
-                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.MungBean)
+                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.MungBean),
+                        [ProjectileId.Spike] =
+                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.Spike)
                     };
             }
 

@@ -69,12 +69,13 @@ namespace TPL.PVZR.Helpers.ClassCreator.Item
             ResKit.Init();
             var resLoader = ResLoader.Allocate();
 
-            var cardDataListConfig = resLoader.LoadSync<CardDataListConfig>(Listconfigs.BundleName, Listconfigs.CardDataListConfig);
-            
+            var list = resLoader.LoadSync<PlantConfigList>(Listconfigs.BundleName, Listconfigs.PlantConfigList)
+                .plantConfigs;
+
             _cardsDict = new Dictionary<PlantDef, CardDefinition>();
-            foreach (var pair in cardDataListConfig.cardDict)
+            foreach (var config in list)
             {
-                _cardsDict[pair.Key] = pair.Value;
+                _cardsDict[config.def] = config.card;
             }
 
             _seedControllerPrefab =

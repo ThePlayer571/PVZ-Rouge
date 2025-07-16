@@ -1,3 +1,4 @@
+using System;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Attack;
 using TPL.PVZR.Helpers.ClassCreator;
@@ -16,23 +17,18 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 
         private bool _attacked = false;
 
-        protected override void Awake()
+        private void OnCollisionEnter2D(Collision2D other)
         {
-            base.Awake();
+            if (_attacked) return;
 
-            this.OnCollisionEnter2DEvent.Register(other =>
+            if (other.collider.CompareTag("Zombie"))
             {
-                if (_attacked) return;
+                _attacked = true;
+                var attackData = AttackHelper.CreateAttackData(AttackId.Pea).WithPunchFrom(transform.position);
+                other.collider.GetComponent<Zombie>().TakeAttack(attackData);
+            }
 
-                if (other.collider.CompareTag("Zombie"))
-                {
-                    _attacked = true;
-                    var attackData = AttackHelper.CreateAttackData(AttackId.Pea).WithPunchFrom(transform.position);
-                    other.collider.GetComponent<Zombie>().TakeAttack(attackData);
-                }
-
-                this.Remove();
-            }).UnRegisterWhenGameObjectDestroyed(this);
+            this.Remove();
         }
     }
 }

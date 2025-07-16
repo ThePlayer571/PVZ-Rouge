@@ -9,6 +9,7 @@ namespace TPL.PVZR.Classes
         Pea = 0,
         FrozenPea = 1,
         MungBean = 2,
+        Spike = 3,
     }
 
     [Serializable]

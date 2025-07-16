@@ -67,47 +67,6 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
 
         #endregion
 
-        #region 碰撞事件
-
-        public EasyEvent<Collider2D> OnTriggerEnterEvent = new EasyEvent<Collider2D>();
-        public EasyEvent<Collider2D> OnTriggerExitEvent = new EasyEvent<Collider2D>();
-        public EasyEvent<Collider2D> OnTriggerStayEvent = new EasyEvent<Collider2D>();
-        public EasyEvent<Collision2D> OnCollisionEnter2DEvent = new EasyEvent<Collision2D>();
-        public EasyEvent<Collision2D> OnCollisionStay2DEvent = new EasyEvent<Collision2D>();
-        public EasyEvent<Collision2D> OnCollisionExit2DEvent = new EasyEvent<Collision2D>();
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            OnTriggerEnterEvent.Trigger(other);
-        }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            OnTriggerExitEvent.Trigger(other);
-        }
-
-        private void OnTriggerStay2D(Collider2D other)
-        {
-            OnTriggerStayEvent.Trigger(other);
-        }
-
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            OnCollisionEnter2DEvent.Trigger(other);
-        }
-
-        private void OnCollisionStay2D(Collision2D other)
-        {
-            OnCollisionStay2DEvent.Trigger(other);
-        }
-
-        private void OnCollisionExit2D(Collision2D other)
-        {
-            OnCollisionExit2DEvent.Trigger(other);
-        }
-
-        #endregion
-
         public IArchitecture GetArchitecture()
         {
             return PVZRouge.Interface;

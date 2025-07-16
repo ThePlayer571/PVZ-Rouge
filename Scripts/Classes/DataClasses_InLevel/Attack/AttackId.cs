@@ -9,5 +9,6 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
         MungBean,
         PotatoMineExplosion,
         CherryBombExplosion,
+        Spike,
     }
 }
