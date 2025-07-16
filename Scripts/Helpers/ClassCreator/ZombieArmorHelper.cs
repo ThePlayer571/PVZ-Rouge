@@ -20,6 +20,10 @@ namespace TPL.PVZR.Helpers.ClassCreator
                     Zombiearmordefinition.BundleName, Zombiearmordefinition.ZombieArmorDefinition_TrafficCone),
                 [ZombieArmorId.Bucket] = resLoader.LoadSync<ZombieArmorDefinition>(
                     Zombiearmordefinition.BundleName, Zombiearmordefinition.ZombieArmorDefinition_Bucket),
+                [ZombieArmorId.ScreenDoor] = resLoader.LoadSync<ZombieArmorDefinition>(
+                    Zombiearmordefinition.BundleName, Zombiearmordefinition.ZombieArmorDefinition_ScreenDoor),
+                [ZombieArmorId.Newspaper] = resLoader.LoadSync<ZombieArmorDefinition>(
+                    Zombiearmordefinition.BundleName, Zombiearmordefinition.ZombieArmorDefinition_Newspaper),
             };
         }
 

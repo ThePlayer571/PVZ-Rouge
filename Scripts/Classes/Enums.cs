@@ -6,18 +6,22 @@ namespace TPL.PVZR.Classes
     [Serializable]
     public enum ProjectileId
     {
-        Pea = 0,
-        FrozenPea = 1,
-        MungBean = 2,
-        Spike = 3,
+        NotSet = 0,
+        Pea = 1,
+        FrozenPea = 2,
+        MungBean = 3,
+        Spike = 4,
     }
 
     [Serializable]
     public enum ZombieId
     {
-        NormalZombie = 0,
-        ConeheadZombie = 1,
-        BucketHeadZombie = 2,
+        NotSet = 0,
+        NormalZombie = 1,
+        ConeheadZombie = 2,
+        BucketHeadZombie = 3,
+        ScreenDoorZombie = 4,
+        NewspaperZombie = 5,
     }
 
     [Serializable]

@@ -24,7 +24,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
 
         public override AttackData TakeAttack(AttackData attackData)
         {
-            attackData = armorData.TakeAttack(attackData);
+            if (!armorData.IsDestroyed) attackData = armorData.TakeAttack(attackData);
             base.TakeAttack(attackData);
 
             return null;

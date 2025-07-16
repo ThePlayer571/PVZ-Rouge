@@ -23,10 +23,12 @@ namespace TPL.PVZR.Classes.DataClasses.ZombieArmor
 
         private float armorHealth;
         private ArmorState armorState;
+        public bool IsDestroyed { get; private set; }
 
         #endregion
 
-        public EasyEvent<ArmorState, AttackData> OnChangeState = new EasyEvent<ArmorState, AttackData>();
+        public readonly EasyEvent<ArmorState, AttackData> OnChangeState = new EasyEvent<ArmorState, AttackData>();
+        public readonly EasyEvent OnDestroyed = new EasyEvent();
 
         public ZombieArmorData(ZombieArmorDefinition definition)
         {
@@ -73,6 +75,11 @@ namespace TPL.PVZR.Classes.DataClasses.ZombieArmor
 
             // 更新ArmorState
             UpdateArmorStateWithAttack(attackData);
+            if (armorHealth <= 0)
+            {
+                IsDestroyed = true;
+                OnDestroyed.Trigger();
+            }
 
             attackData.SubDamage(damageToArmor);
             attackData.MultiplyPunchForce(1 - PunchResistanceRate);

@@ -1,15 +1,15 @@
-using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses.Attack;
 using TPL.PVZR.Classes.DataClasses.ZombieArmor;
 using TPL.PVZR.Helpers.ClassCreator;
+using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
 {
-    public sealed class BucketheadZombie : Zombie
+    public sealed class ScreenDoorZombie : Zombie, IHaveShield
     {
-        public override ZombieId Id { get; } = ZombieId.BucketHeadZombie;
+        public override ZombieId Id { get; } = ZombieId.ScreenDoorZombie;
 
         public ZombieArmorData armorData;
 
@@ -18,14 +18,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
             baseAttackData = AttackHelper.CreateAttackData(AttackId.NormalZombie);
             Health.Value = GlobalEntityData.Zombie_Default_Health;
 
-            armorData = ZombieArmorHelper.CreateZombieArmorData(ZombieArmorId.Bucket);
+            armorData = ZombieArmorHelper.CreateZombieArmorData(ZombieArmorId.ScreenDoor);
             ZombieArmorList.Add(armorData);
         }
 
-        public override AttackData TakeAttack(AttackData attackData)
+        public AttackData ShieldTakeAttack(AttackData attackData)
         {
-            if (!armorData.IsDestroyed) attackData = armorData.TakeAttack(attackData);
-            base.TakeAttack(attackData);
+            attackData = armorData.TakeAttack(attackData);
+            base.TakeAttack(attackData.OnlyPunch());
 
             return null;
         }

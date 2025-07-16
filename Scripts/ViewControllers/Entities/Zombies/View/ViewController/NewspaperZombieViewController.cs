@@ -5,15 +5,16 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.BaseView
 {
-    /// <summary>
-    /// 适用：普通僵尸，路障僵尸，铁桶僵尸，栅栏门僵尸，......
-    /// </summary>
-    public class DefaultZombieViewController : ZombieViewController
+    public sealed class NewspaperZombieViewController : ZombieViewController
     {
+        /// <summary>
+        /// 适用：仅读报僵尸
+        /// </summary>
         private float currentRotation;
+
         private float targetRotation;
         private const float rotationChangeFactor = 5f;
-        
+
         protected override void SetUpFSM()
         {
             ViewFSM.State(ZombieState.DefaultTargeting)
@@ -27,11 +28,21 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.BaseView
             ViewFSM.State(ZombieState.Attacking)
                 .OnEnter(() =>
                 {
-                    _Animator.SetTrigger("EnterAttacking");
                     currentRotation = 0;
+                    _Animator.SetTrigger("EnterAttacking");
                 });
-            
+            ViewFSM.State(ZombieState.OnNewspaperDestroyed)
+                .OnEnter(() => { 
+                    currentRotation = 0;
+                    _Animator.SetTrigger("EnterOnNewspaperDestroyed"); });
+
             ViewFSM.StartState(ZombieState.DefaultTargeting);
+        }
+
+        // todo 屎山：让动画控制器决定逻辑
+        public void Shit_OnNewspaperDestroyedPlayFinished()
+        {
+            Zombie.FSM.ChangeState(ZombieState.DefaultTargeting);
         }
 
         protected override void OnInit()

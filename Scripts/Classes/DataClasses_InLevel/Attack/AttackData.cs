@@ -10,13 +10,14 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
     public class AttackData
     {
         private float damage;
+        private bool isFrameDamage;
+        
         private float punchForce;
         private PunchType punchType;
-        private bool isFrameDamage;
-        private List<EffectData> effects;
-        // 我想或许不用让外界访问AttackDefinition，而是提供方便的方法调用
-
         private Vector2 punchFrom;
+        
+        private List<EffectData> effects;
+
 
         #region 初始化函数
 
@@ -35,6 +36,13 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
         public AttackData MultiplyPunchForce(float factor)
         {
             punchForce *= factor;
+            return this;
+        }
+
+        public AttackData OnlyPunch()
+        {
+            damage = 0;
+            effects = new List<EffectData>();
             return this;
         }
 
@@ -77,8 +85,6 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
                 default: throw new ArgumentException();
             }
 
-            $"获取Punch: from: {punchFrom}, to: {punchTo}, direction: {direction}".LogInfo();
-
             return direction * punchForce;
         }
 
@@ -94,7 +100,7 @@ namespace TPL.PVZR.Classes.DataClasses.Attack
             this.punchForce = other.punchForce;
             this.punchType = other.punchType;
             this.isFrameDamage = other.isFrameDamage;
-            this.effects = other.effects.ToList();
+            this.effects = other.effects.Select(data => new EffectData(data)).ToList();
         }
 
         public AttackData(float damage, float punchForce, bool isFrameDamage)

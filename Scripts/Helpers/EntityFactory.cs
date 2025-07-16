@@ -169,8 +169,12 @@ namespace TPL.PVZR.Helpers
                     [ZombieId.NormalZombie] = _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.NormalZombie),
                     [ZombieId.ConeheadZombie] =
                         _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.ConeheadZombie),
-                    [ZombieId.BucketHeadZombie] =  
-                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.BucketheadZombie)
+                    [ZombieId.BucketHeadZombie] =
+                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.BucketheadZombie),
+                    [ZombieId.ScreenDoorZombie] =
+                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.ScreenDoorZombie),
+                    [ZombieId.NewspaperZombie] =
+                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.NewspaperZombie),
                 };
             }
 

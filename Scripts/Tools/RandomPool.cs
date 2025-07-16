@@ -58,7 +58,11 @@ namespace TPL.PVZR.Tools
         /// </summary>
         public TOutput GetRandomOutput()
         {
-            if (availableInfos.Count == 0) return null;
+            if (availableInfos.Count == 0)
+            {
+                IsFinished = true;
+                return null;
+            }
 
             for (var tryCount = 0; tryCount < MaxRetryCount; tryCount++)
             {

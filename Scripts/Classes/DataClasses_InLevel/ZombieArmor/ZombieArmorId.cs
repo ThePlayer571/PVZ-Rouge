@@ -4,5 +4,7 @@ namespace TPL.PVZR.Classes.DataClasses.ZombieArmor
     {
         TrafficCone = 0,
         Bucket = 1,
+        ScreenDoor = 2,
+        Newspaper = 3,
     }
 }

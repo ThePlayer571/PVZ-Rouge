@@ -3,6 +3,7 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses.Attack;
 using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using UnityEngine;
 
@@ -21,11 +22,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
         {
             if (_attacked) return;
 
-            if (other.collider.CompareTag("Zombie"))
+            if (other.collider.IsInLayerMask(LayerMask.GetMask("Zombie")))
             {
                 _attacked = true;
                 var attackData = AttackHelper.CreateAttackData(AttackId.Pea).WithPunchFrom(transform.position);
-                other.collider.GetComponent<Zombie>().TakeAttack(attackData);
+                other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
             }
 
             this.Remove();
