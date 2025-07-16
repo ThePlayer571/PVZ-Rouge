@@ -18,6 +18,8 @@ namespace TPL.PVZR.Helpers.ClassCreator
             {
                 [ZombieArmorId.TrafficCone] = resLoader.LoadSync<ZombieArmorDefinition>(
                     Zombiearmordefinition.BundleName, Zombiearmordefinition.ZombieArmorDefinition_TrafficCone),
+                [ZombieArmorId.Bucket] = resLoader.LoadSync<ZombieArmorDefinition>(
+                    Zombiearmordefinition.BundleName, Zombiearmordefinition.ZombieArmorDefinition_Bucket),
             };
         }
 

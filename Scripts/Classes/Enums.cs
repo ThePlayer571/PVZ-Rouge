@@ -17,6 +17,7 @@ namespace TPL.PVZR.Classes
     {
         NormalZombie = 0,
         ConeheadZombie = 1,
+        BucketHeadZombie = 2,
     }
 
     [Serializable]

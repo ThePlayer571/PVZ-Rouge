@@ -7,29 +7,37 @@ namespace TPL.PVZR.Classes.DataClasses.ZombieArmor
 {
     public class ZombieArmorData : IAttackable
     {
-        public readonly float armorInitialHealth;
-        public readonly float damageReductionRate;
-        public readonly float punchResistanceRate;
+        #region 数值
 
-        public readonly float intactMinRatio;
-        public readonly float damagedMinRatio;
-        public readonly float brokenMinRatio;
+        private float ArmorInitialHealth { get; }
+        private float DamageReductionRate { get; }
+        private float PunchResistanceRate { get; }
 
-        public float armorHealth;
-        public ArmorState armorState;
+        private float IntactMinRatio { get; }
+        private float DamagedMinRatio { get; }
+        private float BrokenMinRatio { get; }
+
+        #endregion
+
+        #region 变量
+
+        private float armorHealth;
+        private ArmorState armorState;
+
+        #endregion
 
         public EasyEvent<ArmorState, AttackData> OnChangeState = new EasyEvent<ArmorState, AttackData>();
 
         public ZombieArmorData(ZombieArmorDefinition definition)
         {
-            this.armorInitialHealth = definition.armorHealth;
-            this.damageReductionRate = definition.damageReductionRate;
-            this.punchResistanceRate = definition.punchResistanceRate;
-            this.intactMinRatio = definition.intactMinRatio;
-            this.damagedMinRatio = definition.damagedMinRatio;
-            this.brokenMinRatio = definition.brokenMinRatio;
+            this.ArmorInitialHealth = definition.armorHealth;
+            this.DamageReductionRate = definition.damageReductionRate;
+            this.PunchResistanceRate = definition.punchResistanceRate;
+            this.IntactMinRatio = definition.intactMinRatio;
+            this.DamagedMinRatio = definition.damagedMinRatio;
+            this.BrokenMinRatio = definition.brokenMinRatio;
 
-            armorHealth = armorInitialHealth;
+            armorHealth = ArmorInitialHealth;
             UpdateArmorStateWithAttack(null);
         }
 
@@ -38,11 +46,11 @@ namespace TPL.PVZR.Classes.DataClasses.ZombieArmor
             ArmorState newState;
 
             // 计算新状态
-            if (armorHealth >= armorInitialHealth * intactMinRatio)
+            if (armorHealth >= ArmorInitialHealth * IntactMinRatio)
                 newState = ArmorState.Intact;
-            else if (armorHealth >= armorInitialHealth * damagedMinRatio)
+            else if (armorHealth >= ArmorInitialHealth * DamagedMinRatio)
                 newState = ArmorState.Damaged;
-            else if (armorHealth > armorInitialHealth * brokenMinRatio)
+            else if (armorHealth > ArmorInitialHealth * BrokenMinRatio)
                 newState = ArmorState.Broken;
             else
                 newState = ArmorState.Destroyed;
@@ -59,7 +67,7 @@ namespace TPL.PVZR.Classes.DataClasses.ZombieArmor
         public AttackData TakeAttack(AttackData attackData)
         {
             // 计算伤害
-            var damageToArmor = Mathf.Clamp(attackData.Damage * damageReductionRate, 0, armorHealth);
+            var damageToArmor = Mathf.Clamp(attackData.Damage * DamageReductionRate, 0, armorHealth);
 
             armorHealth -= damageToArmor;
 
@@ -67,7 +75,7 @@ namespace TPL.PVZR.Classes.DataClasses.ZombieArmor
             UpdateArmorStateWithAttack(attackData);
 
             attackData.SubDamage(damageToArmor);
-            attackData.MultiplyPunchForce(1 - punchResistanceRate);
+            attackData.MultiplyPunchForce(1 - PunchResistanceRate);
             return attackData;
         }
     }

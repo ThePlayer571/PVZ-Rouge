@@ -21,18 +21,17 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            
-                if (other.collider.CompareTag("Zombie") && !_attacked.Contains(other.gameObject))
-                {
-                    _attacked.Add(other.gameObject);
-                    var attackData = AttackHelper.CreateAttackData(AttackId.Pea).WithPunchFrom(transform.position);
-                    other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
-                }
+            if (other.collider.CompareTag("Zombie") && !_attacked.Contains(other.gameObject))
+            {
+                _attacked.Add(other.gameObject);
+                var attackData = AttackHelper.CreateAttackData(AttackId.Pea).WithPunchFrom(transform.position);
+                other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
+            }
 
-                if (other.collider.IsInLayerMask(LayerMask.GetMask("Barrier")))
-                {
-                    this.Remove();
-                }
+            if (other.collider.IsInLayerMask(LayerMask.GetMask("Barrier")))
+            {
+                this.Remove();
+            }
         }
     }
 }

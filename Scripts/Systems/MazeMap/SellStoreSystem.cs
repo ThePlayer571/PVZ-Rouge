@@ -110,6 +110,8 @@ namespace TPL.PVZR.Systems
 
                 // 重新生成售卖对象
                 AutoWriteIndex(e.index);
+                
+                "after Write".LogInfo();
             });
         }
 

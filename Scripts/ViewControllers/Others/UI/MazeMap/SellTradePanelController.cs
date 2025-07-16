@@ -60,11 +60,17 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                 {
                     this.SendCommand<SellTradeCommand>(new SellTradeCommand(capturedIndex));
 
+                    // UI更新
                     var newTrade = _SellStoreSystem.GetCoinTradeByIndex(capturedIndex);
                     trade.CoinText.text = newTrade.CoinAmount.ToString();
                     var definition =
                         CardHelper.GetCardDefinition(PlantBookHelper.GetPlantDef(newTrade.LootData.PlantId));
                     lootView.GetComponent<CardViewController>().Initialize(definition);
+
+                    var tradeNode = TradeList[capturedIndex];
+                    var tradeData = _SellStoreSystem.GetCoinTradeByIndex(capturedIndex);
+                    tradeNode.TradeBtn.interactable =
+                        _GameModel.GameData.InventoryData.HasTradableCard(tradeData.LootData.PlantId);
                 });
             }
 

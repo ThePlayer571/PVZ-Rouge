@@ -83,9 +83,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             FSM.StartState(ZombieState.DefaultTargeting);
         }
 
-        /// <summary>
-        /// 定义：初始化，能用于对象池的初始化方法
-        /// </summary>
         public void Initialize()
         {
             SetUpFSM();
@@ -94,6 +91,10 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                 .UnRegisterWhenGameObjectDestroyed(this);
 
             ActionKit.DelayFrame(1, OnInitialized.Trigger).Start(this);
+            // 朝向
+            this.Direction
+                .RegisterWithInitValue(direction => { transform.LocalScaleX(direction.ToInt()); })
+                .UnRegisterWhenGameObjectDestroyed(this);
             //
             OnInit();
         }
@@ -210,7 +211,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         #region 实体生命周期
 
         public abstract void OnInit();
-        
+
         public override void DieWith(AttackData attackData)
         {
             OnDieFrom.Trigger(attackData);
