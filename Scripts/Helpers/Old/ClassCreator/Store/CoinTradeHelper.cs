@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes;
@@ -10,6 +11,8 @@ using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.Helpers.ClassCreator.Item;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
+using UnityEngine.TextCore.Text;
+using PlantBookId = TPL.PVZR.Classes.DataClasses.Loot.PlantBookId;
 
 namespace TPL.PVZR.Helpers.ClassCreator
 {
@@ -18,34 +21,54 @@ namespace TPL.PVZR.Helpers.ClassCreator
         static CoinTradeHelper()
         {
             var resLoader = ResLoader.Allocate();
-            var itemValueList =
-                resLoader.LoadSync<ItemValueList>(Listconfigs.BundleName, Listconfigs.ItemValueList);
-            foreach (var plant in itemValueList.plantValueList)
+            var itemValueListJson = resLoader.LoadSync<TextAsset>(Listconfigs.BundleName, Listconfigs.ItemValueList);
+            var itemValueList = JObject.Parse(itemValueListJson.ToString());
+
+            // 读取植物价值列表
+            if (itemValueList["PlantValueList"] is JObject plantValueList)
             {
-                _coinTrades.Add(new CoinTradeGenerateInfo
+                foreach (var plant in plantValueList)
                 {
-                    weight = 10,
-                    coinTradeInfo = new CoinTradeInfo
+                    // 将字符串键转换为PlantId枚举
+                    if (Enum.TryParse<PlantId>(plant.Key, true, out var plantId))
                     {
-                        coinAmount = plant.Value,
-                        lootInfo = new LootInfo { LootType = LootType.Card, PlantId = plant.Key }
+                        _coinTrades.Add(new CoinTradeGenerateInfo
+                        {
+                            weight = 10,
+                            coinTradeInfo = new CoinTradeInfo
+                            {
+                                coinAmount = plant.Value.Value<int>(),
+                                lootInfo = new LootInfo { LootType = LootType.Card, PlantId = plantId }
+                            }
+                        });
                     }
-                });
+                }
             }
 
-            foreach (var plantBook in itemValueList.plantBookValueList)
+            // 读取植物秘籍价值列表
+            var plantBookValueList = itemValueList["PlantBookValueList"] as JObject;
+            if (plantBookValueList != null)
             {
-                _coinTrades.Add(new CoinTradeGenerateInfo
+                foreach (var plantBook in plantBookValueList)
                 {
-                    weight = 10,
-                    onlyOnce = true,
-                    coinTradeInfo = new CoinTradeInfo
+                    // 将字符串键转换为PlantBookId枚举
+                    if (Enum.TryParse<PlantBookId>(plantBook.Key, true, out var plantBookId))
                     {
-                        coinAmount = plantBook.Value,
-                        lootInfo = new LootInfo { LootType = LootType.PlantBook, PlantBookId = plantBook.Key }
+                        _coinTrades.Add(new CoinTradeGenerateInfo
+                        {
+                            weight = 10,
+                            onlyOnce = true,
+                            coinTradeInfo = new CoinTradeInfo
+                            {
+                                coinAmount = plantBook.Value.Value<int>(),
+                                lootInfo = new LootInfo { LootType = LootType.PlantBook, PlantBookId = plantBookId }
+                            }
+                        });
                     }
-                });
+                }
             }
+
+            resLoader.Recycle2Cache();
         }
 
         private static readonly List<CoinTradeGenerateInfo> _coinTrades = new();

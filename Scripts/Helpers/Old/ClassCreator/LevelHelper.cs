@@ -21,17 +21,5 @@ namespace TPL.PVZR.Helpers.ClassCreator
             }
         }
 
-        private static Dictionary<LevelId, LevelDefinition> _levelDefinitionDict;
-
-        static LevelHelper()
-        {
-            ResKit.Init();
-            var resLoader = ResLoader.Allocate();
-            _levelDefinitionDict = new Dictionary<LevelId, LevelDefinition>
-            {
-                [LevelId.Dave_Lawn] = resLoader.LoadSync<LevelDefinition>(Leveldefinition.BundleName,
-                    Leveldefinition.LevelDefinition_DaveLawn),
-            };
-        }
     }
 }

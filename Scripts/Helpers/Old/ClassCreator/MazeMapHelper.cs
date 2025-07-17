@@ -8,18 +8,6 @@ namespace TPL.PVZR.Helpers.ClassCreator
 {
     public static class MazeMapHelper
     {
-        static MazeMapHelper()
-        {
-            var resLoader = ResLoader.Allocate();
-            _mazeMapDict = new Dictionary<(MazeMapId, GameDifficulty), MazeMapDefinition>
-            {
-                [(MazeMapId.DaveLawn, GameDifficulty.N0)] =
-                    resLoader.LoadSync<MazeMapDefinition>(Mazemapdefinition.BundleName,
-                        Mazemapdefinition.MazeMapDefinition_DaveLawn),
-            };
-        }
-
-        private static Dictionary<(MazeMapId, GameDifficulty), MazeMapDefinition> _mazeMapDict;
 
 
         public static MazeMapData CreateMazeMapData(MazeMapId mazeMapId, GameDifficulty difficulty, ulong seed)

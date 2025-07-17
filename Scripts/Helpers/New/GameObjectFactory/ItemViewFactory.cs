@@ -6,6 +6,7 @@ using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.Helpers.ClassCreator.Item;
+using TPL.PVZR.Helpers.New.DataReader;
 using TPL.PVZR.ViewControllers.Others.UI.ItemView;
 using UnityEngine;
 
@@ -61,7 +62,7 @@ namespace TPL.PVZR.Helpers
 
         public static GameObject CreateItemView(PlantId plantId)
         {
-            var cardDefinition = CardHelper.GetCardDefinition(PlantBookHelper.GetPlantDef(plantId));
+            var cardDefinition = PlantConfigReader.GetCardDefinition(PlantBookHelper.GetPlantDef(plantId));
             var go = _cardViewPrefab.Instantiate();
             go.GetComponent<CardViewController>().Initialize(cardDefinition);
             return go;

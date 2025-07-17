@@ -7,6 +7,7 @@ using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.Helpers.Methods;
+using TPL.PVZR.Helpers.New.DataReader;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
 using TPL.PVZR.ViewControllers;
@@ -124,33 +125,16 @@ namespace TPL.PVZR.Helpers
 
         public static class PlantFactory
         {
-            static PlantFactory()
-            {
-                var list = _resLoader.LoadSync<PlantConfigList>(Listconfigs.BundleName, Listconfigs.PlantConfigList)
-                    .plantConfigs;
-                _plantDict = new Dictionary<PlantDef, GameObject>();
-                foreach (var config in list)
-                {
-                    _plantDict[config.def] = config.prefab;
-                }
-            }
-
-            private static readonly Dictionary<PlantDef, GameObject> _plantDict;
-
             public static Plant SpawnPlant(PlantDef def, Direction2 direction, Vector2Int cellPos)
             {
-                if (_plantDict.TryGetValue(def, out var plantPrefab))
-                {
-                    var plant = plantPrefab
-                        .Instantiate(LevelGridHelper.CellToWorldBottom(cellPos), Quaternion.identity)
-                        .GetComponent<Plant>();
-                    plant.Initialize(direction);
-                    return plant;
-                }
-                else
-                {
-                    throw new ArgumentException($"未考虑的植物类型：{def}");
-                }
+                var plantPrefab = PlantConfigReader.GetPlantPrefab(def);
+                
+                var plant = plantPrefab
+                    .Instantiate(LevelGridHelper.CellToWorldBottom(cellPos), Quaternion.identity)
+                    .GetComponent<Plant>();
+                plant.Initialize(direction);
+                
+                return plant;
             }
         }
 

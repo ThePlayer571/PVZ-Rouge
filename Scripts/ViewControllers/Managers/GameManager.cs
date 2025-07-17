@@ -20,37 +20,27 @@ namespace TPL.PVZR.ViewControllers.Managers
     {
         private void OnGUI()
         {
-            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 10, 120, 40), "平地"))
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 10, 120, 40), "平地生成僵尸"))
             {
                 var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(32, 9));
                 EntityFactory.ZombieFactory.SpawnZombie(ZombieId.NormalZombie, pos);
             }
 
-            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 60, 120, 40), "二楼"))
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 60, 120, 40), "获取500阳光"))
             {
-                var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(14, 14));
-                EntityFactory.ZombieFactory.SpawnZombie(ZombieId.NormalZombie, pos);
+                this.GetModel<ILevelModel>().SunPoint.Value += 500;
             }
 
-            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 110, 120, 40), "屋顶"))
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 110, 120, 40), "重置冷却时间"))
             {
-                var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(10, 23));
-                EntityFactory.ZombieFactory.SpawnZombie(ZombieId.NormalZombie, pos);
+                foreach (var seed in this.GetModel<ILevelModel>().ChosenSeeds)
+                {
+                    seed.ColdTimeTimer.SetRemaining(0);
+                    this.GetModel<ILevelModel>().SunPoint.Value += 25;
+                }
             }
 
-            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 160, 120, 40), "测试按钮"))
-            {
-                var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(32, 9));
-                EntityFactory.ZombieFactory.SpawnZombie(ZombieId.ConeheadZombie, pos);
-            }
-
-            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 210, 120, 40), "戴夫位置生成阳光"))
-            {
-                var pos = ReferenceHelper.Player.transform.position;
-                EntityFactory.SunFactory.SpawnSunWithFall(pos);
-            }
-
-            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 260, 120, 40), "杀死所有僵尸"))
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 160, 120, 40), "杀死所有僵尸"))
             {
                 var list = EntityFactory.ZombieFactory.ActiveZombies.ToList();
                 foreach (var zombie in list)
@@ -59,20 +49,13 @@ namespace TPL.PVZR.ViewControllers.Managers
                 }
             }
 
-            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 310, 120, 40), "开始游戏"))
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 210, 120, 40), "开始游戏"))
             {
                 var _PhaseModel = this.GetModel<IPhaseModel>();
                 var _GameModel = this.GetModel<IGameModel>();
                 _PhaseModel.DelayChangePhase(GamePhase.LevelPreInitialization,
                     new Dictionary<string, object>
                         { { "LevelData", LevelHelper.CreateLevelData(_GameModel.GameData, LevelId.Dave_Lawn) } });
-            }
-            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 360, 120, 40), "重置冷却时间"))
-            {
-                foreach (var seed in this.GetModel<ILevelModel>().ChosenSeeds)
-                {
-                    seed.ColdTimeTimer.SetRemaining(0);
-                }
             }
 
             if (Input.GetKeyDown(KeyCode.LeftShift))
