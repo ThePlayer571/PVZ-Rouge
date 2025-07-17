@@ -1,10 +1,10 @@
 using Cinemachine;
 using QAssetBundle;
 using QFramework;
+using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.CommandEvents.Phase;
-using TPL.PVZR.Helpers.ClassCreator;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers;
@@ -96,7 +96,7 @@ namespace TPL.PVZR.Systems.Level_Data
                                 for (int i = 0; i < chosenSeedOptions.Count; i++)
                                 {
                                     _LevelModel.ChosenSeeds[i] =
-                                        SeedHelper.CreateSeedData(i + 1, chosenSeedOptions[i].CardData);
+                                        SeedData.Create(i + 1, chosenSeedOptions[i].CardData);
                                 }
 
                                 break;

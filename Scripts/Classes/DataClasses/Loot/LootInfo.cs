@@ -1,19 +1,21 @@
 using System;
+using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
+using TPL.PVZR.Classes.InfoClasses;
 
 namespace TPL.PVZR.Classes.DataClasses.Loot
 {
     [Serializable]
     public class LootInfo
     {
-        public LootType LootType;
+        public LootType lootType;
 
         // Type: Card
-        public PlantId PlantId;
+        public PlantId plantId;
         
         // Type: PlantBook
-        public PlantBookId PlantBookId;
+        public PlantBookId plantBookId;
         
         // Type: Coin
-        public int CoinAmount;
+        public int coinAmount;
     }
 }

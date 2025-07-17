@@ -2,15 +2,15 @@ using System.Collections.Generic;
 using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Loot;
-using TPL.PVZR.CommandEvents.__NewlyAdded__;
+using TPL.PVZR.CommandEvents.MazeMap_AwardPanel;
 using TPL.PVZR.CommandEvents.Phase;
-using TPL.PVZR.Helpers.ClassCreator;
-using TPL.PVZR.Helpers.ClassCreator.Item;
+using TPL.PVZR.Helpers.New;
+using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
 
-namespace TPL.PVZR.Systems
+namespace TPL.PVZR.Systems.MazeMap
 {
     public interface IAwardSystem : ISystem
     {
@@ -36,14 +36,14 @@ namespace TPL.PVZR.Systems
 
         #endregion
 
-        private void WriteLoots(List<LootGenerateInfo> infos, float value, int count)
+        private void WriteLoots(IReadOnlyList<LootGenerateInfo> infos, float value, int count)
         {
             _lootGroupList.Clear();
 
             // 筛选：已经拥有的PlantBook不会被加入
             infos = infos.Where(info =>
-                info.lootInfo.LootType != LootType.PlantBook ||
-                _GameModel.GameData.InventoryData.PlantBooks.All(pb => pb.Id != info.lootInfo.PlantId)).ToList();
+                info.lootInfo.lootType != LootType.PlantBook ||
+                _GameModel.GameData.InventoryData.PlantBooks.All(pb => pb.Id != info.lootInfo.plantId)).ToList();
 
 
             HasAward = true;
@@ -51,7 +51,7 @@ namespace TPL.PVZR.Systems
             {
                 var randomPool = new RandomPool<LootGenerateInfo, LootInfo>(infos, value, RandomHelper.Game);
                 var chosenLoots = randomPool.GetAllRemainingOutputs()
-                    .Select(lootInfo => LootHelper.CreateLootData(lootInfo));
+                    .Select(lootInfo => LootData.Create(lootInfo));
                 _lootGroupList.Add(chosenLoots.ToList());
             }
         }
@@ -109,11 +109,11 @@ namespace TPL.PVZR.Systems
                     switch (lootData.LootType)
                     {
                         case LootType.Card:
-                            var cardData = CardHelper.CreateCardData(PlantBookHelper.GetPlantDef(lootData.PlantId));
+                            var cardData = ItemCreator.CreateCardData(lootData.PlantId.ToDef());
                             inventory.AddCard(cardData);
                             break;
                         case LootType.PlantBook:
-                            var plantBookData = PlantBookHelper.CreatePlantBookData(lootData.PlantBookId);
+                            var plantBookData = ItemCreator.CreatePlantBookData(lootData.PlantBookId);
                             inventory.AddPlantBook(plantBookData);
                             break;
                         case LootType.Coin:

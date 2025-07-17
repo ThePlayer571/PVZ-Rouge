@@ -1,7 +1,7 @@
 using System;
 using QFramework;
-using TPL.PVZR.Classes.DataClasses.Attack;
-using TPL.PVZR.Helpers.Methods;
+using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
+using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;

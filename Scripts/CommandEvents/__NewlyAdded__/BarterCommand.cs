@@ -1,9 +1,7 @@
 using System;
 using QFramework;
-using TPL.PVZR.Classes.DataClasses.Recipe;
-using TPL.PVZR.Helpers.ClassCreator.Item;
 using TPL.PVZR.Models;
-using TPL.PVZR.Systems;
+using TPL.PVZR.Systems.MazeMap;
 
 namespace TPL.PVZR.CommandEvents.__NewlyAdded__
 {

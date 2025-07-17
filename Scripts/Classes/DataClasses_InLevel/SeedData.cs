@@ -1,7 +1,7 @@
 using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Tools;
 
-namespace TPL.PVZR.Classes.DataClasses
+namespace TPL.PVZR.Classes.DataClasses_InLevel
 {
     public class SeedData
     {
@@ -13,13 +13,18 @@ namespace TPL.PVZR.Classes.DataClasses
         public Timer ColdTimeTimer { get; }
 
 
-        public SeedData(int index, CardData cardData)
+        private SeedData(int index, CardData cardData)
         {
             this.Index = index;
             this.CardData = cardData;
 
             this.ColdTimeTimer = new Timer(cardData.CardDefinition.ColdTime);
             this.ColdTimeTimer.SetRemaining(CardData.CardDefinition.InitialColdTime);
+        }
+
+        public static SeedData Create(int index, CardData cardData)
+        {
+            return new SeedData(index, cardData);
         }
     }
 }

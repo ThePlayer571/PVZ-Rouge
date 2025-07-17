@@ -1,16 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using Cinemachine;
 using QFramework;
-using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents.Phase;
-using TPL.PVZR.Helpers.ClassCreator;
-using TPL.PVZR.Helpers.ClassCreator.Item;
+using TPL.PVZR.Helpers.New;
+using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
 
-namespace TPL.PVZR.Systems
+namespace TPL.PVZR.Systems.MazeMap
 {
     public interface IRecipeStoreSystem : ISystem
     {
@@ -28,7 +26,7 @@ namespace TPL.PVZR.Systems
                 .Select(cardData => cardData.CardDefinition.PlantDef.Id)
                 .ToHashSet();
 
-            var recipePool = RecipeHelper.GetRelatedRecipes(ownedPlants);
+            var recipePool = TradeCreator.CreateRelatedRecipePool(ownedPlants);
             var _ = recipePool.GetRandomOutputs(8)
                 .Select(recipeInfo => new RecipeData(recipeInfo));
             _activeRecipes.AddRange(_);
@@ -87,7 +85,7 @@ namespace TPL.PVZR.Systems
 
                 // 添加
                 {
-                    var cardData = CardHelper.CreateCardData(PlantBookHelper.GetPlantDef(recipe.output.PlantId));
+                    var cardData = ItemCreator.CreateCardData(recipe.output.PlantId.ToDef());
                     _GameModel.GameData.InventoryData.AddCard(cardData);
                 }
             });

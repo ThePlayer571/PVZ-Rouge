@@ -4,9 +4,12 @@ using System.Linq;
 using QFramework;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.Helpers;
-using TPL.PVZR.Helpers.ClassCreator.Item;
+using TPL.PVZR.Helpers.New;
+using TPL.PVZR.Helpers.New.DataReader;
+using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
+using TPL.PVZR.Systems.MazeMap;
 using TPL.PVZR.ViewControllers.Others.UI.ItemView;
 using UnityEngine;
 using UnityEngine.UI;
@@ -64,7 +67,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                     var newTrade = _SellStoreSystem.GetCoinTradeByIndex(capturedIndex);
                     trade.CoinText.text = newTrade.CoinAmount.ToString();
                     var definition =
-                        CardHelper.GetCardDefinition(PlantBookHelper.GetPlantDef(newTrade.LootData.PlantId));
+                        PlantConfigReader.GetCardDefinition(newTrade.LootData.PlantId.ToDef());
                     lootView.GetComponent<CardViewController>().Initialize(definition);
 
                     var tradeNode = TradeList[capturedIndex];

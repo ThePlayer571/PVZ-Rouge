@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using QFramework;
-using TPL.PVZR.Classes.DataClasses.Effect;
+using TPL.PVZR.Classes.DataClasses_InLevel.Effect;
 using UnityEngine;
 
-namespace TPL.PVZR.Classes.DataClasses.Attack
+namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
 {
     public class AttackData
     {

@@ -1,4 +1,4 @@
-namespace TPL.PVZR.Classes.DataClasses.Attack
+namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
 {
     public enum AttackId
     {

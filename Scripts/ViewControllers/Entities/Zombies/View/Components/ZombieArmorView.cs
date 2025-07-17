@@ -1,6 +1,6 @@
 using System;
-using TPL.PVZR.Classes.DataClasses.Attack;
-using TPL.PVZR.Classes.DataClasses.ZombieArmor;
+using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
+using TPL.PVZR.Classes.DataClasses_InLevel.ZombieArmor;
 using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.Components

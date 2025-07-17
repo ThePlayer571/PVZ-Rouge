@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using QFramework;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.Helpers;
+using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
+using TPL.PVZR.Systems.MazeMap;
 using UnityEngine;
 using UnityEngine.UI;
 

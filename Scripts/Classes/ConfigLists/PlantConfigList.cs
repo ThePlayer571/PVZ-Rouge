@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
-using TPL.PVZR.Classes.DataClasses.Level;
+using TPL.PVZR.Classes.InfoClasses;
 using UnityEngine;
 
-namespace TPL.PVZR.Classes.DataClasses.Recipe
+namespace TPL.PVZR.Classes.ConfigLists
 {
     [Serializable]
     public class PlantConfig
@@ -15,7 +15,7 @@ namespace TPL.PVZR.Classes.DataClasses.Recipe
     }
 
 
-    [CreateAssetMenu(fileName = "PlantConfigList", menuName = "PVZR_Config/PlantConfigList", order = 6)]
+    [CreateAssetMenu(fileName = "PlantConfigList", menuName = "PVZR_Config/PlantConfigList")]
     public class PlantConfigList : ScriptableObject
     {
         public List<PlantConfig> plantConfigs;

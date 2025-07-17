@@ -1,7 +1,6 @@
 using System;
-using TPL.PVZR.Classes.DataClasses.Item.Card;
 
-namespace TPL.PVZR.Classes
+namespace TPL.PVZR.Classes.InfoClasses
 {
     [Serializable]
     public struct PlantDef : IEquatable<PlantDef>

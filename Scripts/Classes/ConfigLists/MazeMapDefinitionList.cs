@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TPL.PVZR.Classes.MazeMap;
 using UnityEngine;
 
-namespace TPL.PVZR.Classes.DataClasses.Recipe
+namespace TPL.PVZR.Classes.ConfigLists
 {
     [Serializable]
     public class MazeMapConfig
@@ -12,6 +12,7 @@ namespace TPL.PVZR.Classes.DataClasses.Recipe
         public MazeMapDefinition mazeMapDefinition;
     }
     
+    [CreateAssetMenu(fileName = "MazeMapDefinitionList", menuName = "PVZR_Config/MazeMapDefinitionList")]
     public class MazeMapDefinitionList : ScriptableObject
     {
         public List<MazeMapConfig> mazeMapDefinitionList;

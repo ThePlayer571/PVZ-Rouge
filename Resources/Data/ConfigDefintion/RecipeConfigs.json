@@ -1,0 +1,200 @@
+[
+  {
+    "weight": 10,
+    "output": {
+      "card": "Repeater"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "PeaShooter"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "Repeater"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "PeaShooter",
+        "PeaShooter"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "Repeater"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter"
+      ],
+      "coinRange": [
+        20,
+        30
+      ]
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Sunflower"
+    },
+    "input": {
+      "cards": [
+        "Flowerpot",
+        "Flowerpot"
+      ],
+      "coinRange": [
+        10,
+        20
+      ]
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Sunflower"
+    },
+    "input": {
+      "cards": [
+        "Flowerpot",
+        "Flowerpot",
+        "Flowerpot"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 1,
+    "output": {
+      "card": "Flowerpot"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "SnowPea"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "PeaShooter"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "PotatoMine"
+    },
+    "input": {
+      "cards": [
+        "Wallnut",
+        "Flowerpot"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "SplitPea"
+    },
+    "input": {
+      "cards": [
+        "Repeater",
+        "Repeater"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "SplitPea"
+    },
+    "input": {
+      "cards": [
+        "Repeater",
+        "PeaShooter"
+      ],
+      "coinRange": [
+        10,
+        20
+      ]
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "SplitPea"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "PeaShooter",
+        "SnowPea"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "Cactus"
+    },
+    "input": {
+      "cards": [
+        "Repeater",
+        "Repeater",
+        "Repeater",
+        "Repeater"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "CherryBomb"
+    },
+    "input": {
+      "cards": [
+        "PotatoMine",
+        "PotatoMine",
+        "Flowerpot"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "CherryBomb"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "PeaShooter"
+      ],
+      "coinRange": [
+        10,
+        20
+      ]
+    }
+  }
+]

@@ -1,7 +1,9 @@
 using QFramework;
 using TPL.PVZR.Classes;
+using TPL.PVZR.Classes.DataClasses_InLevel;
+using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.DataClasses;
-using TPL.PVZR.Classes.DataClasses.Attack;
+using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase;

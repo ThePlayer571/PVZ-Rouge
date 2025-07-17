@@ -1,13 +1,12 @@
 using QAssetBundle;
 using QFramework;
-using TPL.PVZR.Helpers;
+using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
-using TPL.PVZR.Systems;
 using TPL.PVZR.Systems.Level_Event;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using UnityEngine;
 
-namespace TPL.PVZR.CommandEvents.__NewlyAdded__
+namespace TPL.PVZR.CommandEvents._NotClassified_
 {
     public class OnZombieDeathCommand : AbstractCommand
     {

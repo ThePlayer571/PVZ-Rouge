@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using QAssetBundle;
 using QFramework;
+using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Classes.ZombieAI.Class;
 using TPL.PVZR.Classes.ZombieAI.Public;

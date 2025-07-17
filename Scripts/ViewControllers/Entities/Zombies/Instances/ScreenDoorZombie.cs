@@ -1,7 +1,8 @@
 using TPL.PVZR.Classes;
-using TPL.PVZR.Classes.DataClasses.Attack;
-using TPL.PVZR.Classes.DataClasses.ZombieArmor;
-using TPL.PVZR.Helpers.ClassCreator;
+using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
+using TPL.PVZR.Classes.DataClasses_InLevel.ZombieArmor;
+using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 
@@ -15,10 +16,10 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
 
         public override void OnInit()
         {
-            baseAttackData = AttackHelper.CreateAttackData(AttackId.NormalZombie);
+            baseAttackData = AttackCreator.CreateAttackData(AttackId.NormalZombie);
             Health.Value = GlobalEntityData.Zombie_Default_Health;
 
-            armorData = ZombieArmorHelper.CreateZombieArmorData(ZombieArmorId.ScreenDoor);
+            armorData = ZombieArmorCreator.CreateZombieArmorData(ZombieArmorId.ScreenDoor);
             ZombieArmorList.Add(armorData);
         }
 
@@ -29,5 +30,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
 
             return null;
         }
+
+        public ZombieArmorData ShieldArmorData => armorData;
     }
 }

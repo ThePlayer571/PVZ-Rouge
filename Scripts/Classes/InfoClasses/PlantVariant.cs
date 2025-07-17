@@ -1,6 +1,6 @@
 using System;
 
-namespace TPL.PVZR.Classes
+namespace TPL.PVZR.Classes.InfoClasses
 {
     [Serializable]
     public enum PlantVariant

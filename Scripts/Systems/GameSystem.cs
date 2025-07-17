@@ -1,17 +1,9 @@
-using System;
-using System.Collections.Generic;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Game;
-using TPL.PVZR.Classes.DataClasses.Level;
-using TPL.PVZR.Classes.MazeMap;
+using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.CommandEvents.Phase;
-using TPL.PVZR.Helpers;
-using TPL.PVZR.Helpers.ClassCreator;
-using TPL.PVZR.Helpers.ClassCreator.Item;
+using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Models;
-using TPL.PVZR.ViewControllers.Managers;
-using TPL.PVZR.ViewControllers.UI;
-using UnityEngine.SceneManagement;
 
 namespace TPL.PVZR.Systems
 {
@@ -38,7 +30,7 @@ namespace TPL.PVZR.Systems
                         {
                             case PhaseStage.EnterEarly:
                                 _GameModel.GameData = e.Parameters["GameData"] as GameData;
-                                PlantBookHelper.SetInventory(_GameModel.GameData.InventoryData);
+                                PlantDefHelper.SetInventory(_GameModel.GameData.InventoryData);
                                 break;
                             case PhaseStage.EnterLate:
                                 _PhaseModel.DelayChangePhase(GamePhase.MazeMapInitialization);

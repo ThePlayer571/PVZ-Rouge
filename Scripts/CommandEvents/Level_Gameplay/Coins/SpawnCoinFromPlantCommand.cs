@@ -1,11 +1,10 @@
 using System;
 using QFramework;
-using TPL.PVZR.Helpers;
+using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
-using UnityEngine;
 
-namespace TPL.PVZR.CommandEvents.__NewlyAdded__
+namespace TPL.PVZR.CommandEvents.Level_Gameplay.Coins
 {
     public class SpawnCoinFromPlantCommand : AbstractCommand
     {

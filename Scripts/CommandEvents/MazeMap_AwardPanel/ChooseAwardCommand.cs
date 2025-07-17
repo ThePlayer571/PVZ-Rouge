@@ -1,11 +1,8 @@
 using System;
 using QFramework;
-using TPL.PVZR.Classes.DataClasses.Loot;
-using TPL.PVZR.Helpers;
-using TPL.PVZR.Models;
-using TPL.PVZR.Systems;
+using TPL.PVZR.Systems.MazeMap;
 
-namespace TPL.PVZR.CommandEvents.__NewlyAdded__
+namespace TPL.PVZR.CommandEvents.MazeMap_AwardPanel
 {
     public struct ChooseAwardEvent
     {

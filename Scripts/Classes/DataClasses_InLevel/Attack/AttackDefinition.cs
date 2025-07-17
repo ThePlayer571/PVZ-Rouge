@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using TPL.PVZR.Classes.DataClasses.Effect;
+using TPL.PVZR.Classes.DataClasses_InLevel.Effect;
 using UnityEngine;
 
-namespace TPL.PVZR.Classes.DataClasses.Attack
+namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
 {
     [System.Serializable]
     public enum PunchType

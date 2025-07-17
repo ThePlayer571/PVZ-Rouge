@@ -5,9 +5,11 @@ using System.Threading;
 using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses.Level;
+using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers;
-using TPL.PVZR.Helpers.ClassCreator;
-using TPL.PVZR.Helpers.Methods;
+using TPL.PVZR.Helpers.New.ClassCreator;
+using TPL.PVZR.Helpers.New.GameObjectFactory;
+using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems.Level_Data;
 using TPL.PVZR.Tools;
@@ -55,7 +57,7 @@ namespace TPL.PVZR.ViewControllers.Managers
                 var _GameModel = this.GetModel<IGameModel>();
                 _PhaseModel.DelayChangePhase(GamePhase.LevelPreInitialization,
                     new Dictionary<string, object>
-                        { { "LevelData", LevelHelper.CreateLevelData(_GameModel.GameData, LevelId.Dave_Lawn) } });
+                        { { "LevelData", GameCreator.CreateLevelData(_GameModel.GameData, LevelId.Dave_Lawn) } });
             }
 
             if (Input.GetKeyDown(KeyCode.LeftShift))

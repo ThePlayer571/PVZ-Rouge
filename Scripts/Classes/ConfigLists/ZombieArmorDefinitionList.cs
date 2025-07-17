@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using TPL.PVZR.Classes.DataClasses.ZombieArmor;
+using TPL.PVZR.Classes.DataClasses_InLevel.ZombieArmor;
 using UnityEngine;
 
-namespace TPL.PVZR.Classes.DataClasses.Recipe
+namespace TPL.PVZR.Classes.ConfigLists
 {
     [Serializable]
     public class ZombieArmorConfig
@@ -11,7 +11,8 @@ namespace TPL.PVZR.Classes.DataClasses.Recipe
         public ZombieArmorId zombieArmorId;
         public ZombieArmorDefinition zombieArmorDefinition;
     }
-    
+
+    [CreateAssetMenu(fileName = "ZombieArmorDefinitionList", menuName = "PVZR_Config/ZombieArmorDefinitionList")]
     public class ZombieArmorDefinitionList : ScriptableObject
     {
         public List<ZombieArmorConfig> zombieArmorDefinitionList;

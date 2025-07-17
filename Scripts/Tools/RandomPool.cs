@@ -41,7 +41,7 @@ namespace TPL.PVZR.Tools
 
         #region Constructor
 
-        public RandomPool(List<TGenerateInfo> infos, float value, DeterministicRandom random)
+        public RandomPool(IReadOnlyList<TGenerateInfo> infos, float value, DeterministicRandom random)
         {
             availableInfos = infos.ToList();
             remainingValue = value;

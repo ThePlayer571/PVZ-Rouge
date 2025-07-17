@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
 using TPL.PVZR.Classes.DataClasses.Loot;
+using TPL.PVZR.Classes.InfoClasses;
 using UnityEngine;
 
 namespace TPL.PVZR.Classes.DataClasses.Level
@@ -89,7 +91,9 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         [Header("ZombieSpawn")] public List<SerializableKeyValuePair<ZombieSpawnPosId, Vector2>> PosDef;
         public List<ZombieSpawnConfig> ZombieSpawnConfigs;
 
-        [Header("Loot")] public List<LootGenerateInfo> LootGenerateInfos;
+        [Header("Loot")] public List<PlantId> BasicPlants;
+        public List<PlantBookId> BasicPlantBooks;
+        public List<LootGenerateInfo> SpecialLoots;
         public float LootValue;
     }
 }

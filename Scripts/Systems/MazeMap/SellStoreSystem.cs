@@ -1,17 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using QFramework;
-using TPL.PVZR.Classes;
-using TPL.PVZR.Classes.DataClasses;
-using TPL.PVZR.Classes.DataClasses.Loot;
+using TPL.PVZR.Classes.DataClasses.CoinTrade;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents.Phase;
-using TPL.PVZR.Helpers.ClassCreator;
-using TPL.PVZR.Helpers.ClassCreator.Item;
+using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools.Random;
 
-namespace TPL.PVZR.Systems
+namespace TPL.PVZR.Systems.MazeMap
 {
     public interface ISellStoreSystem : ISystem
     {
@@ -46,7 +43,7 @@ namespace TPL.PVZR.Systems
                 var chosenPlant = RandomHelper.Game.RandomChoose(
                     _GameModel.GameData.InventoryData.Cards
                         .Select(cardData => cardData.CardDefinition.PlantDef.Id));
-                return CoinTradeHelper.CreateCoinTradeData(chosenPlant, 0.4f);
+                return TradeCreator.CreateCoinTradeData(chosenPlant, 0.4f);
             }
             else
             {
@@ -54,7 +51,7 @@ namespace TPL.PVZR.Systems
                     _GameModel.GameData.InventoryData.Cards
                         .Where(data => !data.Locked)
                         .Select(cardData => cardData.CardDefinition.PlantDef.Id));
-                return CoinTradeHelper.CreateCoinTradeData(chosenPlant, 0.4f);
+                return TradeCreator.CreateCoinTradeData(chosenPlant, 0.4f);
             }
         }
 
@@ -110,8 +107,6 @@ namespace TPL.PVZR.Systems
 
                 // 重新生成售卖对象
                 AutoWriteIndex(e.index);
-                
-                "after Write".LogInfo();
             });
         }
 

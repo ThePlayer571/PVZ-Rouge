@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TPL.PVZR.Classes.DataClasses.Effect
+namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
 {
     public class EffectGroup : IEnumerable<EffectData>
     {

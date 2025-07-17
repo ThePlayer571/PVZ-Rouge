@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TPL.PVZR.Classes.DataClasses.Level;
 using UnityEngine;
 
-namespace TPL.PVZR.Classes.DataClasses.Recipe
+namespace TPL.PVZR.Classes.ConfigLists
 {
     [Serializable]
     public class LevelConfig
@@ -12,6 +12,7 @@ namespace TPL.PVZR.Classes.DataClasses.Recipe
         public LevelDefinition levelDefinition;
     }
     
+    [CreateAssetMenu(fileName = "LevelDefinitionList", menuName = "PVZR_Config/LevelDefinitionList")]
     public class LevelDefinitionList : ScriptableObject
     {
         public List<LevelConfig> levelDefinitionList;

@@ -1,7 +1,7 @@
 using System;
 using TPL.PVZR.Tools;
 
-namespace TPL.PVZR.Classes.DataClasses
+namespace TPL.PVZR.Classes.DataClasses.CoinTrade
 {
     [Serializable]
     public class CoinTradeGenerateInfo : IGenerateInfo<CoinTradeInfo>

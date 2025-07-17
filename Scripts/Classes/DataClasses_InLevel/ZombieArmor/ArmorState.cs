@@ -1,4 +1,4 @@
-namespace TPL.PVZR.Classes.DataClasses.ZombieArmor
+namespace TPL.PVZR.Classes.DataClasses_InLevel.ZombieArmor
 {
     public enum ArmorState
     {

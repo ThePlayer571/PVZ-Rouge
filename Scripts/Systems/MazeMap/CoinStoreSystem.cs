@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using QFramework;
-using TPL.PVZR.Classes.DataClasses;
+using TPL.PVZR.Classes.DataClasses.CoinTrade;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents.Phase;
-using TPL.PVZR.Helpers.ClassCreator;
-using TPL.PVZR.Helpers.ClassCreator.Item;
+using TPL.PVZR.Helpers.New;
+using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
 
-namespace TPL.PVZR.Systems
+namespace TPL.PVZR.Systems.MazeMap
 {
     public interface ICoinStoreSystem : ISystem
     {
@@ -24,7 +24,7 @@ namespace TPL.PVZR.Systems
         {
             _activeTrades.Clear();
 
-            var pool = CoinTradeHelper.GetAllCoinTradePool();
+            var pool = TradeCreator.CreateAllCoinTradePool();
             var _ = pool.GetRandomOutputs(10).Select(info => new CoinTradeData(info));
             _activeTrades.AddRange(_);
         }
@@ -79,13 +79,11 @@ namespace TPL.PVZR.Systems
                 switch (tradeData.LootData.LootType)
                 {
                     case LootType.Card:
-                        var cardData =
-                            CardHelper.CreateCardData(PlantBookHelper.GetPlantDef(tradeData.LootData.PlantId));
+                        var cardData = ItemCreator.CreateCardData(tradeData.LootData.PlantId.ToDef());
                         inventory.AddCard(cardData);
                         break;
                     case LootType.PlantBook:
-                        var plantBookData =
-                            PlantBookHelper.CreatePlantBookData(tradeData.LootData.PlantBookId);
+                        var plantBookData = ItemCreator.CreatePlantBookData(tradeData.LootData.PlantBookId);
                         inventory.AddPlantBook(plantBookData);
                         break;
                 }

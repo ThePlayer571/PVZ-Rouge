@@ -27,7 +27,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         #region WaveDef
 
         int TotalWaveCount { get; }
-        List<int> HugeWaves { get; }
+        IReadOnlyList<int> HugeWaves { get; }
         bool HasFinalBoss { get; }
 
         #endregion
@@ -46,13 +46,13 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         #region ZombieSpawn
 
-        List<ZombieSpawnInfo> ZombieSpawnInfosOfWave(int wave);
+        IReadOnlyList<ZombieSpawnInfo> ZombieSpawnInfosOfWave(int wave);
 
         #endregion
 
         #region Loot
 
-        List<LootGenerateInfo> LootGenerateInfos { get; }
+        IReadOnlyList<LootGenerateInfo> LootGenerateInfos { get; }
         float LootValue { get; }
 
         #endregion

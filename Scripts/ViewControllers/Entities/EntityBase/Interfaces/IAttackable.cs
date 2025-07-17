@@ -1,4 +1,5 @@
-using TPL.PVZR.Classes.DataClasses.Attack;
+using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
+using TPL.PVZR.Classes.DataClasses_InLevel.ZombieArmor;
 
 namespace TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces
 {
@@ -10,8 +11,10 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces
         /// <param name="attackData"></param>
         /// <returns></returns>
         AttackData ShieldTakeAttack(AttackData attackData);
+
+        ZombieArmorData ShieldArmorData { get; }
     }
-    
+
     public interface IAttackable
     {
         /// <summary>

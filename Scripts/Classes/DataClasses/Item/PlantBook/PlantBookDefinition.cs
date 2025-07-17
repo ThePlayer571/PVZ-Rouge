@@ -1,4 +1,5 @@
 using System;
+using TPL.PVZR.Classes.InfoClasses;
 using UnityEngine;
 
 namespace TPL.PVZR.Classes.DataClasses.Item.PlantBook

@@ -1,9 +1,9 @@
 using QFramework;
+using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.DataClasses;
-using TPL.PVZR.Classes.DataClasses.Attack;
 using TPL.PVZR.Classes.DataClasses.Level;
-using TPL.PVZR.Helpers.ClassCreator;
-using TPL.PVZR.Helpers.Methods;
+using TPL.PVZR.Helpers.New.ClassCreator;
+using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using UnityEngine;
@@ -44,7 +44,7 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
 
         public virtual void Kill()
         {
-            DieWith(AttackHelper.CreateAttackData(AttackId.Void));
+            DieWith(AttackCreator.CreateAttackData(AttackId.Void));
         }
 
         /// <summary>

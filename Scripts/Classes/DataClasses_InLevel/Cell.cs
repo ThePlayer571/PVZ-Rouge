@@ -1,7 +1,7 @@
-using TPL.PVZR.ViewControllers.Entities.Plants;
+using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 
-namespace TPL.PVZR.Classes.DataClasses
+namespace TPL.PVZR.Classes.DataClasses_InLevel
 {
     /// <summary>
     /// 关卡中每个格子的数据结构

@@ -13,6 +13,6 @@ namespace TPL.PVZR.Classes.DataClasses.Loot
         public float Value => value;
         public float Weight => weight;
         public LootInfo Output => lootInfo;
-        public bool OnlyOnce => lootInfo.LootType == LootType.PlantBook;
+        public bool OnlyOnce => lootInfo.lootType == LootType.PlantBook;
     }
 }

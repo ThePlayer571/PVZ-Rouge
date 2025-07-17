@@ -3,7 +3,7 @@ using QFramework;
 using TPL.PVZR.ViewControllers.Entities.Zombies.States;
 using UnityEngine;
 
-namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.BaseView
+namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
 {
     /// <summary>
     /// 适用：普通僵尸，路障僵尸，铁桶僵尸，栅栏门僵尸，......

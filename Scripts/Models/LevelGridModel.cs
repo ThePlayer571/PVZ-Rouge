@@ -1,9 +1,11 @@
 using System;
 using QFramework;
 using TPL.PVZR.Classes;
+using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Classes.DataClasses.Level;
-using TPL.PVZR.Helpers.Methods;
+using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
 using UnityEngine;
 

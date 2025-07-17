@@ -1,8 +1,9 @@
 using System;
 using DG.Tweening;
 using TPL.PVZR.Classes;
-using TPL.PVZR.Classes.DataClasses.Attack;
-using TPL.PVZR.Helpers.ClassCreator;
+using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
+using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
@@ -25,7 +26,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
                 foreach (var target in targets)
                 {
-                    var attackData = AttackHelper.CreateAttackData(AttackId.CherryBombExplosion);
+                    var attackData = AttackCreator.CreateAttackData(AttackId.CherryBombExplosion);
                     target.GetComponent<IAttackable>().TakeAttack(attackData);
                 }
 

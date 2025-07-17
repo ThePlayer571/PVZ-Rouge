@@ -6,6 +6,7 @@ using TPL.PVZR.Classes.ZombieSpawner;
 using TPL.PVZR.CommandEvents.Level_Gameplay.Waves;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers;
+using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
@@ -90,7 +91,7 @@ namespace TPL.PVZR.Systems.Level_Event
 
             this.RegisterEvent<OnWaveStart>(e =>
             {
-                List<ZombieSpawnInfo> infos = _LevelModel.LevelData.ZombieSpawnInfosOfWave(e.Wave);
+                var infos = _LevelModel.LevelData.ZombieSpawnInfosOfWave(e.Wave);
                 var value = _LevelModel.LevelData.ValueOfWave(e.Wave);
                 var task = new RandomPool<ZombieSpawnInfo, ZombieSpawnInfo>(infos, value, RandomHelper.Default);
                 ActiveTasks.Add(task);

@@ -1,5 +1,5 @@
 using System;
-using TPL.PVZR.Helpers.Methods;
+using TPL.PVZR.Helpers.New.Methods;
 using UnityEngine;
 
 namespace TPL.PVZR.Classes.ZombieAI.Public

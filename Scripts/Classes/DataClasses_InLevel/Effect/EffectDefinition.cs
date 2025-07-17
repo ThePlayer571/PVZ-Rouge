@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace TPL.PVZR.Classes.DataClasses.Effect
+namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
 {
     [Serializable]
     public class EffectDefinition

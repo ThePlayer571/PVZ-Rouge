@@ -3,7 +3,7 @@ using QFramework;
 using TPL.PVZR.ViewControllers.Entities.Zombies.States;
 using UnityEngine;
 
-namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.BaseView
+namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
 {
     public sealed class NewspaperZombieViewController : ZombieViewController
     {

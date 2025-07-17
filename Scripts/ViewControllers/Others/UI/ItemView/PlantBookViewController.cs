@@ -1,6 +1,6 @@
 using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
 using TPL.PVZR.Classes.DataClasses.Loot;
-using TPL.PVZR.Helpers.ClassCreator.Item;
+using TPL.PVZR.Helpers.New.DataReader;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +17,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.ItemView
 
         public void Initialize(PlantBookId plantBookId)
         {
-            var definition = PlantBookHelper.GetPlantBookDefinition(plantBookId);
+            var definition = PlantBookConfigReader.GetPlantBookDefinition(plantBookId);
 
             plantImage.sprite = definition.Icon;
         }

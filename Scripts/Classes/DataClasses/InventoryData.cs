@@ -4,7 +4,8 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
 using TPL.PVZR.Classes.DataClasses.Recipe;
-using TPL.PVZR.Helpers.ClassCreator.Item;
+using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Helpers.New.DataReader;
 
 namespace TPL.PVZR.Classes.DataClasses
 {
@@ -127,7 +128,7 @@ namespace TPL.PVZR.Classes.DataClasses
             // 修改数据
             _plantBooks.Add(plantBookData);
 
-            var newDefinition = CardHelper.GetCardDefinition(new PlantDef(plantBookData.Id, plantBookData.Variant));
+            var newDefinition = PlantConfigReader.GetCardDefinition(new PlantDef(plantBookData.Id, plantBookData.Variant));
             foreach (var cardData in _cards.Where(cardData => cardData.CardDefinition.PlantDef.Id == plantBookData.Id))
             {
                 cardData.CardDefinition = newDefinition;

@@ -1,9 +1,9 @@
 using QFramework;
-using TPL.PVZR.Classes.DataClasses.Attack;
+using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using UnityEngine;
 
-namespace TPL.PVZR.Classes.DataClasses.ZombieArmor
+namespace TPL.PVZR.Classes.DataClasses_InLevel.ZombieArmor
 {
     public class ZombieArmorData : IAttackable
     {

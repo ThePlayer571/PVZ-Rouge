@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Loot;
-using TPL.PVZR.Helpers.ClassCreator.Item;
+using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Tools.Random;
 
 namespace TPL.PVZR.Classes.DataClasses.Recipe
@@ -15,9 +15,9 @@ namespace TPL.PVZR.Classes.DataClasses.Recipe
 
         public RecipeData(RecipeInfo info)
         {
-            consumeCards = info.ingredients.cards;
-            consumeCoins = RandomHelper.Game.Range(info.ingredients.coinRange.x, info.ingredients.coinRange.y + 1);
-            output = LootHelper.CreateLootData(info.output);
+            consumeCards = info.inputCards;
+            consumeCoins = RandomHelper.Game.Range(info.inputCoinRange.x, info.inputCoinRange.y + 1);
+            output = LootData.Create(info.output);
             used = false;
         }
     }

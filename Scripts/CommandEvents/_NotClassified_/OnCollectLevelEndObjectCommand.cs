@@ -1,7 +1,7 @@
 using QFramework;
 using TPL.PVZR.Models;
 
-namespace TPL.PVZR.CommandEvents.__NewlyAdded__
+namespace TPL.PVZR.CommandEvents._NotClassified_
 {
     public class OnCollectLevelEndObjectCommand : AbstractCommand
     {

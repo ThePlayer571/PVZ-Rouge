@@ -5,6 +5,7 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses.Game.Interfaces;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.Classes.ZombieSpawner;
+using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Tools.Random;
 using UnityEngine;
 using UnityEngineInternal;
@@ -36,7 +37,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public Vector2 InitialPlayerPos { get; }
         public GameObject LevelPrefab { get; }
 
-        private List<SerializableKeyValuePair<Vector2Int, Vector2Int>> SunFallPositions { get; }
+        private IReadOnlyList<SerializableKeyValuePair<Vector2Int, Vector2Int>> SunFallPositions { get; }
 
         public Vector2Int GetRandomSunFallCellPos()
         {
@@ -51,7 +52,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         #region WaveDef
 
         public int TotalWaveCount { get; }
-        public List<int> HugeWaves { get; }
+        public IReadOnlyList<int> HugeWaves { get; }
         public bool HasFinalBoss { get; }
 
         #endregion
@@ -105,7 +106,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         private List<SerializableKeyValuePair<ZombieSpawnPosId, Vector2>> PosDef;
         private List<ZombieSpawnConfig> ZombieSpawnConfigs;
 
-        public List<ZombieSpawnInfo> ZombieSpawnInfosOfWave(int wave)
+        public IReadOnlyList<ZombieSpawnInfo> ZombieSpawnInfosOfWave(int wave)
         {
             var result = new List<ZombieSpawnInfo>();
             foreach (var activeConfig in ZombieSpawnConfigs.Where(item =>
@@ -127,7 +128,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         #region Loot
 
-        public List<LootGenerateInfo> LootGenerateInfos { get; }
+        public IReadOnlyList<LootGenerateInfo> LootGenerateInfos { get; }
         public float LootValue { get; }
 
         #endregion
@@ -162,7 +163,13 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             this.PosDef = levelDefinition.PosDef;
             this.ZombieSpawnConfigs = levelDefinition.ZombieSpawnConfigs;
 
-            this.LootGenerateInfos = levelDefinition.LootGenerateInfos;
+            var _ = new List<LootGenerateInfo>();
+            _.AddRange(levelDefinition.SpecialLoots);
+            _.AddRange(levelDefinition.BasicPlants.Select(plantId =>
+                LootCreator.CreateDefaultLootGenerateInfo(plantId)));
+            _.AddRange(levelDefinition.BasicPlantBooks.Select(bookId =>
+                LootCreator.CreateDefaultLootGenerateInfo(bookId, weightMultiplier: 0.3f)));
+            this.LootGenerateInfos = _.AsReadOnly();
             this.LootValue = levelDefinition.LootValue;
         }
 

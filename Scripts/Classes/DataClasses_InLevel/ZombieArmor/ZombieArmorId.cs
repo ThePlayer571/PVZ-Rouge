@@ -1,10 +1,11 @@
-namespace TPL.PVZR.Classes.DataClasses.ZombieArmor
+namespace TPL.PVZR.Classes.DataClasses_InLevel.ZombieArmor
 {
     public enum ZombieArmorId
     {
-        TrafficCone = 0,
-        Bucket = 1,
-        ScreenDoor = 2,
-        Newspaper = 3,
+        NotSet = 0,
+        TrafficCone = 1,
+        Bucket = 2,
+        ScreenDoor = 3,
+        Newspaper = 4,
     }
 }

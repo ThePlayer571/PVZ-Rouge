@@ -1,4 +1,4 @@
-namespace TPL.PVZR.Classes.DataClasses.Loot
+namespace TPL.PVZR.Classes.DataClasses.Item.PlantBook
 {
     public enum PlantBookId
     {
