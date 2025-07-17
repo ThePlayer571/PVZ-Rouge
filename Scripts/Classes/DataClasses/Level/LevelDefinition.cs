@@ -26,7 +26,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
     [Serializable]
     public enum ZombieSpawnPosId
     {
-        Pos_Random = 0,
+        NotSet = 0,
         Pos_1 = 1,
         Pos_2 = 2,
         Pos_3 = 3,
@@ -37,6 +37,28 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         Pos_8 = 8,
         Pos_9 = 9,
         Pos_10 = 10,
+        Pos_11 = 11,
+        Pos_12 = 12,
+        Pos_13 = 13,
+        Pos_14 = 14,
+        Pos_15 = 15,
+        Pos_16 = 16,
+        PosGroup_1 = 101,
+        PosGroup_2 = 102,
+        PosGroup_3 = 103,
+        PosGroup_4 = 104,
+        PosGroup_5 = 105,
+        PosGroup_6 = 106,
+        PosGroup_7 = 107,
+        PosGroup_8 = 108,
+        PosGroup_9 = 109,
+        PosGroup_10 = 110,
+        PosGroup_11 = 111,
+        PosGroup_12 = 112,
+        PosGroup_13 = 113,
+        PosGroup_14 = 114,
+        PosGroup_15 = 115,
+        PosGroup_16 = 116,
     }
 
     [Serializable]
@@ -80,7 +102,9 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         [Tooltip("难度增长型")] public DifficultyGrowthType DifficultyGrowthType;
 
         [Header("Waves")] public int TotalWaveCount;
-        [Tooltip("一大波僵尸的标识，出怪量比常规波次大")] public List<int> HugeWaves;
+
+        [Tooltip("一大波僵尸的标识，出怪量比常规波次大（需要包含最后一波）")]
+        public List<int> HugeWaves;
 
         [Tooltip("（暂未启用）最后一波会在所有僵尸消灭后开始，召唤boss")]
         public bool HasFinalBoss;
@@ -89,6 +113,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         [Tooltip("大波次比常规波次的等待时间长，这是偏移量")] public float HugeWaveDurationOffset;
 
         [Header("ZombieSpawn")] public List<SerializableKeyValuePair<ZombieSpawnPosId, Vector2>> PosDef;
+        public List<SerializableKeyValuePair<ZombieSpawnPosId, List<ZombieSpawnPosId>>> PosGroupDef;
         public List<ZombieSpawnConfig> ZombieSpawnConfigs;
 
         [Header("Loot")] public List<PlantId> BasicPlants;

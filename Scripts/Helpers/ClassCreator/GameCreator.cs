@@ -19,21 +19,19 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
             IInventoryData testInventoryData = new InventoryData();
             testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.PeaShooter, PlantVariant.V0),
                 locked: true));
-            testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.PeaShooter, PlantVariant.V0),
-                locked: false));
             testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.Sunflower, PlantVariant.V0),
                 locked: true));
             testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.Flowerpot, PlantVariant.V0),
                 locked: true));
             testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.Marigold, PlantVariant.V0),
                 locked: true));
-            testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.PotatoMine, PlantVariant.V0),
-                locked: false));
-            testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.CherryBomb, PlantVariant.V0),
-                locked: false));
-            testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.SplitPea, PlantVariant.V0),
-                locked: false));
             testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.Cactus, PlantVariant.V0),
+                locked: false));
+            testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.Wallnut, PlantVariant.V0),
+                locked: false));
+            testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.PeaShooter, PlantVariant.V0),
+                locked: false));
+            testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.PeaShooter, PlantVariant.V0),
                 locked: false));
 
             return new GameData(testMazeMapData, testInventoryData);

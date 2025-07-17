@@ -28,6 +28,9 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.ZombieArmor
         #endregion
 
         public readonly EasyEvent<ArmorState, AttackData> OnChangeState = new EasyEvent<ArmorState, AttackData>();
+        /// <summary>
+        /// 总的来说与OnChangeState同步，但是僵尸DieWIwh时会触发一次（用于处理本体比护盾先死的情况）
+        /// </summary>
         public readonly EasyEvent OnDestroyed = new EasyEvent();
 
         public ZombieArmorData(ZombieArmorDefinition definition)

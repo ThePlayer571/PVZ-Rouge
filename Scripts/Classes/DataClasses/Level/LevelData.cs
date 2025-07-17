@@ -104,6 +104,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         #region ZombieSpawn
 
         private List<SerializableKeyValuePair<ZombieSpawnPosId, Vector2>> PosDef;
+        private List<SerializableKeyValuePair<ZombieSpawnPosId, List<ZombieSpawnPosId>>> PosGroupDef;
         private List<ZombieSpawnConfig> ZombieSpawnConfigs;
 
         public IReadOnlyList<ZombieSpawnInfo> ZombieSpawnInfosOfWave(int wave)
@@ -112,13 +113,29 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             foreach (var activeConfig in ZombieSpawnConfigs.Where(item =>
                          item.ActiveWaves.x <= wave && item.ActiveWaves.y >= wave))
             {
-                var info = new ZombieSpawnInfo(
-                    zombieId: activeConfig.Zombie,
-                    spawnPosition: PosDef.First(item => item.Key == activeConfig.SpawnPos).Value,
-                    weight: activeConfig.Weight,
-                    value: activeConfig.Value
-                );
-                result.Add(info);
+                if ((int)activeConfig.SpawnPos > 100)
+                {
+                    foreach (var posId in PosGroupDef.First(item => item.Key == activeConfig.SpawnPos).Value)
+                    {
+                        var info = new ZombieSpawnInfo(
+                            zombieId: activeConfig.Zombie,
+                            spawnPosition: PosDef.First(item => item.Key == posId).Value,
+                            weight: activeConfig.Weight,
+                            value: activeConfig.Value
+                        );
+                        result.Add(info);
+                    }
+                }
+                else
+                {
+                    var info = new ZombieSpawnInfo(
+                        zombieId: activeConfig.Zombie,
+                        spawnPosition: PosDef.First(item => item.Key == activeConfig.SpawnPos).Value,
+                        weight: activeConfig.Weight,
+                        value: activeConfig.Value
+                    );
+                    result.Add(info);
+                }
             }
 
             return result;
@@ -161,6 +178,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             this.HugeWaveDurationOffset = levelDefinition.HugeWaveDurationOffset;
 
             this.PosDef = levelDefinition.PosDef;
+            this.PosGroupDef = levelDefinition.PosGroupDef;
             this.ZombieSpawnConfigs = levelDefinition.ZombieSpawnConfigs;
 
             var _ = new List<LootGenerateInfo>();

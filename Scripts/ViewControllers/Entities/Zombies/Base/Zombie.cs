@@ -215,6 +215,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         public override void DieWith(AttackData attackData)
         {
             OnDieFrom.Trigger(attackData);
+            foreach (var armorData in ZombieArmorList)
+            {
+                armorData.OnDestroyed.Trigger();
+            }
+
             this.SendCommand<OnZombieDeathCommand>(new OnZombieDeathCommand(this));
         }
 
