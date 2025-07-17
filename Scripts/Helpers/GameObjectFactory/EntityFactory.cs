@@ -126,12 +126,17 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             public static Plant SpawnPlant(PlantDef def, Direction2 direction, Vector2Int cellPos)
             {
                 var plantPrefab = PlantConfigReader.GetPlantPrefab(def);
-                
+                if (plantPrefab == null)
+                {
+                    $"发现null的PlantPrefab: {def.Id}, {def.Variant}".LogInfo();
+                    throw new Exception();
+                }
+
                 var plant = plantPrefab
                     .Instantiate(LevelGridHelper.CellToWorldBottom(cellPos), Quaternion.identity)
                     .GetComponent<Plant>();
                 plant.Initialize(direction);
-                
+
                 return plant;
             }
         }
