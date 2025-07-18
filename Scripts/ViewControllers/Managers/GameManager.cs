@@ -6,6 +6,7 @@ using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Classes.MazeMap;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
@@ -57,7 +58,13 @@ namespace TPL.PVZR.ViewControllers.Managers
                 var _GameModel = this.GetModel<IGameModel>();
                 _PhaseModel.DelayChangePhase(GamePhase.LevelPreInitialization,
                     new Dictionary<string, object>
-                        { { "LevelData", GameCreator.CreateLevelData(_GameModel.GameData, LevelId.Dave_Lawn) } });
+                    {
+                        {
+                            "LevelData",
+                            GameCreator.CreateLevelData(_GameModel.GameData,
+                                new LevelDef { Id = LevelId.Dave_Lawn, Difficulty = GameDifficulty.N0 })
+                        }
+                    });
             }
 
             if (Input.GetKeyDown(KeyCode.LeftShift))

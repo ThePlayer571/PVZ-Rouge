@@ -18,9 +18,9 @@ namespace TPL.PVZR.Classes.DataClasses.Level
     [Serializable]
     public enum DifficultyGrowthType
     {
-        Linear = 0,
-        Quadratic = 1,
-        Exponential = 2,
+        Logistic = 0,
+        Linear = 1,
+        Quadratic = 2,
     }
 
     [Serializable]
@@ -83,7 +83,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
     [CreateAssetMenu(fileName = "LevelDefinition_", menuName = "PVZR/LevelDefinition", order = 2)]
     public class LevelDefinition : ScriptableObject
     {
-        public LevelId LevelId;
+        public LevelDef LevelDef;
 
         [Header("MapInfo")] [Tooltip("关卡的大小（包括基岩）")]
         public Vector2Int MapSize;
@@ -98,6 +98,10 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         [Header("Difficulty")] [Tooltip("第一波的强度")]
         public float BaseValue;
+
+        [Tooltip("等价定义：1. 最后一波的出怪量 2. 出怪的上限，不能超过此 3. 玩家阵型成型后10秒内能处理的Value总量\n"
+                 + "参考值：plantValue * CellCount")]
+        public float maxValue;
 
         [Tooltip("难度增长型")] public DifficultyGrowthType DifficultyGrowthType;
 

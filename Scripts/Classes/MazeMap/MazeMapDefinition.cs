@@ -33,14 +33,13 @@ namespace TPL.PVZR.Classes.MazeMap
     {
         public SpotDifficulty SpotDifficulty;
         public Vector2Int ActiveLevels;
-        public List<LevelId> IncludedLevels;
+        public List<LevelDef> IncludedLevels;
     }
 
     [CreateAssetMenu(fileName = "MazeMapDefinition_", menuName = "PVZR/MazeMapDefinition", order = 4)]
     public class MazeMapDefinition : ScriptableObject
     {
-        [Header("基础设置")] public MazeMapId Id;
-        public GameDifficulty GameDifficulty;
+        [Header("基础设置")] public MazeMapDef Def;
         [Tooltip("行的数量")] public int RowCount;
         [Tooltip("列的数量")] public int ColCount;
 

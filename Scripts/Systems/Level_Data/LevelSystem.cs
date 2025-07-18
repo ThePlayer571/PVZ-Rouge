@@ -116,7 +116,6 @@ namespace TPL.PVZR.Systems.Level_Data
                                     .Delay(2f)
                                     .Callback(() =>
                                     {
-                                        ReferenceHelper.LevelGameplayPanel.ShowUI();
                                         _PhaseModel.DelayChangePhase(GamePhase.Gameplay);
                                     })
                                     .Start(GameManager.Instance);

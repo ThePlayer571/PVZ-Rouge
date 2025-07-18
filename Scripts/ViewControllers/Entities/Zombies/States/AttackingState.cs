@@ -14,7 +14,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         protected override void OnEnter()
         {
-            "enter attack".LogInfo();
             if (mTarget.AttackingTarget == null)
                 throw new Exception("切换到AttackingState时，发现AttackingTarget为空");
             mTarget.AttackArea.OnTargetExit.Register(OnAttackingAreaExit);

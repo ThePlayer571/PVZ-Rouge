@@ -11,8 +11,7 @@ namespace TPL.PVZR.Classes.MazeMap
 
         #region 基础设置
 
-        public MazeMapId Id { get; }
-        public GameDifficulty GameDifficulty { get; }
+        public MazeMapDef Def { get; }
         public int RowCount { get; }
         public int ColCount { get; }
 
@@ -43,11 +42,10 @@ namespace TPL.PVZR.Classes.MazeMap
         #endregion
 
         public ulong GeneratedSeed { get; private set; }
-        
+
         public MazeMapData(MazeMapDefinition definition, ulong seed)
         {
-            Id = definition.Id;
-            GameDifficulty = definition.GameDifficulty;
+            Def = definition.Def;
             RowCount = definition.RowCount;
             ColCount = definition.ColCount;
 

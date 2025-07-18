@@ -41,7 +41,7 @@ namespace TPL.PVZR.Classes.MazeMap
 
         public static IMazeMapController CreateController(MazeMapData mazeMapData)
         {
-            return mazeMapData.Id switch
+            return mazeMapData.Def.Id switch
             {
                 MazeMapId.DaveLawn => new DaveLawnController(mazeMapData),
                 _ => throw new ArgumentException()

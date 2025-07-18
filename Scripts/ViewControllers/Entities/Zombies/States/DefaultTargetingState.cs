@@ -17,7 +17,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         protected override void OnEnter()
         {
-            "enter defaly".LogInfo();
             mTarget._timeToFindPath = true;
             mTarget.AttackArea.OnTargetStay.Register(OnAttackingAreaStay);
         }

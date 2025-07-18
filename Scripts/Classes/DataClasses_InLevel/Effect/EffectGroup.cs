@@ -1,11 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using QFramework;
 
 namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
 {
+    /// <summary>
+    /// 负责：Effect添加与删除的管理
+    /// 不负责：Effect具体效果的实现
+    /// </summary>
     public class EffectGroup : IEnumerable<EffectData>
     {
+        public readonly EasyEvent<EffectData> OnEffectAdded = new EasyEvent<EffectData>();
+        public readonly EasyEvent<EffectData> OnEffectRemoved = new EasyEvent<EffectData>();
+
         private List<EffectData> _effects { get; set; } = new();
 
         public void GiveEffect(EffectData effectData)
@@ -16,6 +24,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
             if (existingEffect == null)
             {
                 _effects.Add(effectData);
+                OnEffectAdded.Trigger(effectData);
             }
             else if (
                 (effectData.level > existingEffect.level) ||
@@ -24,7 +33,9 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
             )
             {
                 _effects.Remove(existingEffect);
+                OnEffectRemoved.Trigger(existingEffect);
                 _effects.Add(effectData);
+                OnEffectAdded.Trigger(effectData);
             }
         }
 
@@ -43,6 +54,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
             foreach (var effectData in toRemove)
             {
                 _effects.Remove(effectData);
+                OnEffectRemoved.Trigger(effectData);
             }
         }
 

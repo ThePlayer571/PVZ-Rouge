@@ -25,6 +25,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
                 _attacked.Add(other.gameObject);
                 var attackData = AttackCreator.CreateAttackData(AttackId.Spike).WithPunchFrom(transform.position);
                 other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
+                if (_attacked.Count >= GlobalEntityData.Projectile_Spike_MaxAttackCount) this.Remove();
             }
 
             if (other.collider.IsInLayerMask(LayerMask.GetMask("Barrier")))

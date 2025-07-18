@@ -60,18 +60,43 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         #region WaveDifficulty
 
         private float BaseValue { get; }
+        private float MaxValue { get; }
         private DifficultyGrowthType DifficultyGrowthType { get; }
 
         public float ValueOfWave(int wave)
         {
-            if (HugeWaves.Contains(wave)) wave += 10;
-
-            return DifficultyGrowthType switch
+            switch (DifficultyGrowthType)
             {
-                DifficultyGrowthType.Linear => BaseValue * (0.7f + wave * 0.3f),
-                DifficultyGrowthType.Quadratic => BaseValue * (0.04f * Mathf.Pow(wave, 2f) + 0.1f * wave + 0.86f),
-                _ => throw new ArgumentException()
-            };
+                case DifficultyGrowthType.Logistic:
+                    float scaler = HugeWaves.Contains(wave) ? 2f : 1f;
+                    return LogisticValue(wave) * scaler;
+
+                case DifficultyGrowthType.Linear:
+                    if (HugeWaves.Contains(wave)) wave += 10;
+                    return Mathf.Clamp(BaseValue * (0.7f + wave * 0.3f), 0, MaxValue);
+
+                case DifficultyGrowthType.Quadratic:
+                    if (HugeWaves.Contains(wave)) wave += 10;
+                    return Mathf.Clamp(BaseValue * (0.04f * Mathf.Pow(wave, 2f) + 0.1f * wave + 0.86f), 0, MaxValue);
+                default:
+                    throw new ArgumentException();
+            }
+        }
+
+        private float LogisticValue(int wave)
+        {
+            // S 型函数参数
+            float x0 = TotalWaveCount / 2f; // 中点（默认居中）
+            float k = 8f / TotalWaveCount; // 陡峭程度（经验值）
+            float x = wave;
+
+            // 标准化 Logistic 值：取 [0,1] 区间
+            float logisticMin = 1f / (1f + Mathf.Exp(-k * (1f - x0)));
+            float logisticMax = 1f / (1f + Mathf.Exp(-k * (TotalWaveCount - x0)));
+            float logisticRaw = 1f / (1f + Mathf.Exp(-k * (x - x0)));
+
+            float t = (logisticRaw - logisticMin) / (logisticMax - logisticMin);
+            return Mathf.Lerp(BaseValue, MaxValue, t);
         }
 
         #endregion
@@ -172,6 +197,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             this.HasFinalBoss = levelDefinition.HasFinalBoss;
 
             this.BaseValue = levelDefinition.BaseValue;
+            this.MaxValue = levelDefinition.maxValue;
             this.DifficultyGrowthType = levelDefinition.DifficultyGrowthType;
 
             this.WaveDurations = levelDefinition.WaveDurations;

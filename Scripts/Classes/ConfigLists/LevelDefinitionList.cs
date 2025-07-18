@@ -8,7 +8,7 @@ namespace TPL.PVZR.Classes.ConfigLists
     [Serializable]
     public class LevelConfig
     {
-        public LevelId levelId;
+        public LevelDef levelDef;
         public LevelDefinition levelDefinition;
     }
     

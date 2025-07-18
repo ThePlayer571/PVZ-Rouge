@@ -1,10 +1,13 @@
+using System;
+
 namespace TPL.PVZR.Classes.DataClasses.Level
 {
+    [Serializable]
     public enum LevelId
     {
-        None,
+        None = 0,
         // Dave
-        Dave_Lawn, Dave_LawnNight,
+        Dave_Lawn = 1, Dave_LawnNight = 2,
         // DaveHouse, DaveHouseNight,DaveHouseRainNight, 
         // DaveBackyard, DaveBackyardRain,
         // DaveRoof,DaveRoofNight,DaveRoofRain,

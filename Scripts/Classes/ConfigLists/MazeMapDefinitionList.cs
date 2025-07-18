@@ -8,7 +8,7 @@ namespace TPL.PVZR.Classes.ConfigLists
     [Serializable]
     public class MazeMapConfig
     {
-        public MazeMapId mazeMapId;
+        public MazeMapDef mazeMapDef;
         public MazeMapDefinition mazeMapDefinition;
     }
     

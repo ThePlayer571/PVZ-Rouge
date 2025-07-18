@@ -43,7 +43,7 @@ namespace TPL.PVZR.Classes.DataClasses
 
         private const int DefaultSeedSlotCount = 6;
 
-        private const int DefaultCoins = 100;
+        private const int DefaultCoins = 50;
 
         #endregion
 

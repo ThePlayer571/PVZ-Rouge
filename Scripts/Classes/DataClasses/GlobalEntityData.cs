@@ -17,6 +17,7 @@ namespace TPL.PVZR.Classes.DataClasses
         public float Plant_CherryBomb_ExplosionRadius = 2f;
 
         public float Projectile_Pea_Speed = 10f;
+        public int Projectile_Spike_MaxAttackCount = 3;
 
         public float Zombie_Default_Health = 181f;
         public float Zombie_Default_ClimbSpeed = 1.5f;

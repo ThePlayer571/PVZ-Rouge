@@ -15,7 +15,8 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
         {
             var seed = RandomHelper.Default.NextUnsigned();
             //
-            var testMazeMapData = CreateMazeMapData(MazeMapId.DaveLawn, GameDifficulty.N0, seed);
+            var testMazeMapData =
+                CreateMazeMapData(new MazeMapDef { Id = MazeMapId.DaveLawn, Difficulty = GameDifficulty.N0 }, seed);
             IInventoryData testInventoryData = new InventoryData();
             testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.PeaShooter, PlantVariant.V0),
                 locked: true));
@@ -37,15 +38,15 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
             return new GameData(testMazeMapData, testInventoryData);
         }
 
-        public static MazeMapData CreateMazeMapData(MazeMapId mazeMapId, GameDifficulty difficulty, ulong seed)
+        public static MazeMapData CreateMazeMapData(MazeMapDef mazeMapDef, ulong seed)
         {
-            var definition = GameConfigReader.GetMazeMapDefinition(mazeMapId, difficulty);
+            var definition = GameConfigReader.GetMazeMapDefinition(mazeMapDef);
             return new MazeMapData(definition, seed);
         }
 
-        public static LevelData CreateLevelData(IGameData gameData, LevelId id)
+        public static LevelData CreateLevelData(IGameData gameData, LevelDef def)
         {
-            var definition = GameConfigReader.GetLevelDefinition(id);
+            var definition = GameConfigReader.GetLevelDefinition(def);
             return new LevelData(gameData, definition);
         }
     }

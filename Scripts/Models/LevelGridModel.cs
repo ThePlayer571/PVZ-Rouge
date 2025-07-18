@@ -46,15 +46,16 @@ namespace TPL.PVZR.Models
         {
             if (def.Id == PlantId.Flowerpot) // 花盆
             {
-                if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false;
+                if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
+                if (ReferenceHelper.Player.CellPos == pos) return false; // 位置与玩家重合
 
                 var cell = LevelMatrix[pos.x, pos.y];
                 var belowCell = LevelMatrix[pos.x, pos.y - 1];
-                return cell.IsEmpty && belowCell.IsPlat;
+                return cell.IsEmpty && belowCell.IsPlat; // 植物逻辑
             }
             else
             {
-                if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false;
+                if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
 
                 var cell = LevelMatrix[pos.x, pos.y];
                 var belowCell = LevelMatrix[pos.x, pos.y - 1];

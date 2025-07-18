@@ -12,8 +12,8 @@ namespace TPL.PVZR.Helpers.New.DataReader
     {
         #region 数据配置
 
-        private static Dictionary<LevelId, LevelDefinition> _levelDefinitionDict;
-        private static Dictionary<(MazeMapId, GameDifficulty), MazeMapDefinition> _mazeMapDefinitionDict;
+        private static Dictionary<LevelDef, LevelDefinition> _levelDefinitionDict;
+        private static Dictionary<MazeMapDef, MazeMapDefinition> _mazeMapDefinitionDict;
 
         static GameConfigReader()
         {
@@ -24,21 +24,21 @@ namespace TPL.PVZR.Helpers.New.DataReader
             var levelDefinitionList = resLoader
                 .LoadSync<LevelDefinitionList>(Configlist.BundleName, Configlist.LevelDefinitionList)
                 .levelDefinitionList;
-            _levelDefinitionDict = new Dictionary<LevelId, LevelDefinition>();
+            _levelDefinitionDict = new Dictionary<LevelDef, LevelDefinition>();
             foreach (var levelConfig in levelDefinitionList)
             {
-                _levelDefinitionDict.Add(levelConfig.levelId, levelConfig.levelDefinition);
+                _levelDefinitionDict.Add(levelConfig.levelDef, levelConfig.levelDefinition);
+                $"添加了一个：{levelConfig.levelDef} 的".LogInfo();
             }
 
             // MazeMapDefinition
             var mazeMapDefinitionList = resLoader
                 .LoadSync<MazeMapDefinitionList>(Configlist.BundleName, Configlist.MazeMapDefinitionList)
                 .mazeMapDefinitionList;
-            _mazeMapDefinitionDict = new Dictionary<(MazeMapId, GameDifficulty), MazeMapDefinition>();
+            _mazeMapDefinitionDict = new Dictionary<MazeMapDef, MazeMapDefinition>();
             foreach (var mazeMapConfig in mazeMapDefinitionList)
             {
-                _mazeMapDefinitionDict.Add((mazeMapConfig.mazeMapId, GameDifficulty.N0),
-                    mazeMapConfig.mazeMapDefinition);
+                _mazeMapDefinitionDict.Add(mazeMapConfig.mazeMapDef, mazeMapConfig.mazeMapDefinition);
             }
         }
 
@@ -46,24 +46,24 @@ namespace TPL.PVZR.Helpers.New.DataReader
 
         #region 数据读取
 
-        public static MazeMapDefinition GetMazeMapDefinition(MazeMapId mazeMapId, GameDifficulty difficulty)
+        public static MazeMapDefinition GetMazeMapDefinition(MazeMapDef mazeMapDef)
         {
-            if (_mazeMapDefinitionDict.TryGetValue((mazeMapId, difficulty), out var definition))
+            if (_mazeMapDefinitionDict.TryGetValue(mazeMapDef, out var definition))
             {
                 return definition;
             }
 
-            throw new KeyNotFoundException($"找不到对应的MazeMapDefinition: {mazeMapId}, {difficulty}");
+            throw new KeyNotFoundException($"找不到对应的MazeMapDefinition: {mazeMapDef}");
         }
 
-        public static LevelDefinition GetLevelDefinition(LevelId levelId)
+        public static LevelDefinition GetLevelDefinition(LevelDef levelDef)
         {
-            if (_levelDefinitionDict.TryGetValue(levelId, out var definition))
+            if (_levelDefinitionDict.TryGetValue(levelDef, out var definition))
             {
                 return definition;
             }
 
-            throw new KeyNotFoundException($"找不到对应的LevelDefinition: {levelId}");
+            throw new KeyNotFoundException($"找不到对应的LevelDefinition: {levelDef}");
         }
 
         #endregion
