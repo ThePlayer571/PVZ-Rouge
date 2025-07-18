@@ -1,4 +1,5 @@
 using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers.Others.LevelScene;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -6,7 +7,7 @@ namespace TPL.PVZR.Helpers.New.Methods
 {
     public static class LevelGridHelper
     {
-        private static Tilemap CriterionTilemap => ReferenceHelper.LevelTilemap.Ground;
+        private static Tilemap CriterionTilemap => LevelTilemapController.Instance.Ground;
 
         public static Vector2Int WorldToCell(Vector2 worldPos)
         {

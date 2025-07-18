@@ -6,6 +6,7 @@ using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Managers;
 using TPL.PVZR.ViewControllers.Others;
 using TPL.PVZR.ViewControllers.Others.UI;
+using TPL.PVZR.ViewControllers.UI;
 using UnityEngine;
 
 namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
@@ -24,16 +25,17 @@ namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
         {
             var PhaseModel = this.GetModel<IPhaseModel>();
             var GameModel = this.GetModel<IGameModel>();
+            var ChooseSeedPanel = UIKit.GetPanel<UIChooseSeedPanel>();
             
             // 异常处理
             if (PhaseModel.GamePhase != GamePhase.ChooseSeeds)
                 throw new System.Exception($"在不正确的阶段执行ChooseSeedCommand：{PhaseModel.GamePhase}");
-            if (ReferenceHelper.ChooseSeedPanel.chosenSeedOptions.Count >=
-                GameModel.GameData.InventoryData.SeedSlotCount) return;
+            if (ChooseSeedPanel.chosenSeedOptions.Count >=
+                GameModel.GameData.InventoryData.SeedSlotCount.Value) return;
             if (seed.IsSelected == true) throw new Exception("尝试选择一个已经被选择的种子");
 
             // 数据操作
-            ReferenceHelper.ChooseSeedPanel.chosenSeedOptions.Add(seed);
+            ChooseSeedPanel.chosenSeedOptions.Add(seed);
             
             // 动画
             GameObject movingView = null;
@@ -48,11 +50,11 @@ namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
                         seed.transform
                         
                     );
-                    movingView.transform.SetParent(ReferenceHelper.ChooseSeedPanel.transform);
+                    movingView.transform.SetParent(ChooseSeedPanel.transform);
                     // Seed
                     seed.cardView.gameObject.SetActive(false);
                     seed.IsSelected = true;
-                    seed.transform.SetParent(ReferenceHelper.ChooseSeedPanel.ChosenSeeds);
+                    seed.transform.SetParent(ChooseSeedPanel.ChosenSeeds);
                 })
                 .DelayFrame(1)
                 .Callback(() =>

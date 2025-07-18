@@ -276,7 +276,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     Vector2 targetPos = moveData.moveStage switch
                     {
                         MoveStage.FollowVertex => moveData.targetWorldPos,
-                        MoveStage.FindDave => ReferenceHelper.Player.transform.position,
+                        MoveStage.FindDave => Player.Instance.transform.position,
                         _ => throw new ArgumentException($"不支持的MoveStage: {moveData.moveStage}")
                     };
 
@@ -323,7 +323,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     Vector2 targetPos = moveData.moveStage switch
                     {
                         MoveStage.FollowVertex => moveData.targetWorldPos,
-                        MoveStage.FindDave => ReferenceHelper.Player.transform.position,
+                        MoveStage.FindDave => Player.Instance.transform.position,
                         _ => throw new ArgumentException($"不支持的MoveStage: {moveData.moveStage}")
                     };
                     float distanceX = Mathf.Abs(transform.position.x - targetPos.x);

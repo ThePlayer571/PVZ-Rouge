@@ -43,7 +43,6 @@ namespace TPL.PVZR.ViewControllers.Others.UI
             _LevelModel.SunPoint.Register(val => { UpdateUI(currentSunpoint: val); })
                 .UnRegisterWhenGameObjectDestroyed(this);
 
-            ReferenceHelper.SeedControllers.Add(this);
         }
 
         public void Initialize(SeedData seedData)
@@ -56,7 +55,6 @@ namespace TPL.PVZR.ViewControllers.Others.UI
 
         private void OnDestroy()
         {
-            ReferenceHelper.SeedControllers.Remove(this);
         }
 
         private void Update()

@@ -212,7 +212,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             _.AddRange(levelDefinition.BasicPlants.Select(plantId =>
                 LootCreator.CreateDefaultLootGenerateInfo(plantId)));
             _.AddRange(levelDefinition.BasicPlantBooks.Select(bookId =>
-                LootCreator.CreateDefaultLootGenerateInfo(bookId, weightMultiplier: 0.3f)));
+                LootCreator.CreateDefaultLootGenerateInfo(bookId)));
             this.LootGenerateInfos = _.AsReadOnly();
             this.LootValue = levelDefinition.LootValue;
         }

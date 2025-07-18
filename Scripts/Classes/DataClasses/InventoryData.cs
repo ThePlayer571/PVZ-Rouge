@@ -11,8 +11,11 @@ namespace TPL.PVZR.Classes.DataClasses
 {
     public interface IInventoryData
     {
+        int MaxSeedSlotCount { get; }
+        int MaxCardCount { get; }
+
         int InitialSunPoint { get; set; }
-        int SeedSlotCount { get; set; }
+        IReadonlyBindableProperty<int> SeedSlotCount { get; }
         BindableProperty<int> Coins { get; set; }
         IReadOnlyList<CardData> Cards { get; }
         IReadOnlyList<PlantBookData> PlantBooks { get; }
@@ -22,8 +25,10 @@ namespace TPL.PVZR.Classes.DataClasses
         void SortCards();
         void AddPlantBook(PlantBookData plantBookData);
         void RemovePlantBook(PlantBookData plantBookData);
+        void AddSeedSlot();
         EasyEvent<CardData> OnCardAdded { get; }
         EasyEvent<CardData> OnCardRemoved { get; }
+        EasyEvent<int> OnCardCountChange { get; }
         EasyEvent<PlantBookData> OnPlantBookAdded { get; }
         EasyEvent<PlantBookData> OnPlantBookRemoved { get; }
 
@@ -37,7 +42,9 @@ namespace TPL.PVZR.Classes.DataClasses
     {
         #region Constants
 
-        private const int MaxCardCount = 35;
+        public  int MaxCardCount => 35;
+
+        public int MaxSeedSlotCount => 10;
 
         private const int DefaultInitialSunPoint = 50;
 
@@ -51,7 +58,7 @@ namespace TPL.PVZR.Classes.DataClasses
 
         public int InitialSunPoint { get; set; } = DefaultInitialSunPoint;
 
-        public int SeedSlotCount { get; set; } = DefaultSeedSlotCount;
+        private BindableProperty<int> _seedSlotCount = new(DefaultSeedSlotCount);
 
         public BindableProperty<int> Coins { get; set; } = new(DefaultCoins);
 
@@ -61,12 +68,15 @@ namespace TPL.PVZR.Classes.DataClasses
         public IReadOnlyList<CardData> Cards => _cards;
         public IReadOnlyList<PlantBookData> PlantBooks => _plantBooks;
 
+        public IReadonlyBindableProperty<int> SeedSlotCount => _seedSlotCount;
+
         #endregion
 
         #region Events
 
         public EasyEvent<CardData> OnCardAdded { get; } = new();
         public EasyEvent<CardData> OnCardRemoved { get; } = new();
+        public EasyEvent<int> OnCardCountChange { get; } = new();
         public EasyEvent<PlantBookData> OnPlantBookAdded { get; } = new();
         public EasyEvent<PlantBookData> OnPlantBookRemoved { get; } = new();
 
@@ -90,6 +100,7 @@ namespace TPL.PVZR.Classes.DataClasses
 
             _cards.Add(cardData);
             OnCardAdded.Trigger(cardData);
+            OnCardCountChange.Trigger(_cards.Count);
         }
 
         public void RemoveCard(CardData cardData)
@@ -103,6 +114,7 @@ namespace TPL.PVZR.Classes.DataClasses
             if (_cards.Remove(cardData))
             {
                 OnCardRemoved.Trigger(cardData);
+                OnCardCountChange.Trigger(_cards.Count);
             }
             else
             {
@@ -119,17 +131,19 @@ namespace TPL.PVZR.Classes.DataClasses
                 return;
             }
 
-            if (PlantBooks.Any(book => book.Id == plantBookData.Id))
+            if (PlantBooks.Any(book => book.PlantId == plantBookData.PlantId))
             {
-                $"已存在相同的秘籍，无法添加，id: {plantBookData.Id}".LogError();
+                $"已存在相同的秘籍，无法添加，id: {plantBookData.PlantId}".LogError();
                 return;
             }
 
             // 修改数据
             _plantBooks.Add(plantBookData);
 
-            var newDefinition = PlantConfigReader.GetCardDefinition(new PlantDef(plantBookData.Id, plantBookData.Variant));
-            foreach (var cardData in _cards.Where(cardData => cardData.CardDefinition.PlantDef.Id == plantBookData.Id))
+            var newDefinition =
+                PlantConfigReader.GetCardDefinition(new PlantDef(plantBookData.PlantId, plantBookData.Variant));
+            foreach (var cardData in _cards.Where(cardData =>
+                         cardData.CardDefinition.PlantDef.Id == plantBookData.PlantId))
             {
                 cardData.CardDefinition = newDefinition;
             }
@@ -154,6 +168,18 @@ namespace TPL.PVZR.Classes.DataClasses
             {
                 "未找到要移除的植物秘籍".LogWarning();
             }
+        }
+
+
+        public void AddSeedSlot()
+        {
+            if (_seedSlotCount.Value >= MaxSeedSlotCount)
+            {
+                $"尝试添加SeedSlot，但是已经达到上限".LogError();
+                return;
+            }
+
+            _seedSlotCount.Value++;
         }
 
         public void SortCards()

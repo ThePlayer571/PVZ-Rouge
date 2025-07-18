@@ -8,11 +8,10 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
 {
     public static class LootCreator
     {
-        public static LootGenerateInfo CreateDefaultLootGenerateInfo(PlantId plantId, float? weight = null,
-            float weightMultiplier = 1f)
+        public static LootGenerateInfo CreateDefaultLootGenerateInfo(PlantId plantId, float? weight = null)
         {
             var value = TradeConfigReader.GetValueOf(plantId);
-            weight ??= PlantConfigReader.GetCardDefinition(plantId.ToDef()).Quality.ToWeight() * weightMultiplier;
+            weight ??= TradeConfigReader.GetWeightOf(plantId);
             return new LootGenerateInfo
             {
                 weight = weight.Value,
@@ -21,13 +20,11 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
             };
         }
 
-        public static LootGenerateInfo CreateDefaultLootGenerateInfo(PlantBookId bookId, float? weight = null,
-            float weightMultiplier = 1f)
+        public static LootGenerateInfo CreateDefaultLootGenerateInfo(PlantBookId bookId, float? weight = null)
         {
             var value = TradeConfigReader.GetValueOf(bookId);
             var definition = PlantBookConfigReader.GetPlantBookDefinition(bookId);
-            weight ??= PlantConfigReader.GetCardDefinition(new PlantDef(definition.Id, definition.Variant)).Quality
-                .ToWeight() * weightMultiplier;
+            weight ??= TradeConfigReader.GetWeightOf(bookId);
             return new LootGenerateInfo
             {
                 weight = weight.Value,
@@ -60,6 +57,14 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
             {
                 lootType = LootType.Coin,
                 coinAmount = coinAmount,
+            };
+        }
+
+        public static LootInfo CreateLootInfo_SeedSlot()
+        {
+            return new LootInfo
+            {
+                lootType = LootType.SeedSlot,
             };
         }
     }

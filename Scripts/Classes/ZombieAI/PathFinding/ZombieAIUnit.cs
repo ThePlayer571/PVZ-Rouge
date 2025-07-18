@@ -8,6 +8,7 @@ using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Classes.ZombieAI.Class;
 using TPL.PVZR.Classes.ZombieAI.Public;
 using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers.Others.LevelScene;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -653,7 +654,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 
         public void DebugDisplayMatrix()
         {
-            var tilemap = ReferenceHelper.LevelTilemap.Debug;
+            var tilemap = LevelTilemapController.Instance.Debug;
             var OneHeight = ResLoader.Allocate().LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugOneHeight);
             var TwoHeight = ResLoader.Allocate().LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugTwoHeight);
             var Key = ResLoader.Allocate().LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugKey);

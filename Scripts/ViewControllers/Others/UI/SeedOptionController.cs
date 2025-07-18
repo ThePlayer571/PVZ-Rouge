@@ -5,6 +5,7 @@ using TPL.PVZR.CommandEvents.Level_ChooseSeeds;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Others.UI.ItemView;
+using TPL.PVZR.ViewControllers.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -16,6 +17,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI
     {
         [SerializeField] public CardViewController cardView;
         private IGameModel _GameModel;
+        private UIChooseSeedPanel ChooseSeedPanel;
 
         public bool IsSelected = false;
         public CardData CardData;
@@ -30,6 +32,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI
         private void Awake()
         {
             this._GameModel = this.GetModel<IGameModel>();
+            this.ChooseSeedPanel = UIKit.GetPanel<UIChooseSeedPanel>();
         }
 
         public IArchitecture GetArchitecture()
@@ -41,8 +44,8 @@ namespace TPL.PVZR.ViewControllers.Others.UI
         {
             if (!IsSelected)
             {
-                if (ReferenceHelper.ChooseSeedPanel.chosenSeedOptions.Count >=
-                    _GameModel.GameData.InventoryData.SeedSlotCount) return;
+                if (ChooseSeedPanel.chosenSeedOptions.Count >=
+                    _GameModel.GameData.InventoryData.SeedSlotCount.Value) return;
                 this.SendCommand<ChooseSeedCommand>(new ChooseSeedCommand(this));
             }
             else

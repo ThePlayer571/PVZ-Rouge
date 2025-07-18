@@ -19,7 +19,7 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
         private static CoinTradeGenerateInfo CreateCoinTradeGenerateInfo(PlantId plantId)
         {
             var value = TradeConfigReader.GetValueOf(plantId);
-            var weight = PlantConfigReader.GetCardDefinition(plantId.ToDef()).Quality.ToWeight();
+            var weight = TradeConfigReader.GetWeightOf(plantId);
             return new CoinTradeGenerateInfo
             {
                 weight = weight,
@@ -34,9 +34,7 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
         private static CoinTradeGenerateInfo CreateCoinTradeGenerateInfo(PlantBookId bookId)
         {
             var value = TradeConfigReader.GetValueOf(bookId);
-            var definition = PlantBookConfigReader.GetPlantBookDefinition(bookId);
-            var weight = PlantConfigReader.GetCardDefinition(new PlantDef(definition.Id, definition.Variant)).Quality
-                .ToWeight();
+            var weight = TradeConfigReader.GetWeightOf(bookId);
             return new CoinTradeGenerateInfo
             {
                 weight = weight,
@@ -44,6 +42,20 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
                 {
                     coinAmount = value,
                     lootInfo = LootCreator.CreateLootInfo(bookId)
+                }
+            };
+        }
+
+        private static CoinTradeGenerateInfo CreateCoinTradeGenerateInfoOfSeedSlot()
+        {
+            var (value ,weight) = TradeConfigReader.GetSeedSlotInfo();
+            return new CoinTradeGenerateInfo
+            {
+                weight = weight,
+                coinTradeInfo = new CoinTradeInfo
+                {
+                    coinAmount = value,
+                    lootInfo = LootCreator.CreateLootInfo_SeedSlot()
                 }
             };
         }
@@ -61,6 +73,7 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
             var coinTrades = new List<CoinTradeGenerateInfo>();
             coinTrades.AddRange(TradeConfigReader.GetAllPlantStandardValues().Keys.Select(CreateCoinTradeGenerateInfo));
             coinTrades.AddRange(TradeConfigReader.GetAllPlantBookStandardValues().Keys.Select(CreateCoinTradeGenerateInfo));
+            coinTrades.Add(CreateCoinTradeGenerateInfoOfSeedSlot());
 
             return new RandomPool<CoinTradeGenerateInfo, CoinTradeInfo>(coinTrades, 1, RandomHelper.Game);
         }

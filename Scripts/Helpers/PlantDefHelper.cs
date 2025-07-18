@@ -16,7 +16,7 @@ namespace TPL.PVZR.Helpers.New
 
         public static PlantDef ToDef(this PlantId id)
         {
-            var plantBookData = _inventoryData.PlantBooks.FirstOrDefault(book => book.Id == id);
+            var plantBookData = _inventoryData.PlantBooks.FirstOrDefault(book => book.PlantId == id);
             if (plantBookData == null) return new PlantDef(id, PlantVariant.V0);
             else return new PlantDef(id, plantBookData.Variant);
         }

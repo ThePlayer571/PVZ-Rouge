@@ -6,6 +6,7 @@ using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.ConfigLists;
 using TPL.PVZR.Classes.DataClasses;
+using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.Classes.DataClasses.Recipe;
@@ -146,6 +147,8 @@ namespace TPL.PVZR.Helpers.New.DataReader
 
         #region 数据读取
 
+        #region _1
+
         public static int GetValueOf(PlantId plantId)
         {
             if (_plantStandardValue.TryGetValue(plantId, out var value))
@@ -164,6 +167,41 @@ namespace TPL.PVZR.Helpers.New.DataReader
             }
 
             throw new ArgumentException($"未找到PlantBookId: {plantBookId}，请检查配置文件");
+        }
+
+        public static float GetWeightOf(PlantId plantId)
+        {
+            var cardDefinition = PlantConfigReader.GetCardDefinition(plantId.ToDef());
+            return GetWeightOf(cardDefinition.Quality);
+        }
+
+        public static float GetWeightOf(PlantBookId plantBookId)
+        {
+            var definition = PlantBookConfigReader.GetPlantBookDefinition(plantBookId);
+            var cardDefinition =
+                PlantConfigReader.GetCardDefinition(new PlantDef(definition.PlantId, definition.Variant));
+            return GetWeightOf(cardDefinition.Quality) * 0.3f;
+        }
+
+        public static float GetWeightOf(CardQuality quality)
+        {
+            return quality switch
+            {
+                CardQuality.White => 20f,
+                CardQuality.Green => 10f,
+                CardQuality.Blue => 5f,
+                CardQuality.Purple => 2f,
+                CardQuality.Gold => 1f,
+                _ => 0f
+            };
+        }
+
+        #endregion
+
+        // todo 太恶心了这个，没有参数，不能融入现有的代码结构，只能这样
+        public static (int value, int weight) GetSeedSlotInfo()
+        {
+            return (50, 1);
         }
 
         public static IReadOnlyList<RecipeGenerateInfo> GetAllRecipeGenerateInfos()

@@ -15,8 +15,9 @@ namespace TPL.PVZR.Classes.DataClasses.Item.PlantBook
         }
         
         // 便捷属性访问器
+        public PlantBookId Id => Definition.Id;
         public Sprite Icon => Definition.Icon;
-        public PlantId Id => Definition.Id;
+        public PlantId PlantId => Definition.PlantId;
         public PlantVariant Variant => Definition.Variant;
     }
 }

@@ -36,9 +36,9 @@ namespace TPL.PVZR.ViewControllers.Others.UI.ItemView
 
             _GameModel.GameData.InventoryData.OnPlantBookAdded.Register(bookData =>
                 {
-                    if (bookData.Id == cardDefinition.PlantDef.Id)
+                    if (bookData.PlantId == cardDefinition.PlantDef.Id)
                     {
-                        UpdateView(PlantConfigReader.GetCardDefinition(new PlantDef(bookData.Id, bookData.Variant)),
+                        UpdateView(PlantConfigReader.GetCardDefinition(new PlantDef(bookData.PlantId, bookData.Variant)),
                             locked);
                     }
                 }
@@ -46,9 +46,9 @@ namespace TPL.PVZR.ViewControllers.Others.UI.ItemView
 
             _GameModel.GameData.InventoryData.OnPlantBookRemoved.Register(bookData =>
             {
-                if (bookData.Id == cardDefinition.PlantDef.Id)
+                if (bookData.PlantId == cardDefinition.PlantDef.Id)
                 {
-                    UpdateView(PlantConfigReader.GetCardDefinition(new PlantDef(bookData.Id, PlantVariant.V0)),
+                    UpdateView(PlantConfigReader.GetCardDefinition(new PlantDef(bookData.PlantId, PlantVariant.V0)),
                         locked);
                 }
             }).UnRegisterWhenGameObjectDestroyed(this);

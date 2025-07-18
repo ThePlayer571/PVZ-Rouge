@@ -6,6 +6,8 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
 {
     public class LevelTilemapController : MonoBehaviour
     {
+        public static LevelTilemapController Instance { get; private set; }
+        
         [SerializeField] public Tilemap BackGround;
         [SerializeField] public Tilemap Ground;
         [SerializeField] public Tilemap Dirt;
@@ -15,7 +17,7 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
 
         private void Awake()
         {
-            ReferenceHelper.LevelTilemap = this;
+             Instance = this;
         }
     }
 }

@@ -43,7 +43,7 @@ namespace TPL.PVZR.Systems.MazeMap
             // 筛选：已经拥有的PlantBook不会被加入
             infos = infos.Where(info =>
                 info.lootInfo.lootType != LootType.PlantBook ||
-                _GameModel.GameData.InventoryData.PlantBooks.All(pb => pb.Id != info.lootInfo.plantId)).ToList();
+                _GameModel.GameData.InventoryData.PlantBooks.All(pb => pb.PlantId != info.lootInfo.plantId)).ToList();
 
 
             HasAward = true;

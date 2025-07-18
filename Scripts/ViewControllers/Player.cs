@@ -16,8 +16,8 @@ namespace TPL.PVZR.ViewControllers
     }
 
     public class Player : MonoBehaviour, IPlayer
-
     {
+        public static Player Instance { get; private set; }
         private PlayerInputControl _inputActions;
         private Rigidbody2D _Rigidbody2D;
         private Collider2D _Collider;
@@ -90,6 +90,7 @@ namespace TPL.PVZR.ViewControllers
 
         private void Awake()
         {
+            Player.Instance = this;
             _Rigidbody2D = this.GetComponent<Rigidbody2D>();
             _Collider = this.GetComponent<Collider2D>();
 
@@ -106,8 +107,6 @@ namespace TPL.PVZR.ViewControllers
             _inputActions.Level.Enable();
 
             _inputActions.Level.Jump.performed += (context) => { Jump(); };
-
-            ReferenceHelper.Player = this;
         }
 
 

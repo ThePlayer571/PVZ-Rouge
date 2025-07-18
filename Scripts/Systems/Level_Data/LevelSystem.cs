@@ -90,7 +90,7 @@ namespace TPL.PVZR.Systems.Level_Data
                                 break;
                             case PhaseStage.LeaveNormal:
                                 // 将选卡数据转录
-                                var chosenSeedOptions = ReferenceHelper.ChooseSeedPanel.chosenSeedOptions;
+                                var chosenSeedOptions = UIKit.GetPanel<UIChooseSeedPanel>().chosenSeedOptions;
                                 // 这里为了确保index对应，没有用List.Add（非常安全）
                                 _LevelModel.ChosenSeeds.Resize(chosenSeedOptions.Count);
                                 for (int i = 0; i < chosenSeedOptions.Count; i++)
@@ -114,10 +114,7 @@ namespace TPL.PVZR.Systems.Level_Data
                                 ActionKit.Sequence()
                                     .Callback(() => { "准备安置植物！！！".LogInfo(); })
                                     .Delay(2f)
-                                    .Callback(() =>
-                                    {
-                                        _PhaseModel.DelayChangePhase(GamePhase.Gameplay);
-                                    })
+                                    .Callback(() => { _PhaseModel.DelayChangePhase(GamePhase.Gameplay); })
                                     .Start(GameManager.Instance);
                                 break;
                         }

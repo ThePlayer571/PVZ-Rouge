@@ -6,6 +6,7 @@ using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ namespace TPL.PVZR.Systems.Level_Data
 
         private void UpdatePlayerCluster()
         {
-            var playerCellPos = ReferenceHelper.Player.CellPos;
+            var playerCellPos = Player.Instance.CellPos;
             Vertex playerCurrentVertex = ZombieAIUnit.GetVertexSafely(playerCellPos);
             while (playerCurrentVertex == null && playerCellPos.y >= 0)
             {

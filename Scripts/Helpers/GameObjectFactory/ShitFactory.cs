@@ -5,6 +5,7 @@ using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Others.UI;
+using TPL.PVZR.ViewControllers.UI;
 using UnityEngine;
 
 namespace TPL.PVZR.Helpers.New.GameObjectFactory
@@ -35,7 +36,7 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             }
 
             var go = _seedControllerPrefab
-                .Instantiate(Vector3.zero, Quaternion.identity, ReferenceHelper.LevelGameplayPanel.transform)
+                .Instantiate(Vector3.zero, Quaternion.identity, UIKit.GetPanel<UIChooseSeedPanel>().transform)
                 .GetComponent<SeedController>();
             go.Initialize(seedData);
             return go;

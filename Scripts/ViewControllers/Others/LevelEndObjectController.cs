@@ -47,7 +47,7 @@ namespace TPL.PVZR.ViewControllers.Others
 
         private void Update()
         {
-            var targetPos = ReferenceHelper.Player.transform.position;
+            var targetPos = Player.Instance.transform.position;
 
             // 计算距离
             var distance = Vector3.Distance(transform.position, targetPos);

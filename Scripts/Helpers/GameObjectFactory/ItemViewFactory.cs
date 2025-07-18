@@ -20,11 +20,13 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             _cardViewPrefab = resLoader.LoadSync<GameObject>(Items.BundleName, Items.CardView);
             _coinViewPrefab = resLoader.LoadSync<GameObject>(Items.BundleName, Items.CoinView);
             _plantBookViewPrefab = resLoader.LoadSync<GameObject>(Items.BundleName, Items.PlantBookView);
+            _seedSlotViewPrefab = resLoader.LoadSync<GameObject>(Items.BundleName, Items.SeedSlotView);
         }
 
         private static readonly GameObject _cardViewPrefab;
         private static readonly GameObject _coinViewPrefab;
         private static readonly GameObject _plantBookViewPrefab;
+        private static readonly GameObject _seedSlotViewPrefab;
 
 
         public static GameObject CreateItemView(LootData lootData)
@@ -34,10 +36,11 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
                 LootType.Card => CreateItemView(lootData.PlantId),
                 LootType.Coin => CreateItemView(lootData.CoinAmount),
                 LootType.PlantBook => CreateItemView(lootData.PlantBookId),
+                LootType.SeedSlot => CreateItemView_SeedSlot(),
                 _ => throw new ArgumentException()
             };
         }
-        
+
         public static GameObject CreateItemView(PlantBookId plantBookId)
         {
             var go = _plantBookViewPrefab.Instantiate();
@@ -65,6 +68,11 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             var go = _cardViewPrefab.Instantiate();
             go.GetComponent<CardViewController>().Initialize(cardDefinition);
             return go;
+        }
+
+        public static GameObject CreateItemView_SeedSlot()
+        {
+            return _seedSlotViewPrefab.Instantiate();
         }
     }
 }

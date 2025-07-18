@@ -6,6 +6,7 @@ using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Managers;
 using TPL.PVZR.ViewControllers.Others;
 using TPL.PVZR.ViewControllers.Others.UI;
+using TPL.PVZR.ViewControllers.UI;
 using UnityEngine;
 
 namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
@@ -22,15 +23,17 @@ namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
 
         protected override void OnExecute()
         {
-            // 异常处理
             var PhaseModel = this.GetModel<IPhaseModel>();
+            var ChooseSeedPanel =  UIKit.GetPanel<UIChooseSeedPanel>();
+            
+            // 异常处理
             if (PhaseModel.GamePhase != GamePhase.ChooseSeeds)
                 throw new System.Exception($"在不正确的阶段执行ChooseSeedCommand：{PhaseModel.GamePhase}");
             if (seed.IsSelected == false) throw new Exception("尝试取消选择一个未被选择的种子");
 
 
             // 数据操作
-            ReferenceHelper.ChooseSeedPanel.chosenSeedOptions.Remove(seed);
+            ChooseSeedPanel.chosenSeedOptions.Remove(seed);
 
             // 动画
             GameObject movingView = null;
@@ -44,11 +47,11 @@ namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
                         Quaternion.identity,
                         seed.transform
                     );
-                    movingView.transform.SetParent(ReferenceHelper.ChooseSeedPanel.transform);
+                    movingView.transform.SetParent(ChooseSeedPanel.transform);
                     // Seed
                     seed.cardView.gameObject.SetActive(false);
                     seed.IsSelected = false;
-                    seed.transform.SetParent(ReferenceHelper.ChooseSeedPanel.InventorySeeds);
+                    seed.transform.SetParent(ChooseSeedPanel.InventorySeeds);
                 })
                 .DelayFrame(1)
                 .Callback(() =>

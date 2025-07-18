@@ -13,12 +13,17 @@ namespace TPL.PVZR.Systems.MazeMap
 {
     public interface ICoinStoreSystem : ISystem
     {
+        EasyEvent OnRewrite { get; }
         CoinTradeData GetCoinTradeByIndex(int index);
+        int RefreshCost { get; }
     }
 
     public class CoinStoreSystem : AbstractSystem, ICoinStoreSystem
     {
         private IGameModel _GameModel;
+        private List<CoinTradeData> _activeTrades { get; } = new List<CoinTradeData>();
+        private bool _hasTradeData = false;
+
 
         private void AutoWriteCoinTrades()
         {
@@ -27,15 +32,17 @@ namespace TPL.PVZR.Systems.MazeMap
             var pool = TradeCreator.CreateAllCoinTradePool();
             var _ = pool.GetRandomOutputs(10).Select(info => new CoinTradeData(info));
             _activeTrades.AddRange(_);
+            
+            if (_hasTradeData) OnRewrite.Trigger();
+            _hasTradeData = true;
         }
 
         private void ClearCoinTrades()
         {
             _activeTrades.Clear();
+            _hasTradeData = false;
         }
 
-
-        private List<CoinTradeData> _activeTrades { get; } = new List<CoinTradeData>();
 
         protected override void OnInit()
         {
@@ -49,6 +56,7 @@ namespace TPL.PVZR.Systems.MazeMap
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
+                                RefreshCost = 5;
                                 AutoWriteCoinTrades();
                                 break;
                         }
@@ -64,6 +72,14 @@ namespace TPL.PVZR.Systems.MazeMap
 
                         break;
                 }
+            });
+
+            this.RegisterEvent<CoinStoreRefreshEvent>(e =>
+            {
+                _GameModel.GameData.InventoryData.Coins.Value -= RefreshCost;
+                RefreshCost *= 2;
+                
+                AutoWriteCoinTrades();
             });
 
             this.RegisterEvent<CoinTradeEvent>(e =>
@@ -86,13 +102,20 @@ namespace TPL.PVZR.Systems.MazeMap
                         var plantBookData = ItemCreator.CreatePlantBookData(tradeData.LootData.PlantBookId);
                         inventory.AddPlantBook(plantBookData);
                         break;
+                    case LootType.SeedSlot:
+                        inventory.AddSeedSlot();
+                        break;
                 }
             });
         }
+
+        public EasyEvent OnRewrite { get; } = new EasyEvent();
 
         public CoinTradeData GetCoinTradeByIndex(int index)
         {
             return _activeTrades[index];
         }
+
+        public int RefreshCost { get; private set; }
     }
 }

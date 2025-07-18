@@ -7,6 +7,8 @@ using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers;
+using TPL.PVZR.ViewControllers.Others.LevelScene;
 using UnityEngine;
 
 namespace TPL.PVZR.Models
@@ -47,7 +49,7 @@ namespace TPL.PVZR.Models
             if (def.Id == PlantId.Flowerpot) // 花盆
             {
                 if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
-                if (ReferenceHelper.Player.CellPos == pos) return false; // 位置与玩家重合
+                if (Player.Instance.CellPos == pos) return false; // 位置与玩家重合
 
                 var cell = LevelMatrix[pos.x, pos.y];
                 var belowCell = LevelMatrix[pos.x, pos.y - 1];
@@ -80,7 +82,7 @@ namespace TPL.PVZR.Models
 
         public void Initialize(ILevelData levelData)
         {
-            this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(ReferenceHelper.LevelTilemap, levelData);
+            this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(LevelTilemapController.Instance, levelData);
             // LevelMatrixHelper.SetDebugTiles(LevelMatrix, ReferenceHelper.LevelTilemap.Debug);
         }
 
