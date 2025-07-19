@@ -43,11 +43,6 @@ namespace TPL.PVZR.CommandEvents._NotClassified_
                     Levelendobject_prefab.LevelEndObject).Instantiate(zombie.transform.position, Quaternion.identity);
                 _PhaseModel.ChangePhase(GamePhase.AllEnemyKilled);
             }
-            else
-            {
-                $"尝试结束关卡失败：lastWave: {_LevelModel.CurrentWave.Value == _LevelModel.LevelData.TotalWaveCount}, zombieSpawnerCount: {_ZombieSpawnSystem.ActiveTasksCount}, zombieCount: {EntityFactory.ZombieFactory.ActiveZombies.Count}"
-                    .LogInfo();
-            }
         }
     }
 }

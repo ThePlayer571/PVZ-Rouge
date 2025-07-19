@@ -4,11 +4,11 @@
 
 ### MazeMap
 
-| Id   | Layer | Order |
-| ---- | ----- | ----- |
-|      |       |       |
-|      |       |       |
-|      |       |       |
+| Id    | Layer     | Order |
+| ----- | --------- | ----- |
+|       |           |       |
+| Tomb  | MidGround | 1000  |
+| Tiles | MidGround | 500   |
 
 ### Level
 

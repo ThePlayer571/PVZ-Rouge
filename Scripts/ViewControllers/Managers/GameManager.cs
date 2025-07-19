@@ -53,16 +53,6 @@ namespace TPL.PVZR.ViewControllers.Managers
                 }
             }
 
-            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 210, 120, 40), "开始游戏"))
-            {
-                var _PhaseModel = this.GetModel<IPhaseModel>();
-                var _GameModel = this.GetModel<IGameModel>();
-
-                var levelData = GameCreator.CreateLevelData(_GameModel.GameData,
-                    _GameModel.GameData.MazeMapData.GetRandomLevelOfStage(1));
-                this.SendCommand<StartLevelCommand>(new StartLevelCommand(levelData));
-            }
-
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 260, 120, 40), "获得100硬币"))
             {
                 this.GetModel<IGameModel>().GameData.InventoryData.Coins.Value += (100);

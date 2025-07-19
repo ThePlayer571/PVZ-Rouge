@@ -19,8 +19,10 @@ namespace TPL.PVZR.Classes.DataClasses.Tomb
         }
 
         public Vector2Int Position { get; }
+
+        // 经过验证：推荐存储LevelDefinition而不是LevelData
         public LevelDefinition LevelDefinition { get; }
-        
+
         public override int GetHashCode()
         {
             return Position.GetHashCode();

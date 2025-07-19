@@ -28,7 +28,6 @@ namespace TPL.PVZR.Classes.MazeMap
         ulong GenerateSeed { get; }
 
         // 通关进度
-        ITombData CurrentTomb { get; }
         IReadOnlyList<ITombData> DiscoveredTombs { get; }
         IReadOnlyList<Vector2Int> PassedRoute { get; }
     }
@@ -97,7 +96,6 @@ namespace TPL.PVZR.Classes.MazeMap
         #endregion
 
         public ulong GenerateSeed { get; private set; }
-        public ITombData CurrentTomb => _discoveredTombs.Last(data => _passedRoute.Last() == data.Position);
         private readonly List<ITombData> _discoveredTombs = new();
         private readonly List<Vector2Int> _passedRoute = new();
         public IReadOnlyList<ITombData> DiscoveredTombs => _discoveredTombs;

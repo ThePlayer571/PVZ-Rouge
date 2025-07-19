@@ -3,8 +3,10 @@ using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses.Level;
+using TPL.PVZR.Classes.DataClasses.Tomb;
 using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.CommandEvents.Phase;
+using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers;
@@ -23,6 +25,7 @@ namespace TPL.PVZR.Systems.Level_Data
     {
         private ResLoader _ResLoader;
         private IPhaseModel _PhaseModel;
+        private IGameModel _GameModel;
         private ILevelModel _LevelModel;
         private ILevelGridModel _LevelGridModel;
 
@@ -30,6 +33,7 @@ namespace TPL.PVZR.Systems.Level_Data
         {
             _ResLoader = ResLoader.Allocate();
             _PhaseModel = this.GetModel<IPhaseModel>();
+            _GameModel = this.GetModel<IGameModel>();
             _LevelModel = this.GetModel<ILevelModel>();
             _LevelGridModel = this.GetModel<ILevelGridModel>();
 
@@ -42,27 +46,33 @@ namespace TPL.PVZR.Systems.Level_Data
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterEarly:
-                                var LevelData = e.Parameters["LevelData"] as ILevelData;
+                                var tombData = e.Parameters["TombData"] as ITombData;
+                                var levelData = GameCreator.CreateLevelData(_GameModel.GameData,
+                                    tombData.LevelDefinition.LevelDef);
 
-                                SceneManager.LoadScene("LevelScene");
                                 ActionKit.Sequence()
+                                    .Callback(() =>
+                                    {
+                                        _LevelModel.Initialize(levelData);
+                                        _GameModel.ActiveTombData = tombData;
+                                        SceneManager.LoadScene("LevelScene");
+                                    })
                                     .DelayFrame(1) // 等待场景加载
                                     .Callback(() =>
                                     {
-                                        var levelSet = LevelData.LevelPrefab.Instantiate();
+                                        var levelSet = levelData.LevelPrefab.Instantiate();
                                         // TODO 地图生成算法
                                     })
                                     .DelayFrame(1) // 等待LevelPrefab加载
                                     .Callback(() =>
                                     {
-                                        _LevelModel.Initialize(LevelData);
-                                        _LevelGridModel.Initialize(LevelData);
+                                        _LevelGridModel.Initialize(levelData);
                                         //
                                         var DavePrefab = _ResLoader.LoadSync<Player>(Dave_prefab.BundleName,
                                             Dave_prefab.Dave);
                                         //
                                         var VirtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
-                                        var Player = DavePrefab.Instantiate(LevelData.InitialPlayerPos,
+                                        var Player = DavePrefab.Instantiate(levelData.InitialPlayerPos,
                                             Quaternion.identity);
                                         VirtualCamera.Follow = Player.transform;
                                         VirtualCamera.PreviousStateIsValid = false;

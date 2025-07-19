@@ -5,6 +5,7 @@ using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
+using TPL.PVZR.ViewControllers.Others.MazeMap;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -14,7 +15,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
     {
         #region Matrix数据结构生成
 
-        public override void ValidateMazeMapData()
+        protected override void ValidateMazeMapData()
         {
             /* - Rules:
              * ColCount in [5, ..)
@@ -62,7 +63,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                 {
                     // 起始点在第0行中间
                     var col = mazeMatrix.Columns / 2;
-                    var startNode = mazeMatrix[0, col];
+                    startNode = mazeMatrix[0, col];
                     startNode.isKey = true;
                     startNode.level = 0; // 起始点的 level 为 0
                     _levelKeyNodes.Add(0, new List<int> { col });
@@ -156,6 +157,8 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
             /// </summary>
             void BridgeKeyNodes()
             {
+                keyAdjacencyList = new Dictionary<Node, List<Node>>();
+
                 foreach (var level in _levelKeyNodes.Keys)
                 {
                     if (!_levelKeyNodes.ContainsKey(level + 1)) continue;
@@ -245,6 +248,22 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                             ConnectNodes(from, to);
                         }
                     }
+
+                    // 生成keyAdjacencyList
+                    foreach (var component in connectedComponents)
+                    {
+                        var toNodes = toNodesCol.Where(col => component.Contains(col))
+                            .Select(col => mazeMatrix[toRow, col]).ToList();
+                        var fromNodes = fromNodesCol.Where(col => component.Contains(col))
+                            .Select(col => mazeMatrix[row, col]).ToList();
+
+                        foreach (var fromNode in fromNodes)
+                        {
+                            keyAdjacencyList[fromNode] = toNodes;
+                            $"level:{level} Add New: {fromNode.Position} ->  {String.Join(",", toNodes.Select(n => n.Position))}"
+                                .LogInfo();
+                        }
+                    }
                 }
             }
 
@@ -269,6 +288,11 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
             #endregion
         }
 
+        public override Vector2Int MatrixToTilemapPosition(Vector2Int matrixPos)
+        {
+            return matrixPos * 3;
+        }
+
         #endregion
 
         #region 场景中GameObject
@@ -283,7 +307,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                 Mazemapgrasstile_asset.MazeMapGrassTile);
             var stoneTile = resLoader.LoadSync<Tile>(Mazemapstonetile_asset.BundleName,
                 Mazemapstonetile_asset.MazeMapStoneTile);
-            var GroundTilemap = GameObject.FindFirstObjectByType<Tilemap>();
+            var GroundTilemap = MazeMapTilemapController.Instance.Ground;
             Matrix<Tile> tileMatrix = new(mazeMatrix.Rows * 3 - 2, mazeMatrix.Columns * 3 - 2);
             //
             tileMatrix.Fill(grassTile);
@@ -331,8 +355,18 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
 
         protected override void SetUpTombs()
         {
-            ($"Pass: {String.Join(",", MazeMapData.PassedRoute)}\n" +
-             $"Discoverd: {String.Join(",", MazeMapData.DiscoveredTombs.Select(tomb => tomb.Position))}\n").LogInfo();
+            var resLoader = ResLoader.Allocate();
+            var tombstonePrefab =
+                resLoader.LoadSync<GameObject>(Tombstone_prefab.BundleName, Tombstone_prefab.Tombstone);
+            foreach (var node in mazeMatrix)
+            {
+                if (node == null || !node.isKey || node == startNode) continue;
+                var tombstone = tombstonePrefab.Instantiate().GetComponent<TombstoneController>();
+                tombstone.Initialize(node.Position);
+            }
+
+            // ($"Pass: {String.Join(",", MazeMapData.PassedRoute)}\n" +
+            //  $"Discoverd: {String.Join(",", MazeMapData.DiscoveredTombs.Select(tomb => tomb.Position))}\n").LogInfo();
         }
 
         #endregion
