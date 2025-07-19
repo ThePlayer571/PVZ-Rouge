@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 
 namespace TPL.PVZR.Systems.Level_Data
 {
-    public interface ILevelSystem : ISystem
+    public interface ILevelSystem : IMainSystem
     {
     }
 
@@ -42,7 +42,7 @@ namespace TPL.PVZR.Systems.Level_Data
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterEarly:
-                                var LevelData = e.Parameters["LevelData"] as LevelData;
+                                var LevelData = e.Parameters["LevelData"] as ILevelData;
 
                                 SceneManager.LoadScene("LevelScene");
                                 ActionKit.Sequence()

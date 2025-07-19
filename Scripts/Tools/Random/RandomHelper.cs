@@ -33,7 +33,7 @@ namespace TPL.PVZR.Tools.Random
 
         # endregion
 
-        #region 为MazeMap生成单独开辟的
+        #region 为MazeMapMatrix生成单独开辟的，其他任何禁止使用
 
         public static DeterministicRandom MazeMap { get; } = new DeterministicRandom();
 

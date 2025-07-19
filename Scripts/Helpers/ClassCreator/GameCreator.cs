@@ -1,6 +1,5 @@
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Classes.DataClasses.Game;
-using TPL.PVZR.Classes.DataClasses.Game.Interfaces;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Classes.MazeMap;
@@ -38,13 +37,13 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
             return new GameData(testMazeMapData, testInventoryData);
         }
 
-        public static MazeMapData CreateMazeMapData(MazeMapDef mazeMapDef, ulong seed)
+        public static IMazeMapData CreateMazeMapData(MazeMapDef mazeMapDef, ulong seed)
         {
             var definition = GameConfigReader.GetMazeMapDefinition(mazeMapDef);
             return new MazeMapData(definition, seed);
         }
 
-        public static LevelData CreateLevelData(IGameData gameData, LevelDef def)
+        public static ILevelData CreateLevelData(IGameData gameData, LevelDef def)
         {
             var definition = GameConfigReader.GetLevelDefinition(def);
             return new LevelData(gameData, definition);

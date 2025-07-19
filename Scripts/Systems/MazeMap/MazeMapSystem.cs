@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace TPL.PVZR.Systems
 {
-    public interface IMazeMapSystem : ISystem
+    public interface IMazeMapSystem : IMainSystem
     {
     }
 
@@ -29,17 +29,36 @@ namespace TPL.PVZR.Systems
             {
                 switch (e.GamePhase)
                 {
+                    case GamePhase.GameInitialization:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.EnterNormal:
+                                _MazeMapController = MazeMapController.Create(_GameModel.GameData.MazeMapData);
+                                // MazeController数据结构生成
+                                _MazeMapController.GenerateMazeMatrix();
+                                // 初始化关卡数据（以后改成检测是否已经初始化的）
+                                _MazeMapController.InitializeMazeMapData();
+                                break;
+                        }
+
+                        break;
+
+                    case GamePhase.LevelExiting:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.EnterNormal:
+                                _MazeMapController.BreakTomb(_GameModel.ActiveTombData);
+                                break;
+                        }
+
+                        break;
+
                     case GamePhase.MazeMapInitialization:
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterEarly:
                                 // 加载场景
                                 SceneManager.LoadScene("MazeMapScene");
-
-                                // MazeController数据结构生成
-                                _MazeMapController =
-                                    MazeMapController.CreateController(_GameModel.GameData.MazeMapData);
-                                _MazeMapController.GenerateMazeMatrix();
 
                                 // UI界面
                                 UIKit.OpenPanel<UIMazeMapPanel>();
@@ -51,7 +70,7 @@ namespace TPL.PVZR.Systems
                                     .Callback(() =>
                                     {
                                         // 设置场景
-                                        _MazeMapController.SetMazeMapTiles();
+                                        _MazeMapController.SetUpView();
                                     })
                                     .Callback(() => { _PhaseModel.DelayChangePhase(GamePhase.MazeMap); })
                                     .Start(GameManager.Instance);

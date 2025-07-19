@@ -124,4 +124,8 @@ namespace TPL.PVZR.Models
         {
         }
     }
+
+    public interface IMainSystem : ISystem
+    {
+    }
 }

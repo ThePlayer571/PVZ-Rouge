@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using QFramework;
-using TPL.PVZR.Classes.DataClasses.Game.Interfaces;
+using TPL.PVZR.Classes.DataClasses.Game;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
 

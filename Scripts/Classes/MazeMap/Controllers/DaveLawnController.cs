@@ -44,7 +44,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
             ValidateMazeMapData();
 
             // 初始化
-            RandomHelper.MazeMap.RestoreState(new DeterministicRandom.State(MazeMapData.GeneratedSeed));
+            RandomHelper.MazeMap.RestoreState(new DeterministicRandom.State(MazeMapData.GenerateSeed));
             mazeMatrix = new Matrix<Node>(MazeMapData.RowCount, MazeMapData.ColCount);
             mazeMatrix.Fill((i, j) => new Node(i, j));
             adjacencyList = new Dictionary<Node, List<Node>>();
@@ -71,7 +71,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                 {
                     var level = 1;
                     var row = 2;
-                    var levelCountRange = MazeMapData.GetSpotCountRangeOfLevel(level);
+                    var levelCountRange = MazeMapData.GetSpotCountRangeOfStage(level);
                     var levelCount = RandomHelper.MazeMap.Range(levelCountRange.x, levelCountRange.y + 1);
                     List<int> keyNodes = new List<int>();
                     // 随机选择levelCount个列
@@ -92,7 +92,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                 {
                     // 预制数据
                     var row = level * 2;
-                    var levelCountRange = MazeMapData.GetSpotCountRangeOfLevel(level);
+                    var levelCountRange = MazeMapData.GetSpotCountRangeOfStage(level);
                     var levelCount = RandomHelper.MazeMap.Range(levelCountRange.x, levelCountRange.y + 1);
                     List<int> lastCols = _levelKeyNodes[level - 1];
                     List<int> keyNodes = new List<int>();
@@ -273,7 +273,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
 
         #region 场景中GameObject
 
-        public override void SetMazeMapTiles()
+        protected override void SetUpTiles()
         {
             // 准备
             var resLoader = ResLoader.Allocate();
@@ -329,10 +329,16 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
             GroundTilemap.SetTilesBlock(bounds, ToArrayByColumn(tileMatrix));
         }
 
+        protected override void SetUpTombs()
+        {
+            ($"Pass: {String.Join(",", MazeMapData.PassedRoute)}\n" +
+             $"Discoverd: {String.Join(",", MazeMapData.DiscoveredTombs.Select(tomb => tomb.Position))}\n").LogInfo();
+        }
+
         #endregion
 
 
-        public DaveLawnController(MazeMapData mazeMapData) : base(mazeMapData)
+        public DaveLawnController(IMazeMapData mazeMapData) : base(mazeMapData)
         {
         }
     }

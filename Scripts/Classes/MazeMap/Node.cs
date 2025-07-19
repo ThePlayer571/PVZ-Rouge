@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace TPL.PVZR.Classes.MazeMap
 {
@@ -7,6 +8,10 @@ namespace TPL.PVZR.Classes.MazeMap
         public int x;
         public int y;
         public bool isKey;
+        public Vector2Int Position => new Vector2Int(x, y);
+        /// <summary>
+        /// 历史遗留问题：应该叫stage
+        /// </summary>
         public int level;
         public Node(int x, int y)
         {

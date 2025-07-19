@@ -31,6 +31,34 @@ namespace TPL.PVZR.Tools
                     list[i] = defaultValue;
             }
         }
+
+
+        /// <summary>
+        /// 移除并返回列表末尾的元素（类似Python的pop()）
+        /// </summary>
+        public static T Pop<T>(this List<T> list)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            if (list.Count == 0) throw new InvalidOperationException("Cannot pop from empty list.");
+
+            int lastIndex = list.Count - 1;
+            T item = list[lastIndex];
+            list.RemoveAt(lastIndex);
+            return item;
+        }
+
+        /// <summary>
+        /// 移除并返回指定索引处的元素（类似Python的pop(index)）
+        /// </summary>
+        public static T Pop<T>(this List<T> list, int index)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+            if (index < 0 || index >= list.Count) throw new ArgumentOutOfRangeException(nameof(index));
+
+            T item = list[index];
+            list.RemoveAt(index);
+            return item;
+        }
     }
 
 

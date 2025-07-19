@@ -7,6 +7,7 @@ using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Classes.MazeMap;
+using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
@@ -19,7 +20,7 @@ using UnityEngine.EventSystems;
 
 namespace TPL.PVZR.ViewControllers.Managers
 {
-    public class GameManager : MonoSingleton<GameManager>, ICanGetModel, ICanGetSystem
+    public class GameManager : MonoSingleton<GameManager>, ICanGetModel, ICanGetSystem, ICanSendCommand
     {
         private void OnGUI()
         {
@@ -56,15 +57,10 @@ namespace TPL.PVZR.ViewControllers.Managers
             {
                 var _PhaseModel = this.GetModel<IPhaseModel>();
                 var _GameModel = this.GetModel<IGameModel>();
-                _PhaseModel.DelayChangePhase(GamePhase.LevelPreInitialization,
-                    new Dictionary<string, object>
-                    {
-                        {
-                            "LevelData",
-                            GameCreator.CreateLevelData(_GameModel.GameData,
-                                new LevelDef { Id = LevelId.Dave_Lawn, Difficulty = GameDifficulty.N0 })
-                        }
-                    });
+
+                var levelData = GameCreator.CreateLevelData(_GameModel.GameData,
+                    _GameModel.GameData.MazeMapData.GetRandomLevelOfStage(1));
+                this.SendCommand<StartLevelCommand>(new StartLevelCommand(levelData));
             }
 
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 260, 120, 40), "获得100硬币"))

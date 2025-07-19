@@ -7,7 +7,7 @@ using TPL.PVZR.Models;
 
 namespace TPL.PVZR.Systems
 {
-    public interface IGameSystem : ISystem
+    public interface IGameSystem : IMainSystem
     {
     }
 
