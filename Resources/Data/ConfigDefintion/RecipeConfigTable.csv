@@ -1,0 +1,15 @@
+Output,weight,Input,Input,Input,Input,Input,InputValue,OutputValue
+Repeater,10,PeaShooter,PeaShooter,,,,40,50
+Repeater,5,PeaShooter,PeaShooter,PeaShooter,,,60,50
+Repeater,5,PeaShooter,"(20,30)",,,,45,50
+Sunflower,10,Flowerpot,Flowerpot,"(10,20)",,,25,20
+Sunflower,10,Flowerpot,Flowerpot,Flowerpot,,,15,20
+Flowerpot,1,PeaShooter,,,,,20,5
+SnowPea,5,PeaShooter,PeaShooter,,,,40,30
+PotatoMine,10,Wallnut,Flowerpot,,,,25,20
+SplitPea,5,Repeater,Repeater,,,,100,100
+SplitPea,5,Repeater,PeaShooter,"(10,20)",,,85,100
+SplitPea,5,PeaShooter,PeaShooter,SnowPea,,,70,100
+Cactus,5,Repeater,Repeater,Repeater,Repeater,,200,150
+CherryBomb,10,PotatoMine,PotatoMine,Flowerpot,,,45,100
+CherryBomb,10,PeaShooter,PeaShooter,"(10,20)",,,55,100

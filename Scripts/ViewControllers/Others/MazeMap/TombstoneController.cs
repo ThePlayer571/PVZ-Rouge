@@ -1,6 +1,7 @@
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Tomb;
 using TPL.PVZR.Classes.MazeMap;
+using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.Systems;
 using UnityEngine;
@@ -49,7 +50,7 @@ namespace TPL.PVZR.ViewControllers.Others.MazeMap
         public void OnPointerClick(PointerEventData eventData)
         {
             if (_isActive)
-                this.SendCommand<StartLevelCommand>(new StartLevelCommand(_tombData));
+                this.SendCommand<OpenLevelPreviewPanelCommand>(new OpenLevelPreviewPanelCommand(_tombData));
         }
     }
 }

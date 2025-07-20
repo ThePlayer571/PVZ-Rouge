@@ -260,8 +260,6 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                         foreach (var fromNode in fromNodes)
                         {
                             keyAdjacencyList[fromNode] = toNodes;
-                            $"level:{level} Add New: {fromNode.Position} ->  {String.Join(",", toNodes.Select(n => n.Position))}"
-                                .LogInfo();
                         }
                     }
                 }

@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a880bd376b524bdb8f92a98ec16dd1ff, type: 3}
+  m_Name: PlantConfigList
+  m_EditorClassIdentifier: 
+  plantConfigs:
+  - def:
+      Id: 1
+      Variant: 0
+    card: {fileID: 11400000, guid: 4c10155a21c74b44a9833af947c97cd3, type: 2}
+    prefab: {fileID: 4343030393633880534, guid: a60d688014d6ebe45bf60f8720b79190, type: 3}
+  - def:
+      Id: 1
+      Variant: 1
+    card: {fileID: 11400000, guid: 715313f1b087d6f4988bc06b7ce4caf8, type: 2}
+    prefab: {fileID: 891298683958178646, guid: 275f63201510b414880ad7e53f3a7118, type: 3}
+  - def:
+      Id: 2
+      Variant: 0
+    card: {fileID: 11400000, guid: 82b902edb1bf23f459a1ada19e6e7e16, type: 2}
+    prefab: {fileID: 5774927748308270191, guid: 88c9d8d985c8a594c810e3014a80d4a9, type: 3}
+  - def:
+      Id: 3
+      Variant: 0
+    card: {fileID: 11400000, guid: 14314ae84cc77fc4183af206d1050d22, type: 2}
+    prefab: {fileID: 7199530830851720483, guid: 570986ff82b6b324c831bb805b76aa7c, type: 3}
+  - def:
+      Id: 4
+      Variant: 0
+    card: {fileID: 11400000, guid: 7c4eab05ec2b0e843b9daef8164a1e1f, type: 2}
+    prefab: {fileID: 506415883334226344, guid: 59803c51dc3c5dc4fbb5e7a3d934c18e, type: 3}
+  - def:
+      Id: 5
+      Variant: 0
+    card: {fileID: 11400000, guid: 1f161f7ede5446f4f84a1f1f0dff5a6f, type: 2}
+    prefab: {fileID: 3815218654034443099, guid: 502640da760a428418f2b68525747160, type: 3}
+  - def:
+      Id: 6
+      Variant: 0
+    card: {fileID: 11400000, guid: 088c5745afe0a41408b05695d7512fe7, type: 2}
+    prefab: {fileID: 3399330328040274581, guid: b2104267b60e76940a7d072c2b163884, type: 3}
+  - def:
+      Id: 7
+      Variant: 0
+    card: {fileID: 11400000, guid: 2634606d5946dfd4192cb57b469f8faf, type: 2}
+    prefab: {fileID: 246027088655411559, guid: 82a912f0099fbc0439d781cb3c9c34e2, type: 3}
+  - def:
+      Id: 8
+      Variant: 0
+    card: {fileID: 11400000, guid: edfafdd67a9cdfc41870bbbcd8f15995, type: 2}
+    prefab: {fileID: 1125649185624289524, guid: 17d4f80dd52ad9a4789a9504cfe6774f, type: 3}
+  - def:
+      Id: 9
+      Variant: 0
+    card: {fileID: 11400000, guid: d9b503a74439eb642becea279ddce385, type: 2}
+    prefab: {fileID: 1466500223316910356, guid: 3e22a4513ee34a84788bbed4fd5588f1, type: 3}
+  - def:
+      Id: 10
+      Variant: 0
+    card: {fileID: 11400000, guid: b146d19b31ff30e4f86a747ffcf58c8e, type: 2}
+    prefab: {fileID: 1797672041553614576, guid: c2137b75f5a628b4fb88c00c55dc0fdf, type: 3}
+  - def:
+      Id: 11
+      Variant: 0
+    card: {fileID: 11400000, guid: 3ad83195ec551a149a2aeaffa94a4662, type: 2}
+    prefab: {fileID: 9120837001631561146, guid: 77e06035ab231054598ef7d144a6b113, type: 3}

@@ -54,14 +54,11 @@ namespace TPL.PVZR.Classes.MazeMap
         {
             if (mazeMatrix == null) throw new Exception("MazeMatrix尚未生成，请先调用GenerateMazeMatrix()方法");
 
-            $"startNode: {startNode.Position}".LogInfo();
             // 把keyAdjacencyList的所有信息打印出来
             foreach (var kvp in keyAdjacencyList)
             {
                 var node = kvp.Key;
                 var adjacentNodes = kvp.Value;
-                $"Node: {node.Position}, Adjacent Nodes: {string.Join(", ", adjacentNodes.Select(n => n.Position))}"
-                    .LogInfo();
             }
 
             foreach (var node in keyAdjacencyList[startNode])

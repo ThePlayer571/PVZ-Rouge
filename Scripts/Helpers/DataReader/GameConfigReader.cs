@@ -28,7 +28,6 @@ namespace TPL.PVZR.Helpers.New.DataReader
             foreach (var levelConfig in levelDefinitionList)
             {
                 _levelDefinitionDict.Add(levelConfig.levelDef, levelConfig.levelDefinition);
-                $"添加了一个：{levelConfig.levelDef} 的".LogInfo();
             }
 
             // MazeMapDefinition

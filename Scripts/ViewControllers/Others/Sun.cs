@@ -4,10 +4,11 @@ using QFramework;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents.Level_Gameplay;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace TPL.PVZR.ViewControllers
 {
-    public sealed class Sun : MonoBehaviour, IController
+    public sealed class Sun : MonoBehaviour, IController, IPointerEnterHandler
     {
         private SpriteRenderer _SpriteRenderer;
         private bool _isCollected = false;
@@ -38,15 +39,15 @@ namespace TPL.PVZR.ViewControllers
             this.SendCommand<CollectSunCommand>(new CollectSunCommand(this));
         }
 
-        private void OnMouseEnter()
-        {
-            TryCollect();
-        }
-
 
         public IArchitecture GetArchitecture()
         {
             return PVZRouge.Interface;
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            TryCollect();
         }
     }
 }

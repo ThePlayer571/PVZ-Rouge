@@ -4,10 +4,11 @@ using QFramework;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents.Level_Gameplay.Coins;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace TPL.PVZR.ViewControllers
 {
-    public sealed class Coin : MonoBehaviour, IController
+    public sealed class Coin : MonoBehaviour, IController, IPointerEnterHandler
     {
         private SpriteRenderer _SpriteRenderer;
         private bool _isCollected = false;
@@ -45,11 +46,10 @@ namespace TPL.PVZR.ViewControllers
             this.SendCommand<CollectCoinCommand>(new CollectCoinCommand(this));
         }
 
-        private void OnMouseEnter()
+        public void OnPointerEnter(PointerEventData eventData)
         {
             TryCollect();
         }
-
 
         public IArchitecture GetArchitecture()
         {

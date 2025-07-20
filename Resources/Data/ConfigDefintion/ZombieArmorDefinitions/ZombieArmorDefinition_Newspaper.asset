@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea8699ad8ee84058ac4fc7a22d9c1f5a, type: 3}
+  m_Name: ZombieArmorDefinition_Newspaper
+  m_EditorClassIdentifier: 
+  armorHealth: 150
+  damageReductionRate: 1
+  punchResistanceRate: 0.5
+  intactMinRatio: 0.7
+  damagedMinRatio: 0.45
+  brokenMinRatio: 0
