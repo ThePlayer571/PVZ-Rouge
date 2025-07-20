@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.ConfigLists;
+using TPL.PVZR.Classes.DataClasses.Game;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.Classes.MazeMap;
@@ -14,6 +15,7 @@ namespace TPL.PVZR.Helpers.New.DataReader
 
         private static Dictionary<LevelDef, LevelDefinition> _levelDefinitionDict;
         private static Dictionary<MazeMapDef, MazeMapDefinition> _mazeMapDefinitionDict;
+        private static Dictionary<GameDef, GameDefinition> _gameDefinitionDict;
 
         static GameConfigReader()
         {
@@ -39,11 +41,31 @@ namespace TPL.PVZR.Helpers.New.DataReader
             {
                 _mazeMapDefinitionDict.Add(mazeMapConfig.mazeMapDef, mazeMapConfig.mazeMapDefinition);
             }
+
+            // GameDefinition
+            var gameDefinitionList = resLoader
+                .LoadSync<GameDefinitionList>(Configlist.BundleName, Configlist.GameDefinitionList)
+                .gameDefinitionList;
+            _gameDefinitionDict = new Dictionary<GameDef, GameDefinition>();
+            foreach (var gameConfig in gameDefinitionList)
+            {
+                _gameDefinitionDict.Add(gameConfig.gameDef, gameConfig.gameDefinition);
+            }
         }
 
         #endregion
 
         #region 数据读取
+
+        public static GameDefinition GetGameDefinition(GameDef gameDef)
+        {
+            if (_gameDefinitionDict.TryGetValue(gameDef, out var gameDefinition))
+            {
+                return gameDefinition;
+            }
+
+            throw new KeyNotFoundException($"找不到对应的GameDefinition: {gameDef}");
+        }
 
         public static MazeMapDefinition GetMazeMapDefinition(MazeMapDef mazeMapDef)
         {

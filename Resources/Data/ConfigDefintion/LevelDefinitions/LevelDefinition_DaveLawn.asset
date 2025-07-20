@@ -23,7 +23,7 @@ MonoBehaviour:
   - Key: {x: 20, y: 9}
     Value: {x: 33, y: 9}
   BaseValue: 10
-  maxValue: 400
+  maxValue: 10
   DifficultyGrowthType: 0
   TotalWaveCount: 30
   HugeWaves: 0a000000140000001e000000
@@ -100,6 +100,7 @@ MonoBehaviour:
     lootInfo:
       lootType: 2
       plantId: 0
+      locked: 0
       plantBookId: 0
       coinAmount: 20
   LootValue: 100

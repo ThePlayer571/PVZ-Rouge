@@ -16,27 +16,14 @@ namespace TPL.PVZR.Systems.Level_Data
         BindableProperty<HandInfo> HandInfo { get; }
     }
 
-    public struct HandInfo
-    {
-        public HandState HandState;
-        public SeedData PickedSeed;
-
-        public HandInfo(HandState handState, SeedData pickedSeed)
-        {
-            this.HandState = handState;
-            this.PickedSeed = pickedSeed;
-        }
-    }
-
-    public enum HandState
-    {
-        Empty,
-        HaveSeed,
-        HaveShovel
-    }
 
     public class HandSystem : AbstractSystem, IHandSystem
     {
+        private void Reset()
+        {
+            HandInfo.Value = new HandInfo(HandState.Empty, null);
+        }
+        
         protected override void OnInit()
         {
             HandInfo = new BindableProperty<HandInfo>(new HandInfo(HandState.Empty, null));
@@ -49,7 +36,7 @@ namespace TPL.PVZR.Systems.Level_Data
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.LeaveNormal:
-                                HandInfo.Value = new HandInfo(HandState.Empty, null);
+                                Reset();
                                 break;
                         }
 
@@ -76,5 +63,24 @@ namespace TPL.PVZR.Systems.Level_Data
         }
 
         public BindableProperty<HandInfo> HandInfo { get; private set; }
+    }
+
+    public struct HandInfo
+    {
+        public HandState HandState;
+        public SeedData PickedSeed;
+
+        public HandInfo(HandState handState, SeedData pickedSeed)
+        {
+            this.HandState = handState;
+            this.PickedSeed = pickedSeed;
+        }
+    }
+
+    public enum HandState
+    {
+        Empty,
+        HaveSeed,
+        HaveShovel
     }
 }

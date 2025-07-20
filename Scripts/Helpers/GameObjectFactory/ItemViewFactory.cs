@@ -33,7 +33,7 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
         {
             return lootData.LootType switch
             {
-                LootType.Card => CreateItemView(lootData.PlantId),
+                LootType.Card => CreateItemView(lootData.PlantId, lootData.Locked),
                 LootType.Coin => CreateItemView(lootData.CoinAmount),
                 LootType.PlantBook => CreateItemView(lootData.PlantBookId),
                 LootType.SeedSlot => CreateItemView_SeedSlot(),
@@ -62,11 +62,11 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             return go;
         }
 
-        public static GameObject CreateItemView(PlantId plantId)
+        public static GameObject CreateItemView(PlantId plantId, bool locked = false)
         {
             var cardDefinition = PlantConfigReader.GetCardDefinition(plantId.ToDef());
             var go = _cardViewPrefab.Instantiate();
-            go.GetComponent<CardViewController>().Initialize(cardDefinition);
+            go.GetComponent<CardViewController>().Initialize(cardDefinition, locked);
             return go;
         }
 

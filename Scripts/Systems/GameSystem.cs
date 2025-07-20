@@ -43,6 +43,16 @@ namespace TPL.PVZR.Systems
                         }
 
                         break;
+                    case GamePhase.GameExiting:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.LeaveNormal:
+                                _GameModel.Reset();
+                                PlantDefHelper.SetInventory(null);
+                                break;
+                        }
+
+                        break;
                 }
             });
         }

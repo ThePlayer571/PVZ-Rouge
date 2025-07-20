@@ -21,7 +21,7 @@ namespace TPL.PVZR.Classes.MazeMap
         MazeMapDef Def { get; }
         int RowCount { get; }
         int ColCount { get; }
-        int TotalLevelCount { get; }
+        int TotalStageCount { get; }
         Vector2Int GetSpotCountRangeOfStage(int stage);
         LevelDef GetRandomLevelOfStage(int stage);
 
@@ -47,7 +47,7 @@ namespace TPL.PVZR.Classes.MazeMap
 
         #region 墓碑生成
 
-        public int TotalLevelCount { get; }
+        public int TotalStageCount { get; }
         private List<SerializableKeyValuePair<Vector2Int, Vector2Int>> TombCountRangeOfStage { get; }
 
         public Vector2Int GetSpotCountRangeOfStage(int stage)
@@ -119,7 +119,7 @@ namespace TPL.PVZR.Classes.MazeMap
             RowCount = definition.RowCount;
             ColCount = definition.ColCount;
 
-            TotalLevelCount = definition.TotalStageCount;
+            TotalStageCount = definition.TotalStageCount;
             TombCountRangeOfStage = definition.TombCountRangeOfStage;
             TombContentConfigs = definition.TombContentConfigs;
 

@@ -11,6 +11,7 @@ namespace TPL.PVZR.Classes.DataClasses.Loot
 
         // Type: Card
         public PlantId plantId;
+        public bool locked = false;
         
         // Type: PlantBook
         public PlantBookId plantBookId;

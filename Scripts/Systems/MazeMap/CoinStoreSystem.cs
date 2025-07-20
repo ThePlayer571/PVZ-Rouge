@@ -32,7 +32,7 @@ namespace TPL.PVZR.Systems.MazeMap
             var pool = TradeCreator.CreateAllCoinTradePool();
             var _ = pool.GetRandomOutputs(10).Select(info => new CoinTradeData(info));
             _activeTrades.AddRange(_);
-            
+
             if (_hasTradeData) OnRewrite.Trigger();
             _hasTradeData = true;
         }
@@ -78,7 +78,7 @@ namespace TPL.PVZR.Systems.MazeMap
             {
                 _GameModel.GameData.InventoryData.Coins.Value -= RefreshCost;
                 RefreshCost *= 2;
-                
+
                 AutoWriteCoinTrades();
             });
 
@@ -92,20 +92,7 @@ namespace TPL.PVZR.Systems.MazeMap
                 inventory.Coins.Value -= tradeData.CoinAmount;
 
                 // 添加
-                switch (tradeData.LootData.LootType)
-                {
-                    case LootType.Card:
-                        var cardData = ItemCreator.CreateCardData(tradeData.LootData.PlantId.ToDef());
-                        inventory.AddCard(cardData);
-                        break;
-                    case LootType.PlantBook:
-                        var plantBookData = ItemCreator.CreatePlantBookData(tradeData.LootData.PlantBookId);
-                        inventory.AddPlantBook(plantBookData);
-                        break;
-                    case LootType.SeedSlot:
-                        inventory.AddSeedSlot();
-                        break;
-                }
+                inventory.AddLootAuto(tradeData.LootData);
             });
         }
 

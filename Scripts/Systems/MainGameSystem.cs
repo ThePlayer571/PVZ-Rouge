@@ -4,6 +4,7 @@ using UnityEngine;
 using QAssetBundle;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.ViewControllers.UI;
+using UnityEngine.SceneManagement;
 
 namespace TPL.PVZR.Systems
 {
@@ -40,9 +41,10 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
+                                SceneManager.LoadScene("MainMenu");
                                 UIKit.OpenPanel<UIGameStartPanel>();
                                 break;
-                            case PhaseStage.LeaveLate:
+                            case PhaseStage.LeaveNormal:
                                 UIKit.ClosePanel<UIGameStartPanel>();
                                 break;
                         }

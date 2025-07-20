@@ -7,9 +7,9 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
 {
     public static class TombCreator
     {
-        public static ITombData CreateTombData(Vector2Int pos, LevelDef levelDef)
+        public static ITombData CreateTombData(Vector2Int pos, int stage, LevelDef levelDef)
         {
-            return new TombData(pos, GameConfigReader.GetLevelDefinition(levelDef));
+            return new TombData(pos, GameConfigReader.GetLevelDefinition(levelDef), stage);
         }
     }
 }

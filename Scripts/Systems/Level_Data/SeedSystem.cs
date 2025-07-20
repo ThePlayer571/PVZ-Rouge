@@ -51,13 +51,7 @@ namespace TPL.PVZR.Systems.Level_Data
                             case PhaseStage.EnterNormal:
                                 StartRunning();
                                 break;
-                        }
-
-                        break;
-                    case GamePhase.LevelExiting:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
+                            case PhaseStage.LeaveNormal:
                                 StopRunning();
                                 break;
                         }

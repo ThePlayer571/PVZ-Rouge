@@ -19,6 +19,7 @@ namespace TPL.PVZR.Classes.MazeMap
         void GenerateMazeMatrix();
         void InitializeTombData();
         void BreakTomb(ITombData tombData);
+        void BreakFinalTomb(ITombData tombData);
         void SetUpView();
 
         #endregion
@@ -65,7 +66,7 @@ namespace TPL.PVZR.Classes.MazeMap
             {
                 // $"find: {startNode.Position}->{node.Position}".LogInfo();
                 var chosenLevelDef = MazeMapData.GetRandomLevelOfStage(node.level);
-                var tombData = TombCreator.CreateTombData(new Vector2Int(node.x, node.y), chosenLevelDef);
+                var tombData = TombCreator.CreateTombData(new Vector2Int(node.x, node.y), node.level, chosenLevelDef);
                 MazeMapData.AddDiscoveredTomb(tombData);
                 ActiveTombs.Add(tombData);
             }
@@ -84,16 +85,31 @@ namespace TPL.PVZR.Classes.MazeMap
             foreach (var toDiscover in keyAdjacencyList[current])
             {
                 var chosenLevelDef = MazeMapData.GetRandomLevelOfStage(toDiscover.level);
-                var data = TombCreator.CreateTombData(new Vector2Int(toDiscover.x, toDiscover.y), chosenLevelDef);
+                var data = TombCreator.CreateTombData(new Vector2Int(toDiscover.x, toDiscover.y), toDiscover.level,
+                    chosenLevelDef);
                 MazeMapData.AddDiscoveredTomb(data);
                 ActiveTombs.Add(data);
             }
+        }
+
+        public void BreakFinalTomb(ITombData tombData)
+        {
+            if (mazeMatrix == null) throw new Exception("MazeMatrix尚未生成，请先调用GenerateMazeMatrix()方法");
+
+            MazeMapData.AddPassedTomb(tombData);
+            PassedTombs.Add(tombData);
+            FormlyDiscoveredTombs.AddRange(ActiveTombs);
+            ActiveTombs.Clear();
         }
 
         public void SetUpView()
         {
             SetUpTiles();
             SetUpTombs();
+            if (CurrentTomb != null && CurrentTomb.Stage == MazeMapData.TotalStageCount)
+            {
+                DisplayFinalObject();
+            }
         }
 
         #endregion
@@ -173,6 +189,7 @@ namespace TPL.PVZR.Classes.MazeMap
         protected abstract void ValidateMazeMapData();
         protected abstract void SetUpTiles();
         protected abstract void SetUpTombs();
+        protected abstract void DisplayFinalObject();
 
         #endregion
 

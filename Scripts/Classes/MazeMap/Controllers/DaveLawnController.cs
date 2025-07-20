@@ -19,7 +19,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
         {
             /* - Rules:
              * ColCount in [5, ..)
-             * RowCount in [8, ..) and RowCount 是 奇数
+             * RowCount in [6, ..) and RowCount 是 奇数
              * TotalLevelCount == (RowCount - 1) / 2
              */
             if (MazeMapData == null) throw new ArgumentNullException(nameof(MazeMapData), "MazeMapData 不能为空");
@@ -27,12 +27,12 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
             if (MazeMapData.ColCount < 5)
                 throw new Exception($"暂不支持的ColCount: {MazeMapData.ColCount}，必须 >= 5");
 
-            if ((MazeMapData.RowCount - 1) % 2 != 0 || MazeMapData.RowCount < 8)
-                throw new Exception($"暂不支持的RowCount: {MazeMapData.RowCount}，必须 >= 8 且 为奇数");
+            if ((MazeMapData.RowCount - 1) % 2 != 0 || MazeMapData.RowCount < 6)
+                throw new Exception($"暂不支持的RowCount: {MazeMapData.RowCount}，必须 >= 6 且 为奇数");
 
-            if (MazeMapData.TotalLevelCount != (MazeMapData.RowCount - 1) / 2)
+            if (MazeMapData.TotalStageCount != (MazeMapData.RowCount - 1) / 2)
                 throw new Exception(
-                    $"暂不支持的TotalSpotCount: {MazeMapData.TotalLevelCount}，应满足表达式: TotalLevelCount = ( rowCount - 1 ) / 2 = {((MazeMapData.RowCount - 1) / 2)}");
+                    $"暂不支持的TotalSpotCount: {MazeMapData.TotalStageCount}，应满足表达式: TotalLevelCount = ( rowCount - 1 ) / 2 = {((MazeMapData.RowCount - 1) / 2)}");
         }
 
 
@@ -88,7 +88,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                     _levelKeyNodes.Add(level, keyNodes);
                 }
                 // [3. 其他关]
-                for (int level = 2; level < MazeMapData.TotalLevelCount; level++)
+                for (int level = 2; level < MazeMapData.TotalStageCount; level++)
                 {
                     // 预制数据
                     var row = level * 2;
@@ -139,7 +139,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
 
                 // [4. 最终关]
                 {
-                    var level = MazeMapData.TotalLevelCount;
+                    var level = MazeMapData.TotalStageCount;
                     var row = level * 2;
                     List<int> keyNodes = new List<int>();
                     var col = Random.RandomChoose(Enumerable.Range(0, MazeMapData.ColCount));
@@ -364,6 +364,19 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
 
             // ($"Pass: {String.Join(",", MazeMapData.PassedRoute)}\n" +
             //  $"Discoverd: {String.Join(",", MazeMapData.DiscoveredTombs.Select(tomb => tomb.Position))}\n").LogInfo();
+        }
+
+        protected override void DisplayFinalObject()
+        {
+            var resLoader = ResLoader.Allocate();
+            var finalMatrixPos = new Vector2Int(mazeMatrix.Rows + 1, mazeMatrix.Columns / 2);
+            var finalTilemapPos = MatrixToTilemapPosition(finalMatrixPos);
+            var finalWorldPos =
+                MazeMapTilemapController.Instance.Ground.CellToWorld(new Vector3Int(finalTilemapPos.x,
+                    finalTilemapPos.y, 0));
+            var finalObject =
+                resLoader.LoadSync<GameObject>(Finalobject_prefab.BundleName, Finalobject_prefab.FinalObject)
+                    .Instantiate(finalWorldPos, Quaternion.identity);
         }
 
         #endregion

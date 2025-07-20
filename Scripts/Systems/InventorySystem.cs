@@ -23,7 +23,7 @@ namespace TPL.PVZR.Systems
             {
                 switch (e.GamePhase)
                 {
-                    case GamePhase.LevelExiting:
+                    case GamePhase.LevelPassed or GamePhase.LevelDefeat:
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:

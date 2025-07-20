@@ -14,7 +14,7 @@ namespace TPL.PVZR.CommandEvents._NotClassified_
                 throw new System.Exception($"在不正确的阶段执行OnCollectLevelEndObjectCommand：{_PhaseModel.GamePhase}");
             
             //
-            _PhaseModel.ChangePhase(GamePhase.LevelExiting);
+            _PhaseModel.ChangePhase(GamePhase.LevelPassed);
         }
     }
 }

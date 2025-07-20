@@ -45,17 +45,25 @@ namespace TPL.PVZR.Systems
                         }
 
                         break;
-
-                    case GamePhase.LevelExiting:
+                    case GamePhase.LevelPassed:
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
-                                _MazeMapController.BreakTomb(_GameModel.ActiveTombData);
+                                if (_GameModel.ActiveTombData.Stage != _GameModel.GameData.MazeMapData.TotalStageCount)
+                                    // 非最后一关的逻辑
+                                {
+                                    _MazeMapController.BreakTomb(_GameModel.ActiveTombData);
+                                }
+                                else
+                                    // 最后一关的逻辑
+                                {
+                                    _MazeMapController.BreakFinalTomb(_GameModel.ActiveTombData);
+                                }
+
                                 break;
                         }
 
                         break;
-
                     case GamePhase.MazeMapInitialization:
                         switch (e.PhaseStage)
                         {
@@ -98,6 +106,18 @@ namespace TPL.PVZR.Systems
                         {
                             case PhaseStage.LeaveNormal:
                                 UIKit.ClosePanel<UIMazeMapPanel>();
+                                break;
+                        }
+
+                        break;
+                    case GamePhase.GameExiting:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.EnterNormal:
+                                _PhaseModel.DelayChangePhase(GamePhase.MainMenu);
+                                break;
+                            case PhaseStage.LeaveNormal:
+                                _MazeMapController = null;
                                 break;
                         }
 

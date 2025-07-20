@@ -12,6 +12,7 @@ namespace TPL.PVZR.Classes.DataClasses.Loot
 
         // Type: Card (此时未确定具体的变种，因此只存储PlantId)
         public PlantId PlantId { get; }
+        public bool Locked { get; }
 
         // Type: PlantBook
         public PlantBookId PlantBookId { get; }
@@ -19,11 +20,12 @@ namespace TPL.PVZR.Classes.DataClasses.Loot
         // Type: Coin
         public int CoinAmount { get; }
 
-        private LootData(LootType lootType, PlantId plantId = PlantId.NotSet,
+        private LootData(LootType lootType, PlantId plantId = PlantId.NotSet, bool locked = false,
             PlantBookId plantBookId = PlantBookId.NotSet, int coinAmount = 0)
         {
             LootType = lootType;
             PlantId = plantId;
+            Locked = locked;
             PlantBookId = plantBookId;
             CoinAmount = coinAmount;
         }
@@ -33,7 +35,7 @@ namespace TPL.PVZR.Classes.DataClasses.Loot
             switch (lootInfo.lootType)
             {
                 case LootType.Card:
-                    return new LootData(LootType.Card, plantId: lootInfo.plantId);
+                    return new LootData(LootType.Card, plantId: lootInfo.plantId, locked: lootInfo.locked);
                 case LootType.PlantBook:
                     return new LootData(LootType.PlantBook, plantBookId: lootInfo.plantBookId);
                 case LootType.Coin:

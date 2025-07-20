@@ -89,19 +89,14 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
         {
             var calculatedCoinAmount = (int)(coinTradeInfo.coinAmount * multiplier *
                       (1 + RandomHelper.Game.Range(-randomVariationRange, randomVariationRange)));
-            
-            var modifiedCoinTradeInfo = new CoinTradeInfo
-            {
-                coinAmount = calculatedCoinAmount,
-                lootInfo = coinTradeInfo.lootInfo
-            };
-            
-            return new CoinTradeData(modifiedCoinTradeInfo);
+            var lootData = LootData.Create(coinTradeInfo.lootInfo);
+            return new CoinTradeData(calculatedCoinAmount, lootData);
         }
 
         public static CoinTradeData CreateCoinTradeData(CoinTradeInfo coinTradeInfo)
         {
-            return new CoinTradeData(coinTradeInfo);
+            var lootData = LootData.Create(coinTradeInfo.lootInfo);
+            return new CoinTradeData(coinTradeInfo.coinAmount, lootData);
         }
 
         #endregion

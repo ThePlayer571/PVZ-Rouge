@@ -74,7 +74,7 @@ namespace TPL.PVZR.Systems.MazeMap
             {
                 switch (e.GamePhase)
                 {
-                    case GamePhase.LevelExiting:
+                    case GamePhase.LevelPassed:
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
@@ -104,22 +104,10 @@ namespace TPL.PVZR.Systems.MazeMap
 
                 foreach (var lootData in awards)
                 {
-                    if (!inventory.HasAvailableCardSlots()) break;
-
-                    switch (lootData.LootType)
-                    {
-                        case LootType.Card:
-                            var cardData = ItemCreator.CreateCardData(lootData.PlantId.ToDef());
-                            inventory.AddCard(cardData);
-                            break;
-                        case LootType.PlantBook:
-                            var plantBookData = ItemCreator.CreatePlantBookData(lootData.PlantBookId);
-                            inventory.AddPlantBook(plantBookData);
-                            break;
-                        case LootType.Coin:
-                            inventory.Coins.Value += lootData.CoinAmount;
-                            break;
-                    }
+                    if (lootData.LootType == LootType.Card && !inventory.HasAvailableCardSlots()) continue;
+                    if (lootData.LootType == LootType.PlantBook && inventory.PlantBooks.Any(b=>b.Id == lootData.PlantBookId)) continue;
+                    if (lootData.LootType == LootType.SeedSlot && !inventory.HasAvailableSeedSlotSlots()) continue;
+                    inventory.AddLootAuto(lootData);
                 }
             });
         }

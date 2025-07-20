@@ -103,7 +103,7 @@ namespace TPL.PVZR.Models
         private readonly Dictionary<GamePhase, GamePhase[]> allowedPhaseToFrom = new()
         {
             [GamePhase.PreInitialization] = new[] { GamePhase.BeforeStart },
-            [GamePhase.MainMenu] = new[] { GamePhase.PreInitialization },
+            [GamePhase.MainMenu] = new[] { GamePhase.PreInitialization, GamePhase.GameExiting },
             [GamePhase.GameInitialization] = new[] { GamePhase.MainMenu },
             [GamePhase.MazeMapInitialization] = new[] { GamePhase.GameInitialization, GamePhase.LevelExiting },
             [GamePhase.MazeMap] = new[] { GamePhase.MazeMapInitialization },
@@ -113,8 +113,14 @@ namespace TPL.PVZR.Models
             [GamePhase.ReadyToStart] = new[] { GamePhase.ChooseSeeds },
             [GamePhase.Gameplay] = new[] { GamePhase.ReadyToStart },
             [GamePhase.AllEnemyKilled] = new[] { GamePhase.Gameplay },
-            [GamePhase.GameOverDefeat] = new[] { GamePhase.Gameplay },
-            [GamePhase.LevelExiting] = new[] { GamePhase.AllEnemyKilled },
+            [GamePhase.LevelInterrupted] =
+                new[] { GamePhase.ChooseSeeds, GamePhase.Gameplay, GamePhase.AllEnemyKilled },
+            [GamePhase.LevelDefeat] =
+                new[] { GamePhase.ChooseSeeds, GamePhase.Gameplay, GamePhase.AllEnemyKilled },
+            [GamePhase.LevelPassed] = new[] { GamePhase.AllEnemyKilled },
+            [GamePhase.LevelExiting] = new[]
+                { GamePhase.LevelDefeat, GamePhase.LevelPassed, GamePhase.LevelInterrupted },
+            [GamePhase.GameExiting] = new[] { GamePhase.MazeMap },
         };
 
         #endregion

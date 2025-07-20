@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cinemachine;
 using QAssetBundle;
 using QFramework;
@@ -139,11 +140,26 @@ namespace TPL.PVZR.Systems.Level_Data
                         }
 
                         break;
+
+                    case GamePhase.LevelPassed:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.EnterNormal:
+                                _PhaseModel.DelayChangePhase(GamePhase.LevelExiting,
+                                    new Dictionary<string, object>
+                                    {
+                                        { "NextPhase", GamePhase.MazeMapInitialization }
+                                    });
+                                break;
+                        }
+
+                        break;
                     case GamePhase.LevelExiting:
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterLate:
-                                _PhaseModel.DelayChangePhase(GamePhase.MazeMapInitialization);
+                                var nextPhase = (GamePhase)e.Parameters["NextPhase"];
+                                _PhaseModel.DelayChangePhase(nextPhase);
                                 break;
                             case PhaseStage.LeaveNormal:
                                 _LevelModel.Reset();

@@ -3,8 +3,11 @@ using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
+using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Helpers.New;
+using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Helpers.New.DataReader;
 
 namespace TPL.PVZR.Classes.DataClasses
@@ -13,13 +16,13 @@ namespace TPL.PVZR.Classes.DataClasses
     {
         int MaxSeedSlotCount { get; }
         int MaxCardCount { get; }
-
         int InitialSunPoint { get; set; }
         IReadonlyBindableProperty<int> SeedSlotCount { get; }
         BindableProperty<int> Coins { get; set; }
         IReadOnlyList<CardData> Cards { get; }
         IReadOnlyList<PlantBookData> PlantBooks { get; }
 
+        void AddLootAuto(LootData lootData);
         void AddCard(CardData cardData);
         void RemoveCard(CardData cardData);
         void SortCards();
@@ -33,6 +36,7 @@ namespace TPL.PVZR.Classes.DataClasses
         EasyEvent<PlantBookData> OnPlantBookRemoved { get; }
 
         bool HasAvailableCardSlots(int count = 1);
+        bool HasAvailableSeedSlotSlots(int count = 1);
         bool CanAfford(RecipeData recipe);
         bool HasTradableCard(PlantId plantId);
     }
@@ -42,7 +46,7 @@ namespace TPL.PVZR.Classes.DataClasses
     {
         #region Constants
 
-        public  int MaxCardCount => 35;
+        public int MaxCardCount => 35;
 
         public int MaxSeedSlotCount => 10;
 
@@ -83,6 +87,28 @@ namespace TPL.PVZR.Classes.DataClasses
         #endregion
 
         #region Public Methods
+
+        public void AddLootAuto(LootData lootData)
+        {
+            switch (lootData.LootType)
+            {
+                case LootType.Card:
+                    var cardData = ItemCreator.CreateCardData(lootData.PlantId.ToDef(), lootData.Locked);
+                    this.AddCard(cardData);
+                    $" 添加卡牌成功: {lootData.PlantId}, 锁定状态: {lootData.Locked}".LogInfo();
+                    break;
+                case LootType.PlantBook:
+                    var plantBookData = ItemCreator.CreatePlantBookData(lootData.PlantBookId);
+                    this.AddPlantBook(plantBookData);
+                    break;
+                case LootType.Coin:
+                    this.Coins.Value += lootData.CoinAmount;
+                    break;
+                case LootType.SeedSlot:
+                    this.AddSeedSlot();
+                    break;
+            }
+        }
 
         public void AddCard(CardData cardData)
         {
@@ -204,6 +230,13 @@ namespace TPL.PVZR.Classes.DataClasses
             if (count <= 0) return true;
 
             return _cards.Count + count <= MaxCardCount;
+        }
+
+        public bool HasAvailableSeedSlotSlots(int count = 1)
+        {
+            if (count <= 0) return true;
+
+            return _seedSlotCount.Value + count <= MaxSeedSlotCount;
         }
 
         public bool CanAfford(RecipeData recipe)

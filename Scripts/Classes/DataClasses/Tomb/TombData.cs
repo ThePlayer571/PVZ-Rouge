@@ -6,18 +6,21 @@ namespace TPL.PVZR.Classes.DataClasses.Tomb
 {
     public interface ITombData
     {
+        int Stage { get; }
         Vector2Int Position { get; }
         LevelDefinition LevelDefinition { get; }
     }
 
     public class TombData : ITombData, IEquatable<TombData>
     {
-        public TombData(Vector2Int pos, LevelDefinition levelDefinition)
+        public TombData(Vector2Int pos, LevelDefinition levelDefinition, int stage)
         {
+            Stage = stage;
             Position = pos;
             LevelDefinition = levelDefinition;
         }
 
+        public int Stage { get; }
         public Vector2Int Position { get; }
 
         // 经过验证：推荐存储LevelDefinition而不是LevelData

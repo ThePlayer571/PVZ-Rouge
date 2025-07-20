@@ -7,11 +7,13 @@ namespace TPL.PVZR.Models
     public interface IGameModel : IModel
     {
         IGameData GameData { get; set; }
-        
+
         /// <summary>
         /// 当前正在游玩的Tomb
         /// </summary>
         ITombData ActiveTombData { get; set; }
+
+        void Reset();
     }
 
     public class GameModel : AbstractModel, IGameModel
@@ -22,5 +24,11 @@ namespace TPL.PVZR.Models
 
         public IGameData GameData { get; set; }
         public ITombData ActiveTombData { get; set; }
+
+        public void Reset()
+        {
+            GameData = null;
+            ActiveTombData = null;
+        }
     }
 }
