@@ -1,10 +1,12 @@
 using System;
 using TPL.PVZR.Classes.DataClasses.Level;
+using TPL.PVZR.Helpers.New.DataReader;
+using TPL.PVZR.Tools.Save;
 using UnityEngine;
 
 namespace TPL.PVZR.Classes.DataClasses.Tomb
 {
-    public interface ITombData
+    public interface ITombData : ISavable<TombSaveData>
     {
         int Stage { get; }
         Vector2Int Position { get; }
@@ -29,6 +31,23 @@ namespace TPL.PVZR.Classes.DataClasses.Tomb
         public override int GetHashCode()
         {
             return Position.GetHashCode();
+        }
+
+        public TombData(TombSaveData saveData)
+        {
+            Stage = saveData.stage;
+            Position = new Vector2Int(saveData.positionX, saveData.positionY);
+            LevelDefinition = GameConfigReader.GetLevelDefinition(saveData.levelDef);
+        }
+        public TombSaveData ToSaveData()
+        {
+            return new TombSaveData
+            {
+                stage = Stage,
+                positionX = Position.x,
+                positionY = Position.y,
+                levelDef = LevelDefinition.LevelDef
+            };
         }
 
         public override bool Equals(object obj)

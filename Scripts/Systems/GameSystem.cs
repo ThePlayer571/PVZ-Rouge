@@ -48,7 +48,9 @@ namespace TPL.PVZR.Systems
                         {
                             case PhaseStage.LeaveNormal:
                                 _GameModel.Reset();
+                                // 史山：为了其他地方的代码优雅而设
                                 PlantDefHelper.SetInventory(null);
+                                RandomHelper.SetGame(null);
                                 break;
                         }
 

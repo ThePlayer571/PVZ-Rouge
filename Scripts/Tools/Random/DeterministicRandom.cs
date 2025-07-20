@@ -45,6 +45,17 @@ namespace TPL.PVZR.Tools.Random
         }
 
         /// <summary>
+        /// 使用指定状态创建实例
+        /// </summary>
+        public static DeterministicRandom Create(State state)
+        {
+            var random = new DeterministicRandom(0); // 临时种子
+            random._state0 = state.state0;
+            random._state1 = state.state1;
+            return random;
+        }
+
+        /// <summary>
         /// 使用时间相关种子创建实例
         /// </summary>
         public static DeterministicRandom Create()

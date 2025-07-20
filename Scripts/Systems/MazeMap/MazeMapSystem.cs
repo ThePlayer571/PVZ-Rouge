@@ -36,11 +36,21 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
+                                var isNewGame = (bool)e.Parameters["IsNewGame"];
+
                                 _MazeMapController = MazeMapController.Create(_GameModel.GameData.MazeMapData);
                                 // MazeController数据结构生成
                                 _MazeMapController.GenerateMazeMatrix();
-                                // 初始化关卡数据（以后改成检测是否已经初始化的）
-                                _MazeMapController.InitializeTombData();
+                                // 初始化关卡数据
+                                if (isNewGame)
+                                {
+                                    _MazeMapController.InitializeTombData();
+                                }
+                                else
+                                {
+                                    _MazeMapController.LoadTombData();
+                                }
+
                                 break;
                         }
 

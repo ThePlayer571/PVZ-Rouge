@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.DataClasses.Tomb;
+using TPL.PVZR.Helpers.New.DataReader;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
+using TPL.PVZR.Tools.Save;
 using UnityEngine;
 
 namespace TPL.PVZR.Classes.MazeMap
@@ -15,7 +17,7 @@ namespace TPL.PVZR.Classes.MazeMap
         void AddPassedTomb(ITombData tombData);
     }
 
-    public interface IMazeMapData
+    public interface IMazeMapData : ISavable<MazeMapSaveData>
     {
         // 基本数据
         MazeMapDef Def { get; }
@@ -124,6 +126,32 @@ namespace TPL.PVZR.Classes.MazeMap
             TombContentConfigs = definition.TombContentConfigs;
 
             GenerateSeed = seed;
+        }
+
+        public MazeMapData(MazeMapSaveData saveData)
+        {
+            var definition = GameConfigReader.GetMazeMapDefinition(saveData.mazeMapDef);
+            Def = definition.Def;
+            RowCount = definition.RowCount;
+            ColCount = definition.ColCount;
+            TotalStageCount = definition.TotalStageCount;
+            TombCountRangeOfStage = definition.TombCountRangeOfStage;
+            TombContentConfigs = definition.TombContentConfigs;
+            GenerateSeed = saveData.generateSeed;
+            _discoveredTombs = saveData.discoveredTombs.Select(tombSaveData => new TombData(tombSaveData) as ITombData)
+                .ToList();
+            _passedRoute = saveData.passedRoute.Select(pos => new Vector2Int(pos.x, pos.y)).ToList();
+        }
+
+        public MazeMapSaveData ToSaveData()
+        {
+            return new MazeMapSaveData
+            {
+                mazeMapDef = Def,
+                generateSeed = GenerateSeed,
+                discoveredTombs = DiscoveredTombs.Select(tomb => tomb.ToSaveData()).ToList(),
+                passedRoute = PassedRoute.Select(pos => new Vector2IntSerializable(pos)).ToList()
+            };
         }
     }
 }

@@ -1,6 +1,9 @@
+using TPL.PVZR.Helpers.New.DataReader;
+using TPL.PVZR.Tools.Save;
+
 namespace TPL.PVZR.Classes.DataClasses.Item.Card
 {
-    public class CardData : ItemData
+    public class CardData : ItemData, ISavable<CardSaveData>
     {
         public override ItemType ItemType { get; } = ItemType.Card;
         public CardDefinition CardDefinition { get; set; }
@@ -10,6 +13,21 @@ namespace TPL.PVZR.Classes.DataClasses.Item.Card
         {
             this.CardDefinition = cardDefinition;
             Locked = locked;
+        }
+        
+        public CardData(CardSaveData saveData)
+        {
+            CardDefinition = PlantConfigReader.GetCardDefinition(saveData.plantDef);
+            Locked = saveData.locked;
+        }
+
+        public CardSaveData ToSaveData()
+        {
+            return new CardSaveData
+            {
+                plantDef = CardDefinition.PlantDef,
+                locked = Locked
+            };
         }
     }
 }

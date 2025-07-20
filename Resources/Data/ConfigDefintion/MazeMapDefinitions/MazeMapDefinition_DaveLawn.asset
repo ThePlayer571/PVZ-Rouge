@@ -15,9 +15,9 @@ MonoBehaviour:
   Def:
     Id: 0
     Difficulty: 0
-  RowCount: 21
+  RowCount: 7
   ColCount: 7
-  TotalStageCount: 10
+  TotalStageCount: 3
   TombCountRangeOfStage:
   - Key: {x: 1, y: 1}
     Value: {x: 3, y: 3}

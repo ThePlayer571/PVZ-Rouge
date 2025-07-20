@@ -34,6 +34,7 @@ namespace TPL.PVZR.Models
         #region Public
 
         public GamePhase GamePhase { get; private set; } = GamePhase.BeforeStart;
+        public Dictionary<string, object> lastChangeParameters { get; private set; } = null;
 
         public void ChangePhase(GamePhase changeToPhase, Dictionary<string, object> parameters = null)
         {
@@ -54,12 +55,13 @@ namespace TPL.PVZR.Models
             // 切换状态
             var leaveFromPhase = this.GamePhase;
             this.SendEvent(new OnPhaseChangeEvent
-                { GamePhase = leaveFromPhase, PhaseStage = PhaseStage.LeaveEarly, Parameters = parameters });
+                { GamePhase = leaveFromPhase, PhaseStage = PhaseStage.LeaveEarly, Parameters = lastChangeParameters });
             this.SendEvent(new OnPhaseChangeEvent
-                { GamePhase = leaveFromPhase, PhaseStage = PhaseStage.LeaveNormal, Parameters = parameters });
+                { GamePhase = leaveFromPhase, PhaseStage = PhaseStage.LeaveNormal, Parameters = lastChangeParameters });
             this.SendEvent(new OnPhaseChangeEvent
-                { GamePhase = leaveFromPhase, PhaseStage = PhaseStage.LeaveLate, Parameters = parameters });
+                { GamePhase = leaveFromPhase, PhaseStage = PhaseStage.LeaveLate, Parameters = lastChangeParameters });
             this.GamePhase = changeToPhase;
+            lastChangeParameters = parameters;
             this.SendEvent(new OnPhaseChangeEvent
                 { GamePhase = changeToPhase, PhaseStage = PhaseStage.EnterEarly, Parameters = parameters });
             this.SendEvent(new OnPhaseChangeEvent

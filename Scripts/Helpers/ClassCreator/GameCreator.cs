@@ -6,6 +6,7 @@ using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Classes.MazeMap;
 using TPL.PVZR.Helpers.New.DataReader;
 using TPL.PVZR.Tools.Random;
+using TPL.PVZR.Tools.Save;
 
 namespace TPL.PVZR.Helpers.New.ClassCreator
 {
@@ -31,6 +32,11 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
             return new GameData(mazeMapData, inventoryData, seed);
         }
 
+        public static IGameData CreateGameData(GameSaveData saveData)
+        {
+            return new GameData(saveData);
+        }
+ 
         public static IMazeMapData CreateMazeMapData(MazeMapDef mazeMapDef, ulong seed)
         {
             var definition = GameConfigReader.GetMazeMapDefinition(mazeMapDef);

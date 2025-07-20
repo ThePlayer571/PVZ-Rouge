@@ -9,10 +9,11 @@ using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Helpers.New.DataReader;
+using TPL.PVZR.Tools.Save;
 
 namespace TPL.PVZR.Classes.DataClasses
 {
-    public interface IInventoryData
+    public interface IInventoryData : ISavable<InventorySaveData>
     {
         int MaxSeedSlotCount { get; }
         int MaxCardCount { get; }
@@ -66,8 +67,8 @@ namespace TPL.PVZR.Classes.DataClasses
 
         public BindableProperty<int> Coins { get; set; } = new(DefaultCoins);
 
-        private readonly BindableList<CardData> _cards = new();
-        private readonly BindableList<PlantBookData> _plantBooks = new();
+        private readonly List<CardData> _cards = new();
+        private readonly List<PlantBookData> _plantBooks = new();
 
         public IReadOnlyList<CardData> Cards => _cards;
         public IReadOnlyList<PlantBookData> PlantBooks => _plantBooks;
@@ -274,5 +275,31 @@ namespace TPL.PVZR.Classes.DataClasses
         }
 
         #endregion
+
+
+        public InventoryData()
+        {
+        }
+
+        public InventoryData(InventorySaveData saveData)
+        {
+            InitialSunPoint = saveData.initialSunpoint;
+            _seedSlotCount.Value = saveData.seedSlotCount;
+            Coins.Value = saveData.coins;
+            _cards.AddRange(saveData.cards.Select(cardSaveData => new CardData(cardSaveData)));
+            _plantBooks.AddRange(saveData.plantBooks.Select(bookSaveData => new PlantBookData(bookSaveData)));
+        }
+
+        public InventorySaveData ToSaveData()
+        {
+            return new InventorySaveData
+            {
+                initialSunpoint = InitialSunPoint,
+                seedSlotCount = _seedSlotCount.Value,
+                coins = Coins.Value,
+                cards = _cards.Select(card => card.ToSaveData()).ToList(),
+                plantBooks = _plantBooks.Select(book => book.ToSaveData()).ToList()
+            };
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace TPL.PVZR.Classes.MazeMap
 
         void GenerateMazeMatrix();
         void InitializeTombData();
+        void LoadTombData();
         void BreakTomb(ITombData tombData);
         void BreakFinalTomb(ITombData tombData);
         void SetUpView();
@@ -51,16 +52,35 @@ namespace TPL.PVZR.Classes.MazeMap
 
         public abstract void GenerateMazeMatrix();
 
-        public void InitializeTombData()
+        public void LoadTombData()
         {
             if (mazeMatrix == null) throw new Exception("MazeMatrix尚未生成，请先调用GenerateMazeMatrix()方法");
 
-            // 把keyAdjacencyList的所有信息打印出来
-            foreach (var kvp in keyAdjacencyList)
+            var currentNode = MazeMapData.PassedRoute.Any()
+                ? mazeMatrix[MazeMapData.PassedRoute.Last().x, MazeMapData.PassedRoute.Last().y]
+                : startNode;
+            var active = keyAdjacencyList[currentNode].Select(node => node.Position).ToList();
+
+            foreach (var tomb in MazeMapData.DiscoveredTombs)
             {
-                var node = kvp.Key;
-                var adjacentNodes = kvp.Value;
+                if (MazeMapData.PassedRoute.Any(passed => passed == tomb.Position))
+                {
+                    PassedTombs.Add(tomb);
+                }
+                else if (active.Contains(tomb.Position))
+                {
+                    ActiveTombs.Add(tomb);
+                }
+                else
+                {
+                    FormlyDiscoveredTombs.Add(tomb);
+                }
             }
+        }
+
+        public void InitializeTombData()
+        {
+            if (mazeMatrix == null) throw new Exception("MazeMatrix尚未生成，请先调用GenerateMazeMatrix()方法");
 
             foreach (var node in keyAdjacencyList[startNode])
             {
@@ -175,6 +195,7 @@ namespace TPL.PVZR.Classes.MazeMap
         // 拓展数据结构（为了方便调用而设，可以由基本数据结构推出）
         protected Dictionary<Node, List<Node>> keyAdjacencyList { get; set; }
         protected Node startNode;
+
         private List<ITombData> FormlyDiscoveredTombs = new();
         private List<ITombData> PassedTombs = new();
         private List<ITombData> ActiveTombs = new();
