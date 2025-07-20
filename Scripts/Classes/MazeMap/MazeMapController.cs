@@ -6,6 +6,7 @@ using TPL.PVZR.Classes.DataClasses.Tomb;
 using TPL.PVZR.Classes.MazeMap.Controllers;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Tools;
+using TPL.PVZR.Tools.Random;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,7 +17,6 @@ namespace TPL.PVZR.Classes.MazeMap
         #region 操作
 
         void GenerateMazeMatrix();
-
         void InitializeTombData();
         void BreakTomb(ITombData tombData);
         void SetUpView();
@@ -163,6 +163,9 @@ namespace TPL.PVZR.Classes.MazeMap
         private List<ITombData> PassedTombs = new();
         private List<ITombData> ActiveTombs = new();
 
+        // 当前随机数
+        protected DeterministicRandom Random { get; }
+
         #endregion
 
         #region overridable
@@ -178,6 +181,7 @@ namespace TPL.PVZR.Classes.MazeMap
         protected MazeMapController(IMazeMapData mazeMapData)
         {
             MazeMapData = mazeMapData as IMazeMapWiseData;
+            Random = DeterministicRandom.Create(MazeMapData.GenerateSeed);
         }
 
         public static IMazeMapController Create(IMazeMapData mazeMapData)

@@ -25,9 +25,10 @@ namespace TPL.PVZR.Classes.MazeMap
         Vector2Int GetSpotCountRangeOfStage(int stage);
         LevelDef GetRandomLevelOfStage(int stage);
 
+
         ulong GenerateSeed { get; }
 
-        // 通关进度
+        // 通关进度（以最低限度存储）
         IReadOnlyList<ITombData> DiscoveredTombs { get; }
         IReadOnlyList<Vector2Int> PassedRoute { get; }
     }

@@ -1,5 +1,4 @@
 using TPL.PVZR.Classes.DataClasses.Loot;
-using TPL.PVZR.Tools.Random;
 
 namespace TPL.PVZR.Classes.DataClasses.CoinTrade
 {
@@ -10,13 +9,16 @@ namespace TPL.PVZR.Classes.DataClasses.CoinTrade
 
         public bool Used { get; set; }
 
-        public CoinTradeData(CoinTradeInfo coinTradeInfo, float multiplier = 1f, float randomVariationRange = 0.1f)
+        public CoinTradeData(int coinAmount, LootData lootData)
         {
-            CoinAmount =
-                (int)(coinTradeInfo.coinAmount * multiplier *
-                      (1 + RandomHelper.Game.Range(-randomVariationRange, randomVariationRange)));
-            LootData = LootData.Create(coinTradeInfo.lootInfo);
+            CoinAmount = coinAmount;
+            LootData = lootData;
             Used = false;
+        }
+
+        public CoinTradeData(CoinTradeInfo coinTradeInfo)
+            : this(coinTradeInfo.coinAmount, LootData.Create(coinTradeInfo.lootInfo))
+        {
         }
     }
 }

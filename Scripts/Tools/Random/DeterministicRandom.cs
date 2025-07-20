@@ -15,7 +15,7 @@ namespace TPL.PVZR.Tools.Random
         /// <summary>
         /// 使用指定种子初始化（64位）
         /// </summary>
-        public DeterministicRandom(ulong seed)
+        private DeterministicRandom(ulong seed)
         {
             // 使用SplitMix64算法初始化状态
             _state0 = SplitMix64(ref seed);
@@ -25,15 +25,39 @@ namespace TPL.PVZR.Tools.Random
         /// <summary>
         /// 使用时间相关种子初始化
         /// </summary>
-        public DeterministicRandom() : this((ulong)DateTime.Now.Ticks)
+        private DeterministicRandom() : this((ulong)DateTime.Now.Ticks)
         {
         }
 
         /// <summary>
         /// 使用指定种子初始化
         /// </summary>
-        public DeterministicRandom(int seed) : this((ulong)seed)
+        private DeterministicRandom(int seed) : this((ulong)seed)
         {
+        }
+
+        /// <summary>
+        /// 使用指定种子创建实例（64位）
+        /// </summary>
+        public static DeterministicRandom Create(ulong seed)
+        {
+            return new DeterministicRandom(seed);
+        }
+
+        /// <summary>
+        /// 使用时间相关种子创建实例
+        /// </summary>
+        public static DeterministicRandom Create()
+        {
+            return new DeterministicRandom();
+        }
+
+        /// <summary>
+        /// 使用指定种子创建实例
+        /// </summary>
+        public static DeterministicRandom Create(int seed)
+        {
+            return new DeterministicRandom(seed);
         }
 
         /// <summary>

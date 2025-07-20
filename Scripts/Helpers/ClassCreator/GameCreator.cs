@@ -10,12 +10,11 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
 {
     public static class GameCreator
     {
-        public static GameData CreateTestGameData()
+        public static IGameData CreateTestGameData(ulong seed)
         {
-            var seed = RandomHelper.Default.NextUnsigned();
-            //
             var testMazeMapData =
-                CreateMazeMapData(new MazeMapDef { Id = MazeMapId.DaveLawn, Difficulty = GameDifficulty.N0 }, seed);
+                GameCreator.CreateMazeMapData(new MazeMapDef { Id = MazeMapId.DaveLawn, Difficulty = GameDifficulty.N0 }, seed);
+            
             IInventoryData testInventoryData = new InventoryData();
             testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.PeaShooter, PlantVariant.V0),
                 locked: true));
@@ -34,7 +33,7 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
             testInventoryData.AddCard(ItemCreator.CreateCardData(new PlantDef(PlantId.PeaShooter, PlantVariant.V0),
                 locked: false));
 
-            return new GameData(testMazeMapData, testInventoryData);
+            return new GameData(testMazeMapData, testInventoryData, seed);
         }
 
         public static IMazeMapData CreateMazeMapData(MazeMapDef mazeMapDef, ulong seed)

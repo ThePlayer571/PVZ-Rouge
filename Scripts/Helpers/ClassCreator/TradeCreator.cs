@@ -82,7 +82,26 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
             float randomVariationRange = 0.1f)
         {
             var coinTradeGenerateInfo = CreateCoinTradeGenerateInfo(plantId);
-            return new CoinTradeData(coinTradeGenerateInfo.coinTradeInfo, multiplier, randomVariationRange);
+            return CreateCoinTradeDataWithRandomVariation(coinTradeGenerateInfo.coinTradeInfo, multiplier, randomVariationRange);
+        }
+
+        public static CoinTradeData CreateCoinTradeDataWithRandomVariation(CoinTradeInfo coinTradeInfo, float multiplier = 1f, float randomVariationRange = 0.1f)
+        {
+            var calculatedCoinAmount = (int)(coinTradeInfo.coinAmount * multiplier *
+                      (1 + RandomHelper.Game.Range(-randomVariationRange, randomVariationRange)));
+            
+            var modifiedCoinTradeInfo = new CoinTradeInfo
+            {
+                coinAmount = calculatedCoinAmount,
+                lootInfo = coinTradeInfo.lootInfo
+            };
+            
+            return new CoinTradeData(modifiedCoinTradeInfo);
+        }
+
+        public static CoinTradeData CreateCoinTradeData(CoinTradeInfo coinTradeInfo)
+        {
+            return new CoinTradeData(coinTradeInfo);
         }
 
         #endregion

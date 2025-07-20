@@ -45,7 +45,6 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
             ValidateMazeMapData();
 
             // 初始化
-            RandomHelper.MazeMap.RestoreState(new DeterministicRandom.State(MazeMapData.GenerateSeed));
             mazeMatrix = new Matrix<Node>(MazeMapData.RowCount, MazeMapData.ColCount);
             mazeMatrix.Fill((i, j) => new Node(i, j));
             adjacencyList = new Dictionary<Node, List<Node>>();
@@ -73,10 +72,10 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                     var level = 1;
                     var row = 2;
                     var levelCountRange = MazeMapData.GetSpotCountRangeOfStage(level);
-                    var levelCount = RandomHelper.MazeMap.Range(levelCountRange.x, levelCountRange.y + 1);
+                    var levelCount = Random.Range(levelCountRange.x, levelCountRange.y + 1);
                     List<int> keyNodes = new List<int>();
                     // 随机选择levelCount个列
-                    List<int> chosen = RandomHelper.MazeMap
+                    List<int> chosen = Random
                         .RandomSubset(Enumerable.Range(0, MazeMapData.ColCount), levelCount).ToList();
                     foreach (var col in chosen)
                     {
@@ -94,7 +93,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                     // 预制数据
                     var row = level * 2;
                     var levelCountRange = MazeMapData.GetSpotCountRangeOfStage(level);
-                    var levelCount = RandomHelper.MazeMap.Range(levelCountRange.x, levelCountRange.y + 1);
+                    var levelCount = Random.Range(levelCountRange.x, levelCountRange.y + 1);
                     List<int> lastCols = _levelKeyNodes[level - 1];
                     List<int> keyNodes = new List<int>();
 
@@ -108,7 +107,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                         // 如果这些列都没有被标记为关键节点，则随机选一个作为关键节点
                         if (_.All(col => !mazeMatrix[row, col].isKey))
                         {
-                            var col = RandomHelper.MazeMap.RandomChoose(_);
+                            var col = Random.RandomChoose(_);
                             var node = mazeMatrix[row, col];
                             node.isKey = true;
                             node.level = level; // 设置 level
@@ -124,7 +123,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                             .Where(c => !mazeMatrix[row, c].isKey)
                             .ToList();
                         var additionalCols =
-                            RandomHelper.MazeMap.RandomSubset(remainingCols, levelCount - keyNodes.Count);
+                            Random.RandomSubset(remainingCols, levelCount - keyNodes.Count);
                         foreach (var col in additionalCols)
                         {
                             var node = mazeMatrix[row, col];
@@ -143,7 +142,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                     var level = MazeMapData.TotalLevelCount;
                     var row = level * 2;
                     List<int> keyNodes = new List<int>();
-                    var col = RandomHelper.MazeMap.RandomChoose(Enumerable.Range(0, MazeMapData.ColCount));
+                    var col = Random.RandomChoose(Enumerable.Range(0, MazeMapData.ColCount));
                     var node = mazeMatrix[row, col];
                     node.isKey = true;
                     node.level = level;

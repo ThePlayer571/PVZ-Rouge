@@ -1,9 +1,11 @@
+using System;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Game;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Models;
+using TPL.PVZR.Tools.Random;
 
 namespace TPL.PVZR.Systems
 {
@@ -29,8 +31,11 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterEarly:
-                                _GameModel.GameData = e.Parameters["GameData"] as GameData;
+                                // 数据设置
+                                _GameModel.GameData = e.Parameters["GameData"] as IGameData;
+                                // 史山：为了其他地方的代码优雅而设
                                 PlantDefHelper.SetInventory(_GameModel.GameData.InventoryData);
+                                RandomHelper.SetGame(_GameModel.GameData);
                                 break;
                             case PhaseStage.EnterLate:
                                 _PhaseModel.DelayChangePhase(GamePhase.MazeMapInitialization);
