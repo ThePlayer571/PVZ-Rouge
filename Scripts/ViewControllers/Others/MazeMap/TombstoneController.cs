@@ -46,8 +46,6 @@ namespace TPL.PVZR.ViewControllers.Others.MazeMap
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            _state.LogInfo();
-
             var showUI = _state is TombState.Active or TombState.FormlyDiscovered or TombState.Passed
                 or TombState.Current;
 

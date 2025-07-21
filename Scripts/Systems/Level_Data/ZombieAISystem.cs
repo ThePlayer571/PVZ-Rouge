@@ -54,7 +54,8 @@ namespace TPL.PVZR.Systems.Level_Data
                     playerCurrentCluster != null && !playerLastCluster.IsIdentical(playerCurrentCluster);
                 if (shouldRefindPath)
                 {
-                    "shouldRefindPath! Now!".LogInfo();
+                    // $"Cluster变化：old: {playerLastCluster}, new: {playerCurrentCluster}"
+                    //     .LogInfo();
                     _playerVertexOnLastFrame = playerCurrentVertex;
                     this.SendEvent<OnPlayerChangeCluster>();
                 }
@@ -69,7 +70,7 @@ namespace TPL.PVZR.Systems.Level_Data
             GameManager.ExecuteOnUpdate(UpdatePlayerCluster);
             ZombieAIUnit = new ZombieAIUnit();
             ZombieAIUnit.InitializeFrom(_LevelGridModel.LevelMatrix);
-            // ZombieAIUnit.DebugDisplayMatrix();
+            ZombieAIUnit.DebugDisplayMatrix();
             // ZombieAIUnit.DebugLogCluster(new Vector2Int(11, 14));
         }
 

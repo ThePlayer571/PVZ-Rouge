@@ -26,10 +26,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
         protected override void Update()
         {
             base.Update();
-            _coinTimer.Update(Time.deltaTime);
 
             if (_PhaseModel.GamePhase != GamePhase.Gameplay ||
                 _LevelModel.CurrentWave.Value == _LevelModel.LevelData.TotalWaveCount) return;
+
+            _coinTimer.Update(Time.deltaTime);
 
             if (_coinTimer.Ready)
             {

@@ -6,7 +6,7 @@ using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.Systems.Level_Data
 {
-    public interface ILevelGridSystem : IServiceManageSystem
+    public interface ILevelGridSystem : ISystem
     {
     }
 

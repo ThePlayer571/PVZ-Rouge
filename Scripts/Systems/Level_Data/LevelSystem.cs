@@ -6,6 +6,7 @@ using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.DataClasses.Tomb;
 using TPL.PVZR.CommandEvents._NotClassified_;
+using TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn;
 using TPL.PVZR.CommandEvents.New.Level_Shit;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.New.ClassCreator;
@@ -82,16 +83,34 @@ namespace TPL.PVZR.Systems.Level_Data
                                     })
                                     .DelayFrame(1)
                                     .Callback(() => { this.SendEvent<OnLevelGameObjectPrepared>(); })
-                                    // 以下测试用，记得删除
-                                    .DelayFrame(2)
+                                    // .DelayFrame(1)
                                     .Callback(() => { _PhaseModel.DelayChangePhase(GamePhase.LevelInitialization); })
-                                    .Delay(0.1f)
-                                    .Callback(() => { _PhaseModel.ChangePhase(GamePhase.ChooseSeeds); })
                                     .Start(GameManager.Instance);
                                 break;
                         }
 
                         break;
+
+                    case GamePhase.LevelInitialization:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.EnterLate:
+                                _PhaseModel.DelayChangePhase(GamePhase.ChooseSeeds);
+                                // 初始化初始植物
+                                //todo 在Late阶段是因为AISystem的初始化在Normal，且它遇到初始植物时会出错，等到AiSyatem重构后再解决
+                                foreach (InitialPlantConfig config in _LevelModel.LevelData.InitialPlants)
+                                {
+                                    this.SendEvent<SpawnPlantEvent>(new SpawnPlantEvent
+                                    {
+                                        Def = config.PlantDef, CellPos = config.SpawnPos, Direction = config.Direction
+                                    });
+                                }
+
+                                break;
+                        }
+
+                        break;
+
                     case GamePhase.ChooseSeeds:
                         switch (e.PhaseStage)
                         {

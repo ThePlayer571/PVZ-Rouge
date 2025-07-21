@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public sealed class Sunflower: Plant
+    public sealed class Sunflower : Plant
     {
         public override PlantDef Def { get; } = new PlantDef(PlantId.Sunflower, PlantVariant.V0);
 
@@ -25,10 +25,10 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
         protected override void Update()
         {
             base.Update();
+            if (_PhaseModel.GamePhase != GamePhase.Gameplay) return;
+
             _sunTimer.Update(Time.deltaTime);
 
-            if (_PhaseModel.GamePhase != GamePhase.Gameplay) return;
-            
             if (_sunTimer.Ready)
             {
                 _sunTimer.Reset();
@@ -37,6 +37,5 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
         }
 
         private Timer _sunTimer;
-        
     }
 }

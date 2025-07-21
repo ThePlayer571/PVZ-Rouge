@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Tools;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace TPL.PVZR.Classes.DataClasses.Level
@@ -85,6 +87,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
     {
         public LevelDef LevelDef;
 
+        //
         [Header("MapInfo")] [Tooltip("关卡的大小（包括基岩）")]
         public Vector2Int MapSize;
 
@@ -96,6 +99,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         [Tooltip("阳光生成的坐标（fill式）")] public List<SerializableKeyValuePair<Vector2Int, Vector2Int>> SunFallPositions;
 
+        //
         [Header("Difficulty")] [Tooltip("第一波的强度")]
         public float BaseValue;
 
@@ -105,6 +109,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         [Tooltip("难度增长型")] public DifficultyGrowthType DifficultyGrowthType;
 
+//
         [Header("Waves")] public int TotalWaveCount;
 
         [Tooltip("一大波僵尸的标识，出怪量比常规波次大（需要包含最后一波）")]
@@ -114,15 +119,32 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public bool HasFinalBoss;
 
         [Tooltip("波次区间->该波召唤僵尸后的等待时间")] public List<SerializableKeyValuePair<Vector2Int, float>> WaveDurations;
+
         [Tooltip("大波次比常规波次的等待时间长，这是偏移量")] public float HugeWaveDurationOffset;
 
+//
         [Header("ZombieSpawn")] public List<SerializableKeyValuePair<ZombieSpawnPosId, Vector2>> PosDef;
         public List<SerializableKeyValuePair<ZombieSpawnPosId, List<ZombieSpawnPosId>>> PosGroupDef;
+
         public List<ZombieSpawnConfig> ZombieSpawnConfigs;
 
+//
         [Header("Loot")] public List<PlantId> BasicPlants;
         public List<PlantBookId> BasicPlantBooks;
         public List<LootGenerateInfo> SpecialLoots;
-       [Tooltip("Loot的总价值（推荐：1.5 * 通关所需植物价值）")] public float LootValue;
+
+        [Tooltip("Loot的总价值（推荐：1.5 * 通关所需植物价值）")]
+        public float LootValue;
+
+        [Header("Others")]
+        public List<InitialPlantConfig> InitialPlants;
+    }
+
+    [Serializable]
+    public class InitialPlantConfig
+    {
+        public PlantDef PlantDef;
+        public Direction2 Direction;
+        public Vector2Int SpawnPos;
     }
 }

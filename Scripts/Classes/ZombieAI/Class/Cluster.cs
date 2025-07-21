@@ -43,7 +43,7 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
 
             return false;
         }
-        
+
         public override int GetHashCode()
         {
             var hashCodeA = this.vertexA.GetHashCode();
@@ -63,6 +63,11 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
             }
 
             throw new ArgumentException("与不允许的类型相比");
+        }
+
+        public override string ToString()
+        {
+            return $"{vertexA.Position} - {vertexB.Position}";
         }
     }
 }

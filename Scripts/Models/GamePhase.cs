@@ -21,7 +21,7 @@ namespace TPL.PVZR.Models
 
         // 关卡内阶段
         LevelPreInitialization, // 最初的初始化，主要用于构建场景等；之后的初始化可能会调用场景中的东西，所以加了这个阶段
-        LevelInitialization, // 初始化关卡
+        LevelInitialization, // 初始化关卡（非核心数据设置，请在此处设置）
         ChooseSeeds,
         ReadyToStart,
         Gameplay,

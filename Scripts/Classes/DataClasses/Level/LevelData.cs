@@ -62,6 +62,12 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         float LootValue { get; }
 
         #endregion
+
+        #region Others
+
+        IReadOnlyList<InitialPlantConfig> InitialPlants { get; }
+
+        #endregion
     }
 
     /// <summary>
@@ -227,6 +233,12 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         #endregion
 
+        #region Others
+
+        public IReadOnlyList<InitialPlantConfig> InitialPlants { get; }
+
+        #endregion
+
         #endregion
 
 
@@ -267,6 +279,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
                 LootCreator.CreateDefaultLootGenerateInfo(bookId)));
             this.LootGenerateInfos = _.AsReadOnly();
             this.LootValue = levelDefinition.LootValue;
+            
+            this.InitialPlants = levelDefinition.InitialPlants;
         }
 
         #region Private
