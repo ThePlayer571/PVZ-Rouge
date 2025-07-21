@@ -9,10 +9,11 @@ using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
+using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.Systems.MazeMap
 {
-    public interface IAwardSystem : ISystem
+    public interface IAwardSystem : IServiceManageSystem, IDataSystem
     {
         IReadOnlyList<LootData> GetLootGroupByIndex(int index);
         bool IsAwardAvailable { get; }
@@ -105,7 +106,8 @@ namespace TPL.PVZR.Systems.MazeMap
                 foreach (var lootData in awards)
                 {
                     if (lootData.LootType == LootType.Card && !inventory.HasAvailableCardSlots()) continue;
-                    if (lootData.LootType == LootType.PlantBook && inventory.PlantBooks.Any(b=>b.Id == lootData.PlantBookId)) continue;
+                    if (lootData.LootType == LootType.PlantBook &&
+                        inventory.PlantBooks.Any(b => b.Id == lootData.PlantBookId)) continue;
                     if (lootData.LootType == LootType.SeedSlot && !inventory.HasAvailableSeedSlotSlots()) continue;
                     inventory.AddLootAuto(lootData);
                 }

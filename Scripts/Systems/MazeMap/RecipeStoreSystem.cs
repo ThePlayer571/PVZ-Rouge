@@ -7,10 +7,11 @@ using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
+using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.Systems.MazeMap
 {
-    public interface IRecipeStoreSystem : ISystem
+    public interface IRecipeStoreSystem : IServiceManageSystem, IDataSystem
     {
         RecipeData GetRecipeByIndex(int index);
     }

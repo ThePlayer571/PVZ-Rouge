@@ -2,6 +2,7 @@ using QFramework;
 using TPL.PVZR.Classes.MazeMap;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
+using TPL.PVZR.Tools.SoyoFramework;
 using TPL.PVZR.ViewControllers.Managers;
 using TPL.PVZR.ViewControllers.Others.MazeMap;
 using TPL.PVZR.ViewControllers.UI;

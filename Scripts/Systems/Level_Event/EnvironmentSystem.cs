@@ -5,12 +5,13 @@ using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
+using TPL.PVZR.Tools.SoyoFramework;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
 namespace TPL.PVZR.Systems.Level_Event
 {
-    public interface IEnvironmentSystem : ISystem
+    public interface IEnvironmentSystem : IAutoUpdateSystem
     {
         
     }

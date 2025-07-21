@@ -3,6 +3,7 @@ using TPL.PVZR.Classes.ZombieAI.Class;
 using TPL.PVZR.Classes.ZombieAI.PathFinding;
 using TPL.PVZR.Classes.ZombieAI.Public;
 using TPL.PVZR.CommandEvents._NotClassified_;
+using TPL.PVZR.CommandEvents.New.Level_Shit;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;

@@ -2,6 +2,7 @@ using QFramework;
 using TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
+using TPL.PVZR.Tools.SoyoFramework;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace TPL.PVZR.Systems.Level_Data
     /// <summary>
     /// Seed的冷却时间更新
     /// </summary>
-    public interface ISeedSystem : ISystem
+    public interface ISeedSystem : IAutoUpdateSystem
     {
     }
 
@@ -60,7 +61,7 @@ namespace TPL.PVZR.Systems.Level_Data
                 }
             });
 
-            this.RegisterEvent<PlantingSeedInHandEvent>(e => { e.PlantedSeed.ColdTimeTimer.Reset(); });
+            this.RegisterEvent<OnSeedInHandPlanted>(e => { e.PlantedSeed.ColdTimeTimer.Reset(); });
         }
     }
 }

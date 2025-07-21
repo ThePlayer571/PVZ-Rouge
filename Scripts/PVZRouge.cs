@@ -22,7 +22,8 @@ namespace TPL.PVZR
             this.RegisterSystem<ICoinStoreSystem>(new CoinStoreSystem());
             this.RegisterSystem<ISellStoreSystem>(new SellStoreSystem());
             this.RegisterSystem<ISaveSystem>(new SaveSystem());
-
+            this.RegisterSystem<ILevelGridSystem>(new LevelGridSystem());
+            this.RegisterSystem<IPlantSpawnSystem>(new PlantSpawnSystem());
             // ===== Level =====
             this.RegisterModel<ILevelModel>(new LevelModel());
             this.RegisterModel<ILevelGridModel>(new LevelGridModel());

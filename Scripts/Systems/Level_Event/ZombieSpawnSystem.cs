@@ -10,12 +10,13 @@ using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
+using TPL.PVZR.Tools.SoyoFramework;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
 namespace TPL.PVZR.Systems.Level_Event
 {
-    public interface IZombieSpawnSystem : ISystem
+    public interface IZombieSpawnSystem : IAutoUpdateSystem
     {
         public int ActiveTasksCount { get; }
     }

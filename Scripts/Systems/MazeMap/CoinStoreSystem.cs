@@ -8,10 +8,11 @@ using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
+using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.Systems.MazeMap
 {
-    public interface ICoinStoreSystem : ISystem
+    public interface ICoinStoreSystem : IServiceManageSystem, IDataSystem
     {
         EasyEvent OnRewrite { get; }
         CoinTradeData GetCoinTradeByIndex(int index);

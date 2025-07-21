@@ -4,6 +4,7 @@ using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
+using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.Systems.Level_Data
 {
@@ -11,7 +12,7 @@ namespace TPL.PVZR.Systems.Level_Data
     /// 相关：手持的是什么；
     /// 无关：选择手持物品 / 放置手持植物的逻辑
     /// </summary>
-    public interface IHandSystem : ISystem
+    public interface IHandSystem : IServiceManageSystem, IDataSystem
     {
         BindableProperty<HandInfo> HandInfo { get; }
     }
@@ -55,9 +56,9 @@ namespace TPL.PVZR.Systems.Level_Data
 
             this.RegisterEvent<SelectShovelEvent>(e => { HandInfo.Value = new HandInfo(HandState.HaveShovel, null); });
 
-            this.RegisterEvent<PlantingSeedInHandEvent>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
+            this.RegisterEvent<OnSeedInHandPlanted>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
 
-            this.RegisterEvent<UseShovelEvent>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
+            this.RegisterEvent<OnShovelUsed>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
 
             #endregion
         }

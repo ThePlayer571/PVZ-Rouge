@@ -16,7 +16,7 @@ namespace TPL.PVZR.Systems.Level_Data
         {
             _LevelModel = this.GetModel<ILevelModel>();
 
-            this.RegisterEvent<PlantingSeedInHandEvent>(e =>
+            this.RegisterEvent<OnSeedInHandPlanted>(e =>
             {
                 _LevelModel.SunPoint.Value -= e.PlantedSeed.CardData.CardDefinition.SunpointCost;
             });

@@ -3,12 +3,13 @@ using TPL.PVZR.Models;
 using UnityEngine;
 using QAssetBundle;
 using TPL.PVZR.CommandEvents.Phase;
+using TPL.PVZR.Tools.SoyoFramework;
 using TPL.PVZR.ViewControllers.UI;
 using UnityEngine.SceneManagement;
 
 namespace TPL.PVZR.Systems
 {
-    public interface IMainGameSystem : ISystem
+    public interface IMainGameSystem : IMainSystem
     {
     }
 
@@ -48,6 +49,7 @@ namespace TPL.PVZR.Systems
                                 UIKit.ClosePanel<UIGameStartPanel>();
                                 break;
                         }
+
                         break;
                 }
             });

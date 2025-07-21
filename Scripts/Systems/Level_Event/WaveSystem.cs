@@ -3,12 +3,13 @@ using TPL.PVZR.CommandEvents.Level_Gameplay.Waves;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
+using TPL.PVZR.Tools.SoyoFramework;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
 namespace TPL.PVZR.Systems.Level_Event
 {
-    public interface IWaveSystem : ISystem
+    public interface IWaveSystem : IAutoUpdateSystem
     {
     }
 
