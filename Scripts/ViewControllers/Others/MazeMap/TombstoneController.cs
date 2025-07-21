@@ -18,7 +18,7 @@ namespace TPL.PVZR.ViewControllers.Others.MazeMap
 
 
         private ITombData _tombData;
-        private bool _isActive = false;
+        private TombState _state;
 
         public void Initialize(Vector2Int position)
         {
@@ -27,13 +27,10 @@ namespace TPL.PVZR.ViewControllers.Others.MazeMap
             transform.position = MazeMapTilemapController.Instance.Ground.CellToWorld(new Vector3Int(_.x, _.y, 0));
 
 
-            var state = controller.GetTombState(position);
-            switch (state)
+            _state = controller.GetTombState(position);
+            switch (_state)
             {
-                case TombState.Active:
-                    Tomb.Show();
-                    _isActive = true;
-                    break;
+                case TombState.Active: Tomb.Show(); break;
                 case TombState.Passed or TombState.Current: TombDestroyed.Show(); break;
                 case TombState.FormlyDiscovered: TombCracked.Show(); break;
                 case TombState.NotDiscovered: TombDark.Show(); break;
@@ -49,8 +46,17 @@ namespace TPL.PVZR.ViewControllers.Others.MazeMap
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (_isActive)
-                this.SendCommand<OpenLevelPreviewPanelCommand>(new OpenLevelPreviewPanelCommand(_tombData));
+            _state.LogInfo();
+
+            var showUI = _state is TombState.Active or TombState.FormlyDiscovered or TombState.Passed
+                or TombState.Current;
+
+            if (showUI)
+            {
+                var interactable = _state == TombState.Active;
+                this.SendCommand<OpenLevelPreviewPanelCommand>(
+                    new OpenLevelPreviewPanelCommand(_tombData, interactable));
+            }
         }
     }
 }

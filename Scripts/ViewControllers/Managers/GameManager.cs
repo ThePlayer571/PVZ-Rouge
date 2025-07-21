@@ -24,7 +24,7 @@ namespace TPL.PVZR.ViewControllers.Managers
     {
         private void OnGUI()
         {
-            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 10, 120, 40), "平地生成僵尸"))
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 10, 120, 40), "Pos1生成僵尸"))
             {
                 var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(32, 9));
                 EntityFactory.ZombieFactory.SpawnZombie(ZombieId.NormalZombie, pos);
@@ -32,7 +32,7 @@ namespace TPL.PVZR.ViewControllers.Managers
 
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 60, 120, 40), "获取500阳光"))
             {
-                this.GetModel<ILevelModel>().SunPoint.Value += 500;
+                this.GetModel<ILevelModel>().SunPoint.Value += 25;
             }
 
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 110, 120, 40), "重置冷却时间"))
@@ -64,13 +64,19 @@ namespace TPL.PVZR.ViewControllers.Managers
                 this.GetModel<IGameModel>().GameData.InventoryData.AddCard(_);
             }
 
+            // if (Input.GetKeyDown(KeyCode.LeftShift))
+            // {
+            //     var LevelGridModel = this.GetModel<ILevelGridModel>();
+            //     var handPos = HandHelper.HandCellPos();
+            //     var handCell = LevelGridModel.GetCell(handPos);
+            //     $"手所在的Cell信息：pos: {handPos}, TileState: {handCell.CellTileState}, PlantState: {handCell.CellPlantState}"
+            //         .LogInfo();
+            // }
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                var LevelGridModel = this.GetModel<ILevelGridModel>();
                 var handPos = HandHelper.HandCellPos();
-                var handCell = LevelGridModel.GetCell(handPos);
-                $"手所在的Cell信息：pos: {handPos}, TileState: {handCell.CellTileState}, PlantState: {handCell.CellPlantState}"
-                    .LogInfo();
+                var ZombieAISystem = this.GetSystem<IZombieAISystem>();
+                ZombieAISystem.ZombieAIUnit.DebugLogCluster(handPos);
             }
         }
 

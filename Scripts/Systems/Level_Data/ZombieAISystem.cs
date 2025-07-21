@@ -53,6 +53,7 @@ namespace TPL.PVZR.Systems.Level_Data
                     playerCurrentCluster != null && !playerLastCluster.IsIdentical(playerCurrentCluster);
                 if (shouldRefindPath)
                 {
+                    "shouldRefindPath! Now!".LogInfo();
                     _playerVertexOnLastFrame = playerCurrentVertex;
                     this.SendEvent<OnPlayerChangeCluster>();
                 }

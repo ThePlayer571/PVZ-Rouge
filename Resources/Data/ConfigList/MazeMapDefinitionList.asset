@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: MazeMapDefinitionList
   m_EditorClassIdentifier: 
   mazeMapDefinitionList:
-  - mazeMapId: 0
+  - mazeMapDef:
+      Id: 0
+      Difficulty: 0
     mazeMapDefinition: {fileID: 11400000, guid: 7e68990495179d04a88a2b14de183e4a, type: 2}

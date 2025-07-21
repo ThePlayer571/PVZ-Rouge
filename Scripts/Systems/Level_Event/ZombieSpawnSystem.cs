@@ -30,7 +30,7 @@ namespace TPL.PVZR.Systems.Level_Event
             SpawnTimer.Update(Time.deltaTime);
             if (SpawnTimer.Ready && ActiveTasks.Count > 0)
             {
-                SpawnTimer.SetRemaining(RandomHelper.Default.Range(0.5f, 1f));
+                SpawnTimer.SetRemaining(RandomHelper.Default.Range(1f, 2f));
                 foreach (var task in ActiveTasks.ToList())
                 {
                     if (task.IsFinished)

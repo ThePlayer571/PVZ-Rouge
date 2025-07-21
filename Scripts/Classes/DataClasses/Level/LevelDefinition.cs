@@ -123,6 +123,6 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         [Header("Loot")] public List<PlantId> BasicPlants;
         public List<PlantBookId> BasicPlantBooks;
         public List<LootGenerateInfo> SpecialLoots;
-        public float LootValue;
+       [Tooltip("Loot的总价值（推荐：1.5 * 通关所需植物价值）")] public float LootValue;
     }
 }

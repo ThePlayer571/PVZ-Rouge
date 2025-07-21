@@ -8,16 +8,19 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
     public struct OpenLevelPreviewPanelEvent
     {
         public ITombData Tomb;
+        public bool Interactable;
     }
 
     public class OpenLevelPreviewPanelCommand : AbstractCommand
     {
-        public OpenLevelPreviewPanelCommand(ITombData tomb)
+        public OpenLevelPreviewPanelCommand(ITombData tomb, bool interactable)
         {
             _tomb = tomb;
+            _interactable = interactable;
         }
 
         private ITombData _tomb;
+        private bool _interactable;
 
         protected override void OnExecute()
         {
@@ -27,7 +30,8 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
             if (_PhaseModel.GamePhase != GamePhase.MazeMap) throw new Exception();
 
             //
-            this.SendEvent<OpenLevelPreviewPanelEvent>(new OpenLevelPreviewPanelEvent { Tomb = _tomb });
+            this.SendEvent<OpenLevelPreviewPanelEvent>(new OpenLevelPreviewPanelEvent
+                { Tomb = _tomb, Interactable = _interactable });
         }
     }
 }

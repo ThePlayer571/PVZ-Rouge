@@ -33,7 +33,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
 
             this.RegisterEvent<OpenLevelPreviewPanelEvent>(e =>
             {
-                SetUIInfo(e.Tomb);
+                SetUIInfo(e.Tomb, e.Interactable);
                 ShowUI();
             }).UnRegisterWhenGameObjectDestroyed(this);
 
@@ -47,10 +47,11 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
             toggle.onValueChanged.AddListener(Display);
         }
 
-        private void SetUIInfo(ITombData tombData)
+        private void SetUIInfo(ITombData tombData, bool interactable)
         {
             _openedTombData = tombData;
             LevelNameText.text = tombData.LevelDefinition.LevelDef.Id.ToString();
+            StartLevelBtn.interactable = interactable;
         }
 
         private void ShowUI()

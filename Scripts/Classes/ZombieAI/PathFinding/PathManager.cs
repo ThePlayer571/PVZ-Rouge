@@ -42,6 +42,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
             // 简单情况处理，这时不需要调用寻路算法
             if (startCluster.IsIdentical(endCluster))
             {
+                // todo 应该是new Path()，无keyEdge，但MoveType无法获取。现有体系不支持这个，以后重构
                 var _ = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(startVertex, endVertex);
                 return new List<Path> { new Path(_) };
             }

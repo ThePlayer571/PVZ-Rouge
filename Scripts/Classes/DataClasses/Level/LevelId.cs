@@ -6,11 +6,13 @@ namespace TPL.PVZR.Classes.DataClasses.Level
     public enum LevelId
     {
         None = 0,
-        // Dave
-        Dave_Lawn = 1, Dave_LawnNight = 2,
+
+        // Dave - N0_Allow
+        Dave_Lawn = 1, DaveRoof = 2,
+        // Dave_LawnNight = 2,
         // DaveHouse, DaveHouseNight,DaveHouseRainNight, 
         // DaveBackyard, DaveBackyardRain,
-        // DaveRoof,DaveRoofNight,DaveRoofRain,
+        // ,DaveRoofNight,DaveRoofRain,
         // PlainLawn,
         // WaterlessLawn, WaterlessLawnNight,
         // ConeheadField,

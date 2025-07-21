@@ -26,7 +26,7 @@
 | Plants            | MidGround     | 200~249(210)         |
 | TileDirt          | MidGround     | 101                  |
 | TileGround        | MidGround     | 100                  |
-| TileBackGround    | BackGround    | 100                  |
+| TileBackGround    | BackGround    | 100~101              |
 | BackGround        | BackGround    | 50~59                |
 | TileBound         | NotClassified | 0                    |
 |                   |               |                      |
