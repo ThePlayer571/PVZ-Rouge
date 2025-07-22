@@ -1,9 +1,12 @@
+using System;
 using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn;
+using TPL.PVZR.Helpers.New.DataReader;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase;
@@ -30,15 +33,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
 
         #endregion
 
-        public void Initialize(Direction2 direction)
-        {
-            this.Direction = direction;
-            gameObject.LocalScaleX(direction.ToInt());
-            
-            OnInit();
-        }
-
-        protected abstract void OnInit();
 
         #region 被攻击
 
@@ -55,17 +49,45 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
 
         public override void DieWith(AttackData attackData)
         {
-            Remove();
+            this.SendCommand<RemovePlantCommand>(new RemovePlantCommand(this));
         }
 
         public override void Remove()
         {
-            var LevelGridModel = this.GetModel<ILevelGridModel>();
-            var cell = LevelGridModel.GetCell(CellPos);
-            cell.CellPlantState = CellPlantState.Empty;
-            cell.Plant = null;
+            throw new NotSupportedException($"植物的移除操作应该通过命令来处理");
+        }
 
-            base.Remove();
+        public void Initialize(Direction2 direction)
+        {
+            this.Direction = direction;
+            gameObject.LocalScaleX(direction.ToInt());
+
+            OnInit();
+            OnViewInit();
+        }
+
+        protected override void Update()
+        {
+            OnUpdate();
+            OnViewUpdate();
+        }
+
+        protected abstract void OnInit();
+
+        protected virtual void OnUpdate()
+        {
+        }
+
+        protected virtual void OnViewInit()
+        {
+        }
+
+        protected virtual void OnViewUpdate()
+        {
+        }
+
+        public virtual void OnRemoved()
+        {
         }
 
         #endregion

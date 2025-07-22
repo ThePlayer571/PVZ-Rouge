@@ -30,10 +30,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
         [SerializeField] private Transform FirePointForward;
         [SerializeField] private Transform FirePointBackward;
 
-        protected override void Update()
+        protected override void OnUpdate()
         {
-            base.Update();
-            //
             _timer.Update(Time.deltaTime);
             _detectTimer.Update(Time.deltaTime);
 
@@ -55,15 +53,16 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
                 if (pass)
                 {
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction, FirePointForward.position);
+                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
+                        FirePointForward.position);
 
                     ActionKit.Sequence()
                         .Callback(() =>
-                            EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.Reverse(),
+                            EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.Reverse().ToVector2(),
                                 FirePointBackward.position))
                         .Delay(GlobalEntityData.Plant_Repeater_PeaInterval)
                         .Callback(() =>
-                            EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.Reverse(),
+                            EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.Reverse().ToVector2(),
                                 FirePointBackward.position))
                         .Start(this);
 

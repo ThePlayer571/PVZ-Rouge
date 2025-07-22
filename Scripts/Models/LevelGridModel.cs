@@ -1,13 +1,16 @@
 using System;
+using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Helpers.New.DataReader;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers;
+using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using TPL.PVZR.ViewControllers.Others.LevelScene;
 using UnityEngine;
 
@@ -24,6 +27,7 @@ namespace TPL.PVZR.Models
         // 实用方法
         bool IsValidPos(Vector2Int pos);
         bool CanSpawnPlantOn(Vector2Int pos, PlantDef def);
+        bool CanStackPlantOn(Vector2Int pos, PlantDef def);
         Cell GetCell(Vector2Int cellPos);
         Cell GetCell(Vector2 worldPos);
 
@@ -46,24 +50,45 @@ namespace TPL.PVZR.Models
 
         public bool CanSpawnPlantOn(Vector2Int pos, PlantDef def)
         {
-            if (def.Id == PlantId.Flowerpot) // 花盆
+            var allowedPlantingLocation = PlantConfigReader.GetAllowedPlantingLocation(def);
+            switch (allowedPlantingLocation)
             {
-                if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
-                if (Player.Instance.CellPos == pos) return false; // 位置与玩家重合
+                case AllowedPlantingLocation.OnDirt or AllowedPlantingLocation.OnSamePlantAndDirt:
+                {
+                    if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
 
-                var cell = LevelMatrix[pos.x, pos.y];
-                var belowCell = LevelMatrix[pos.x, pos.y - 1];
-                return cell.IsEmpty && belowCell.IsPlat; // 植物逻辑
+                    var cell = LevelMatrix[pos.x, pos.y];
+                    var belowCell = LevelMatrix[pos.x, pos.y - 1];
+                    return cell.IsEmpty && belowCell.IsNormalGrowable;
+                }
+                case AllowedPlantingLocation.OnPlat:
+                {
+                    if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
+                    if (Player.Instance.CellPos == pos) return false; // 位置与玩家重合
+
+                    var cell = LevelMatrix[pos.x, pos.y];
+                    var belowCell = LevelMatrix[pos.x, pos.y - 1];
+                    return cell.IsEmpty && belowCell.IsPlat; // 植物逻辑
+                }
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-            else
-            {
-                if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
+        }
 
-                var cell = LevelMatrix[pos.x, pos.y];
-                var belowCell = LevelMatrix[pos.x, pos.y - 1];
-                if (cell == null) throw new Exception($"调用CanSpawnPlantOn时，cell为null，pos: {pos}");
-                if (belowCell == null) throw new Exception($"调用CanSpawnPlantOn时，belowCell为null，pos: {pos}.Down");
-                return cell.IsEmpty && belowCell.IsDirtPlat;
+        public bool CanStackPlantOn(Vector2Int pos, PlantDef def)
+        {
+            var allowedPlantingLocation = PlantConfigReader.GetAllowedPlantingLocation(def);
+            switch (allowedPlantingLocation)
+            {
+                case AllowedPlantingLocation.OnSamePlantAndDirt:
+                {
+                    if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
+
+                    var cell = LevelMatrix[pos.x, pos.y];
+                    return cell.CellPlantInfo.Any(plant => plant is ICanBeStackedOn s && s.CanStack(def));
+                }
+                default:
+                    return false;
             }
         }
 

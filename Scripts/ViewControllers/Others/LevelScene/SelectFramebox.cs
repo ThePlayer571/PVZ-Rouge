@@ -39,7 +39,7 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
                     if (!HandHelper.DaveCanReachHand()) return false;
                     if (!_LevelGridModel.IsValidPos(handCellPos)) return false;
                     var handOnCell = _LevelGridModel.GetCell(handCellPos);
-                    return handOnCell.CellPlantState == CellPlantState.HavePlant;
+                    return !handOnCell.CellPlantInfo.IsEmpty;
                 }
                 case HandState.HaveSeed:
                 {
@@ -49,8 +49,10 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
                     {
                         return false;
                     }
+
                     var plantDef = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.PlantDef;
-                    return _LevelGridModel.CanSpawnPlantOn(handCellPos, plantDef);
+                    return _LevelGridModel.CanSpawnPlantOn(handCellPos, plantDef) ||
+                           _LevelGridModel.CanStackPlantOn(handCellPos, plantDef);
                 }
             }
 

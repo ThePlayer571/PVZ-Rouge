@@ -17,6 +17,16 @@ namespace TPL.PVZR.Classes.InfoClasses
         CherryBomb = 9,
         SplitPea = 10,
         Cactus = 11,
+        TwinSunflower = 12,
+        TripletSunflower = 13,
+        GoldBloom = 14,
+        IcebergLettuce = 15,
+        Starfruit = 16,
+        Threepeater = 17,
+        GatlingPea = 18,
+        SniperPea = 19,
+        PeaPod = 20,
+
 
         // Blover,
         // CabbagePult,

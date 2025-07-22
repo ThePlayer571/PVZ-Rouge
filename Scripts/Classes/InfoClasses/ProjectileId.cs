@@ -10,5 +10,7 @@ namespace TPL.PVZR.Classes.InfoClasses
         FrozenPea = 2,
         MungBean = 3,
         Spike = 4,
+        Star = 5,
+        SnipePea = 6
     }
 }

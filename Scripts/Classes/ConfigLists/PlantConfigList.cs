@@ -18,6 +18,8 @@ namespace TPL.PVZR.Classes.ConfigLists
     [CreateAssetMenu(fileName = "PlantConfigList", menuName = "PVZR_Config/PlantConfigList")]
     public class PlantConfigList : ScriptableObject
     {
-        public List<PlantConfig> plantConfigs;
+        public List<PlantConfig> General;
+        public List<PlantConfig> Dave;
+        public List<PlantConfig> PeaFamily;
     }
 }

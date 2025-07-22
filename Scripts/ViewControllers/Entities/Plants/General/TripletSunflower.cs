@@ -10,9 +10,9 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public sealed class Sunflower : Plant
+    public sealed class TripletSunflower : Plant
     {
-        public override PlantDef Def { get; } = new PlantDef(PlantId.Sunflower, PlantVariant.V0);
+        public override PlantDef Def { get; } = new PlantDef(PlantId.TripletSunflower, PlantVariant.V0);
 
         protected override void OnInit()
         {
@@ -22,9 +22,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             _sunTimer.SetRemaining(GlobalEntityData.Plant_Sunflower_InitialSpawnSunInterval);
         }
 
-        protected override void Update()
+        protected override void OnUpdate()
         {
-            base.Update();
             if (_PhaseModel.GamePhase != GamePhase.Gameplay) return;
 
             _sunTimer.Update(Time.deltaTime);
@@ -32,6 +31,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             if (_sunTimer.Ready)
             {
                 _sunTimer.Reset();
+                this.SendCommand<SpawnSunFromPlantCommand>(new SpawnSunFromPlantCommand(this));
+                this.SendCommand<SpawnSunFromPlantCommand>(new SpawnSunFromPlantCommand(this));
                 this.SendCommand<SpawnSunFromPlantCommand>(new SpawnSunFromPlantCommand(this));
             }
         }

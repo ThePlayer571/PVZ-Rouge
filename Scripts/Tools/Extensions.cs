@@ -96,4 +96,51 @@ namespace TPL.PVZR.Tools
             return new Vector2Int(v.x + 1, v.y);
         }
     }
+
+    public static class Vector2Extensions
+    {
+        /// <summary>
+        /// 返回 vector 顺时针旋转 angleDegrees 度后的新 Vector2。
+        /// </summary>
+        /// <param name="vector">原始向量</param>
+        /// <param name="angleDegrees">旋转角度（度），正值为顺时针</param>
+        /// <returns>旋转后的 Vector2</returns>
+        public static Vector2 Rotate(this Vector2 vector, float angleDegrees)
+        {
+            float rad = angleDegrees * Mathf.Deg2Rad;
+            float cos = Mathf.Cos(rad);
+            float sin = Mathf.Sin(rad);
+            return new Vector2(
+                vector.x * cos + vector.y * sin,
+                -vector.x * sin + vector.y * cos
+            );
+        }
+    }
+
+    public static class LinqExtensions
+    {
+        // 兼容老环境自定义 MinBy
+        public static TSource MinBy<TSource, TKey>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> selector)
+            where TKey : IComparable<TKey>
+        {
+            using var e = source.GetEnumerator();
+            if (!e.MoveNext())
+                throw new InvalidOperationException("Sequence contains no elements");
+            var min = e.Current;
+            var minKey = selector(min);
+            while (e.MoveNext())
+            {
+                var key = selector(e.Current);
+                if (key.CompareTo(minKey) < 0)
+                {
+                    min = e.Current;
+                    minKey = key;
+                }
+            }
+
+            return min;
+        }
+    }
 }

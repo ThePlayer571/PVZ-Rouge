@@ -4,6 +4,7 @@ using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.ConfigLists;
+using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.Classes.InfoClasses;
@@ -25,17 +26,25 @@ namespace TPL.PVZR.Helpers.New.DataReader
             var _resLoader = ResLoader.Allocate();
             var plantConfigList =
                 _resLoader.LoadSync<PlantConfigList>(Configlist.BundleName, Configlist.PlantConfigList);
-            // CardDefinition
+
+            // CardDefinition | PlantPrefab
             _cardDefinitionDict = new Dictionary<PlantDef, CardDefinition>();
-            foreach (var config in plantConfigList.plantConfigs)
+            _plantPrefabDict = new Dictionary<PlantDef, GameObject>();
+            foreach (var config in plantConfigList.Dave)
             {
                 _cardDefinitionDict[config.def] = config.card;
+                _plantPrefabDict[config.def] = config.prefab;
             }
 
-            // PlantPrefab
-            _plantPrefabDict = new Dictionary<PlantDef, GameObject>();
-            foreach (var config in plantConfigList.plantConfigs)
+            foreach (var config in plantConfigList.General)
             {
+                _cardDefinitionDict[config.def] = config.card;
+                _plantPrefabDict[config.def] = config.prefab;
+            }
+
+            foreach (var config in plantConfigList.PeaFamily)
+            {
+                _cardDefinitionDict[config.def] = config.card;
                 _plantPrefabDict[config.def] = config.prefab;
             }
         }
@@ -62,6 +71,24 @@ namespace TPL.PVZR.Helpers.New.DataReader
             }
 
             throw new ArgumentException($"找不到对应的PlantPrefab: {def.Id}, {def.Variant}");
+        }
+
+        public static AllowedPlantingLocation GetAllowedPlantingLocation(PlantDef def)
+        {
+            return def.Id switch
+            {
+                PlantId.Flowerpot => AllowedPlantingLocation.OnPlat,
+                PlantId.PeaPod => AllowedPlantingLocation.OnSamePlantAndDirt,
+                _ => AllowedPlantingLocation.OnDirt,
+            };
+        }
+
+        public static PlacementSlotInCell GetPlacementSlotInCell(PlantDef def)
+        {
+            return def.Id switch
+            {
+                _ => PlacementSlotInCell.Normal,
+            };
         }
 
         #endregion

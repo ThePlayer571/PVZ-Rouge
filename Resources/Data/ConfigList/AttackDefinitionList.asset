@@ -29,3 +29,7 @@ MonoBehaviour:
     attackDefinition: {fileID: 11400000, guid: 97250a9a243163542be7dc472688250b, type: 2}
   - attackId: 7
     attackDefinition: {fileID: 11400000, guid: 231ae337cb20d1c408871bad171f11b4, type: 2}
+  - attackId: 8
+    attackDefinition: {fileID: 11400000, guid: f964227f4cab2b6459bbdc8bf86797e4, type: 2}
+  - attackId: 9
+    attackDefinition: {fileID: 11400000, guid: 8ca82be5a83b95f4cbaad5b592dca7ce, type: 2}

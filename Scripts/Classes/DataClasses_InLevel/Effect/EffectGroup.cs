@@ -16,6 +16,11 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
 
         private List<EffectData> _effects { get; set; } = new();
 
+        public bool ContainsEffect(EffectId effectId)
+        {
+            return _effects.Any(data => data.effectId == effectId);
+        }
+
         public void GiveEffect(EffectData effectData)
         {
             // 可覆盖的效果

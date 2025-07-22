@@ -36,7 +36,6 @@ namespace TPL.PVZR.CommandEvents._NotClassified_
                         EntityFactory.ZombieFactory.ActiveZombies.Count == 0;
             if (pass)
             {
-                "结束关卡".LogInfo();
                 var resLoader = ResLoader.Allocate();
                 // 生成LevelEndObject
                 var go = resLoader.LoadSync<GameObject>(Levelendobject_prefab.BundleName,

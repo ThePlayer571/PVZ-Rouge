@@ -11,9 +11,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 {
     public class Spike : Projectile, IPeaLikeInit
     {
-        public void Initialize(Direction2 direction)
+        public void Initialize(Vector2 direction)
         {
-            _Rigidbody.velocity = GlobalEntityData.Projectile_Pea_Speed * direction.ToVector2();
+            _Rigidbody.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;
         }
 
         private List<GameObject> _attacked = new List<GameObject>();

@@ -11,26 +11,24 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public sealed class PotatoMine : Plant
+    public sealed class IcebergLettuce : Plant
     {
-        public override PlantDef Def { get; } = new PlantDef(PlantId.PotatoMine, PlantVariant.V0);
+        public override PlantDef Def { get; } = new PlantDef(PlantId.IcebergLettuce, PlantVariant.V0);
 
         [SerializeField] private CollisionDetector ZombieDetector;
-        [SerializeField] private Animator _Animator;
-
-        private bool _grown = false;
 
         public override AttackData TakeAttack(AttackData attackData)
         {
-            return _grown ? null : base.TakeAttack(attackData);
+            Freeze();
+            Kill();
+            return null;
         }
 
-        protected override void Update()
+        protected override void OnUpdate()
         {
-            base.Update();
-            if (_grown && ZombieDetector.HasTarget)
+            if (ZombieDetector.HasTarget)
             {
-                Boom();
+                Freeze();
                 Kill();
             }
         }
@@ -38,24 +36,15 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
         protected override void OnInit()
         {
             HealthPoint = GlobalEntityData.Plant_Default_Health;
-
-            ActionKit.Sequence()
-                .Delay(1f /*GlobalEntityData.Plant_PotatoMine_GrowTime*/)
-                .Callback(() =>
-                {
-                    _Animator.SetTrigger("Grow");
-                    _grown = true;
-                })
-                .Start(this);
         }
 
-        private void Boom()
+        private void Freeze()
         {
-            var attackData = AttackCreator.CreateAttackData(AttackId.PotatoMineExplosion);
+            var attackData = AttackCreator.CreateAttackData(AttackId.IcebergLettuceFreeze);
 
             var targets = Physics2D.OverlapCircleAll(
                 transform.position,
-                GlobalEntityData.Plant_PotatoMine_ExplosionRadius,
+                GlobalEntityData.Plant_IcebergLettuce_FreezeRadius,
                 LayerMask.GetMask("Zombie"));
 
             foreach (var target in targets)

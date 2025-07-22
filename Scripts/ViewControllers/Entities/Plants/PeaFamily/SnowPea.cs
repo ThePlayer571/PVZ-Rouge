@@ -1,4 +1,3 @@
-using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers;
@@ -7,13 +6,13 @@ using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using UnityEngine;
-using Time = UnityEngine.Time;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public sealed  class Repeater : Plant
+    public sealed class SnowPea : Plant
     {
-        public override PlantDef Def { get; } = new PlantDef(PlantId.Repeater, PlantVariant.V0);
+        public override PlantDef Def { get; } = new PlantDef(PlantId.SnowPea, PlantVariant.V0);
+
 
         protected override void OnInit()
         {
@@ -24,16 +23,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             _layerMask = LayerMask.GetMask("Zombie", "Barrier");
         }
 
-        private Timer _timer;
+        [SerializeField] private Timer _timer;
         private Timer _detectTimer;
         private int _layerMask;
 
         [SerializeField] private Transform FirePoint;
 
-        protected override void Update()
+        protected override void OnUpdate()
         {
-            base.Update();
-            //
             _timer.Update(Time.deltaTime);
             _detectTimer.Update(Time.deltaTime);
 
@@ -45,14 +42,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
                 if (hit.collider && hit.collider.CompareTag("Zombie"))
                 {
-                    ActionKit.Sequence()
-                        .Callback(() =>
-                            EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction, FirePoint.position))
-                        .Delay(GlobalEntityData.Plant_Repeater_PeaInterval)
-                        .Callback(() =>
-                            EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction, FirePoint.position))
-                        .Start(this);
-
+                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.FrozenPea, Direction.ToVector2(), FirePoint.position);
                     _timer.Reset();
                 }
             }

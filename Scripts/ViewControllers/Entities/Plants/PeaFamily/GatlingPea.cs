@@ -1,18 +1,20 @@
+using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
+using TPL.PVZR.Tools.Random;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using UnityEngine;
 using Time = UnityEngine.Time;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public sealed class Peashooter : Plant
+    public sealed class GatlingPea : Plant
     {
-        public override PlantDef Def { get; } = new PlantDef(PlantId.PeaShooter, PlantVariant.V0);
+        public override PlantDef Def { get; } = new PlantDef(PlantId.GatlingPea, PlantVariant.V0);
 
         protected override void OnInit()
         {
@@ -29,10 +31,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
         [SerializeField] private Transform FirePoint;
 
-        protected override void Update()
+        protected override void OnUpdate()
         {
-            base.Update();
-            //
             _timer.Update(Time.deltaTime);
             _detectTimer.Update(Time.deltaTime);
 
@@ -44,7 +44,15 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
                 if (hit.collider && hit.collider.CompareTag("Zombie"))
                 {
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction, FirePoint.position);
+                    ActionKit.Repeat(10)
+                        .Callback(() =>
+                        {
+                            var position = FirePoint.position + new Vector3(0, RandomHelper.Default.Range(-0.3f, 0.3f));
+                            EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
+                                position);
+                        })
+                        .Delay(GlobalEntityData.Plant_GatlingPea_PeaInterval)
+                        .Start(this);
                     _timer.Reset();
                 }
             }

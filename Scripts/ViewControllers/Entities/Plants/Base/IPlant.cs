@@ -13,4 +13,10 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
 
         void Initialize(Direction2 direction);
     }
+
+    public interface ICanBeStackedOn : IPlant
+    {
+        bool CanStack(PlantDef plantDef);
+        void StackAdd();
+    }
 }

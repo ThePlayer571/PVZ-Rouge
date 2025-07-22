@@ -23,10 +23,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             _coinTimer.SetRemaining(GlobalEntityData.Plant_Marigold_InitialSpawnCoinInterval);
         }
 
-        protected override void Update()
+        protected override void OnUpdate()
         {
-            base.Update();
-
             if (_PhaseModel.GamePhase != GamePhase.Gameplay ||
                 _LevelModel.CurrentWave.Value == _LevelModel.LevelData.TotalWaveCount) return;
 

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using QFramework;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn;
@@ -7,6 +8,7 @@ using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
 using TPL.PVZR.Systems.Level_Data;
 using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 
 namespace TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs
 {
@@ -36,12 +38,25 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs
             if (!HandHelper.DaveCanReach(cellPos))
                 throw new Exception($"尝试调用SpawnPlantCommand，但是手够不到植物种植处"); // 手能够到目标位置
             var def = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.PlantDef;
-            if (!_LevelGridModel.CanSpawnPlantOn(cellPos, def))
+            var canSpawn = _LevelGridModel.CanSpawnPlantOn(cellPos, def);
+            var canStack = _LevelGridModel.CanStackPlantOn(cellPos, def);
+            if (!canStack && !canSpawn)
                 throw new Exception($"无法在此处种植植物，Pos:{cellPos}, Plant: {def}"); // 
 
             this.SendEvent<OnSeedInHandPlanted>(new OnSeedInHandPlanted
                 { Direction = _direction, PlantedSeed = _HandSystem.HandInfo.Value.PickedSeed });
-            this.SendCommand<SpawnPlantCommand>(new SpawnPlantCommand(def, cellPos, _direction));
+
+            if (canSpawn)
+            {
+                this.SendCommand<SpawnPlantCommand>(new SpawnPlantCommand(def, cellPos, _direction));
+            }
+
+            else if (canStack)
+            {
+                var plant =
+                    _LevelGridModel.GetCell(cellPos).CellPlantInfo.First(plant => plant.Def == def) as ICanBeStackedOn;
+                plant.StackAdd();
+            }
         }
     }
 }

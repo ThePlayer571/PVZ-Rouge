@@ -15,8 +15,16 @@ namespace TPL.PVZR.Systems.Level_Data
         {
             this.RegisterEvent<SpawnPlantEvent>(e =>
             {
+                
                 var go = EntityFactory.PlantFactory.SpawnPlant(e.Def, e.Direction, e.CellPos);
                 this.SendEvent<OnPlantSpawned>(new OnPlantSpawned { CellPos = e.CellPos, Plant = go });
+            });
+
+            this.RegisterEvent<RemovePlantEvent>(e =>
+            {
+                var plant = e.Plant;
+                plant.OnRemoved();
+                plant.gameObject.DestroySelf();
             });
         }
     }

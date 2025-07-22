@@ -32,7 +32,7 @@ namespace TPL.PVZR.ViewControllers.Managers
 
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 60, 120, 40), "获取500阳光"))
             {
-                this.GetModel<ILevelModel>().SunPoint.Value += 25;
+                this.GetModel<ILevelModel>().SunPoint.Value += 500;
             }
 
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 110, 120, 40), "重置冷却时间"))

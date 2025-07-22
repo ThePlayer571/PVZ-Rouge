@@ -5,6 +5,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
         DefaultTargeting,
         Attacking,
         OnNewspaperDestroyed,
-        Dying,
+        Frozen,
     }
 }

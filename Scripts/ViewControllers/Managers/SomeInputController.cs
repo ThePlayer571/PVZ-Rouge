@@ -42,7 +42,8 @@ namespace TPL.PVZR.ViewControllers.Managers
                 var pos = HandHelper.HandCellPos();
                 if (!HandHelper.DaveCanReachHand()) return; // 手能够到目标位置
                 var def = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.PlantDef;
-                if (!_LevelGridModel.CanSpawnPlantOn(pos, def)) return; // 
+                if (!_LevelGridModel.CanSpawnPlantOn(pos, def) && !_LevelGridModel.CanStackPlantOn(pos, def))
+                    return; // 
 
                 this.SendCommand<PlantingSeedInHandCommand>(new PlantingSeedInHandCommand(Direction2.Left));
             };
@@ -55,7 +56,8 @@ namespace TPL.PVZR.ViewControllers.Managers
                 var pos = HandHelper.HandCellPos();
                 if (!HandHelper.DaveCanReachHand()) return; // 手能够到目标位置
                 var def = _HandSystem.HandInfo.Value.PickedSeed.CardData.CardDefinition.PlantDef;
-                if (!_LevelGridModel.CanSpawnPlantOn(pos, def)) return; // 
+                if (!_LevelGridModel.CanSpawnPlantOn(pos, def) && !_LevelGridModel.CanStackPlantOn(pos, def))
+                    return; // 
 
                 this.SendCommand<PlantingSeedInHandCommand>(new PlantingSeedInHandCommand(Direction2.Right));
             };
@@ -72,13 +74,15 @@ namespace TPL.PVZR.ViewControllers.Managers
             _inputActions.Level.UseShovel.performed += context =>
             {
                 // 异常处理
+                // $"Conditions: 游戏阶段正确：{_PhaseModel.GamePhase == GamePhase.Gameplay}, 手不在UI上：{!HandHelper.IsHandOnUI()}, 手上持有铲子：{_HandSystem.HandInfo.Value.HandState == HandState.HaveShovel}, 手在地图内部：{_LevelGridModel.IsValidPos(HandHelper.HandCellPos())}, 目标位置有植物：{!_LevelGridModel.LevelMatrix[HandHelper.HandCellPos().x, HandHelper.HandCellPos().y].IsEmpty}"
+                //     .LogInfo();
                 if (_PhaseModel.GamePhase != GamePhase.Gameplay) return; // 游戏阶段正确
                 if (HandHelper.IsHandOnUI()) return; // 手不在UI上
                 if (_HandSystem.HandInfo.Value.HandState != HandState.HaveShovel) return; // 手上持有铲子
                 var position = HandHelper.HandCellPos();
                 if (!_LevelGridModel.IsValidPos(position)) return; // 手在地图内部
                 var targetCell = _LevelGridModel.LevelMatrix[position.x, position.y];
-                if (targetCell.CellPlantState != CellPlantState.HavePlant) return;
+                if (targetCell.IsEmpty) return;
                 //
                 this.SendCommand<UseShovelCommand>(new UseShovelCommand(position));
             };
@@ -92,7 +96,7 @@ namespace TPL.PVZR.ViewControllers.Managers
                     this.SendCommand<SelectShovelCommand>();
                 }
                 else if (_HandSystem.HandInfo.Value.HandState == HandState.HaveShovel) return;
-                
+
                 else if (_HandSystem.HandInfo.Value.HandState == HandState.HaveSeed)
                 {
                     this.SendCommand<DeselectCommand>();

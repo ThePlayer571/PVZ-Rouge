@@ -204,7 +204,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                          * 011 -> PlatWithLadder
                          */
                         bool _1 = levelMatrix[x, y].IsEmpty;
-                        bool _2 = levelMatrix[x, y - 1].IsPlat;
+                        bool _2 = levelMatrix[x, y - 1].IsBlock;
                         bool _3 = levelMatrix[x, y].IsClimbable;
 
                         // ↓ 一些稍微复杂的逻辑
@@ -312,14 +312,14 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                     foreach (int fallX in new int[] { vertex.x - 1, vertex.x + 1 }) // 检测左右两格
                     {
                         // [STEP 0] 排除不可能Fall的情况
-                        if (levelMatrix[fallX, vertex.y].IsPlat) continue; // 唯一通路被墙堵住
+                        if (levelMatrix[fallX, vertex.y].IsBlock) continue; // 唯一通路被墙堵住
                         if (mapMatrix[fallX, vertex.y] != null) continue; // 应该是WalkJump
                         if (mapMatrix[fallX, vertex.y - 1] != null) continue; // 应该是WalkJump
 
                         // 此时已经确认绝对是Fall
                         // [STEP 1] 获取通路高度
                         AllowedPassHeight allowedPassHeight;
-                        if (levelMatrix[fallX, vertex.y].IsEmpty && levelMatrix[fallX, vertex.y + 1].IsPlat)
+                        if (levelMatrix[fallX, vertex.y].IsEmpty && levelMatrix[fallX, vertex.y + 1].IsBlock)
                         {
                             allowedPassHeight = AllowedPassHeight.One;
                         }

@@ -70,7 +70,7 @@ namespace TPL.PVZR.Systems.Level_Data
             GameManager.ExecuteOnUpdate(UpdatePlayerCluster);
             ZombieAIUnit = new ZombieAIUnit();
             ZombieAIUnit.InitializeFrom(_LevelGridModel.LevelMatrix);
-            ZombieAIUnit.DebugDisplayMatrix();
+            // ZombieAIUnit.DebugDisplayMatrix();
             // ZombieAIUnit.DebugLogCluster(new Vector2Int(11, 14));
         }
 

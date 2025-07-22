@@ -1,9 +1,10 @@
 using TPL.PVZR.Tools;
+using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 {
     public interface IPeaLikeInit : IProjectile
     {
-        void Initialize(Direction2 direction);
+        void Initialize(Vector2 direction);
     }
 }

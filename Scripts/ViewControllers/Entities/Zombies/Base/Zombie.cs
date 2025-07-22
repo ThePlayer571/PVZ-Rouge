@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
@@ -39,7 +40,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
             _ZombieAISystem = this.GetSystem<IZombieAISystem>();
 
-
             // 血量
             Health = new BindableProperty<float>();
             // 移动
@@ -55,11 +55,13 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         protected override void Update()
         {
+            // 被动行为更新
+            effectGroup.Update(Time.deltaTime);
+
+            // 主动行为更新
             base.Update();
-            //
             FSM.Update();
             _jumpTimer.Update(Time.deltaTime);
-            effectGroup.Update(Time.deltaTime);
         }
 
         private void FixedUpdate()
@@ -80,6 +82,15 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         {
             FSM.AddState(ZombieState.DefaultTargeting, new DefaultTargetingState(FSM, this));
             FSM.AddState(ZombieState.Attacking, new AttackingState(FSM, this));
+            FSM.AddState(ZombieState.Frozen, new FrozenState(FSM, this));
+
+            effectGroup.OnEffectAdded.Register(effectData =>
+            {
+                if (effectData.effectId == EffectId.Freeze)
+                {
+                    FSM.ChangeState(ZombieState.Frozen);
+                }
+            }).UnRegisterWhenGameObjectDestroyed(this);
 
             FSM.StartState(ZombieState.DefaultTargeting);
         }
@@ -179,7 +190,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #region Effect
 
-        protected EffectGroup effectGroup;
+        public EffectGroup effectGroup { get; private set; }
 
 
         public void GiveEffect(EffectData effectData)
@@ -226,7 +237,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         public override void Remove()
         {
-            throw new Exception("僵尸的移除应该交给ZombieFactory");
+            throw new NotSupportedException("僵尸的移除应该交给ZombieFactory");
         }
 
         #endregion

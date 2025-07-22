@@ -30,10 +30,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
         [SerializeField] private Transform FirePoint;
 
-        protected override void Update()
+        protected override void OnUpdate()
         {
-            base.Update();
-            //
             _timer.Update(Time.deltaTime);
             _detectTimer.Update(Time.deltaTime);
 
@@ -44,7 +42,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
                 if (hit.collider && hit.collider.CompareTag("Zombie"))
                 {
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.MungBean, Direction, FirePoint.position);
+                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.MungBean, Direction.ToVector2(), FirePoint.position);
                     _timer.Reset();
                 }
                 else

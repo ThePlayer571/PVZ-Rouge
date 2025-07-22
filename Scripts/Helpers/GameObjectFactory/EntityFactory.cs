@@ -208,13 +208,17 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
                         [ProjectileId.MungBean] =
                             _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.MungBean),
                         [ProjectileId.Spike] =
-                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.Spike)
+                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.Spike),
+                        [ProjectileId.Star] =
+                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.Star),
+                        [ProjectileId.SnipePea] =
+                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.SnipePea)
                     };
             }
 
             private static Dictionary<ProjectileId, GameObject> _projectileDict;
 
-            public static Projectile CreatePea(ProjectileId id, Direction2 direction, Vector2 pos)
+            public static Projectile CreatePea(ProjectileId id, Vector2 direction, Vector2 pos)
             {
                 if (_projectileDict.TryGetValue(id, out var projectilePrefab))
                 {
@@ -223,7 +227,7 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
                         throw new Exception($"Prefab未实现IPeaLikeInit接口: {projectilePrefab.name}");
 
                     var go = projectilePrefab.Instantiate(pos, Quaternion.identity).GetComponent<IPeaLikeInit>();
-                    go.Initialize(direction);
+                    go.Initialize(direction.normalized);
 
                     // 返回Projectile基类
                     var projectile = go as Projectile;

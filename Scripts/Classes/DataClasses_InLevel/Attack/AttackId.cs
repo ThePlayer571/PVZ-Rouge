@@ -10,5 +10,8 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
         PotatoMineExplosion,
         CherryBombExplosion,
         Spike,
+        IcebergLettuceFreeze,
+        Star,
+        SnipePea
     }
 }

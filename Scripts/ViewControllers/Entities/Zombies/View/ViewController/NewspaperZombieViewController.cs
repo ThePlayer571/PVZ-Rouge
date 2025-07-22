@@ -32,9 +32,17 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
                     _Animator.SetTrigger("EnterAttacking");
                 });
             ViewFSM.State(ZombieState.OnNewspaperDestroyed)
-                .OnEnter(() => { 
+                .OnEnter(() =>
+                {
                     currentRotation = 0;
-                    _Animator.SetTrigger("EnterOnNewspaperDestroyed"); });
+                    _Animator.SetTrigger("EnterOnNewspaperDestroyed");
+                });
+            ViewFSM.State(ZombieState.Frozen)
+                .OnEnter(() =>
+                {
+                    _Animator.SetTrigger("EnterFrozen");
+                    currentRotation = 0;
+                });
 
             ViewFSM.StartState(ZombieState.DefaultTargeting);
         }
