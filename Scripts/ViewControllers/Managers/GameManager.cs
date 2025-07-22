@@ -27,7 +27,7 @@ namespace TPL.PVZR.ViewControllers.Managers
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 10, 120, 40), "Pos1生成僵尸"))
             {
                 var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(32, 9));
-                EntityFactory.ZombieFactory.SpawnZombie(ZombieId.NormalZombie, pos);
+                EntityFactory.ZombieFactory.SpawnZombie(ZombieId.NewspaperZombie, pos);
             }
 
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 60, 120, 40), "获取500阳光"))

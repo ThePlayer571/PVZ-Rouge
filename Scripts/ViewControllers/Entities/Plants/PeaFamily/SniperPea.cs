@@ -51,7 +51,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                         .FirstOrDefault(other =>
                             {
                                 var hit = Physics2D.Raycast(FirePoint.position,
-                                    (other.GetComponent<Zombie>().CorePos.position - FirePoint.position).normalized,
+                                    (other.GetComponent<Zombie>().ZombieNode.HeadPos.position - FirePoint.position).normalized,
                                     GlobalEntityData.Plant_Peashooter_ShootDistance, _layerMask);
                                 return hit.collider != null && hit.collider.CompareTag("Zombie");
                             }
@@ -63,7 +63,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             if (_timer.Ready && _target != null)
             {
                 _timer.Reset();
-                var direction = (_target.CorePos.position - FirePoint.position);
+                var direction = (_target.ZombieNode.HeadPos.position - FirePoint.position);
                 EntityFactory.ProjectileFactory.CreatePea(ProjectileId.SnipePea, direction, FirePoint.position);
             }
         }
@@ -76,7 +76,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
         protected override void OnViewUpdate()
         {
             if (_target == null) return;
-            var direction = _target.CorePos.position - FirePoint.position;
+            var direction = _target.ZombieNode.HeadPos.position - FirePoint.position;
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             // 公式是统计得出的
             if (-90 < angle && angle < 90)

@@ -110,3 +110,13 @@ MonoBehaviour:
       Variant: 0
     card: {fileID: 11400000, guid: 115c1b8b8ba5cfa4ca148f107afb8f96, type: 2}
     prefab: {fileID: 7749994399835488125, guid: 255d3849a4fd9ac4ea589b108e220e7f, type: 3}
+  - def:
+      Id: 20
+      Variant: 0
+    card: {fileID: 11400000, guid: 3550d6a076a065447b3e1ffef202dd33, type: 2}
+    prefab: {fileID: 37043231463677504, guid: 4473f7e2f1ecce44c963d116fa61818a, type: 3}
+  - def:
+      Id: 19
+      Variant: 0
+    card: {fileID: 11400000, guid: 7d7050c2d7597bb45b65cc37acd52f6b, type: 2}
+    prefab: {fileID: 2744868960691096109, guid: 606d45c7f9d690d45a744f1d12636cc9, type: 3}

@@ -34,13 +34,11 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
             _Rigidbody2D = this.GetComponent<Rigidbody2D>();
         }
 
-        protected virtual void Update()
-        {
-        }
-
         #endregion
 
         #region 实体生命周期
+
+        #region 死亡
 
         public virtual void Kill()
         {
@@ -64,6 +62,17 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
         {
             gameObject.DestroySelf();
         }
+
+        #endregion
+
+        #region 日常
+
+        protected virtual void Update()
+        {
+        }
+        // 以后可能会把OnUpdate等放到这里
+
+        #endregion
 
         #endregion
 

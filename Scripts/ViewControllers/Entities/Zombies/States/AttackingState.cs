@@ -16,7 +16,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
         {
             if (mTarget.AttackingTarget == null)
                 throw new Exception("切换到AttackingState时，发现AttackingTarget为空");
-            mTarget.AttackArea.OnTargetExit.Register(OnAttackingAreaExit);
+            mTarget.ZombieNode.AttackArea.OnTargetExit.Register(OnAttackingAreaExit);
         }
 
         protected override void OnUpdate()
@@ -27,7 +27,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         protected override void OnExit()
         {
-            mTarget.AttackArea.OnTargetExit.UnRegister(OnAttackingAreaExit);
+            mTarget.ZombieNode.AttackArea.OnTargetExit.UnRegister(OnAttackingAreaExit);
         }
 
         private void OnAttackingAreaExit(Collider2D other)

@@ -11,6 +11,7 @@ namespace TPL.PVZR.Helpers.New.Methods
 {
     public static class LevelMatrixHelper
     {
+        // 这个逻辑不能转到System里面，因为Level初始化阶段很紧，System找不到合适的时机
         public static Matrix<Cell> BakeLevelMatrix(LevelTilemapController LevelTileMap, ILevelData levelData)
         {
             var LevelMatrix =

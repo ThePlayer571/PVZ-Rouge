@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies
 {
+    // todo: 历史遗留问题：建议改为ConllisionDetector
     public class ZombieAttackAreaController : MonoBehaviour
     {
         public EasyEvent<Collider2D> OnTargetEnter = new();

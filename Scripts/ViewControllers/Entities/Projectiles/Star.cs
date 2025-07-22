@@ -40,7 +40,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
                     var closest = zombieDetector.DetectedTargets.MinBy(other =>
                         Vector2.Distance(other.transform.position, transform.position));
 
-                    var targetDirection = (closest.GetComponent<Zombie>().CorePos.position - transform.position).normalized;
+                    var targetDirection = (closest.GetComponent<Zombie>().ZombieNode.CorePos.position - transform.position).normalized;
                     
                     // 平滑插值到目标方向
                     var currentDirection = _Rigidbody.velocity.normalized;

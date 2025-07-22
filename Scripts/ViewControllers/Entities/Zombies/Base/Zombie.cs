@@ -78,6 +78,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         public FSM<ZombieState> FSM;
         public IAttackable AttackingTarget;
 
+        /// <summary>
+        /// FSM的示例早已建好
+        /// </summary>
         protected virtual void SetUpFSM()
         {
             FSM.AddState(ZombieState.DefaultTargeting, new DefaultTargetingState(FSM, this));
@@ -97,18 +100,19 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         public void Initialize()
         {
-            SetUpFSM();
             // AI
             this.RegisterEvent<OnPlayerChangeCluster>(e => _timeToFindPath = true)
                 .UnRegisterWhenGameObjectDestroyed(this);
 
-            ActionKit.DelayFrame(1, OnInitialized.Trigger).Start(this);
             // 朝向
             this.Direction
                 .RegisterWithInitValue(direction => { transform.LocalScaleX(direction.ToInt()); })
                 .UnRegisterWhenGameObjectDestroyed(this);
             //
             OnInit();
+            // 等待OnInit后面设置armorData
+            SetUpFSM();
+            ActionKit.DelayFrame(1, OnInitialized.Trigger).Start(this);
         }
 
         #endregion
@@ -116,14 +120,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         #region 字段
 
         // Designer
-        [SerializeField] public ZombieAttackAreaController AttackArea;
-        [SerializeField] public Transform JumpDetectionPoint;
-        [SerializeField] public CollisionDetector ClimbDetector;
-        [SerializeField] public Transform MassCenter;
-        [SerializeField] public Transform CorePos;
+        [SerializeField] public ZombieNode ZombieNode;
+
         public IZombieAISystem _ZombieAISystem;
 
-        public override Vector2 CoreWorldPos => CorePos.position;
+        public override Vector2 CoreWorldPos => ZombieNode.CorePos.position;
 
         // 基础属性
         public abstract ZombieId Id { get; }
@@ -207,7 +208,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             if (attackData == null) return null;
             Health.Value = Mathf.Clamp(Health.Value - attackData.Damage, 0, Mathf.Infinity);
             // !!!! 如果出现bug（力的生成和实际位置不一致）请看这里：质心不是Rigidbody2D
-            _Rigidbody2D.AddForce(attackData.Punch(MassCenter.position), ForceMode2D.Impulse);
+            _Rigidbody2D.AddForce(attackData.Punch(ZombieNode.MassCenter.position), ForceMode2D.Impulse);
             foreach (var effectData in attackData.Effects)
             {
                 this.GiveEffect(effectData);
@@ -264,7 +265,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         public void ClimbLadder()
         {
-            if (ClimbDetector.HasTarget)
+            if (ZombieNode.ClimbDetector.HasTarget)
             {
                 _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x,
                     GlobalEntityData.Zombie_Default_ClimbSpeed);
@@ -273,7 +274,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         public void HoldOnLadder()
         {
-            if (ClimbDetector.HasTarget)
+            if (ZombieNode.ClimbDetector.HasTarget)
             {
                 _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x, 0);
             }
@@ -292,17 +293,18 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                         _ => throw new ArgumentException($"不支持的MoveStage: {moveData.moveStage}")
                     };
 
-                    var hit = Physics2D.Raycast(JumpDetectionPoint.position, Direction.Value.ToVector2(), 0.5f,
+                    var hit = Physics2D.Raycast(ZombieNode.JumpDetectionPoint.position, Direction.Value.ToVector2(),
+                        0.5f,
                         LayerMask.GetMask("Barrier"));
                     // ====== 临时调试代码 begin ======
 #if UNITY_EDITOR
                     Color color = hit.collider ? Color.red : Color.green;
-                    Debug.DrawLine(JumpDetectionPoint.position,
-                        JumpDetectionPoint.position + (Vector3)Direction.Value.ToVector2() * 0.5f,
+                    Debug.DrawLine(ZombieNode.JumpDetectionPoint.position,
+                        ZombieNode.JumpDetectionPoint.position + (Vector3)Direction.Value.ToVector2() * 0.5f,
                         color, 0.1f);
                     if (hit.collider)
                     {
-                        Debug.DrawLine(JumpDetectionPoint.position, hit.point, Color.yellow, 0.1f);
+                        Debug.DrawLine(ZombieNode.JumpDetectionPoint.position, hit.point, Color.yellow, 0.1f);
                     }
 #endif
                     // ====== 临时调试代码 end ======
@@ -381,7 +383,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     if (distanceY > Global.Zombie_Default_PathFindStopMinDistance)
                     {
                         bool toUp = transform.position.y < targetPos.y;
-                        if (toUp && ClimbDetector.HasTarget)
+                        if (toUp && ZombieNode.ClimbDetector.HasTarget)
                         {
                             ClimbLadder();
                         }

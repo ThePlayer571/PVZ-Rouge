@@ -57,6 +57,7 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
                         _following = true;
                         _Image.enabled = true;
                         _Image.sprite = val.PickedSeed.CardData.CardDefinition.FollowingSprite;
+                        _Image.SetNativeSize();
                         break;
                     case HandState.HaveShovel:
                         _following = true;

@@ -18,8 +18,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
             target = Zombie.GetComponent<IHaveShield>();
             if (target == null) throw new Exception($"僵尸未实现 IHaveShield: {nameof(Zombie)}");
 
-            target.ShieldArmorData.OnDestroyed.Register(() => gameObject.DestroySelf())
-                .UnRegisterWhenGameObjectDestroyed(this);
+            Zombie.OnInitialized.Register(() =>
+            {
+                target.ShieldArmorData.OnDestroyed.Register(() => gameObject.DestroySelf())
+                    .UnRegisterWhenGameObjectDestroyed(this);
+            }).UnRegisterWhenGameObjectDestroyed(this);
         }
 
         public AttackData TakeAttack(AttackData attackData)
