@@ -6,5 +6,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
         Attacking,
         OnNewspaperDestroyed,
         Frozen,
+        Dead,
     }
 }

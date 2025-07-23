@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TPL.PVZR.Classes.DataClasses.Level;
+using TPL.PVZR.Classes.LootPool;
 using UnityEngine;
 
 namespace TPL.PVZR.Classes.MazeMap
@@ -51,5 +52,9 @@ namespace TPL.PVZR.Classes.MazeMap
         public List<SerializableKeyValuePair<Vector2Int, Vector2Int>> TombCountRangeOfStage;
 
         [Tooltip("墓碑内容配置")] public List<TombContentConfig> TombContentConfigs;
+        
+        // Loot
+        [Header("LootPool")]
+        public List<LootPoolDef> LootPools;
     }
 }

@@ -21,6 +21,9 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             _coinViewPrefab = resLoader.LoadSync<GameObject>(Items.BundleName, Items.CoinView);
             _plantBookViewPrefab = resLoader.LoadSync<GameObject>(Items.BundleName, Items.PlantBookView);
             _seedSlotViewPrefab = resLoader.LoadSync<GameObject>(Items.BundleName, Items.SeedSlotView);
+
+
+            resLoader.Recycle2Cache();
         }
 
         private static readonly GameObject _cardViewPrefab;

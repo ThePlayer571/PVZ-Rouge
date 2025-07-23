@@ -41,6 +41,8 @@ namespace TPL.PVZR.CommandEvents._NotClassified_
                 var go = resLoader.LoadSync<GameObject>(Levelendobject_prefab.BundleName,
                     Levelendobject_prefab.LevelEndObject).Instantiate(zombie.transform.position, Quaternion.identity);
                 _PhaseModel.ChangePhase(GamePhase.AllEnemyKilled);
+
+                resLoader.Recycle2Cache();
             }
         }
     }

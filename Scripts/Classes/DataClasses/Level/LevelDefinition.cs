@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Classes.LootPool;
 using TPL.PVZR.Tools;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -129,8 +130,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public List<ZombieSpawnConfig> ZombieSpawnConfigs;
 
 //
-        [Header("Loot")] public List<PlantId> BasicPlants;
-        public List<PlantBookId> BasicPlantBooks;
+        [Header("Loot")] public List<LootPoolDef> BasicLoots;
         public List<LootGenerateInfo> SpecialLoots;
 
         [Tooltip("Loot的总价值（推荐：1.5 * 通关所需植物价值）")]

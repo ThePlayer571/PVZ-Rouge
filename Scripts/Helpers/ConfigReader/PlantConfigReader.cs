@@ -47,6 +47,8 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 _cardDefinitionDict[config.def] = config.card;
                 _plantPrefabDict[config.def] = config.prefab;
             }
+
+            _resLoader.Recycle2Cache();
         }
 
         #endregion

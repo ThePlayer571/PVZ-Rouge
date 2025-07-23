@@ -26,6 +26,7 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
         {
             ResKit.Init();
             _resLoader = ResLoader.Allocate();
+            //todo 难以归还
         }
 
         #region SunFactory

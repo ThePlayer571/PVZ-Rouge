@@ -33,6 +33,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
             FSM.AddState(ZombieState.Attacking, new AttackingState(FSM, this));
             FSM.AddState(ZombieState.OnNewspaperDestroyed, new OnNewspaperDestroyedState(FSM, this));
             FSM.AddState(ZombieState.Frozen, new FrozenState(FSM, this));
+            FSM.AddState(ZombieState.Dead, new DeadState(FSM, this));
 
             armorData.OnDestroyed.Register(() =>
             {

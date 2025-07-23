@@ -13,7 +13,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
     {
         public void Initialize(Vector2 direction)
         {
-            _Rigidbody.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;
+            _Rigidbody2D.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;
         }
 
         private bool _attacked = false;

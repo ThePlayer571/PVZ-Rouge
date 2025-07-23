@@ -348,6 +348,8 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
 
             var bounds = new BoundsInt(0, 0, 0, tileMatrix.Rows, tileMatrix.Columns, 1);
             GroundTilemap.SetTilesBlock(bounds, ToArrayByColumn(tileMatrix));
+
+            resLoader.Recycle2Cache();
         }
 
         protected override void SetUpTombs()
@@ -361,6 +363,8 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                 var tombstone = tombstonePrefab.Instantiate().GetComponent<TombstoneController>();
                 tombstone.Initialize(node.Position);
             }
+
+            resLoader.Recycle2Cache();
 
             // ($"Pass: {String.Join(",", MazeMapData.PassedRoute)}\n" +
             //  $"Discoverd: {String.Join(",", MazeMapData.DiscoveredTombs.Select(tomb => tomb.Position))}\n").LogInfo();
@@ -377,6 +381,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
             var finalObject =
                 resLoader.LoadSync<GameObject>(Finalobject_prefab.BundleName, Finalobject_prefab.FinalObject)
                     .Instantiate(finalWorldPos, Quaternion.identity);
+            resLoader.Recycle2Cache();
         }
 
         #endregion

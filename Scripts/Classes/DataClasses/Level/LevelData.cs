@@ -271,15 +271,13 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             this.PosGroupDef = levelDefinition.PosGroupDef;
             this.ZombieSpawnConfigs = levelDefinition.ZombieSpawnConfigs;
 
-            var _ = new List<LootGenerateInfo>();
+
+            var _ = levelDefinition.BasicLoots
+                .SelectMany(lootPoolDef => LootCreator.CreateLootGenerateInfoList(lootPoolDef)).ToList();
             _.AddRange(levelDefinition.SpecialLoots);
-            _.AddRange(levelDefinition.BasicPlants.Select(plantId =>
-                LootCreator.CreateDefaultLootGenerateInfo(plantId)));
-            _.AddRange(levelDefinition.BasicPlantBooks.Select(bookId =>
-                LootCreator.CreateDefaultLootGenerateInfo(bookId)));
             this.LootGenerateInfos = _.AsReadOnly();
             this.LootValue = levelDefinition.LootValue;
-            
+
             this.InitialPlants = levelDefinition.InitialPlants;
         }
 

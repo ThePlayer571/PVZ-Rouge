@@ -12,6 +12,8 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
         Spike,
         IcebergLettuceFreeze,
         Star,
-        SnipePea
+        SnipePea,
+        FirePea,
+        FirePeaAOE,
     }
 }

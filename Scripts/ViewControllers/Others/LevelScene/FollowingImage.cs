@@ -42,6 +42,8 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
             _Image = this.GetComponent<Image>();
             ShovelSprite = resLoader.LoadSync<Sprite>(Shovel_png.BundleName, Shovel_png.Shovel);
 
+            resLoader.Recycle2Cache();
+
             _HandSystem = this.GetSystem<IHandSystem>();
             _HandSystem.HandInfo.RegisterWithInitValue(val =>
             {

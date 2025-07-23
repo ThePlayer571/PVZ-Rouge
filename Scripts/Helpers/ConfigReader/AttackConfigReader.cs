@@ -26,6 +26,8 @@ namespace TPL.PVZR.Helpers.New.DataReader
             {
                 _attackDefinitionDict.Add(config.attackId, config.attackDefinition);
             }
+            
+            resLoader.Recycle2Cache();
         }
 
         #endregion

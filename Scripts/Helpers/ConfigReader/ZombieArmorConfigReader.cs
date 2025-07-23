@@ -28,6 +28,8 @@ namespace TPL.PVZR.Helpers.New.DataReader
             {
                 _zombieArmorDefinitionDict.Add(config.zombieArmorId, config.zombieArmorDefinition);
             }
+
+            _resLoader.Recycle2Cache();
         }
 
         #endregion

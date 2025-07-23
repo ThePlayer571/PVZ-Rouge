@@ -15,7 +15,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
     {
         public void Initialize(Vector2 direction)
         {
-            _Rigidbody.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;
+            _Rigidbody2D.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;
             zombieDetector.RecordTargets = true;
 
             _detectTimer = new Timer(Global.Projectile_Star_DetectInterval);
@@ -25,7 +25,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
         private bool _attacked = false;
         private Timer _detectTimer;
         [SerializeField] private CollisionDetector zombieDetector;
-        [SerializeField] private float turnSpeed = 5f; // 转向速度，值越大转向越快
+        private const float turnSpeed = 2f; // 转向速度，值越大转向越快
 
         protected override void Update()
         {
@@ -40,12 +40,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
                     var closest = zombieDetector.DetectedTargets.MinBy(other =>
                         Vector2.Distance(other.transform.position, transform.position));
 
-                    var targetDirection = (closest.GetComponent<Zombie>().ZombieNode.CorePos.position - transform.position).normalized;
-                    
+                    var targetDirection =
+                        (closest.GetComponent<Zombie>().ZombieNode.CorePos.position - transform.position).normalized;
+
                     // 平滑插值到目标方向
-                    var currentDirection = _Rigidbody.velocity.normalized;
-                    var newDirection = Vector2.Lerp(currentDirection, targetDirection, turnSpeed * Global.Projectile_Star_DetectInterval);
-                    _Rigidbody.velocity = GlobalEntityData.Projectile_Pea_Speed * newDirection.normalized;
+                    var currentDirection = _Rigidbody2D.velocity.normalized;
+                    var newDirection = Vector2.Lerp(currentDirection, targetDirection,
+                        turnSpeed * Global.Projectile_Star_DetectInterval);
+                    _Rigidbody2D.velocity = GlobalEntityData.Projectile_Pea_Speed * newDirection.normalized;
                 }
             }
         }

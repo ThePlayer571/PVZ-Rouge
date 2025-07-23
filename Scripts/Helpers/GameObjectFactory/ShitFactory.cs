@@ -19,6 +19,9 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
                 resLoader.LoadSync<GameObject>(Seedoption_prefab.BundleName, Seedoption_prefab.SeedOption);
             _seedControllerPrefab =
                 resLoader.LoadSync<GameObject>(Seedcontroller_prefab.BundleName, Seedcontroller_prefab.SeedController);
+
+
+            resLoader.Recycle2Cache();
         }
 
         public static SeedOptionController CreateSeedOptionController(CardData cardData)

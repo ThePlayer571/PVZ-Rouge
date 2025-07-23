@@ -7,8 +7,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
     {
         None = 0,
 
-        // Dave - N0_Allow
-        Dave_Lawn = 1, DaveRoof = 2,
+        // Dave - N0 - Normal_1
+        Dave_Lawn = 1, Dave_Roof = 2, Dave_堡垒 = 3
         // Dave_LawnNight = 2,
         // DaveHouse, DaveHouseNight,DaveHouseRainNight, 
         // DaveBackyard, DaveBackyardRain,

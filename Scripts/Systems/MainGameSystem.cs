@@ -34,6 +34,8 @@ namespace TPL.PVZR.Systems
                                 UIKit.Root.SetResolution(1920, 1080, 0);
 
                                 this.GetModel<IPhaseModel>().DelayChangePhase(GamePhase.MainMenu);
+
+                                resLoader.Recycle2Cache();
                                 break;
                         }
 

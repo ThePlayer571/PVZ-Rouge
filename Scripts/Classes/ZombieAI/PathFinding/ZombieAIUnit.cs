@@ -654,10 +654,11 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 
         public void DebugDisplayMatrix()
         {
+            var resLoader = ResLoader.Allocate();
             var tilemap = LevelTilemapController.Instance.Debug;
-            var OneHeight = ResLoader.Allocate().LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugOneHeight);
-            var TwoHeight = ResLoader.Allocate().LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugTwoHeight);
-            var Key = ResLoader.Allocate().LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugKey);
+            var OneHeight = resLoader.LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugOneHeight);
+            var TwoHeight = resLoader.LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugTwoHeight);
+            var Key = resLoader.LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugKey);
             foreach (var each in vertices)
             {
                 if (each.isKey)
@@ -676,6 +677,8 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                     }
                 }
             }
+
+            resLoader.Recycle2Cache();
         }
 
         public void DebugLogCluster(Vector2Int pos)
@@ -724,7 +727,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
         }
 
         #endregion
-        
+
         #region 已废弃内容
 
         // 烘焙

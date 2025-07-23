@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.DataClasses.Tomb;
+using TPL.PVZR.Classes.LootPool;
 using TPL.PVZR.Helpers.New.DataReader;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
@@ -29,6 +30,11 @@ namespace TPL.PVZR.Classes.MazeMap
 
 
         ulong GenerateSeed { get; }
+        
+        // 奖励池
+        IReadOnlyList<LootPoolDef> LootPools { get; }
+        
+        
 
         // 通关进度（以最低限度存储）
         IReadOnlyList<ITombData> DiscoveredTombs { get; }
@@ -99,6 +105,7 @@ namespace TPL.PVZR.Classes.MazeMap
         #endregion
 
         public ulong GenerateSeed { get; private set; }
+        public IReadOnlyList<LootPoolDef> LootPools { get; }
         private readonly List<ITombData> _discoveredTombs = new();
         private readonly List<Vector2Int> _passedRoute = new();
         public IReadOnlyList<ITombData> DiscoveredTombs => _discoveredTombs;
@@ -126,6 +133,8 @@ namespace TPL.PVZR.Classes.MazeMap
             TombContentConfigs = definition.TombContentConfigs;
 
             GenerateSeed = seed;
+            
+            LootPools = definition.LootPools;
         }
 
         public MazeMapData(MazeMapSaveData saveData)
@@ -138,6 +147,7 @@ namespace TPL.PVZR.Classes.MazeMap
             TombCountRangeOfStage = definition.TombCountRangeOfStage;
             TombContentConfigs = definition.TombContentConfigs;
             GenerateSeed = saveData.generateSeed;
+            LootPools = definition.LootPools;
             _discoveredTombs = saveData.discoveredTombs.Select(tombSaveData => new TombData(tombSaveData) as ITombData)
                 .ToList();
             _passedRoute = saveData.passedRoute.Select(pos => new Vector2Int(pos.x, pos.y)).ToList();

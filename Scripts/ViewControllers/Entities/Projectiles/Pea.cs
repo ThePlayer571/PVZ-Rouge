@@ -1,7 +1,9 @@
 using System;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
+using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.ClassCreator;
+using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
@@ -9,11 +11,11 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 {
-    public sealed class Pea : Projectile, IPeaLikeInit
+    public sealed class Pea : Projectile, IPeaLikeInit, ICanBeIgnited
     {
         public void Initialize(Vector2 direction)
         {
-            _Rigidbody.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;
+            _Rigidbody2D.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;
         }
 
         private bool _attacked = false;
@@ -30,6 +32,29 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             }
 
             this.Remove();
+        }
+
+        public void Ignite(IgnitionType ignitionType)
+        {
+            if (_attacked) return;
+
+            switch (ignitionType)
+            {
+                case IgnitionType.Fire:
+                    _attacked = true;
+                    this.Remove();
+                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.FirePea, _Rigidbody2D.velocity,
+                        _Rigidbody2D.position);
+                    break;
+                case IgnitionType.GhostFire:
+                    _attacked = true;
+                    this.Remove();
+                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.GhostFirePea, _Rigidbody2D.velocity,
+                        _Rigidbody2D.position);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

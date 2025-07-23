@@ -6,6 +6,8 @@ using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Classes.LootPool;
+using TPL.PVZR.Classes.MazeMap;
 using TPL.PVZR.Helpers.New.DataReader;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
@@ -16,10 +18,12 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
     {
         #region CoinTrade
 
+        #region CoinTradeGenerateInfo
+
         private static CoinTradeGenerateInfo CreateCoinTradeGenerateInfo(PlantId plantId)
         {
-            var value = TradeConfigReader.GetValueOf(plantId);
-            var weight = TradeConfigReader.GetWeightOf(plantId);
+            var value = EconomyConfigReader.GetValueOf(plantId);
+            var weight = EconomyConfigReader.GetWeightOf(plantId);
             return new CoinTradeGenerateInfo
             {
                 weight = weight,
@@ -30,11 +34,11 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
                 }
             };
         }
-        
+
         private static CoinTradeGenerateInfo CreateCoinTradeGenerateInfo(PlantBookId bookId)
         {
-            var value = TradeConfigReader.GetValueOf(bookId);
-            var weight = TradeConfigReader.GetWeightOf(bookId);
+            var value = EconomyConfigReader.GetValueOf(bookId);
+            var weight = EconomyConfigReader.GetWeightOf(bookId);
             return new CoinTradeGenerateInfo
             {
                 weight = weight,
@@ -48,7 +52,8 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
 
         private static CoinTradeGenerateInfo CreateCoinTradeGenerateInfoOfSeedSlot()
         {
-            var (value ,weight) = TradeConfigReader.GetSeedSlotInfo();
+            var value = EconomyConfigReader.GetValueOfSeedSlot();
+            var weight = EconomyConfigReader.GetWeightOfSeedSlot();
             return new CoinTradeGenerateInfo
             {
                 weight = weight,
@@ -60,35 +65,24 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
             };
         }
 
-        public static RandomPool<CoinTradeGenerateInfo, CoinTradeInfo> CreateRelatedCoinTradePool(
-            IReadOnlyList<PlantId> plantIds)
-        {
-            var relatedCoinTrades = plantIds.Select(CreateCoinTradeGenerateInfo).ToList();
-            
-            return new RandomPool<CoinTradeGenerateInfo, CoinTradeInfo>(relatedCoinTrades, 1, RandomHelper.Game);
-        }
+        #endregion
 
-        public static RandomPool<CoinTradeGenerateInfo, CoinTradeInfo> CreateAllCoinTradePool()
-        {
-            var coinTrades = new List<CoinTradeGenerateInfo>();
-            coinTrades.AddRange(TradeConfigReader.GetAllPlantStandardValues().Keys.Select(CreateCoinTradeGenerateInfo));
-            coinTrades.AddRange(TradeConfigReader.GetAllPlantBookStandardValues().Keys.Select(CreateCoinTradeGenerateInfo));
-            coinTrades.Add(CreateCoinTradeGenerateInfoOfSeedSlot());
+        #region CoinTradeData
 
-            return new RandomPool<CoinTradeGenerateInfo, CoinTradeInfo>(coinTrades, 1, RandomHelper.Game);
-        }
-
-        public static CoinTradeData CreateCoinTradeData(PlantId plantId, float multiplier = 1f,
+        public static CoinTradeData CreateCoinTradeData(PlantId plantId, float valueMultiplier = 1f,
             float randomVariationRange = 0.1f)
         {
             var coinTradeGenerateInfo = CreateCoinTradeGenerateInfo(plantId);
-            return CreateCoinTradeDataWithRandomVariation(coinTradeGenerateInfo.coinTradeInfo, multiplier, randomVariationRange);
+            return CreateCoinTradeDataWithRandomVariation(coinTradeGenerateInfo.coinTradeInfo, valueMultiplier,
+                randomVariationRange);
         }
 
-        public static CoinTradeData CreateCoinTradeDataWithRandomVariation(CoinTradeInfo coinTradeInfo, float multiplier = 1f, float randomVariationRange = 0.1f)
+        public static CoinTradeData CreateCoinTradeDataWithRandomVariation(CoinTradeInfo coinTradeInfo,
+            float valueMultiplier = 1f, float randomVariationRange = 0.1f)
         {
-            var calculatedCoinAmount = (int)(coinTradeInfo.coinAmount * multiplier *
-                      (1 + RandomHelper.Game.Range(-randomVariationRange, randomVariationRange)));
+            var calculatedCoinAmount = (int)(coinTradeInfo.coinAmount * valueMultiplier *
+                                             (1 + RandomHelper.Game.Range(-randomVariationRange,
+                                                 randomVariationRange)));
             var lootData = LootData.Create(coinTradeInfo.lootInfo);
             return new CoinTradeData(calculatedCoinAmount, lootData);
         }
@@ -101,12 +95,49 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
 
         #endregion
 
-        #region Recipe
+        #endregion
+
+        #region CoinTradeRandomPool
+
+        private static RandomPool<LootPoolInfo, LootPoolInfo> _lootPoolPool = null;
+
+        private static Dictionary<LootPoolId, RandomPool<CoinTradeGenerateInfo, CoinTradeInfo>> _coinTradePoolDict =
+            new();
+
+        public static void InitializeCoinTradeGenerator(IMazeMapData mazeMapData)
+        {
+            _coinTradePoolDict.Clear();
+            var _ = new List<LootPoolInfo>();
+            foreach (var lootDef in mazeMapData.LootPools)
+            {
+                var id = lootDef.Id;
+                var lootPool = LootPoolConfigReader.GetLootPoolInfo(id);
+                _.Add(lootPool);
+                var coinTrades = new List<CoinTradeGenerateInfo>();
+                coinTrades.AddRange(lootPool.cards.Select(CreateCoinTradeGenerateInfo));
+                coinTrades.AddRange(lootPool.plantBooks.Select(CreateCoinTradeGenerateInfo));
+                if (lootPool.seedSlot) coinTrades.Add(CreateCoinTradeGenerateInfoOfSeedSlot());
+                _coinTradePoolDict.Add(id,
+                    new RandomPool<CoinTradeGenerateInfo, CoinTradeInfo>(coinTrades, 1, RandomHelper.Game));
+            }
+
+            _lootPoolPool = new RandomPool<LootPoolInfo, LootPoolInfo>(_, 1, RandomHelper.Game);
+        }
+
+        public static CoinTradeData CreateRandomCoinTradeDataByMazeMap()
+        {
+            var lootPoolId = _lootPoolPool.GetRandomOutput().lootPoolDef.Id;
+            return CreateCoinTradeData(_coinTradePoolDict[lootPoolId].GetRandomOutput());
+        }
+
+        #endregion
+
+        #region RecipeRandomPool
 
         public static RandomPool<RecipeGenerateInfo, RecipeInfo> CreateRelatedRecipePool(HashSet<PlantId> plantIds)
         {
             var relatedRecipes = new List<RecipeGenerateInfo>();
-            foreach (var recipeGenerateInfo in TradeConfigReader.GetAllRecipeGenerateInfos())
+            foreach (var recipeGenerateInfo in RecipeConfigReader.GetAllRecipeGenerateInfos())
             {
                 foreach (var recipePlantId in recipeGenerateInfo.recipeInfo.inputCards)
                 {

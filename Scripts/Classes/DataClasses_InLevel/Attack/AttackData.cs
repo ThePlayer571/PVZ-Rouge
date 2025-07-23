@@ -98,6 +98,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
             this.damage = other.damage;
             this.punchForce = other.punchForce;
             this.punchType = other.punchType;
+            this.punchFrom = other.punchFrom;
             this.isFrameDamage = other.isFrameDamage;
             this.effects = other.effects.Select(data => new EffectData(data)).ToList();
         }

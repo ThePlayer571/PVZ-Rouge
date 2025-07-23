@@ -51,6 +51,8 @@ namespace TPL.PVZR.Helpers.New.DataReader
             {
                 _gameDefinitionDict.Add(gameConfig.gameDef, gameConfig.gameDefinition);
             }
+
+            resLoader.Recycle2Cache();
         }
 
         #endregion

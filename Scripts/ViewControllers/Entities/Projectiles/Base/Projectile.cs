@@ -8,9 +8,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
         protected override void Awake()
         {
             base.Awake();
-            _Rigidbody = this.GetComponent<Rigidbody2D>();
         }
 
-        protected Rigidbody2D _Rigidbody { get; private set; }
     }
+
 }

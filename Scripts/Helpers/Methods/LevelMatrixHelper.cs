@@ -53,6 +53,8 @@ namespace TPL.PVZR.Helpers.New.Methods
                         DebugTilemap.SetTile(new Vector3Int(x, y, 0), climbable);
                 }
             }
+
+            resLoader.Recycle2Cache();
         }
     }
 }

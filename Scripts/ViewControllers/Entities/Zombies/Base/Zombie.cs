@@ -86,6 +86,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             FSM.AddState(ZombieState.DefaultTargeting, new DefaultTargetingState(FSM, this));
             FSM.AddState(ZombieState.Attacking, new AttackingState(FSM, this));
             FSM.AddState(ZombieState.Frozen, new FrozenState(FSM, this));
+            FSM.AddState(ZombieState.Dead, new DeadState(FSM, this));
 
             effectGroup.OnEffectAdded.Register(effectData =>
             {
@@ -110,7 +111,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                 .UnRegisterWhenGameObjectDestroyed(this);
             //
             OnInit();
-            // 等待OnInit后面设置armorData
+            // ↓需要等待OnInit设置armorData
             SetUpFSM();
             ActionKit.DelayFrame(1, OnInitialized.Trigger).Start(this);
         }
@@ -205,7 +206,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         public virtual AttackData TakeAttack(AttackData attackData)
         {
-            if (attackData == null) return null;
+            if (attackData == null || FSM.CurrentStateId == ZombieState.Dead) return null;
             Health.Value = Mathf.Clamp(Health.Value - attackData.Damage, 0, Mathf.Infinity);
             // !!!! 如果出现bug（力的生成和实际位置不一致）请看这里：质心不是Rigidbody2D
             _Rigidbody2D.AddForce(attackData.Punch(ZombieNode.MassCenter.position), ForceMode2D.Impulse);

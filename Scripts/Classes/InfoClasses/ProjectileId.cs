@@ -11,6 +11,8 @@ namespace TPL.PVZR.Classes.InfoClasses
         MungBean = 3,
         Spike = 4,
         Star = 5,
-        SnipePea = 6
+        SnipePea = 6,
+        FirePea = 7,
+        GhostFirePea = 8,
     }
 }

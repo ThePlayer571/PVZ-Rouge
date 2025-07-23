@@ -25,7 +25,8 @@ namespace TPL.PVZR.ViewControllers.Others.UI
 
         public void SpawnFlags()
         {
-            var flagPrefab = ResLoader.Allocate().LoadSync<GameObject>(Levelstatebarflag_prefab.BundleName,
+            var resLoader = ResLoader.Allocate();
+            var flagPrefab = resLoader.LoadSync<GameObject>(Levelstatebarflag_prefab.BundleName,
                 Levelstatebarflag_prefab.LevelStateBarFlag);
             var hugeWaves = _LevelModel.LevelData.HugeWaves;
             foreach (var hugeWave in hugeWaves)
@@ -33,16 +34,18 @@ namespace TPL.PVZR.ViewControllers.Others.UI
                 var rate = (float)hugeWave / _LevelModel.LevelData.TotalWaveCount;
                 var flagX = Mathf.Lerp(FlagStartX, FlagEndX, rate);
                 var rt = flagPrefab.Instantiate().transform as RectTransform;
-                rt.SetParent(Flags,false);
+                rt.SetParent(Flags, false);
                 rt.anchoredPosition = new Vector2(flagX, FlagStartY);
                 _flagsDict.Add(hugeWave, rt);
             }
+
+            resLoader.Recycle2Cache();
         }
 
         private void Awake()
         {
             _LevelModel = this.GetModel<ILevelModel>();
-            
+
             _flagsDict = new Dictionary<int, RectTransform>();
 
             _LevelModel.CurrentWave.Register(wave =>
@@ -54,12 +57,10 @@ namespace TPL.PVZR.ViewControllers.Others.UI
                     if (_LevelModel.LevelData.HugeWaves.Contains(wave))
                     {
                         var flag = _flagsDict[wave];
-                        flag.DOAnchorPosY(FlagEndY,1f).SetEase(Ease.InOutQuad);
+                        flag.DOAnchorPosY(FlagEndY, 1f).SetEase(Ease.InOutQuad);
                     }
                 }
             ).UnRegisterWhenGameObjectDestroyed(this);
-            
-            
         }
 
         public IArchitecture GetArchitecture()

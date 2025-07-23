@@ -30,9 +30,18 @@ namespace TPL.PVZR.Systems.MazeMap
         {
             _activeTrades.Clear();
 
-            var pool = TradeCreator.CreateAllCoinTradePool();
-            var _ = pool.GetRandomOutputs(10).Select(info => new CoinTradeData(info));
-            _activeTrades.AddRange(_);
+            for (int i = 0; i < 10; i++)
+            {
+                var coinTradeData = TradeCreator.CreateRandomCoinTradeDataByMazeMap();
+                if (coinTradeData.LootData.LootType == LootType.SeedSlot &&
+                    !_GameModel.GameData.InventoryData.HasAvailableSeedSlotSlots())
+                {
+                    i--;
+                    continue;
+                }
+
+                _activeTrades.Add(coinTradeData);
+            }
 
             if (_hasTradeData) OnRewrite.Trigger();
             _hasTradeData = true;
@@ -53,6 +62,15 @@ namespace TPL.PVZR.Systems.MazeMap
             {
                 switch (e.GamePhase)
                 {
+                    case GamePhase.GameInitialization:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.EnterNormal:
+                                TradeCreator.InitializeCoinTradeGenerator(_GameModel.GameData.MazeMapData);
+                                break;
+                        }
+
+                        break;
                     case GamePhase.MazeMapInitialization:
                         switch (e.PhaseStage)
                         {

@@ -9,11 +9,11 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 {
-    public class Spike : Projectile, IPeaLikeInit
+    public sealed  class Spike : Projectile, IPeaLikeInit
     {
         public void Initialize(Vector2 direction)
         {
-            _Rigidbody.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;
+            _Rigidbody2D.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;
         }
 
         private List<GameObject> _attacked = new List<GameObject>();

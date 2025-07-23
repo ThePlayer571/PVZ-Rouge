@@ -28,6 +28,8 @@ namespace TPL.PVZR.Helpers.New.DataReader
             {
                 _plantBookDefinitionDict.Add(config.plantBookId, config.plantBookDefinition);
             }
+
+            resLoader.Recycle2Cache();
         }
 
         #endregion
