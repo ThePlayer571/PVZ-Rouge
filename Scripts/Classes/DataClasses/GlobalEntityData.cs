@@ -9,6 +9,7 @@ namespace TPL.PVZR.Classes.DataClasses
         public float Plant_Sunflower_SpawnSunInterval = 24f;
         public float Plant_Sunflower_InitialSpawnSunInterval = 5f;
         public float Plant_Wallnut_Health = 4000f;
+        public float Plant_Tallnut_Health = 8000f;
         public float Plant_Marigold_SpawnCoinInterval = 24f;
         public float Plant_Marigold_InitialSpawnCoinInterval = 1f;
         public float Plant_Repeater_PeaInterval = 0.1f;

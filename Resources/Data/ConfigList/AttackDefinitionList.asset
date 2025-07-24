@@ -35,3 +35,7 @@ MonoBehaviour:
     attackDefinition: {fileID: 11400000, guid: 8ca82be5a83b95f4cbaad5b592dca7ce, type: 2}
   - attackId: 10
     attackDefinition: {fileID: 11400000, guid: 0606fb782390563479aaa71ecdcd1383, type: 2}
+  - attackId: 11
+    attackDefinition: {fileID: 11400000, guid: 0606fb782390563479aaa71ecdcd1383, type: 2}
+  - attackId: 12
+    attackDefinition: {fileID: 11400000, guid: 0606fb782390563479aaa71ecdcd1383, type: 2}

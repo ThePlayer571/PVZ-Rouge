@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
+using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
@@ -13,6 +14,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 {
     public sealed class Star : Projectile, IPeaLikeInit
     {
+        public override ProjectileId Id { get; } = ProjectileId.Star;
+
         public void Initialize(Vector2 direction)
         {
             _Rigidbody2D.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;

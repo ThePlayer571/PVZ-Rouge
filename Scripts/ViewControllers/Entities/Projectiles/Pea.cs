@@ -13,6 +13,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 {
     public sealed class Pea : Projectile, IPeaLikeInit, ICanBeIgnited
     {
+        public override ProjectileId Id { get; } = ProjectileId.Pea;
+
         public void Initialize(Vector2 direction)
         {
             _Rigidbody2D.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;
@@ -42,15 +44,15 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             {
                 case IgnitionType.Fire:
                     _attacked = true;
-                    this.Remove();
                     EntityFactory.ProjectileFactory.CreatePea(ProjectileId.FirePea, _Rigidbody2D.velocity,
                         _Rigidbody2D.position);
+                    this.Remove();
                     break;
                 case IgnitionType.GhostFire:
                     _attacked = true;
-                    this.Remove();
                     EntityFactory.ProjectileFactory.CreatePea(ProjectileId.GhostFirePea, _Rigidbody2D.velocity,
                         _Rigidbody2D.position);
+                    this.Remove();
                     break;
                 default:
                     break;

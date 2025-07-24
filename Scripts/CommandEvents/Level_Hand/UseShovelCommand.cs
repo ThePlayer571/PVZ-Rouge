@@ -35,11 +35,10 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs
                     "尝试调用SpawnPlantCommand，但HandState: {_HandSystem.HandInfo.Value.HandState}"); // 手上持有铲子
             if (!_LevelGridModel.IsValidPos(_position)) throw new ArgumentException($"在地图外ShovelPlant，pos:{_position}");
             var targetCell = _LevelGridModel.LevelMatrix[this._position.x, this._position.y];
-            if (targetCell.CellPlantInfo.IsEmpty)
+            if (targetCell.CellPlantData.IsEmpty())
                 throw new ArgumentException($"此处不存在植物，却调用了ShovelPlantCommand，pos:{_position}");
             //
-            //todo 铲除各种位置的植物的方案
-            var plant = targetCell.CellPlantInfo.Normal;
+            var plant = targetCell.CellPlantData.GetPlantToShovelFirst();
             this.SendEvent<OnShovelUsed>();
             this.SendCommand<RemovePlantCommand>(new RemovePlantCommand(plant));
         }

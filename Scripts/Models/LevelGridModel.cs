@@ -50,45 +50,31 @@ namespace TPL.PVZR.Models
 
         public bool CanSpawnPlantOn(Vector2Int pos, PlantDef def)
         {
-            var allowedPlantingLocation = PlantConfigReader.GetAllowedPlantingLocation(def);
-            switch (allowedPlantingLocation)
-            {
-                case AllowedPlantingLocation.OnDirt or AllowedPlantingLocation.OnSamePlantAndDirt:
-                {
-                    if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
+            var unionConditionGroup = PlantConfigReader.GetAllowedPlantingLocations(def);
 
-                    var cell = LevelMatrix[pos.x, pos.y];
-                    var belowCell = LevelMatrix[pos.x, pos.y - 1];
-                    return cell.IsEmpty && belowCell.IsNormalGrowable;
-                }
-                case AllowedPlantingLocation.OnPlat:
-                {
-                    if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
-                    if (Player.Instance.CellPos == pos) return false; // 位置与玩家重合
+            if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
+            var cell = LevelMatrix[pos.x, pos.y];
+            var belowCell = LevelMatrix[pos.x, pos.y - 1];
 
-                    var cell = LevelMatrix[pos.x, pos.y];
-                    var belowCell = LevelMatrix[pos.x, pos.y - 1];
-                    return cell.IsEmpty && belowCell.IsPlat; // 植物逻辑
-                }
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            return unionConditionGroup.Any(condition => condition.CheckSpawn(def, cell, belowCell));
         }
 
         public bool CanStackPlantOn(Vector2Int pos, PlantDef def)
         {
-            var allowedPlantingLocation = PlantConfigReader.GetAllowedPlantingLocation(def);
-            switch (allowedPlantingLocation)
-            {
-                case AllowedPlantingLocation.OnSamePlantAndDirt:
-                {
-                    if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
+            var unionConditionGroup = PlantConfigReader.GetAllowedPlantingLocations(def);
 
-                    var cell = LevelMatrix[pos.x, pos.y];
-                    return cell.CellPlantInfo.Any(plant => plant is ICanBeStackedOn s && s.CanStack(def));
-                }
-                default:
-                    return false;
+            if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
+            var cell = LevelMatrix[pos.x, pos.y];
+            var belowCell = LevelMatrix[pos.x, pos.y - 1];
+
+            //todo 不同植物叠种的支持
+            if (unionConditionGroup.Any(condition => condition.CheckStack(def, cell, belowCell)))
+            {
+                return (cell.CellPlantData.GetPlant(def) as ICanBeStackedOn).CanStack(def);
+            }
+            else
+            {
+                return false;
             }
         }
 

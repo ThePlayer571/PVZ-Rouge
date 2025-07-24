@@ -82,7 +82,7 @@ namespace TPL.PVZR.ViewControllers.Managers
                 var position = HandHelper.HandCellPos();
                 if (!_LevelGridModel.IsValidPos(position)) return; // 手在地图内部
                 var targetCell = _LevelGridModel.LevelMatrix[position.x, position.y];
-                if (targetCell.IsEmpty) return;
+                if (targetCell.CellPlantData.IsEmpty()) return;
                 //
                 this.SendCommand<UseShovelCommand>(new UseShovelCommand(position));
             };

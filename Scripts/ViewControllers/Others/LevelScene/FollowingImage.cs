@@ -1,3 +1,4 @@
+using System;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Systems.Level_Data;
@@ -15,6 +16,8 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
         private IHandSystem _HandSystem;
 
         private bool _following;
+
+        private ResLoader _resLoader;
 
         private void Update()
         {
@@ -38,11 +41,10 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
 
         private void Awake()
         {
-            var resLoader = ResLoader.Allocate();
+            _resLoader = ResLoader.Allocate();
             _Image = this.GetComponent<Image>();
-            ShovelSprite = resLoader.LoadSync<Sprite>(Shovel_png.BundleName, Shovel_png.Shovel);
+            ShovelSprite = _resLoader.LoadSync<Sprite>(Shovel_png.BundleName, Shovel_png.Shovel);
 
-            resLoader.Recycle2Cache();
 
             _HandSystem = this.GetSystem<IHandSystem>();
             _HandSystem.HandInfo.RegisterWithInitValue(val =>
@@ -69,6 +71,11 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
                         break;
                 }
             }).UnRegisterWhenGameObjectDestroyed(this);
+        }
+
+        private void OnDestroy()
+        {
+            _resLoader.Recycle2Cache();
         }
 
         public IArchitecture GetArchitecture()

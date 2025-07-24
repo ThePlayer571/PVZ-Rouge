@@ -31,15 +31,25 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
         public Direction2 Direction { get; protected set; }
         public float HealthPoint { get; protected set; }
 
-        #endregion
+        public Cell AttachedCell { get; private set; }
 
+        #endregion
 
         #region 被攻击
 
         public virtual AttackData TakeAttack(AttackData attackData)
         {
-            HealthPoint = Mathf.Clamp(HealthPoint - attackData.Damage, 0, Mathf.Infinity);
-            if (HealthPoint <= 0) DieWith(attackData);
+            var overlay = AttachedCell.CellPlantData.GetPlant(PlacementSlot.Overlay);
+            if (overlay == null)
+            {
+                HealthPoint = Mathf.Clamp(HealthPoint - attackData.Damage, 0, Mathf.Infinity);
+                if (HealthPoint <= 0) DieWith(attackData);
+            }
+            else
+            {
+                overlay.TakeAttack(attackData);
+            }
+
             return null;
         }
 
@@ -61,6 +71,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
         {
             this.Direction = direction;
             gameObject.LocalScaleX(direction.ToInt());
+            AttachedCell = this.GetModel<ILevelGridModel>().GetCell(CellPos);
 
             OnInit();
             OnViewInit();

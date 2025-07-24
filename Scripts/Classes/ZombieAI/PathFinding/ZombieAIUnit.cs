@@ -203,15 +203,15 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                          * 001 -> Ladder
                          * 011 -> PlatWithLadder
                          */
-                        bool _1 = levelMatrix[x, y].IsEmpty;
-                        bool _2 = levelMatrix[x, y - 1].IsBlock;
-                        bool _3 = levelMatrix[x, y].IsClimbable;
+                        bool _1 = levelMatrix[x, y].Is(CellTypeId.TileEmpty);
+                        bool _2 = levelMatrix[x, y - 1].Is(CellTypeId.Block);
+                        bool _3 = levelMatrix[x, y].Is(CellTypeId.Climbable);
 
                         // ↓ 一些稍微复杂的逻辑
                         if (_1 && _2 && !_3) //Plat
                         {
                             if (_3) $"find _3 at ({x},{y}), {_3}".LogWarning();
-                            var allowPassHeight = levelMatrix[x, y + 1].IsEmpty
+                            var allowPassHeight = levelMatrix[x, y + 1].Is(CellTypeId.TileEmpty)
                                 ? AllowedPassHeight.TwoAndMore
                                 : AllowedPassHeight.One;
                             var newVertex = new Vertex(x, y, VertexType.Plat, allowPassHeight);
@@ -312,14 +312,15 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                     foreach (int fallX in new int[] { vertex.x - 1, vertex.x + 1 }) // 检测左右两格
                     {
                         // [STEP 0] 排除不可能Fall的情况
-                        if (levelMatrix[fallX, vertex.y].IsBlock) continue; // 唯一通路被墙堵住
+                        if (levelMatrix[fallX, vertex.y].Is(CellTypeId.Block)) continue; // 唯一通路被墙堵住
                         if (mapMatrix[fallX, vertex.y] != null) continue; // 应该是WalkJump
                         if (mapMatrix[fallX, vertex.y - 1] != null) continue; // 应该是WalkJump
 
                         // 此时已经确认绝对是Fall
                         // [STEP 1] 获取通路高度
                         AllowedPassHeight allowedPassHeight;
-                        if (levelMatrix[fallX, vertex.y].IsEmpty && levelMatrix[fallX, vertex.y + 1].IsBlock)
+                        if (levelMatrix[fallX, vertex.y].Is(CellTypeId.TileEmpty) &&
+                            levelMatrix[fallX, vertex.y + 1].Is(CellTypeId.Block))
                         {
                             allowedPassHeight = AllowedPassHeight.One;
                         }
@@ -390,7 +391,8 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                         int xToTest, yToTest;
                         xToTest = a.y < b.y ? a.x : b.x; // 较矮的那格
                         yToTest = Mathf.Max(a.y, b.y); // 较高的那个
-                        return levelMatrix[xToTest, yToTest].IsEmpty || levelMatrix[xToTest, yToTest].IsClimbable;
+                        return levelMatrix[xToTest, yToTest].Is(CellTypeId.TileEmpty) ||
+                               levelMatrix[xToTest, yToTest].Is(CellTypeId.Climbable);
                     }
                 }
             }

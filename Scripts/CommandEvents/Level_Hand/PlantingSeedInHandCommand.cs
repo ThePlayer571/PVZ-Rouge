@@ -54,7 +54,7 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs
             else if (canStack)
             {
                 var plant =
-                    _LevelGridModel.GetCell(cellPos).CellPlantInfo.First(plant => plant.Def == def) as ICanBeStackedOn;
+                    _LevelGridModel.GetCell(cellPos).CellPlantData.GetPlant(def) as ICanBeStackedOn;
                 plant.StackAdd();
             }
         }

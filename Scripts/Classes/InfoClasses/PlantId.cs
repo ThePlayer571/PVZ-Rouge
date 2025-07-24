@@ -26,6 +26,9 @@ namespace TPL.PVZR.Classes.InfoClasses
         GatlingPea = 18,
         SniperPea = 19,
         PeaPod = 20,
+        Torchwood = 21,
+        Tallnut = 22,
+        Pumpkin = 23,
 
 
         // Blover,

@@ -39,7 +39,7 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
                     if (!HandHelper.DaveCanReachHand()) return false;
                     if (!_LevelGridModel.IsValidPos(handCellPos)) return false;
                     var handOnCell = _LevelGridModel.GetCell(handCellPos);
-                    return !handOnCell.CellPlantInfo.IsEmpty;
+                    return handOnCell.CellPlantData.HasPlant();
                 }
                 case HandState.HaveSeed:
                 {

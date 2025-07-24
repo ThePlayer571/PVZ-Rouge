@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
+using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
@@ -9,8 +10,10 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 {
-    public sealed  class Spike : Projectile, IPeaLikeInit
+    public sealed class Spike : Projectile, IPeaLikeInit
     {
+        public override ProjectileId Id { get; } = ProjectileId.Spike;
+
         public void Initialize(Vector2 direction)
         {
             _Rigidbody2D.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;

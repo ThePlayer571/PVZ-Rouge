@@ -1,6 +1,7 @@
 using System;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
+using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
@@ -11,6 +12,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 {
     public sealed class FirePea : Projectile, IPeaLikeInit
     {
+        public override ProjectileId Id { get; } = ProjectileId.FirePea;
         public void Initialize(Vector2 direction)
         {
             _Rigidbody2D.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;
@@ -39,5 +41,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 
             this.Remove();
         }
+
     }
 }

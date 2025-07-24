@@ -23,11 +23,11 @@ namespace TPL.PVZR.Helpers.New.Methods
                     var pos = new Vector3Int(x, y, 0);
                     var cell = new Cell(x, y);
                     LevelMatrix[x, y] = cell;
-                    if (LevelTileMap.Bound.HasTile(pos)) cell.TileState = TileState.Bound;
-                    else if (LevelTileMap.Ground.HasTile(pos)) cell.TileState = TileState.Barrier;
-                    else if (LevelTileMap.Dirt.HasTile(pos)) cell.TileState = TileState.Dirt;
-                    else if (LevelTileMap.Ladder.HasTile(pos)) cell.TileState = TileState.Ladder;
-                    else cell.TileState = TileState.Empty;
+                    if (LevelTileMap.Bound.HasTile(pos)) cell.CellTileState = TileState.Bound;
+                    else if (LevelTileMap.Ground.HasTile(pos)) cell.CellTileState = TileState.Barrier;
+                    else if (LevelTileMap.Dirt.HasTile(pos)) cell.CellTileState = TileState.Dirt;
+                    else if (LevelTileMap.Ladder.HasTile(pos)) cell.CellTileState = TileState.Ladder;
+                    else cell.CellTileState = TileState.Empty;
                 }
             }
 
@@ -45,11 +45,11 @@ namespace TPL.PVZR.Helpers.New.Methods
             {
                 for (int y = 0; y < LevelMatrix.Columns; y++)
                 {
-                    if (LevelMatrix[x, y].TileState == TileState.Dirt)
+                    if (LevelMatrix[x, y].CellTileState == TileState.Dirt)
                         DebugTilemap.SetTile(new Vector3Int(x, y, 0), dirt);
-                    else if (LevelMatrix[x, y].TileState == TileState.Barrier)
+                    else if (LevelMatrix[x, y].CellTileState == TileState.Barrier)
                         DebugTilemap.SetTile(new Vector3Int(x, y, 0), barrier);
-                    else if (LevelMatrix[x, y].TileState == TileState.Ladder)
+                    else if (LevelMatrix[x, y].CellTileState == TileState.Ladder)
                         DebugTilemap.SetTile(new Vector3Int(x, y, 0), climbable);
                 }
             }

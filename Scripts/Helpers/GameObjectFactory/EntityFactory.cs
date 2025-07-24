@@ -213,7 +213,9 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
                         [ProjectileId.Star] =
                             _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.Star),
                         [ProjectileId.SnipePea] =
-                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.SnipePea)
+                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.SnipePea),
+                        [ProjectileId.FirePea] =
+                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.FirePea),
                     };
             }
 

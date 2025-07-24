@@ -38,5 +38,10 @@ namespace TPL.PVZR.Classes.InfoClasses
         {
             return !left.Equals(right);
         }
+
+        public static implicit operator PlantId(PlantDef def)
+        {
+            return def.Id;
+        }
     }
 }

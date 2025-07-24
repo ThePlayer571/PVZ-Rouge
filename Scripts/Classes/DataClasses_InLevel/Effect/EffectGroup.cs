@@ -16,6 +16,12 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
 
         private List<EffectData> _effects { get; set; } = new();
 
+        private void RemoveEffect(EffectData effectData)
+        {
+            _effects.Remove(effectData);
+            OnEffectRemoved.Trigger(effectData);
+        }
+
         public bool ContainsEffect(EffectId effectId)
         {
             return _effects.Any(data => data.effectId == effectId);
@@ -44,6 +50,20 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
             }
         }
 
+        public void RemoveEffect(params EffectId[] effectIds)
+        {
+            for (int i = 0; i < _effects.Count; i++)
+            {
+                var effectData = _effects[i];
+                if (effectIds.Any(id => id == effectData.effectId))
+                {
+                    RemoveEffect(effectData);
+                    i--;
+                }
+            }
+        }
+
+
         public void Update(float deltaTime)
         {
             List<EffectData> toRemove = new List<EffectData>();
@@ -58,8 +78,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
 
             foreach (var effectData in toRemove)
             {
-                _effects.Remove(effectData);
-                OnEffectRemoved.Trigger(effectData);
+                RemoveEffect(effectData);
             }
         }
 

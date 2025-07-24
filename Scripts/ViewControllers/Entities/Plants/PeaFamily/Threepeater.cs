@@ -1,5 +1,6 @@
 using QFramework;
 using TPL.PVZR.Classes;
+using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
@@ -62,7 +63,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                         foreach (var fp in _firePoints)
                         {
                             var cell = _levelGridModel.GetCell(fp.position);
-                            if (cell.IsBlock) continue;
+                            if (cell.Is(CellTypeId.Block)) continue;
                             EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
                                 fp.position);
                         }

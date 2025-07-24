@@ -4,5 +4,6 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
     {
         Chill,
         Freeze,
+        Fire,
     }
 }

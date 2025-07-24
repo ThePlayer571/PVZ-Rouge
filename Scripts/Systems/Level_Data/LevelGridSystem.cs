@@ -21,14 +21,14 @@ namespace TPL.PVZR.Systems.Level_Data
 
             this.RegisterEvent<OnPlantSpawned>(e =>
             {
-                var targetCell = _LevelGridModel.GetCell(e.CellPos);
-                targetCell.SetPlant(e.Plant, PlantConfigReader.GetPlacementSlotInCell(e.Plant.Def));
+                var targetCell = e.Plant.AttachedCell;
+                targetCell.CellPlantData.SetPlant(e.Plant, PlantConfigReader.GetPlacementSlot(e.Plant.Def));
             });
-            
+
             this.RegisterEvent<OnPlantRemoved>(e =>
             {
-                var targetCell = _LevelGridModel.GetCell(e.Plant.CellPos);
-                targetCell.SetPlant(null, PlantConfigReader.GetPlacementSlotInCell(e.Plant.Def));
+                var targetCell = e.Plant.AttachedCell;
+                targetCell.CellPlantData.SetPlant(null, PlantConfigReader.GetPlacementSlot(e.Plant.Def));
             });
         }
     }

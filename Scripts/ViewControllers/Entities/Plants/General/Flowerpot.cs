@@ -26,9 +26,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             if (LevelGridModel.IsValidPos(upCellPos))
             {
                 var cell = LevelGridModel.GetCell(upCellPos);
-                if (!cell.CellPlantInfo.IsEmpty)
+                if (cell.CellPlantData.HasPlant())
                 {
-                    cell.CellPlantInfo.Normal.Kill();
+                    foreach (var plant in cell.CellPlantData)
+                    {
+                        plant.Kill();
+                    }
                 }
             }
         }

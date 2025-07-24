@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using QFramework;
 using TPL.PVZR.Classes;
@@ -109,6 +110,15 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             this.Direction
                 .RegisterWithInitValue(direction => { transform.LocalScaleX(direction.ToInt()); })
                 .UnRegisterWhenGameObjectDestroyed(this);
+            // efffct反应
+            effectGroup.OnEffectAdded.Register(effectData =>
+            {
+                if (effectData.effectId == EffectId.Fire)
+                {
+                    effectGroup.RemoveEffect(EffectId.Chill, EffectId.Freeze);
+                }
+            }).UnRegisterWhenGameObjectDestroyed(this);
+
             //
             OnInit();
             // ↓需要等待OnInit设置armorData
@@ -117,6 +127,31 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         }
 
         #endregion
+
+        #region 实体生命周期
+
+        public abstract void OnInit();
+
+        public override void DieWith(AttackData attackData)
+        {
+            FSM.ChangeState(ZombieState.Dead);
+
+            OnDieFrom.Trigger(attackData);
+            foreach (var armorData in ZombieArmorList)
+            {
+                armorData.OnDestroyed.Trigger();
+            }
+
+            this.SendCommand<OnZombieDeathCommand>(new OnZombieDeathCommand(this));
+        }
+
+        public override void Remove()
+        {
+            throw new NotSupportedException("僵尸的移除应该交给ZombieFactory");
+        }
+
+        #endregion
+
 
         #region 字段
 
@@ -206,10 +241,13 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         public virtual AttackData TakeAttack(AttackData attackData)
         {
+            // 如果出现bug：力的生成和实际位置不一致。请看这里：质心不是Rigidbody2D
             if (attackData == null || FSM.CurrentStateId == ZombieState.Dead) return null;
+
             Health.Value = Mathf.Clamp(Health.Value - attackData.Damage, 0, Mathf.Infinity);
-            // !!!! 如果出现bug（力的生成和实际位置不一致）请看这里：质心不是Rigidbody2D
+
             _Rigidbody2D.AddForce(attackData.Punch(ZombieNode.MassCenter.position), ForceMode2D.Impulse);
+
             foreach (var effectData in attackData.Effects)
             {
                 this.GiveEffect(effectData);
@@ -218,28 +256,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             if (Health.Value <= 0) DieWith(attackData);
 
             return null;
-        }
-
-        #endregion
-
-        #region 实体生命周期
-
-        public abstract void OnInit();
-
-        public override void DieWith(AttackData attackData)
-        {
-            OnDieFrom.Trigger(attackData);
-            foreach (var armorData in ZombieArmorList)
-            {
-                armorData.OnDestroyed.Trigger();
-            }
-
-            this.SendCommand<OnZombieDeathCommand>(new OnZombieDeathCommand(this));
-        }
-
-        public override void Remove()
-        {
-            throw new NotSupportedException("僵尸的移除应该交给ZombieFactory");
         }
 
         #endregion

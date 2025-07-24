@@ -75,21 +75,51 @@ namespace TPL.PVZR.Helpers.New.DataReader
             throw new ArgumentException($"找不到对应的PlantPrefab: {def.Id}, {def.Variant}");
         }
 
-        public static AllowedPlantingLocation GetAllowedPlantingLocation(PlantDef def)
+        public static List<PlantingLocationCondition> GetAllowedPlantingLocations(PlantDef def)
+        {
+            var key = GetPlantingLocationTypeId(def);
+            if (_plantingLocationConditionDict.TryGetValue(key, out var condition))
+            {
+                return condition;
+            }
+            else
+            {
+                var conditions = new List<PlantingLocationCondition>();
+                if (key.Item1 != PlantingLocationTypeId.NotSet)
+                {
+                    conditions.Add(new PlantingLocationCondition(key.Item1));
+                }
+
+                if (key.Item2 != PlantingLocationTypeId.NotSet)
+                {
+                    conditions.Add(new PlantingLocationCondition(key.Item2));
+                }
+
+                _plantingLocationConditionDict[key] = conditions;
+                return conditions;
+            }
+        }
+
+        private static Dictionary<(PlantingLocationTypeId, PlantingLocationTypeId), List<PlantingLocationCondition>>
+            _plantingLocationConditionDict = new();
+
+        public static (PlantingLocationTypeId, PlantingLocationTypeId) GetPlantingLocationTypeId(PlantDef def)
         {
             return def.Id switch
             {
-                PlantId.Flowerpot => AllowedPlantingLocation.OnPlat,
-                PlantId.PeaPod => AllowedPlantingLocation.OnSamePlantAndDirt,
-                _ => AllowedPlantingLocation.OnDirt,
+                PlantId.Flowerpot => (PlantingLocationTypeId.OnPlat, PlantingLocationTypeId.NotSet),
+                PlantId.PeaPod => (PlantingLocationTypeId.OnPlatOfNormal, PlantingLocationTypeId.OnSamePlant_OnlyStack),
+                PlantId.Pumpkin => (PlantingLocationTypeId.OnPlatOfNormal, PlantingLocationTypeId.OnAnyPlant),
+                _ => (PlantingLocationTypeId.OnPlatOfNormal, PlantingLocationTypeId.NotSet),
             };
         }
 
-        public static PlacementSlotInCell GetPlacementSlotInCell(PlantDef def)
+        public static PlacementSlot GetPlacementSlot(PlantDef def)
         {
             return def.Id switch
             {
-                _ => PlacementSlotInCell.Normal,
+                PlantId.Pumpkin => PlacementSlot.Overlay,
+                _ => PlacementSlot.Normal,
             };
         }
 
