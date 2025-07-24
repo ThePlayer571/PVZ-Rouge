@@ -33,7 +33,7 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn
             var _PhaseModel = this.GetModel<IPhaseModel>();
 
             // 异常处理
-            if (_PhaseModel.GamePhase != GamePhase.Gameplay)
+            if (!_PhaseModel.GamePhase.IsInRoughPhase(RoughPhase.Level))
                 throw new Exception($"尝试调用RemovePlantCommand，但GameState: {_PhaseModel.GamePhase}"); // 游戏阶段正确
 
             //

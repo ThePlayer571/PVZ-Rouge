@@ -63,6 +63,16 @@ MonoBehaviour:
       Variant: 0
     card: {fileID: 11400000, guid: 7bfea32cc15d161408f1cc966a96627f, type: 2}
     prefab: {fileID: 5666321879131437264, guid: 913d5f65b0036854fb62619b3bedda80, type: 3}
+  - def:
+      Id: 24
+      Variant: 0
+    card: {fileID: 11400000, guid: 4ecf5eaa46139f74d970d78493f1b30e, type: 2}
+    prefab: {fileID: 4096336132780920152, guid: 6ddc15988d8da6d4bb86f038e2fd8572, type: 3}
+  - def:
+      Id: 25
+      Variant: 0
+    card: {fileID: 11400000, guid: fc16673d33ac26a4083c35763678a65d, type: 2}
+    prefab: {fileID: 7520798943962738706, guid: accc1a8f2d593ca4cb1088a10c7f7e64, type: 3}
   Dave:
   - def:
       Id: 8
@@ -84,6 +94,11 @@ MonoBehaviour:
       Variant: 0
     card: {fileID: 11400000, guid: 40d887acda080394d9176542d5f6046b, type: 2}
     prefab: {fileID: 6749017925814759010, guid: cd686f24ff722814cbe2ebbee45a594c, type: 3}
+  - def:
+      Id: 26
+      Variant: 0
+    card: {fileID: 11400000, guid: c9480348cd704f448b979b68546a994a, type: 2}
+    prefab: {fileID: 6631570351419943447, guid: c0bcdb4f0a1622f4a889c35a46ea6ee0, type: 3}
   PeaFamily:
   - def:
       Id: 1
@@ -135,3 +150,9 @@ MonoBehaviour:
       Variant: 0
     card: {fileID: 11400000, guid: d0a253a6d3749d741a58df7209dbb978, type: 2}
     prefab: {fileID: 6458621435112528938, guid: dfa555e08784c19469211808eb552a7b, type: 3}
+  PultFamily:
+  - def:
+      Id: 27
+      Variant: 0
+    card: {fileID: 11400000, guid: 85119fba35fce0c4fb45cab03711cd35, type: 2}
+    prefab: {fileID: 4927946340425652200, guid: 7b88b2aa1f9a5e04696bed7c128ce42b, type: 3}

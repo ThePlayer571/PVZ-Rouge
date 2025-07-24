@@ -143,4 +143,29 @@ namespace TPL.PVZR.Tools
             return min;
         }
     }
+
+    public static class Physics2DExtensions
+    {
+        /// <summary>
+        /// 从起点沿方向发射射线，返回第一个阻挡物体的点；若无阻挡则返回最大距离点。
+        /// </summary>
+        /// <param name="origin">射线起点</param>
+        /// <param name="direction">射线方向（无需单位化，内部自动归一）</param>
+        /// <param name="maxDistance">最大检测距离</param>
+        /// <param name="blockingLayer">阻挡层 LayerMask</param>
+        /// <returns>命中点或最大距离点</returns>
+        public static Vector2 GetRaycastEndPoint(Vector2 origin, Vector2 direction, float maxDistance,
+            LayerMask blockingLayer)
+        {
+            var hit = Physics2D.Raycast(origin, direction.normalized, maxDistance, blockingLayer);
+            if (hit.collider)
+            {
+                return hit.point;
+            }
+            else
+            {
+                return origin + direction.normalized * maxDistance;
+            }
+        }
+    }
 }

@@ -39,3 +39,13 @@ MonoBehaviour:
     attackDefinition: {fileID: 11400000, guid: 0606fb782390563479aaa71ecdcd1383, type: 2}
   - attackId: 12
     attackDefinition: {fileID: 11400000, guid: 0606fb782390563479aaa71ecdcd1383, type: 2}
+  - attackId: 13
+    attackDefinition: {fileID: 11400000, guid: a3534bad94ae94148bf42a34da01eb27, type: 2}
+  - attackId: 14
+    attackDefinition: {fileID: 11400000, guid: 55a85e9aaea50dc4b81c51278e4facc9, type: 2}
+  - attackId: 15
+    attackDefinition: {fileID: 11400000, guid: e7f52eb1258b1554f84e7a9730ed13cb, type: 2}
+  - attackId: 16
+    attackDefinition: {fileID: 11400000, guid: 7fbe66568d93aa145ad817d1c90a1774, type: 2}
+  - attackId: 17
+    attackDefinition: {fileID: 11400000, guid: 6564dbdd8ec924e4aa7aedf201da56ac, type: 2}

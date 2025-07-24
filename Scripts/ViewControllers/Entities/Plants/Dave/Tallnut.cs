@@ -11,7 +11,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
         protected override void OnInit()
         {
-            HealthPoint = GlobalEntityData.Plant_Wallnut_Health;
+            HealthPoint = GlobalEntityData.Plant_Tallnut_Health;
         }
     }
 }

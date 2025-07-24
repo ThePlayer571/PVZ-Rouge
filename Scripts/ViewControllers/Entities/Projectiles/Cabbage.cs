@@ -1,22 +1,20 @@
-using System;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.ClassCreator;
-using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
-using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
+using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 {
-    public sealed class SnipePea : Projectile, IPeaLikeInit
+    public sealed class Cabbage : Projectile, IPeaLikeInit
     {
-        public override ProjectileId Id { get; } = ProjectileId.SnipePea;
+        public override ProjectileId Id { get; } = ProjectileId.Cabbage;
 
         public void Initialize(Vector2 direction)
         {
-            _Rigidbody2D.velocity = GlobalEntityData.Projectile_SnipePea_Speed * direction;
+            _Rigidbody2D.velocity = GlobalEntityData.Projectile_Cabbage_Speed * direction;
         }
 
         private bool _attacked = false;
@@ -28,7 +26,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             if (other.collider.IsInLayerMask(LayerMask.GetMask("Zombie")))
             {
                 _attacked = true;
-                var attackData = AttackCreator.CreateAttackData(AttackId.SnipePea).WithPunchFrom(transform.position);
+                var attackData = AttackCreator.CreateAttackData(AttackId.Cabbage)
+                    .WithPunchDirection(_Rigidbody2D.velocity);
                 other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
             }
 

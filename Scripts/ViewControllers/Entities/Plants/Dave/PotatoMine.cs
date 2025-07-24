@@ -50,7 +50,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
         private void Boom()
         {
-            var attackData = AttackCreator.CreateAttackData(AttackId.PotatoMineExplosion);
+            var attackData = AttackCreator.CreateAttackData(AttackId.PotatoMineExplosion).WithPunchFrom(this.transform.position);
 
             var targets = Physics2D.OverlapCircleAll(
                 transform.position,

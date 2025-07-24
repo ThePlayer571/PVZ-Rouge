@@ -29,6 +29,10 @@ namespace TPL.PVZR.Classes.InfoClasses
         Torchwood = 21,
         Tallnut = 22,
         Pumpkin = 23,
+        Jalapeno = 24,
+        Squash = 25,
+        BonkChoy = 26,
+        CabbagePult = 27,
 
 
         // Blover,

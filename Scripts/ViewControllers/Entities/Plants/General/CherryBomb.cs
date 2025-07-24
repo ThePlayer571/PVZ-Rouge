@@ -26,7 +26,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
                 foreach (var target in targets)
                 {
-                    var attackData = AttackCreator.CreateAttackData(AttackId.CherryBombExplosion);
+                    var attackData = AttackCreator.CreateAttackData(AttackId.CherryBombExplosion).WithPunchFrom(this.transform.position);
                     target.GetComponent<IAttackable>().TakeAttack(attackData);
                 }
 

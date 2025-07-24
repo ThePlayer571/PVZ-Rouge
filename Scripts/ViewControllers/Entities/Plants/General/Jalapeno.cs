@@ -1,0 +1,46 @@
+using DG.Tweening;
+using TPL.PVZR.Classes;
+using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
+using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Helpers.New.ClassCreator;
+using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
+using TPL.PVZR.ViewControllers.Entities.Plants.Base;
+using UnityEngine;
+
+namespace TPL.PVZR.ViewControllers.Entities.Plants
+{
+    public sealed class Jalapeno : Plant
+    {
+        public override PlantDef Def { get; } = new PlantDef(PlantId.Jalapeno, PlantVariant.V0);
+
+
+        [SerializeField] private Transform RaycastOrigin;
+
+        protected override void OnInit()
+        {
+            transform.DOScale(transform.localScale * 1.5f, 0.3f).onComplete = () =>
+            {
+                var posLeft = Physics2DExtensions.GetRaycastEndPoint(RaycastOrigin.position, Vector2.left,
+                    GlobalEntityData.Plant_Jalapeno_ExplosionLength, LayerMask.GetMask("Barrier"));
+                var posRight = Physics2DExtensions.GetRaycastEndPoint(RaycastOrigin.position, Vector2.right,
+                    GlobalEntityData.Plant_Jalapeno_ExplosionLength, LayerMask.GetMask("Barrier"));
+                var targets = Physics2D.LinecastAll(posLeft, posRight, LayerMask.GetMask("Zombie"));
+
+
+                foreach (var target in targets)
+                {
+                    var attackData = AttackCreator.CreateAttackData(AttackId.JalapenoExplosion).WithPunchFrom(this.transform.position);
+                    target.collider.GetComponent<IAttackable>().TakeAttack(attackData);
+                }
+
+                Kill();
+            };
+        }
+
+        public override AttackData TakeAttack(AttackData attackData)
+        {
+            return null;
+        }
+    }
+}

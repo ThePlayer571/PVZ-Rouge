@@ -10,11 +10,12 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
     {
         private float damage;
         private bool isFrameDamage;
-        
+
         private float punchForce;
         private PunchType punchType;
-        private Vector2 punchFrom;
-        
+        private Vector2? punchFrom;
+        private Vector2? punchDirection;
+
         private List<EffectData> effects;
 
 
@@ -51,6 +52,12 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
             return this;
         }
 
+        public AttackData WithPunchDirection(Vector2 direction)
+        {
+            punchDirection = direction.normalized;
+            return this;
+        }
+
         #endregion
 
         #region 读取数据的函数
@@ -72,17 +79,22 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
 
         public Vector2 Punch(Vector2 punchTo)
         {
-            Vector2 direction;
-            switch (punchType)
+            if (punchDirection.HasValue)
             {
-                case PunchType.Free:
-                    direction = (punchTo - punchFrom).normalized;
-                    break;
-                case PunchType.ConstrainHorizontal:
-                    direction = (punchTo - punchFrom).x > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
-                    break;
-                default: throw new ArgumentException();
+                // todo 史山，未考虑PunchType
+                return punchDirection.Value * punchForce;
             }
+
+            if (!punchFrom.HasValue) throw new Exception("未设置 PunchFrom");
+            var direction = punchType switch
+            {
+                PunchType.Free => (punchTo - punchFrom.Value).normalized,
+                PunchType.ConstrainHorizontal => (punchTo - punchFrom.Value).x > 0
+                    ? new Vector2(1, 0)
+                    : new Vector2(-1, 0),
+                PunchType.ConstrainUp => Vector2.up,
+                _ => throw new ArgumentException()
+            };
 
             return direction * punchForce;
         }
