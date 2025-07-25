@@ -5,16 +5,9 @@ using UnityEngine;
 
 namespace TPL.PVZR.Classes.ConfigLists
 {
-    [Serializable]
-    public class LevelConfig
-    {
-        public LevelDef levelDef;
-        public LevelDefinition levelDefinition;
-    }
-    
     [CreateAssetMenu(fileName = "LevelDefinitionList", menuName = "PVZR_Config/LevelDefinitionList")]
     public class LevelDefinitionList : ScriptableObject
     {
-        public List<LevelConfig> levelDefinitionList;
+        public List<LevelDefinition> levelDefinitionList;
     }
 }

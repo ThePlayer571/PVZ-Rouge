@@ -105,8 +105,11 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public float BaseValue;
 
         [Tooltip("等价定义：1. 最后一波的出怪量 2. 出怪的上限，不能超过此 3. 玩家阵型成型后10秒内能处理的Value总量\n"
-                 + "参考值：plantValue * CellCount")]
+                 + "参考值：\n" +
+                 " - Easy(完全不会被破阵): plantValue * (ValidCellCount - 2) / 4")]
         public float maxValue;
+
+        public float validCellCount;
 
         [Tooltip("难度增长型")] public DifficultyGrowthType DifficultyGrowthType;
 
@@ -136,8 +139,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         [Tooltip("Loot的总价值（推荐：1.5 * 通关所需植物价值）")]
         public float LootValue;
 
-        [Header("Others")]
-        public List<InitialPlantConfig> InitialPlants;
+        [Header("Others")] public List<InitialPlantConfig> InitialPlants;
     }
 
     [Serializable]

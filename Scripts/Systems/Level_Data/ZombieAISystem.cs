@@ -22,8 +22,8 @@ namespace TPL.PVZR.Systems.Level_Data
     public class ZombieAISystem : AbstractSystem, IZombieAISystem
     {
         public IZombieAIUnit ZombieAIUnit { get; private set; }
-        public Vector2Int PlayerVertexPos => new Vector2Int(_playerVertexOnLastFrame.x, _playerVertexOnLastFrame.y);
         private ILevelGridModel _LevelGridModel;
+        public Vector2Int PlayerVertexPos => new Vector2Int(_playerVertexOnLastFrame.x, _playerVertexOnLastFrame.y);
 
         private Vertex _playerVertexOnLastFrame;
 
@@ -78,6 +78,7 @@ namespace TPL.PVZR.Systems.Level_Data
         {
             GameManager.StopOnUpdate(UpdatePlayerCluster);
             ZombieAIUnit = null;
+            _playerVertexOnLastFrame = null;
         }
 
         protected override void OnInit()

@@ -44,7 +44,7 @@ namespace TPL.PVZR.Systems.MazeMap
                 var chosenPlant = RandomHelper.Game.RandomChoose(
                     _GameModel.GameData.InventoryData.Cards
                         .Select(cardData => cardData.CardDefinition.PlantDef.Id));
-                return TradeCreator.CreateCoinTradeData(chosenPlant, 0.4f);
+                return TradeCreator.CreateCoinTradeDataWithRandomVariation(chosenPlant, 0.4f);
             }
             else
             {
@@ -52,7 +52,7 @@ namespace TPL.PVZR.Systems.MazeMap
                     _GameModel.GameData.InventoryData.Cards
                         .Where(data => !data.Locked)
                         .Select(cardData => cardData.CardDefinition.PlantDef.Id));
-                return TradeCreator.CreateCoinTradeData(chosenPlant, 0.4f);
+                return TradeCreator.CreateCoinTradeDataWithRandomVariation(chosenPlant, 0.4f);
             }
         }
 

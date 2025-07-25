@@ -27,9 +27,9 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 .LoadSync<LevelDefinitionList>(Configlist.BundleName, Configlist.LevelDefinitionList)
                 .levelDefinitionList;
             _levelDefinitionDict = new Dictionary<LevelDef, LevelDefinition>();
-            foreach (var levelConfig in levelDefinitionList)
+            foreach (var levelDefinition in levelDefinitionList)
             {
-                _levelDefinitionDict.Add(levelConfig.levelDef, levelConfig.levelDefinition);
+                _levelDefinitionDict.Add(levelDefinition.LevelDef, levelDefinition);
             }
 
             // MazeMapDefinition

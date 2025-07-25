@@ -69,7 +69,7 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
 
         #region CoinTradeData
 
-        public static CoinTradeData CreateCoinTradeData(PlantId plantId, float valueMultiplier = 1f,
+        public static CoinTradeData CreateCoinTradeDataWithRandomVariation(PlantId plantId, float valueMultiplier = 1f,
             float randomVariationRange = 0.1f)
         {
             var coinTradeGenerateInfo = CreateCoinTradeGenerateInfo(plantId);
@@ -127,7 +127,8 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
         public static CoinTradeData CreateRandomCoinTradeDataByMazeMap()
         {
             var lootPoolId = _lootPoolPool.GetRandomOutput().lootPoolDef.Id;
-            return CreateCoinTradeData(_coinTradePoolDict[lootPoolId].GetRandomOutput());
+            return CreateCoinTradeDataWithRandomVariation(_coinTradePoolDict[lootPoolId].GetRandomOutput(),
+                randomVariationRange: 0.2f);
         }
 
         #endregion

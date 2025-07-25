@@ -5,14 +5,22 @@ namespace TPL.PVZR.Classes.DataClasses.Level
     [Serializable]
     public enum LevelId
     {
-        None = 0,
+        NotSet = 0,
 
-        // Dave - N0 - Normal_1
-        Dave_Lawn = 1, Dave_Roof = 2, Dave_堡垒 = 3
+        // Dave
+        Dave_Lawn = 1,
+        Dave_Roof = 2,
+        Dave_Fortress = 3,
+        Dave_Basement, // 僵尸挖地道
+        Dave_Garage, // 实验室（瑞克莫迪）
+        Dave_Graveyard, // 恶心的出怪点
+        Dave_House,
+        Dave_Backyard,
+        Dave_Bridge,
         // Dave_LawnNight = 2,
-        // DaveHouse, DaveHouseNight,DaveHouseRainNight, 
-        // DaveBackyard, DaveBackyardRain,
-        // ,DaveRoofNight,DaveRoofRain,
+        // DaveHouseNight,DaveHouseRainNight, 
+        // DaveBackyardRain,
+        // DaveRoofNight,DaveRoofRain,
         // PlainLawn,
         // WaterlessLawn, WaterlessLawnNight,
         // ConeheadField,

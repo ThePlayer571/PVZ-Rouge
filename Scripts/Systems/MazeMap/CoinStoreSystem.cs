@@ -33,6 +33,7 @@ namespace TPL.PVZR.Systems.MazeMap
             for (int i = 0; i < 10; i++)
             {
                 var coinTradeData = TradeCreator.CreateRandomCoinTradeDataByMazeMap();
+                // 卡槽上限
                 if (coinTradeData.LootData.LootType == LootType.SeedSlot &&
                     !_GameModel.GameData.InventoryData.HasAvailableSeedSlotSlots())
                 {

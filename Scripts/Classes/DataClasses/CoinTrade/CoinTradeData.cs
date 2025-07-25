@@ -20,5 +20,10 @@ namespace TPL.PVZR.Classes.DataClasses.CoinTrade
             : this(coinTradeInfo.coinAmount, LootData.Create(coinTradeInfo.lootInfo))
         {
         }
+
+        public CoinTradeData(CoinTradeData coinTradeData)
+            : this(coinTradeData.CoinAmount, coinTradeData.LootData)
+        {
+        }
     }
 }

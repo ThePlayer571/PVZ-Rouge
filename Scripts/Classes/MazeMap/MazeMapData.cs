@@ -30,11 +30,10 @@ namespace TPL.PVZR.Classes.MazeMap
 
 
         ulong GenerateSeed { get; }
-        
+
         // 奖励池
         IReadOnlyList<LootPoolDef> LootPools { get; }
-        
-        
+
 
         // 通关进度（以最低限度存储）
         IReadOnlyList<ITombData> DiscoveredTombs { get; }
@@ -96,7 +95,8 @@ namespace TPL.PVZR.Classes.MazeMap
             return new LevelDef
             {
                 Id = selectedLevelId,
-                Difficulty = Def.Difficulty
+                Difficulty = Def.Difficulty,
+                StageDifficulty = tombContentConfig.StageDifficulty,
             };
         }
 
@@ -133,7 +133,7 @@ namespace TPL.PVZR.Classes.MazeMap
             TombContentConfigs = definition.TombContentConfigs;
 
             GenerateSeed = seed;
-            
+
             LootPools = definition.LootPools;
         }
 

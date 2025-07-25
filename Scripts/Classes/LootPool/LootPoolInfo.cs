@@ -40,6 +40,6 @@ namespace TPL.PVZR.Classes.LootPool
         Dungeon = 102,
 
         PeaFamily = 201,
-        CultFamily = 202,
+        PultFamily = 202,
     }
 }

@@ -79,6 +79,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
 
         public Vector2 Punch(Vector2 punchTo)
         {
+            if (punchForce == 0) return Vector2.zero;
             if (punchDirection.HasValue)
             {
                 // todo 史山，未考虑PunchType

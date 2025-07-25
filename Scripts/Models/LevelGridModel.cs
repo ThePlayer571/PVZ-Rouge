@@ -56,6 +56,8 @@ namespace TPL.PVZR.Models
             var cell = LevelMatrix[pos.x, pos.y];
             var belowCell = LevelMatrix[pos.x, pos.y - 1];
 
+            if (def.Id == PlantId.Flowerpot && pos == Player.Instance.CellPos) return false;
+
             return unionConditionGroup.Any(condition => condition.CheckSpawn(def, cell, belowCell));
         }
 
