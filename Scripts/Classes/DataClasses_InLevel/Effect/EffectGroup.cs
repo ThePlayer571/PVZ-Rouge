@@ -27,6 +27,16 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
             return _effects.Any(data => data.effectId == effectId);
         }
 
+        public bool ContainsEffectOR(params EffectId[] effectIds)
+        {
+            return effectIds.Any(id => _effects.Any(effect => effect.effectId == id));
+        }
+        
+        public bool ContainsEffectAND(params EffectId[] effectIds)
+        {
+            return effectIds.All(id => _effects.Any(effect => effect.effectId == id));
+        }
+
         public void GiveEffect(EffectData effectData)
         {
             // 可覆盖的效果

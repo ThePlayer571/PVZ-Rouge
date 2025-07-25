@@ -8,9 +8,9 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 {
-    public sealed class Cabbage : Projectile, IPeaLikeInit
+    public sealed class Kernel : Projectile, IPeaLikeInit
     {
-        public override ProjectileId Id { get; } = ProjectileId.Cabbage;
+        public override ProjectileId Id { get; } = ProjectileId.Kernel;
 
         public void Initialize(Vector2 direction)
         {
@@ -27,7 +27,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             if (other.collider.IsInLayerMask(LayerMask.GetMask("Zombie")))
             {
                 _attacked = true;
-                var attackData = AttackCreator.CreateAttackData(AttackId.Cabbage)
+                var attackData = AttackCreator.CreateAttackData(AttackId.Kernel)
                     .WithPunchDirection(_Rigidbody2D.velocity);
                 other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
             }

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6446144a0c244c6a187d09f83903fc5, type: 3}
   m_Name: AttackDefinition_NormalZombie
   m_EditorClassIdentifier: 
+  attackId: 4
   damage: 100
   punchForce: 0
+  punchType: 0
   isFrameDamage: 1
   effects: []

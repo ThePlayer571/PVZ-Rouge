@@ -120,6 +120,20 @@ namespace TPL.PVZR.Tools.Random
         }
 
         /// <summary>
+        /// 根据指定概率生成随机布尔值
+        /// </summary>
+        /// <param name="probability">返回true的概率，范围[0.0, 1.0]</param>
+        /// <returns>根据概率生成的布尔值</returns>
+        /// <exception cref="ArgumentOutOfRangeException">概率值超出有效范围</exception>
+        public bool NextBool(float probability)
+        {
+            if (probability < 0.0f || probability > 1.0f)
+                throw new ArgumentOutOfRangeException(nameof(probability), "概率值必须在0.0到1.0之间");
+            
+            return Value < probability;
+        }
+        
+        /// <summary>
         /// 从集合中随机选取指定数量的元素（无重复）
         /// </summary>
         /// <param name="source">数据源</param>

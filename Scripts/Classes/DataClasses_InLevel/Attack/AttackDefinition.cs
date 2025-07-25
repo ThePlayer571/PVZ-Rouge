@@ -11,10 +11,11 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
         ConstrainHorizontal = 1,
         ConstrainUp = 2,
     }
-    
+
     [CreateAssetMenu(fileName = "AttackDefinition_", menuName = "PVZR/AttackDefinition", order = 2)]
     public class AttackDefinition : ScriptableObject
     {
+        [SerializeField] public AttackId attackId;
         [SerializeField] public float damage;
         [SerializeField] public float punchForce;
         [SerializeField] public PunchType punchType;

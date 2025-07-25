@@ -35,7 +35,7 @@ namespace TPL.PVZR.Editor
         private string csvFilePath = "Assets/Resources/Data/ConfigDefintion/RecipeConfigTable.csv";
         private string jsonFilePath = "Assets/Resources/Data/ConfigDefintion/RecipeConfigs.json";
 
-        [MenuItem("Tools/Recipe Config Editor")]
+        [MenuItem("PVZRouge/Recipe Config Editor")]
         public static void ShowWindow()
         {
             GetWindow<RecipeConfigEditor>("Recipe Config Editor");

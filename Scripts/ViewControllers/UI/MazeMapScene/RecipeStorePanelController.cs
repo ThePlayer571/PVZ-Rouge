@@ -39,6 +39,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
             // 创建Trades
             for (int index = 0; index < 8; index++)
             {
+                $"index: {index}".LogInfo();
                 var recipeData = _RecipeStoreSystem.GetRecipeByIndex(index);
                 // 创建Trade节点
                 var trade = TradePrefab.Instantiate().GetComponent<RecipeTradeNode>();
@@ -53,6 +54,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                     var cardView = ItemViewFactory.CreateItemView(consumePlant);
                     cardView.transform.SetParent(trade.Ingredients, false);
                 }
+
                 // coin
                 if (recipeData.consumeCoins > 0)
                 {
@@ -77,7 +79,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                     if (recipe.used || !_GameModel.GameData.InventoryData.CanAfford(recipe)) return;
 
                     this.SendCommand<BarterCommand>(new BarterCommand(capturedIndex));
-                    
+
                     // UI改变
                     outputCard.Hide();
                 });
@@ -112,7 +114,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
         {
             toggle.onValueChanged.RemoveListener(Display);
             mainToggle.onValueChanged.RemoveListener(Display);
-            
+
             foreach (var trade in TradeList)
             {
                 trade.TradeBtn.onClick.RemoveAllListeners();

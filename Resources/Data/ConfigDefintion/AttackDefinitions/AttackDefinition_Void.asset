@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6446144a0c244c6a187d09f83903fc5, type: 3}
   m_Name: AttackDefinition_Void
   m_EditorClassIdentifier: 
+  attackId: 1
   damage: 0
   punchForce: 0
   punchType: 0

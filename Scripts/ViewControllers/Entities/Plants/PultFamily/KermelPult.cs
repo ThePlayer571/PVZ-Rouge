@@ -1,19 +1,22 @@
+using DG.Tweening;
 using JetBrains.Annotations;
+using QFramework;
 using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
+using TPL.PVZR.Tools.Random;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using UnityEngine;
 using Time = UnityEngine.Time;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public sealed class CabbagePult : Plant
+    public sealed partial class KernelPult : Plant
     {
-        public override PlantDef Def { get; } = new PlantDef(PlantId.CabbagePult, PlantVariant.V0);
+        public override PlantDef Def { get; } = new PlantDef(PlantId.KernelPult, PlantVariant.V0);
 
         protected override void OnInit()
         {
@@ -50,9 +53,38 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                 if (target)
                 {
                     _timer.Reset();
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Cabbage, _direction, FirePoint.position);
+                    OnThrow.Trigger();
+                    if (RandomHelper.Default.NextBool(GlobalEntityData.Plant_KernelPult_ButterChance))
+                    {
+                        EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Butter, _direction, FirePoint.position);
+                    }
+                    else
+                    {
+                        EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Kernel, _direction, FirePoint.position);
+                    }
                 }
             }
+        }
+    }
+
+    public partial class KernelPult
+    {
+        private EasyEvent OnThrow = new();
+        [SerializeField] private Transform Thrower;
+
+
+        private static readonly Vector3 DownRotation = new Vector3(0, 0, 2.219f);
+        private static readonly Vector3 UpRotation = new Vector3(0, 0, -57.922f);
+
+        protected override void OnViewInit()
+        {
+            OnThrow.Register(() =>
+            {
+                Thrower.DOLocalRotate(UpRotation, 0.1f).SetEase(Ease.OutQuint).OnComplete(() =>
+                {
+                    ActionKit.Delay(0.5f, () => Thrower.DOLocalRotate(DownRotation, 0.2f)).Start(this);
+                });
+            }).UnRegisterWhenGameObjectDestroyed(this);
         }
     }
 }

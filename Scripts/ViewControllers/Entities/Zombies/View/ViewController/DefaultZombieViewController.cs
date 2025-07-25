@@ -30,7 +30,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
                     _Animator.SetTrigger("EnterAttacking");
                     currentRotation = 0;
                 });
-            ViewFSM.State(ZombieState.Frozen)
+            ViewFSM.State(ZombieState.Stunned)
                 .OnEnter(() =>
                 {
                     _Animator.SetTrigger("EnterFrozen");

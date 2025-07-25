@@ -22,9 +22,9 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 .LoadSync<AttackDefinitionList>(Configlist.BundleName, Configlist.AttackDefinitionList)
                 .attackDefinitionList;
             _attackDefinitionDict = new Dictionary<AttackId, AttackDefinition>();
-            foreach (var config in attackDefinitionList)
+            foreach (var attackDefinition in attackDefinitionList)
             {
-                _attackDefinitionDict.Add(config.attackId, config.attackDefinition);
+                _attackDefinitionDict.Add(attackDefinition.attackId, attackDefinition);
             }
             
             resLoader.Recycle2Cache();

@@ -5,16 +5,10 @@ using UnityEngine;
 
 namespace TPL.PVZR.Classes.ConfigLists
 {
-    [Serializable]
-    public class AttackConfig
-    {
-        public AttackId attackId;
-        public AttackDefinition attackDefinition;
-    }
     
     [CreateAssetMenu(fileName = "AttackDefinitionList", menuName = "PVZR_Config/AttackDefinitionList")]
     public class AttackDefinitionList : ScriptableObject
     {
-        public List<AttackConfig> attackDefinitionList;
+        public List<AttackDefinition> attackDefinitionList;
     }
 }

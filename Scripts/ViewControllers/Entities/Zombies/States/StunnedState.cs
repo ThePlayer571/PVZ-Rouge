@@ -4,9 +4,9 @@ using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 {
-    public class FrozenState : AbstractState<ZombieState, Zombie>
+    public class StunnedState : AbstractState<ZombieState, Zombie>
     {
-        public FrozenState(FSM<ZombieState> fsm, Zombie target) : base(fsm, target)
+        public StunnedState(FSM<ZombieState> fsm, Zombie target) : base(fsm, target)
         {
         }
 
@@ -17,7 +17,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         private void Soyo(EffectData effectData)
         {
-            if (effectData.effectId == EffectId.Freeze)
+            if (!mTarget.effectGroup.ContainsEffectOR(EffectId.Buttered, EffectId.Freeze))
             {
                 mFSM.ChangeState(ZombieState.DefaultTargeting);
             }

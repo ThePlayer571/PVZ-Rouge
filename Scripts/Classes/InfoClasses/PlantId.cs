@@ -33,6 +33,8 @@ namespace TPL.PVZR.Classes.InfoClasses
         Squash = 25,
         BonkChoy = 26,
         CabbagePult = 27,
+        KernelPult = 28,
+        MelonPult = 29,
 
 
         // Blover,

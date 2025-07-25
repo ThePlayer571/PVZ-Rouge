@@ -37,7 +37,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
                     currentRotation = 0;
                     _Animator.SetTrigger("EnterOnNewspaperDestroyed");
                 });
-            ViewFSM.State(ZombieState.Frozen)
+            ViewFSM.State(ZombieState.Stunned)
                 .OnEnter(() =>
                 {
                     _Animator.SetTrigger("EnterFrozen");

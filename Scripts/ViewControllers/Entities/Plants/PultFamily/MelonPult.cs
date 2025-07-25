@@ -11,9 +11,9 @@ using Time = UnityEngine.Time;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public sealed class CabbagePult : Plant
+    public sealed class MelonPult : Plant
     {
-        public override PlantDef Def { get; } = new PlantDef(PlantId.CabbagePult, PlantVariant.V0);
+        public override PlantDef Def { get; } = new PlantDef(PlantId.MelonPult, PlantVariant.V0);
 
         protected override void OnInit()
         {
@@ -50,7 +50,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                 if (target)
                 {
                     _timer.Reset();
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Cabbage, _direction, FirePoint.position);
+                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Melon, _direction, FirePoint.position);
                 }
             }
         }

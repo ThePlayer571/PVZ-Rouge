@@ -86,14 +86,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         {
             FSM.AddState(ZombieState.DefaultTargeting, new DefaultTargetingState(FSM, this));
             FSM.AddState(ZombieState.Attacking, new AttackingState(FSM, this));
-            FSM.AddState(ZombieState.Frozen, new FrozenState(FSM, this));
+            FSM.AddState(ZombieState.Stunned, new StunnedState(FSM, this));
             FSM.AddState(ZombieState.Dead, new DeadState(FSM, this));
 
             effectGroup.OnEffectAdded.Register(effectData =>
             {
-                if (effectData.effectId == EffectId.Freeze)
+                if (effectData.effectId is EffectId.Freeze or EffectId.Buttered)
                 {
-                    FSM.ChangeState(ZombieState.Frozen);
+                    FSM.ChangeState(ZombieState.Stunned);
                 }
             }).UnRegisterWhenGameObjectDestroyed(this);
 

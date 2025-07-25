@@ -8,14 +8,13 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 {
-    public sealed class Cabbage : Projectile, IPeaLikeInit
+    public sealed class Butter : Projectile, IPeaLikeInit
     {
-        public override ProjectileId Id { get; } = ProjectileId.Cabbage;
+        public override ProjectileId Id { get; } = ProjectileId.Butter;
 
         public void Initialize(Vector2 direction)
         {
             _Rigidbody2D.velocity = GlobalEntityData.Projectile_Cabbage_Speed * direction;
-            _Rigidbody2D.angularVelocity = GlobalEntityData.Projectile_Cabbage_AngularSpeed;
         }
 
         private bool _attacked = false;
@@ -27,7 +26,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             if (other.collider.IsInLayerMask(LayerMask.GetMask("Zombie")))
             {
                 _attacked = true;
-                var attackData = AttackCreator.CreateAttackData(AttackId.Cabbage)
+                var attackData = AttackCreator.CreateAttackData(AttackId.Butter)
                     .WithPunchDirection(_Rigidbody2D.velocity);
                 other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
             }

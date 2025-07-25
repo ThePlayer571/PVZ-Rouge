@@ -27,8 +27,7 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay
                 throw new ArgumentException("尝试调用SpawnSunFromPlantCommand，但Plant对象为null"); // Plant对象不为null
 
             var go = EntityFactory.SunFactory.SpawnSunWithJump(_plant.transform.position +
-                                                               new Vector3(0, TestDataManager.Instance.StartPosOffset,
-                                                                   0));
+                                                               new Vector3(0, 0.5f, 0));
         }
     }
 }
