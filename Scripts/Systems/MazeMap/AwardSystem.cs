@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using QFramework;
+using TPL.PVZR.Classes.DataClasses.Award;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.CommandEvents.MazeMap_AwardPanel;
 using TPL.PVZR.CommandEvents.Phase;
@@ -17,50 +18,35 @@ namespace TPL.PVZR.Systems.MazeMap
     {
         IReadOnlyList<LootData> GetLootGroupByIndex(int index);
         bool IsAwardAvailable { get; }
-        bool HasAward { get; }
+        int AwardCount { get; }
     }
 
     public class AwardSystem : AbstractSystem, IAwardSystem
     {
-        #region 接口ILootChooseSystem实现
+        private List<List<LootData>> CurrentAwards = new();
 
-        private List<List<LootData>> _lootGroupList = new();
+        #region 接口ILootChooseSystem实现
 
         public IReadOnlyList<LootData> GetLootGroupByIndex(int index)
         {
-            return _lootGroupList[index];
+            return CurrentAwards[index];
         }
 
-        public bool IsAwardAvailable { get; private set; } = false;
+        public bool IsAwardAvailable { get; private set; }
 
-        public bool HasAward { get; private set; } = false;
+        public int AwardCount => CurrentAwards.Count;
 
         #endregion
 
-        private void WriteLoots(IReadOnlyList<LootGenerateInfo> infos, float value, int count)
+        private void WriteLoots(AwardGenerateInfo awardInfo)
         {
-            _lootGroupList.Clear();
-
-            // 筛选：已经拥有的PlantBook不会被加入
-            infos = infos.Where(info =>
-                info.lootInfo.lootType != LootType.PlantBook ||
-                _GameModel.GameData.InventoryData.PlantBooks.All(pb => pb.PlantId != info.lootInfo.plantId)).ToList();
-
-
-            HasAward = true;
-            for (int i = 0; i < count; i++)
-            {
-                var randomPool = new RandomPool<LootGenerateInfo, LootInfo>(infos, value, RandomHelper.Game);
-                var chosenLoots = randomPool.GetAllRemainingOutputs()
-                    .Select(lootInfo => LootData.Create(lootInfo));
-                _lootGroupList.Add(chosenLoots.ToList());
-            }
+            CurrentAwards.Clear();
+            CurrentAwards.AddRange(AwardCreator.CreateAwardData(awardInfo));
         }
 
         private void ClearLootList()
         {
-            _lootGroupList.Clear();
-            HasAward = false;
+            CurrentAwards.Clear();
         }
 
         private ILevelModel _LevelModel;
@@ -79,8 +65,20 @@ namespace TPL.PVZR.Systems.MazeMap
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
+                                _GameModel.GameData.AwardData.AwardsToGenerate =
+                                    _LevelModel.LevelData.AwardGenerateInfo;
+                                break;
+                        }
+
+                        break;
+                    case GamePhase.MazeMapInitialization:
+                        switch (e.PhaseStage)
+                        {
+                            case PhaseStage.EnterNormal:
                                 IsAwardAvailable = true;
-                                WriteLoots(_LevelModel.LevelData.LootGenerateInfos, _LevelModel.LevelData.LootValue, 3);
+                                $"null is : GameData: {_GameModel.GameData == null}, AwardData : {_GameModel.GameData.AwardData == null}, AwardsToGenerate : {_GameModel.GameData?.AwardData?.AwardsToGenerate == null}"
+                                    .LogInfo();
+                                WriteLoots(_GameModel.GameData.AwardData.AwardsToGenerate);
                                 break;
                         }
 

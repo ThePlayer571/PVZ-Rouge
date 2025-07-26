@@ -1,4 +1,5 @@
 using TPL.PVZR.Classes.DataClasses;
+using TPL.PVZR.Classes.DataClasses.Award;
 using TPL.PVZR.Classes.DataClasses.Game;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.DataClasses.Loot;
@@ -18,25 +19,26 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
             //
             var mazeMapData = CreateMazeMapData(definition.MazeMapDef, seed);
             //
+            var awardData = new AwardData(mazeMapData.InitialAwards);
+            // 
             var inventoryData = new InventoryData();
-            PlantDefHelper.SetInventory(inventoryData);
+            PlantDefHelper.SetInventory(inventoryData); // 临时inventoryData
             foreach (var lootInfo in definition.InventoryLoots)
             {
                 var lootData = LootData.Create(lootInfo);
                 inventoryData.AddLootAuto(lootData);
             }
 
-            PlantDefHelper.SetInventory(null);
-            //
+            PlantDefHelper.SetInventory(null); // 临时inventoryData
 
-            return new GameData(mazeMapData, inventoryData, seed);
+            return new GameData(mazeMapData, inventoryData, awardData, seed);
         }
 
         public static IGameData CreateGameData(GameSaveData saveData)
         {
             return new GameData(saveData);
         }
- 
+
         public static IMazeMapData CreateMazeMapData(MazeMapDef mazeMapDef, ulong seed)
         {
             var definition = GameConfigReader.GetMazeMapDefinition(mazeMapDef);

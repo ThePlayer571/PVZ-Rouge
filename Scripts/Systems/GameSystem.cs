@@ -32,12 +32,16 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterEarly:
+                            {
                                 // 数据设置
                                 _GameModel.GameData = e.Parameters["GameData"] as IGameData;
                                 // 史山：为了其他地方的代码优雅而设
-                                PlantDefHelper.SetInventory(_GameModel.GameData.InventoryData);
-                                RandomHelper.SetGame(_GameModel.GameData);
+                                {
+                                    PlantDefHelper.SetInventory(_GameModel.GameData.InventoryData);
+                                    RandomHelper.SetGame(_GameModel.GameData);
+                                }
                                 break;
+                            }
                             case PhaseStage.EnterLate:
                                 _PhaseModel.DelayChangePhase(GamePhase.MazeMapInitialization);
                                 break;
@@ -48,11 +52,15 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.LeaveNormal:
+                            {
                                 _GameModel.Reset();
                                 // 史山：为了其他地方的代码优雅而设
-                                PlantDefHelper.SetInventory(null);
-                                RandomHelper.SetGame(null);
+                                {
+                                    PlantDefHelper.SetInventory(null);
+                                    RandomHelper.SetGame(null);
+                                }
                                 break;
+                            }
                         }
 
                         break;

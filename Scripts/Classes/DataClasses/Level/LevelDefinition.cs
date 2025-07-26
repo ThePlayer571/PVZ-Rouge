@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TPL.PVZR.Classes.DataClasses.Award;
 using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.Classes.InfoClasses;
@@ -132,11 +133,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public List<ZombieSpawnConfig> ZombieSpawnConfigs;
 
 //
-        [Header("Loot")] public List<LootPoolDef> BasicLoots;
-        public List<LootGenerateInfo> SpecialLoots;
-
-        [Tooltip("Loot的总价值（推荐：1.5 * 通关所需植物价值）")]
-        public float LootValue;
+        [Header("Award")] public AwardGenerateInfo AwardGenerateInfo;
 
         [Header("Others")] public List<InitialPlantConfig> InitialPlants;
     }

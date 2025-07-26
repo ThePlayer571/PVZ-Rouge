@@ -37,6 +37,7 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs
             var targetCell = _LevelGridModel.LevelMatrix[this._position.x, this._position.y];
             if (targetCell.CellPlantData.IsEmpty())
                 throw new ArgumentException($"此处不存在植物，却调用了ShovelPlantCommand，pos:{_position}");
+            if (!HandHelper.DaveCanReach(_position)) throw new Exception("尝试调用UseShovelCommand，但是戴夫的手够不到目标植物");
             //
             var plant = targetCell.CellPlantData.GetPlantToShovelFirst();
             this.SendEvent<OnShovelUsed>();

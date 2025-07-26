@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TPL.PVZR.Classes.DataClasses.Award;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.LootPool;
 using UnityEngine;
@@ -57,5 +58,6 @@ namespace TPL.PVZR.Classes.MazeMap
         // Loot
         [Header("LootPool")]
         public List<LootPoolDef> LootPools;
+        public AwardGenerateInfo InitialAwards;
     }
 }

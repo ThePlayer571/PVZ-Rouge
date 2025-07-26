@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using QFramework;
+using TPL.PVZR.Classes.DataClasses.Award;
 using TPL.PVZR.Classes.DataClasses.Game;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.Classes.ZombieSpawner;
@@ -58,8 +59,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         #region Loot
 
-        IReadOnlyList<LootGenerateInfo> LootGenerateInfos { get; }
-        float LootValue { get; }
+        AwardGenerateInfo AwardGenerateInfo { get; }
 
         #endregion
 
@@ -228,8 +228,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         #region Loot
 
-        public IReadOnlyList<LootGenerateInfo> LootGenerateInfos { get; }
-        public float LootValue { get; }
+        public AwardGenerateInfo AwardGenerateInfo { get; }
 
         #endregion
 
@@ -271,12 +270,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             this.PosGroupDef = levelDefinition.PosGroupDef;
             this.ZombieSpawnConfigs = levelDefinition.ZombieSpawnConfigs;
 
-
-            var _ = levelDefinition.BasicLoots
-                .SelectMany(lootPoolDef => LootCreator.CreateLootGenerateInfoList(lootPoolDef)).ToList();
-            _.AddRange(levelDefinition.SpecialLoots);
-            this.LootGenerateInfos = _.AsReadOnly();
-            this.LootValue = levelDefinition.LootValue;
+            this.AwardGenerateInfo = levelDefinition.AwardGenerateInfo;
 
             this.InitialPlants = levelDefinition.InitialPlants;
         }

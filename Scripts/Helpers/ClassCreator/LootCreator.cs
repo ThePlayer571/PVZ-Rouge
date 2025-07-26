@@ -32,6 +32,8 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
             return lootGenerateInfos;
         }
 
+        #region 基础
+
         /// <summary>
         /// 生成对应Card的LootGenerateInfo
         /// </summary>
@@ -103,6 +105,8 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
                 lootInfo = CreateLootInfo_SeedSlot()
             };
         }
+
+        #endregion
 
         #endregion
 

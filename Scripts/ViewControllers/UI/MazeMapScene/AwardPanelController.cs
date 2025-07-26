@@ -33,7 +33,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
         {
             toggle.onValueChanged.AddListener(Display);
 
-            if (!_AwardSystem.HasAward) return;
+            if (_AwardSystem.AwardCount == 0) return;
             for (int index = 0; index < 3; index++)
             {
                 // 创建Choice节点

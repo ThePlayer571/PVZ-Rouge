@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TPL.PVZR.Classes.DataClasses;
+using TPL.PVZR.Classes.DataClasses.Award;
 using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.InfoClasses;
@@ -14,6 +15,7 @@ namespace TPL.PVZR.Tools.Save
     {
         public MazeMapSaveData mazeMapSaveData;
         public InventorySaveData inventorySaveData;
+        public AwardData awardData;
         public GlobalEntityData globalEntityData;
         public ulong seed;
         public DeterministicRandom.State randomState;

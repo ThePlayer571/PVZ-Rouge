@@ -25,8 +25,6 @@ namespace TPL.PVZR.Systems
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.LeaveLate:
-                                if (e.Parameters == null) "find null".LogInfo();
-
                                 var isNewGame = (bool)e.Parameters["IsNewGame"];
                                 if (isNewGame)
                                     SaveHelper.Save(SaveHelper.GAME_DATA_FILE_NAME, _GameModel.GameData.ToSaveData());
