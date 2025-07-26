@@ -34,10 +34,15 @@ namespace TPL.PVZR.Helpers.New.Methods
             return LevelMatrix;
         }
 
-        // 缺乏优化：多次SetTile性能不好
+        static LevelMatrixHelper()
+        {
+            resLoader = ResLoader.Allocate();
+        }
+
+        private static readonly ResLoader resLoader;
+
         public static void SetDebugTiles(Matrix<Cell> LevelMatrix, Tilemap DebugTilemap)
         {
-            var resLoader = ResLoader.Allocate();
             var dirt = resLoader.LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugDirt);
             var barrier = resLoader.LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugBarrier);
             var climbable = resLoader.LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugLadder);
@@ -53,8 +58,6 @@ namespace TPL.PVZR.Helpers.New.Methods
                         DebugTilemap.SetTile(new Vector3Int(x, y, 0), climbable);
                 }
             }
-
-            resLoader.Recycle2Cache();
         }
     }
 }

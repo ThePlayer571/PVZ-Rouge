@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -38,8 +39,6 @@ namespace TPL.PVZR.ViewControllers.Others.UI
                 rt.anchoredPosition = new Vector2(flagX, FlagStartY);
                 _flagsDict.Add(hugeWave, rt);
             }
-
-            resLoader.Recycle2Cache();
         }
 
         private void Awake()

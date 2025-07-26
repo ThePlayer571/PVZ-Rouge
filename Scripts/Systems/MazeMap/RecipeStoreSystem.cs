@@ -7,6 +7,7 @@ using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
+using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.Systems.MazeMap
@@ -22,15 +23,39 @@ namespace TPL.PVZR.Systems.MazeMap
 
         private void AutoWriteRecipes()
         {
+            RandomPool<RecipeGenerateInfo, RecipeInfo> recipePool;
+
             var ownedPlants = _GameModel.GameData.InventoryData.Cards
                 .Where(cardData => !cardData.Locked)
                 .Select(cardData => cardData.CardDefinition.PlantDef.Id)
                 .ToHashSet();
 
-            var recipePool = TradeCreator.CreateRelatedRecipePool(ownedPlants);
-            var _ = recipePool.GetRandomOutputs(8)
+            if (ownedPlants.Count > 0)
+            {
+                recipePool = TradeCreator.CreateRelatedRecipePool(ownedPlants);
+                
+                if (recipePool.IsFinished)
+                {
+                    var lockedPlants = _GameModel.GameData.InventoryData.Cards
+                        .Where(cardData => cardData.Locked)
+                        .Select(cardData => cardData.CardDefinition.PlantDef.Id)
+                        .ToHashSet();
+                    recipePool = TradeCreator.CreateRelatedRecipePool(lockedPlants);
+                }
+            }
+            else
+            {
+                var lockedPlants = _GameModel.GameData.InventoryData.Cards
+                    .Where(cardData => cardData.Locked)
+                    .Select(cardData => cardData.CardDefinition.PlantDef.Id)
+                    .ToHashSet();
+                recipePool = TradeCreator.CreateRelatedRecipePool(lockedPlants);
+            }
+
+
+            var chosenRecipes = recipePool.GetRandomOutputs(8)
                 .Select(recipeInfo => new RecipeData(recipeInfo));
-            _activeRecipes.AddRange(_);
+            _activeRecipes.AddRange(chosenRecipes);
         }
 
         private void ClearRecipes()

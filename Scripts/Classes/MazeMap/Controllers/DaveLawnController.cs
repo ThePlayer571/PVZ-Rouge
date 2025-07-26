@@ -297,7 +297,6 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
         protected override void SetUpTiles()
         {
             // 准备
-            var resLoader = ResLoader.Allocate();
             var dirtTile =
                 resLoader.LoadSync<Tile>(Mazemapdirttile_asset.BundleName, Mazemapdirttile_asset.MazeMapDirtTile);
             var grassTile = resLoader.LoadSync<Tile>(Mazemapgrasstile_asset.BundleName,
@@ -348,13 +347,10 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
 
             var bounds = new BoundsInt(0, 0, 0, tileMatrix.Rows, tileMatrix.Columns, 1);
             GroundTilemap.SetTilesBlock(bounds, ToArrayByColumn(tileMatrix));
-
-            resLoader.Recycle2Cache();
         }
 
         protected override void SetUpTombs()
         {
-            var resLoader = ResLoader.Allocate();
             var tombstonePrefab =
                 resLoader.LoadSync<GameObject>(Tombstone_prefab.BundleName, Tombstone_prefab.Tombstone);
             foreach (var node in mazeMatrix)
@@ -364,15 +360,12 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
                 tombstone.Initialize(node.Position);
             }
 
-            resLoader.Recycle2Cache();
-
             // ($"Pass: {String.Join(",", MazeMapData.PassedRoute)}\n" +
             //  $"Discoverd: {String.Join(",", MazeMapData.DiscoveredTombs.Select(tomb => tomb.Position))}\n").LogInfo();
         }
 
         protected override void DisplayFinalObject()
         {
-            var resLoader = ResLoader.Allocate();
             var finalMatrixPos = new Vector2Int(mazeMatrix.Rows + 1, mazeMatrix.Columns / 2);
             var finalTilemapPos = MatrixToTilemapPosition(finalMatrixPos);
             var finalWorldPos =
@@ -381,7 +374,6 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
             var finalObject =
                 resLoader.LoadSync<GameObject>(Finalobject_prefab.BundleName, Finalobject_prefab.FinalObject)
                     .Instantiate(finalWorldPos, Quaternion.identity);
-            resLoader.Recycle2Cache();
         }
 
         #endregion

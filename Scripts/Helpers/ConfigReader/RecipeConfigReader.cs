@@ -29,7 +29,6 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 _recipes.Add(recipeGenerateInfo);
             }
 
-            resLoader.Recycle2Cache();
 
             RecipeGenerateInfo ParseToSoyo(JObject recipeConfig)
             {

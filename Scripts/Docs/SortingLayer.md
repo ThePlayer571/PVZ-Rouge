@@ -17,7 +17,7 @@
 | ----------------- | ------------- | -------------------- |
 | LevelEndObject    | ForeGround    | 200                  |
 | SelectFramebox    | ForeGround    | 100                  |
-| Sun               | ForeGround    | 10                   |
+|                   |               |                      |
 | Coin              | ForeGround    | 10                   |
 | Zombies           | Zombie        | 0~30010(by Allocate) |
 | Player            | MidGround     | 500                  |
@@ -27,6 +27,7 @@
 | TileDirt          | MidGround     | 101                  |
 | TileGround        | MidGround     | 100                  |
 | TileBackGround    | BackGround    | 100~101              |
+| Sun               | BackGround    | 90                   |
 | BackGround        | BackGround    | 50~59                |
 | TileBound         | NotClassified | 0                    |
 |                   |               |                      |

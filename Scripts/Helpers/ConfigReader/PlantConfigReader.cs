@@ -54,7 +54,6 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 _plantPrefabDict[config.def] = config.prefab;
             }
 
-            _resLoader.Recycle2Cache();
         }
 
         #endregion

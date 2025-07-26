@@ -186,6 +186,8 @@ namespace TPL.PVZR.Classes.MazeMap
 
         #region 字段
 
+        // 
+        protected ResLoader resLoader;
         // 基本数据结构
 
         protected IMazeMapWiseData MazeMapData { get; }
@@ -220,6 +222,13 @@ namespace TPL.PVZR.Classes.MazeMap
         {
             MazeMapData = mazeMapData as IMazeMapWiseData;
             Random = DeterministicRandom.Create(MazeMapData.GenerateSeed);
+
+            resLoader = ResLoader.Allocate();
+        }
+
+        ~MazeMapController()
+        {
+            resLoader.Recycle2Cache();
         }
 
         public static IMazeMapController Create(IMazeMapData mazeMapData)

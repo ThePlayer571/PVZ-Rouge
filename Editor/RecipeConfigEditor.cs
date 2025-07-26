@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using Newtonsoft.Json;
@@ -9,6 +10,23 @@ using TPL.PVZR.Classes.InfoClasses;
 // by claude
 namespace TPL.PVZR.Editor
 {
+    /// <summary>
+    /// Recipe合成表配置编辑器
+    /// 
+    /// 工作流程：
+    /// 1. 编辑CSV文件（按照下面的格式说明）
+    /// 2. 点击"检查CSV数据"按钮进行验证和自动修正
+    /// 3. 点击"转换CSV到JSON"按钮生成最终的JSON配置文件
+    /// 
+    /// CSV文件格式说明：
+    /// - Output: 合成产品的PlantId
+    /// - weight: 在商店中出现的概率权重
+    /// - Input (5列): 输入材料，可以是PlantId或"(min,max)"格式的金币范围
+    /// - InputValue: 投入产物的总价值（会自动计算）
+    /// - OutputValue: 生成物的价值（会自动计算）
+    /// 
+    /// 机制：商店中随机出现合成表，玩家可以通过消耗材料和金币来合成新的植物
+    /// </summary>
     [Serializable]
     public class RecipeConfig
     {
@@ -33,7 +51,12 @@ namespace TPL.PVZR.Editor
     public class RecipeConfigEditor : EditorWindow
     {
         private string csvFilePath = "Assets/Resources/Data/ConfigDefintion/RecipeConfigTable.csv";
-        private string jsonFilePath = "Assets/Resources/Data/ConfigDefintion/RecipeConfigs.json";
+        private string jsonFilePath = "Assets/Resources/Data/ConfigDefintion/JsonConfigs/RecipeConfigs.json";
+        private string plantValuePath = "Assets/Resources/Data/ConfigDefintion/JsonConfigs/PlantValueList.json";
+
+        private Dictionary<string, int> plantValueDict = new Dictionary<string, int>();
+        private Vector2 scrollPosition;
+        private string lastValidationResult = "";
 
         [MenuItem("PVZRouge/Recipe Config Editor")]
         public static void ShowWindow()
@@ -41,9 +64,40 @@ namespace TPL.PVZR.Editor
             GetWindow<RecipeConfigEditor>("Recipe Config Editor");
         }
 
+        private void OnEnable()
+        {
+            LoadPlantValues();
+        }
+
+        private void LoadPlantValues()
+        {
+            try
+            {
+                if (File.Exists(plantValuePath))
+                {
+                    string json = File.ReadAllText(plantValuePath);
+                    plantValueDict = JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
+                }
+                else
+                {
+                    Debug.LogWarning($"PlantValueList.json not found at: {plantValuePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to load plant values: {ex.Message}");
+            }
+        }
+
         private void OnGUI()
         {
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+
             GUILayout.Label("Recipe Config Editor", EditorStyles.boldLabel);
+
+            // 显示工作流程说明
+            EditorGUILayout.Space();
+            ShowDocumentation();
 
             EditorGUILayout.Space();
 
@@ -79,18 +133,413 @@ namespace TPL.PVZR.Editor
 
             EditorGUILayout.Space();
 
-            // 转换按钮
-            if (GUILayout.Button("Convert CSV to JSON", GUILayout.Height(30)))
+            // 主要操作按钮
+            EditorGUILayout.LabelField("工作流程", EditorStyles.boldLabel);
+
+            if (GUILayout.Button("1. 检查CSV数据 (Check & Auto-Fix)", GUILayout.Height(30)))
+            {
+                CheckAndFixCSVData();
+            }
+
+            EditorGUILayout.Space();
+
+            if (GUILayout.Button("2. 转换CSV到JSON (Convert to JSON)", GUILayout.Height(30)))
             {
                 ConvertCSVToJSON();
             }
 
             EditorGUILayout.Space();
 
-            // 验证按钮
-            if (GUILayout.Button("Validate CSV Data"))
+            // 额外功能
+            EditorGUILayout.LabelField("额外功能", EditorStyles.boldLabel);
+
+            if (GUILayout.Button("显示未使用的PlantId"))
             {
-                ValidateCSVData();
+                ShowUnusedPlantIds();
+            }
+
+            if (GUILayout.Button("重新加载植物价值表"))
+            {
+                LoadPlantValues();
+            }
+
+            // 显示验证结果
+            if (!string.IsNullOrEmpty(lastValidationResult))
+            {
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("最近检查结果:", EditorStyles.boldLabel);
+                EditorGUILayout.TextArea(lastValidationResult, GUILayout.Height(100));
+            }
+
+            EditorGUILayout.EndScrollView();
+        }
+
+        private void ShowDocumentation()
+        {
+            EditorGUILayout.HelpBox(
+                "CSV文件格式说明：\n" +
+                "• Output: 合成产品的PlantId（如PeaShooter、Sunflower等）\n" +
+                "• weight: 在商店中出现的概率权重（数字越大出现概率越高）\n" +
+                "• Input (5列): 输入材料，可以是：\n" +
+                "  - PlantId（如PeaShooter、Sunflower等）\n" +
+                "  - 金币范围：\"(min-max)\"格式�����如\"(10-20)\"表示消耗10-20金币）\n" +
+                "• InputValue: 投入产物的总价值（自动计算，可手动修正）\n" +
+                "• OutputValue: 生成物的价值（自动计算，可手动修正）\n\n" +
+                "工作流程：\n" +
+                "1. 编辑CSV文件\n" +
+                "2. 点击\"检查CSV数据\"进行验证和自动修正\n" +
+                "3. 点击\"转换CSV到JSON\"生成最终配置文件",
+                MessageType.Info);
+        }
+
+        private void CheckAndFixCSVData()
+        {
+            try
+            {
+                if (!File.Exists(csvFilePath))
+                {
+                    EditorUtility.DisplayDialog("Error", $"CSV file not found: {csvFilePath}", "OK");
+                    return;
+                }
+
+                LoadPlantValues();
+
+                string[] lines = File.ReadAllLines(csvFilePath);
+                List<string> errors = new List<string>();
+                List<string> fixes = new List<string>();
+                List<string> newLines = new List<string>();
+
+                // 保留标题行
+                if (lines.Length > 0)
+                {
+                    newLines.Add(lines[0]);
+                }
+
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    string line = lines[i].Trim();
+                    if (string.IsNullOrEmpty(line))
+                    {
+                        newLines.Add(line);
+                        continue;
+                    }
+
+                    string[] parts = ParseCSVRow(line);
+                    if (parts.Length < 8)
+                    {
+                        errors.Add($"Line {i + 1}: 列数不足，需要至少8列");
+                        newLines.Add(line);
+                        continue;
+                    }
+
+                    bool lineModified = false;
+                    bool hasInvalidPlantIds = false; // 标记是否存在无效的PlantId
+
+                    // 检查输出卡片
+                    string outputCard = parts[0].Trim();
+                    if (string.IsNullOrEmpty(outputCard))
+                    {
+                        newLines.Add(line);
+                        continue;
+                    }
+
+                    int outputValidation = ValidatePlantIdWithCorrection(outputCard, out string correctedOutputCard);
+                    if (outputValidation == 0)
+                    {
+                        errors.Add($"Line {i + 1}: 无效的输出植物ID '{outputCard}'");
+                        hasInvalidPlantIds = true;
+                    }
+                    else if (outputValidation == 2)
+                    {
+                        parts[0] = correctedOutputCard;
+                        fixes.Add($"Line {i + 1}: 修正输出植物ID大小写: '{outputCard}' -> '{correctedOutputCard}'");
+                        lineModified = true;
+                        outputCard = correctedOutputCard; // 更新变量���于后续计算
+                    }
+
+                    // 检查输入卡片和计算价值
+                    List<string> inputCards = new List<string>();
+                    int coinMin = 0, coinMax = 0;
+                    bool hasCoinRange = false;
+
+                    for (int j = 2; j <= 6; j++)
+                    {
+                        if (j < parts.Length)
+                        {
+                            string inputCard = parts[j].Trim();
+                            if (!string.IsNullOrEmpty(inputCard))
+                            {
+                                if (inputCard.StartsWith("(") && inputCard.EndsWith(")"))
+                                {
+                                    // 金币范围 - 使用连字符分隔
+                                    string coinRangeStr = inputCard.Substring(1, inputCard.Length - 2);
+                                    string[] coinRange = coinRangeStr.Split('-');
+                                    if (coinRange.Length == 2)
+                                    {
+                                        if (int.TryParse(coinRange[0].Trim(), out coinMin) &&
+                                            int.TryParse(coinRange[1].Trim(), out coinMax))
+                                        {
+                                            hasCoinRange = true;
+                                        }
+                                        else
+                                        {
+                                            errors.Add($"Line {i + 1}: 无效的金币范围格式 '{inputCard}' - 数字解析失败");
+                                            hasInvalidPlantIds = true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        errors.Add($"Line {i + 1}: 无效的金币范围格式 '{inputCard}' - 应该使用格式(min-max)");
+                                        hasInvalidPlantIds = true;
+                                    }
+                                }
+                                else
+                                {
+                                    int inputValidation =
+                                        ValidatePlantIdWithCorrection(inputCard, out string correctedInputCard);
+                                    if (inputValidation == 0)
+                                    {
+                                        errors.Add($"Line {i + 1}: 无效的输入植物ID '{inputCard}'");
+                                        hasInvalidPlantIds = true;
+                                    }
+                                    else if (inputValidation == 1)
+                                    {
+                                        inputCards.Add(correctedInputCard);
+                                    }
+                                    else if (inputValidation == 2)
+                                    {
+                                        fixes.Add(
+                                            $"Line {i + 1}: 修正输入植物ID大小写: '{inputCard}' -> '{correctedInputCard}'");
+                                        parts[j] = correctedInputCard;
+                                        lineModified = true;
+                                        inputCards.Add(correctedInputCard);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // 只有在所有PlantId都有效时才修正价值
+                    if (!hasInvalidPlantIds)
+                    {
+                        // 计算正确的InputValue和OutputValue
+                        int correctInputValue =
+                            CalculateInputValue(inputCards, hasCoinRange ? (coinMin + coinMax) / 2 : 0);
+                        int correctOutputValue = GetPlantValue(outputCard);
+
+                        // 检查和修正InputValue
+                        if (parts.Length > 7)
+                        {
+                            string inputValueStr = parts[7].Trim();
+                            if (string.IsNullOrEmpty(inputValueStr))
+                            {
+                                parts[7] = correctInputValue.ToString();
+                                fixes.Add($"Line {i + 1}: 自动填入InputValue = {correctInputValue}");
+                                lineModified = true;
+                            }
+                            else if (int.TryParse(inputValueStr, out int currentInputValue))
+                            {
+                                if (currentInputValue != correctInputValue)
+                                {
+                                    parts[7] = correctInputValue.ToString();
+                                    fixes.Add(
+                                        $"Line {i + 1}: 修正InputValue: {currentInputValue} -> {correctInputValue}");
+                                    lineModified = true;
+                                }
+                            }
+                            else
+                            {
+                                parts[7] = correctInputValue.ToString();
+                                fixes.Add($"Line {i + 1}: 修正无效的InputValue '{inputValueStr}' -> {correctInputValue}");
+                                lineModified = true;
+                            }
+                        }
+
+                        // 检查和修正OutputValue
+                        if (parts.Length > 8)
+                        {
+                            string outputValueStr = parts[8].Trim();
+                            if (string.IsNullOrEmpty(outputValueStr))
+                            {
+                                parts[8] = correctOutputValue.ToString();
+                                fixes.Add($"Line {i + 1}: 自动填入OutputValue = {correctOutputValue}");
+                                lineModified = true;
+                            }
+                            else if (int.TryParse(outputValueStr, out int currentOutputValue))
+                            {
+                                if (currentOutputValue != correctOutputValue)
+                                {
+                                    parts[8] = correctOutputValue.ToString();
+                                    fixes.Add(
+                                        $"Line {i + 1}: 修正OutputValue: {currentOutputValue} -> {correctOutputValue}");
+                                    lineModified = true;
+                                }
+                            }
+                            else
+                            {
+                                parts[8] = correctOutputValue.ToString();
+                                fixes.Add($"Line {i + 1}: 修正无效的OutputValue '{outputValueStr}' -> {correctOutputValue}");
+                                lineModified = true;
+                            }
+                        }
+                        else
+                        {
+                            // 扩展数组以包含OutputValue
+                            Array.Resize(ref parts, 9);
+                            parts[8] = correctOutputValue.ToString();
+                            fixes.Add($"Line {i + 1}: 添加OutputValue = {correctOutputValue}");
+                            lineModified = true;
+                        }
+                    }
+                    else
+                    {
+                        // 如果存在无效的PlantId，说明跳过了价值修正
+                        errors.Add($"Line {i + 1}: 由于存在无效的PlantId，跳过价值修正");
+                    }
+
+                    if (lineModified)
+                    {
+                        newLines.Add(string.Join(",", parts));
+                    }
+                    else
+                    {
+                        newLines.Add(line);
+                    }
+                }
+
+                // 如果有修正，保存文件
+                if (fixes.Count > 0)
+                {
+                    File.WriteAllLines(csvFilePath, newLines);
+                    AssetDatabase.Refresh();
+                }
+
+                // 准备结果报告
+                string result = "";
+                if (errors.Count > 0)
+                {
+                    result += "发现的问题:\n" + string.Join("\n", errors) + "\n\n";
+                }
+
+                if (fixes.Count > 0)
+                {
+                    result += "自动修正:\n" + string.Join("\n", fixes) + "\n\n";
+                }
+
+                if (errors.Count == 0 && fixes.Count == 0)
+                {
+                    result = "CSV数据检查完成，没有发现问题！";
+                }
+                else
+                {
+                    result += $"检查完成！发现 {errors.Count} 个问题，进行了 {fixes.Count} 个自动修正。";
+                }
+
+                lastValidationResult = result;
+
+                if (errors.Count > 0)
+                {
+                    EditorUtility.DisplayDialog("检查完成", result, "OK");
+                }
+                else
+                {
+                    EditorUtility.DisplayDialog("检查成功", result, "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = $"检查CSV数据时发生错误:\n{ex.Message}";
+                lastValidationResult = errorMsg;
+                EditorUtility.DisplayDialog("Error", errorMsg, "OK");
+            }
+        }
+
+        private int CalculateInputValue(List<string> inputCards, int coinValue)
+        {
+            int total = coinValue;
+            foreach (string card in inputCards)
+            {
+                total += GetPlantValue(card);
+            }
+
+            return total;
+        }
+
+        private int GetPlantValue(string plantId)
+        {
+            if (plantValueDict.ContainsKey(plantId))
+            {
+                return plantValueDict[plantId];
+            }
+
+            Debug.LogWarning($"Plant value not found for: {plantId}");
+            return 0;
+        }
+
+        private void ShowUnusedPlantIds()
+        {
+            try
+            {
+                if (!File.Exists(csvFilePath))
+                {
+                    EditorUtility.DisplayDialog("Error", $"CSV file not found: {csvFilePath}", "OK");
+                    return;
+                }
+
+                // 获取所有PlantId
+                var allPlantIds = Enum.GetValues(typeof(PlantId)).Cast<PlantId>()
+                    .Where(id => id != PlantId.NotSet)
+                    .Select(id => id.ToString())
+                    .ToHashSet();
+
+                // 获取CSV中使用的PlantId
+                var usedPlantIds = new HashSet<string>();
+                string[] lines = File.ReadAllLines(csvFilePath);
+
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    string line = lines[i].Trim();
+                    if (string.IsNullOrEmpty(line)) continue;
+
+                    string[] parts = ParseCSVRow(line);
+                    if (parts.Length < 2) continue;
+
+                    // 输出植物
+                    string outputCard = parts[0].Trim();
+                    if (IsValidPlantId(outputCard))
+                    {
+                        usedPlantIds.Add(outputCard);
+                    }
+
+                    // 输入植物
+                    for (int j = 2; j <= 6; j++)
+                    {
+                        if (j < parts.Length)
+                        {
+                            string inputCard = parts[j].Trim();
+                            if (!string.IsNullOrEmpty(inputCard) &&
+                                !inputCard.StartsWith("(") &&
+                                IsValidPlantId(inputCard))
+                            {
+                                usedPlantIds.Add(inputCard);
+                            }
+                        }
+                    }
+                }
+
+                var unusedPlantIds = allPlantIds.Except(usedPlantIds).ToList();
+                unusedPlantIds.Sort();
+
+                string message = unusedPlantIds.Count > 0
+                    ? $"未在CSV中使用的PlantId ({unusedPlantIds.Count}个):\n\n{string.Join("\n", unusedPlantIds)}"
+                    : "所有PlantId都已在CSV中使用！";
+
+                lastValidationResult = message;
+                EditorUtility.DisplayDialog("未使用的PlantId", message, "OK");
+            }
+            catch (Exception ex)
+            {
+                EditorUtility.DisplayDialog("Error", $"检查未使用PlantId时发生错误:\n{ex.Message}", "OK");
             }
         }
 
@@ -196,7 +645,7 @@ namespace TPL.PVZR.Editor
                         // 检查是否是金币范围格式 "(min,max)"
                         if (inputCard.StartsWith("(") && inputCard.EndsWith(")"))
                         {
-                            string[] coinRange = inputCard.Substring(1, inputCard.Length - 2).Split(',');
+                            string[] coinRange = inputCard.Substring(1, inputCard.Length - 2).Split('-');
                             if (coinRange.Length == 2)
                             {
                                 recipe.input.coinRange = new int[]
@@ -229,17 +678,28 @@ namespace TPL.PVZR.Editor
         {
             List<string> result = new List<string>();
             bool inQuotes = false;
+            bool inParentheses = false;
             string currentField = "";
 
             for (int i = 0; i < line.Length; i++)
             {
                 char c = line[i];
 
-                if (c == '"')
+                if (c == '"' && !inParentheses)
                 {
                     inQuotes = !inQuotes;
                 }
-                else if (c == ',' && !inQuotes)
+                else if (c == '(' && !inQuotes)
+                {
+                    inParentheses = true;
+                    currentField += c;
+                }
+                else if (c == ')' && !inQuotes && inParentheses)
+                {
+                    inParentheses = false;
+                    currentField += c;
+                }
+                else if (c == ',' && !inQuotes && !inParentheses)
                 {
                     result.Add(currentField);
                     currentField = "";
@@ -258,6 +718,33 @@ namespace TPL.PVZR.Editor
         {
             // 将卡片名称转换为PlantId枚举检查
             return Enum.TryParse<PlantId>(cardName, true, out _);
+        }
+
+        /// <summary>
+        /// 检查PlantId是否有效，如果只是大小写错误则返回正确的名称
+        /// </summary>
+        /// <param name="cardName">输入的植物名称</param>
+        /// <param name="correctedName">修正后的名称</param>
+        /// <returns>0=无效, 1=有效且大小写正确, 2=有效但大小写错误</returns>
+        private int ValidatePlantIdWithCorrection(string cardName, out string correctedName)
+        {
+            correctedName = cardName;
+
+            // 首先检查是否严格匹配（大小写敏感）
+            if (Enum.TryParse<PlantId>(cardName, false, out PlantId exactMatch))
+            {
+                return 1; // 完全正确
+            }
+
+            // 然后检查是否忽略大小写匹配
+            if (Enum.TryParse<PlantId>(cardName, true, out PlantId caseInsensitiveMatch))
+            {
+                // 找到正确的大小写格式
+                correctedName = caseInsensitiveMatch.ToString();
+                return 2; // 大小写错误但可以修正
+            }
+
+            return 0; // 完全无效
         }
 
         private void ValidateCSVData()

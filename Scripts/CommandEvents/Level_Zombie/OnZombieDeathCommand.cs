@@ -42,7 +42,7 @@ namespace TPL.PVZR.CommandEvents._NotClassified_
                     Levelendobject_prefab.LevelEndObject).Instantiate(zombie.transform.position, Quaternion.identity);
                 _PhaseModel.ChangePhase(GamePhase.AllEnemyKilled);
 
-                resLoader.Recycle2Cache();
+                // resLoader.Recycle2Cache();
             }
         }
     }

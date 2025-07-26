@@ -39,7 +39,6 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
             // 创建Trades
             for (int index = 0; index < 8; index++)
             {
-                $"index: {index}".LogInfo();
                 var recipeData = _RecipeStoreSystem.GetRecipeByIndex(index);
                 // 创建Trade节点
                 var trade = TradePrefab.Instantiate().GetComponent<RecipeTradeNode>();

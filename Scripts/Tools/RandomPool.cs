@@ -47,6 +47,9 @@ namespace TPL.PVZR.Tools
             remainingValue = value;
             allowedValueOffset = value * ValueOffsetRatio;
             Random = random;
+            
+            // 检查初始状态是否已完成
+            CheckInitialFinishedState();
         }
 
         #endregion
@@ -182,6 +185,31 @@ namespace TPL.PVZR.Tools
         {
             availableInfos.Remove(info);
             if (availableInfos.Count == 0)
+            {
+                IsFinished = true;
+            }
+        }
+
+        /// <summary>检查初始状态是否已完成</summary>
+        private void CheckInitialFinishedState()
+        {
+            // 如果没有可用项目，直接标记为完成
+            if (availableInfos.Count == 0)
+            {
+                IsFinished = true;
+                return;
+            }
+            
+            // 如果剩余价值太少，无法承受任何物品，标记为完成
+            if (remainingValue < allowedValueOffset)
+            {
+                IsFinished = true;
+                return;
+            }
+            
+            // 检查是否存在任何可承受的物品
+            bool hasAffordableItem = availableInfos.Any(info => IsInfoAffordable(info));
+            if (!hasAffordableItem)
             {
                 IsFinished = true;
             }

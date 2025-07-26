@@ -62,7 +62,6 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 }
             }
 
-            resLoader.Recycle2Cache();
         }
 
         #endregion
