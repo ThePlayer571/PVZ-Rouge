@@ -151,8 +151,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         }
 
         #endregion
-
-
+        
         #region 字段
 
         // Designer
@@ -166,7 +165,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         public abstract ZombieId Id { get; }
 
         [NonSerialized] public float baseSpeed = 1.2f;
-        [NonSerialized] public float baseJumpForce = 5f;
+        [SerializeField] public float baseJumpForce = 5f;
         public AttackData baseAttackData = null;
 
         #region 当前属性（考虑Effect后）

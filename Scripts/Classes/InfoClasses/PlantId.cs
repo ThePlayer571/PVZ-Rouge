@@ -35,6 +35,7 @@ namespace TPL.PVZR.Classes.InfoClasses
         CabbagePult = 27,
         KernelPult = 28,
         MelonPult = 29,
+        LilyPad = 30,
 
 
         // Blover,

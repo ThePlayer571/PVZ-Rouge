@@ -9,5 +9,6 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
         Bound,
         Water,
         Ladder,
+        SoftObstacle,
     }
 }

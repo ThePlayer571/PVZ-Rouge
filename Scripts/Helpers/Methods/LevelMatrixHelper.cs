@@ -12,7 +12,7 @@ namespace TPL.PVZR.Helpers.New.Methods
     public static class LevelMatrixHelper
     {
         // 这个逻辑不能转到System里面，因为Level初始化阶段很紧，System找不到合适的时机
-        public static Matrix<Cell> BakeLevelMatrix(LevelTilemapController LevelTileMap, ILevelData levelData)
+        public static Matrix<Cell> BakeLevelMatrix(LevelTilemapNode LevelTileMap, ILevelData levelData)
         {
             var LevelMatrix =
                 new Matrix<Cell>(levelData.MapSize.x, levelData.MapSize.y);
@@ -25,8 +25,10 @@ namespace TPL.PVZR.Helpers.New.Methods
                     LevelMatrix[x, y] = cell;
                     if (LevelTileMap.Bound.HasTile(pos)) cell.CellTileState = TileState.Bound;
                     else if (LevelTileMap.Ground.HasTile(pos)) cell.CellTileState = TileState.Barrier;
+                    else if (LevelTileMap.Water.HasTile(pos)) cell.CellTileState = TileState.Water;
                     else if (LevelTileMap.Dirt.HasTile(pos)) cell.CellTileState = TileState.Dirt;
                     else if (LevelTileMap.Ladder.HasTile(pos)) cell.CellTileState = TileState.Ladder;
+                    else if (LevelTileMap.SoftObstacle.HasTile(pos)) cell.CellTileState = TileState.SoftObstacle;
                     else cell.CellTileState = TileState.Empty;
                 }
             }

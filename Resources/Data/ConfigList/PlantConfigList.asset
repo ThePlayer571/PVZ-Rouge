@@ -73,6 +73,11 @@ MonoBehaviour:
       Variant: 0
     card: {fileID: 11400000, guid: fc16673d33ac26a4083c35763678a65d, type: 2}
     prefab: {fileID: 7520798943962738706, guid: accc1a8f2d593ca4cb1088a10c7f7e64, type: 3}
+  - def:
+      Id: 30
+      Variant: 0
+    card: {fileID: 11400000, guid: 1e7e443c3cd4fae40b86a10887315100, type: 2}
+    prefab: {fileID: 453119421544998344, guid: 8c23640e6d86c444f9c9d83483793ac6, type: 3}
   Dave:
   - def:
       Id: 8

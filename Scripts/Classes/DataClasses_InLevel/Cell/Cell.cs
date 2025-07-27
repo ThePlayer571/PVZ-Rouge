@@ -18,6 +18,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
         PlatOfNormal, // Normal植物能接受的平台 - Dirt | 花盆, 睡莲
 
         HasPlant, // 有植物 - N/A | 有
+        SoftObstacle // 装饰 -  | 无
     }
 
     /// <summary>
@@ -40,10 +41,13 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
                 CellTypeId.Climbable => CellTileState == TileState.Ladder,
                 CellTypeId.Water => CellTileState == TileState.Water,
                 CellTypeId.Plat => CellTileState is TileState.Dirt or TileState.Barrier or TileState.Bound ||
-                                   CellPlantData.HasPlant(PlantId.Flowerpot),
+                                   CellPlantData.HasPlant(PlantId.Flowerpot) ||
+                                   CellPlantData.HasPlant(PlantId.LilyPad),
                 CellTypeId.PlatOfNormal => CellTileState == TileState.Dirt ||
-                                           CellPlantData.HasPlant(PlantId.Flowerpot),
+                                           CellPlantData.HasPlant(PlantId.Flowerpot) ||
+                                           CellPlantData.HasPlant(PlantId.LilyPad),
                 CellTypeId.HasPlant => CellPlantData.HasPlant(),
+                CellTypeId.SoftObstacle => CellTileState == TileState.SoftObstacle,
                 _ => false
             };
         }

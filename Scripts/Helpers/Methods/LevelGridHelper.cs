@@ -7,7 +7,7 @@ namespace TPL.PVZR.Helpers.New.Methods
 {
     public static class LevelGridHelper
     {
-        private static Tilemap CriterionTilemap => LevelTilemapController.Instance.Ground;
+        private static Tilemap CriterionTilemap => LevelTilemapNode.Instance.Ground;
 
         public static Vector2Int WorldToCell(Vector2 worldPos)
         {

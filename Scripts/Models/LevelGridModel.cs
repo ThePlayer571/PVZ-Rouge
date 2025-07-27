@@ -52,25 +52,27 @@ namespace TPL.PVZR.Models
         {
             var unionConditionGroup = PlantConfigReader.GetAllowedPlantingLocations(def);
 
-            if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
+            if (!IsValidPos(pos) || !IsValidPos(pos.Down()) || !IsValidPos(pos.Up())) return false; // 超出地图
             var cell = LevelMatrix[pos.x, pos.y];
             var belowCell = LevelMatrix[pos.x, pos.y - 1];
+            var aboveCell = LevelMatrix[pos.x, pos.y + 1];
 
-            if (def.Id == PlantId.Flowerpot && pos == Player.Instance.CellPos) return false;
+            if (def.Id is PlantId.Flowerpot or PlantId.LilyPad && pos == Player.Instance.CellPos) return false;
 
-            return unionConditionGroup.Any(condition => condition.CheckSpawn(def, cell, belowCell));
+            return unionConditionGroup.Any(condition => condition.CheckSpawn(def, cell, belowCell, aboveCell));
         }
 
         public bool CanStackPlantOn(Vector2Int pos, PlantDef def)
         {
             var unionConditionGroup = PlantConfigReader.GetAllowedPlantingLocations(def);
 
-            if (!IsValidPos(pos) || !IsValidPos(pos.Down())) return false; // 超出地图
+            if (!IsValidPos(pos) || !IsValidPos(pos.Down()) || !IsValidPos(pos.Up())) return false; // 超出地图
             var cell = LevelMatrix[pos.x, pos.y];
             var belowCell = LevelMatrix[pos.x, pos.y - 1];
+            var aboveCell = LevelMatrix[pos.x, pos.y + 1];
 
             //todo 不同植物叠种的支持
-            if (unionConditionGroup.Any(condition => condition.CheckStack(def, cell, belowCell)))
+            if (unionConditionGroup.Any(condition => condition.CheckStack(def, cell, belowCell, aboveCell)))
             {
                 return (cell.CellPlantData.GetPlant(def) as ICanBeStackedOn).CanStack(def);
             }
@@ -95,7 +97,7 @@ namespace TPL.PVZR.Models
 
         public void Initialize(ILevelData levelData)
         {
-            this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(LevelTilemapController.Instance, levelData);
+            this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(LevelTilemapNode.Instance, levelData);
             // LevelMatrixHelper.SetDebugTiles(LevelMatrix, ReferenceHelper.LevelTilemap.Debug);
         }
 

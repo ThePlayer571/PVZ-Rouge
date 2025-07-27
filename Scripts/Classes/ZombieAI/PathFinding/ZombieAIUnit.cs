@@ -657,7 +657,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
         public void DebugDisplayMatrix()
         {
             var resLoader = ResLoader.Allocate();
-            var tilemap = LevelTilemapController.Instance.Debug;
+            var tilemap = LevelTilemapNode.Instance.Debug;
             var OneHeight = resLoader.LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugOneHeight);
             var TwoHeight = resLoader.LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugTwoHeight);
             var Key = resLoader.LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugKey);

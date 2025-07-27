@@ -47,13 +47,12 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 _cardDefinitionDict[config.def] = config.card;
                 _plantPrefabDict[config.def] = config.prefab;
             }
-            
+
             foreach (var config in plantConfigList.PultFamily)
             {
                 _cardDefinitionDict[config.def] = config.card;
                 _plantPrefabDict[config.def] = config.prefab;
             }
-
         }
 
         #endregion
@@ -115,6 +114,7 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 PlantId.Flowerpot => (PlantingLocationTypeId.OnPlat, PlantingLocationTypeId.NotSet),
                 PlantId.PeaPod => (PlantingLocationTypeId.OnPlatOfNormal, PlantingLocationTypeId.OnSamePlant_OnlyStack),
                 PlantId.Pumpkin => (PlantingLocationTypeId.OnPlatOfNormal, PlantingLocationTypeId.OnAnyPlant),
+                PlantId.LilyPad => (PlantingLocationTypeId.OnWaterSurface, PlantingLocationTypeId.NotSet),
                 _ => (PlantingLocationTypeId.OnPlatOfNormal, PlantingLocationTypeId.NotSet),
             };
         }

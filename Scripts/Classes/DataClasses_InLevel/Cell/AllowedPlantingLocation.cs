@@ -15,6 +15,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
         public bool bannedSpawn = false;
         public List<CellTypeId> currentCellConditions = new();
         public List<CellTypeId> belowCellConditions = new();
+        public List<CellTypeId> aboveCellConditions = new();
 
         // stack
         public bool canStackOnSamePlant = false;
@@ -32,6 +33,10 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
                     currentCellConditions.Add(CellTypeId.TileEmpty);
                     belowCellConditions.Add(CellTypeId.Plat);
                     break;
+                case PlantingLocationTypeId.OnWaterSurface:
+                    currentCellConditions.Add(CellTypeId.Water);
+                    aboveCellConditions.Add(CellTypeId.TileEmpty);
+                    break;
                 case PlantingLocationTypeId.OnSamePlant_OnlyStack:
                     bannedSpawn = true;
                     canStackOnSamePlant = true;
@@ -44,10 +49,20 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
             }
         }
 
-        public bool CheckSpawn(PlantDef plantDef, Cell currentCell, Cell belowCell)
+        public bool CheckSpawn(PlantDef plantDef, Cell currentCell = null, Cell belowCell = null, Cell aboveCell = null)
         {
-            if (currentCellConditions.Any(cellTypeId => !currentCell.Is(cellTypeId))) return false;
-            if (belowCellConditions.Any(cellTypeId => !belowCell.Is(cellTypeId))) return false;
+            if (currentCellConditions.Count > 0 &&
+                (currentCell == null || currentCellConditions.Any(cellTypeId => !currentCell.Is(cellTypeId))))
+                return false;
+
+            if (belowCellConditions.Count > 0 &&
+                (belowCell == null || belowCellConditions.Any(cellTypeId => !belowCell.Is(cellTypeId))))
+                return false;
+
+            if (aboveCellConditions.Count > 0 &&
+                (aboveCell == null || aboveCellConditions.Any(cellTypeId => !aboveCell.Is(cellTypeId))))
+                return false;
+
 
             var slot = PlantConfigReader.GetPlacementSlot(plantDef);
             if (currentCell.CellPlantData.HasPlant(slot)) return false;
@@ -55,7 +70,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
             return true;
         }
 
-        public bool CheckStack(PlantDef plantDef, Cell currentCell, Cell belowCell)
+        public bool CheckStack(PlantDef plantDef, Cell currentCell, Cell belowCell, Cell aboveCell)
         {
             return canStackOnSamePlant && currentCell.CellPlantData.HasPlant(plantDef);
         }
@@ -68,6 +83,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
         // Tile Conditions
         OnPlatOfNormal, // 可以种在 PlatOfNormal 上
         OnPlat, // 可以种在 Plat 上
+        OnWaterSurface, // 可以种在水面上
 
         // Plant Conditions
         OnSamePlant_OnlyStack, // 可以种在相同植物上（以Stack的形式）
