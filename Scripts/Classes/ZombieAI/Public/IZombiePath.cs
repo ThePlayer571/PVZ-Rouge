@@ -30,20 +30,22 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
 
         public ZombiePath(Path path)
         {
-            foreach (var keyEdge in path.keyEdges)
+            foreach (var keyEdge in path.keyEdges.Where(keyEdge => keyEdge.To.isKey))
             {
-                if (keyEdge.To.isKey)
-                {
-                    moveQueue.Enqueue(new MoveData(keyEdge.moveType, keyEdge.To.Position, MoveStage.FollowVertex));
-                }
+                moveQueue.Enqueue(new MoveData(keyEdge.moveType, keyEdge.To.Position, MoveStage.FollowVertex));
             }
 
-            // FindDave仅支持WalkJump和ClimbLadder
-            var moveType = path.keyEdges.Last().moveType switch
+
+            var referenceMoveType = path.finalMoveType ?? path.keyEdges.Last().moveType;
+
+            var moveType = referenceMoveType switch
             {
                 MoveType.ClimbLadder => MoveType.ClimbLadder,
+                MoveType.Swim => MoveType.Swim,
+                MoveType.Climb_Swim => MoveType.ClimbLadder,
                 _ => MoveType.WalkJump
             };
+
 
             moveQueue.Enqueue(new MoveData(moveType, Vector2Int.zero, MoveStage.FindDave));
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.ZombieAI.Class;
+using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
 
 namespace TPL.PVZR.Classes.ZombieAI.Public
@@ -12,34 +13,13 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
     /// </summary>
     public class AITendency
     {
-        #region 枚举
-
-        /// <summary>
-        /// 主行为倾向
-        /// </summary>
-        public enum MainAI
-        {
-            Default,
-            CanSwim,
-            CanPutLadder
-        }
-
-        #endregion
-
-        #region 字段与属性
-
-        public readonly float seed;
-
-        public readonly AllowedPassHeight minPassHeight;
+        public const int PASSABLE_HEIGHT_最大值 = 5;
+        
         public readonly MainAI mainAI;
+        public readonly int minPassableHeight;
+        public readonly float seed;
+        public readonly bool chooseClosestPath;
 
-        #endregion
-
-        #region 属性
-
-        public static AITendency Default => new AITendency(MainAI.Default, AllowedPassHeight.TwoAndMore);
-
-        #endregion
 
         #region 公有方法
 
@@ -49,7 +29,7 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
         /// <param name="paths">路径列表</param>
         public void ApplyFilter(List<Path> paths)
         {
-            // TODO: 实现路径过滤逻辑
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -60,16 +40,23 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
         /// <returns>选择的路径</returns>
         public Path ChooseOnePath(List<Path> paths, float factor = 0.01f)
         {
+            // 异常处理
             if (paths == null || paths.Count == 0) throw new ArgumentException("路径列表不能为空");
-            if (paths.Count == 1) return paths.First();
 
+            // 提前返回：当只有一条路径
+            if (paths.Count == 1) return paths.First();
+            // 提前返回：当启用chooseClosestPath
+            if (chooseClosestPath)
+            {
+                return paths.MinBy(path => path.Weight(this));
+            }
+
+            // == 核心逻辑
             var weights = paths.Select((p => p.Weight(this))).ToArray();
-            // $"scores是{String.Join(",", weights.Select(s => s.ToString("F3")))}".LogInfo(); // 修改为三位小数输出
             float minWeight = weights.Min();
 
             // 计算每个路径的score（对差值敏感）
             var scores = weights.Select(w => MathF.Exp(-(w - minWeight) * factor)).ToArray();
-            // $"scores是{String.Join(",", scores.Select(s => s.ToString("F3")))}".LogInfo(); // 修改为三位小数输出
             float total = scores.Sum();
             float randomValue = total * seed;
             float cumulative = 0f;
@@ -95,34 +82,45 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
         /// <param name="mainAI"></param>
         /// <param name="minPassHeight">允许通过的最小高度</param>
         /// <param name="chooseClosestPath">是否选择最近路径（未使用）</param>
-        public AITendency(MainAI mainAI, AllowedPassHeight minPassHeight = AllowedPassHeight.TwoAndMore,
-            bool chooseClosestPath = false)
+        public AITendency(MainAI mainAI, int minPassableHeight, bool chooseClosestPath = false)
         {
             this.mainAI = mainAI;
-            this.minPassHeight = minPassHeight;
+            this.minPassableHeight = minPassableHeight;
             seed = (float)RandomHelper.Default.Value;
+            this.chooseClosestPath = chooseClosestPath;
         }
 
         #endregion
 
-        #region override
+        #region SHIT
 
         public override int GetHashCode()
         {
             // seed不参与HashCode计算
-            return HashCode.Combine(minPassHeight, mainAI);
+            return HashCode.Combine(mainAI, minPassableHeight, chooseClosestPath);
         }
 
         public override bool Equals(object obj)
         {
             if (obj is AITendency other)
             {
-                return this.minPassHeight == other.minPassHeight && this.mainAI == other.mainAI;
+                return this.mainAI == other.mainAI &&
+                       this.minPassableHeight == other.minPassableHeight &&
+                       this.chooseClosestPath == other.chooseClosestPath;
             }
 
             // seed不参与Equals计算
             throw new Exception();
         }
+
+        public enum MainAI
+        {
+            Default,
+            CanSwim,
+            CanPutLadder
+        }
+
+        public static AITendency Default => new AITendency(MainAI.Default, 2);
 
         #endregion
     }

@@ -120,18 +120,19 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                 }
             }
 
-            // foreach (var vertex in vertices)
-            // {
-            //     string output = $"({vertex.x}, {vertex.y})：";
-            //     foreach (var edge in adjacencyList[vertex])
-            //     {
-            //         output += $" ({edge.To.x}, {edge.To.y}, {edge.moveType})";
-            //     }
-            //
-            //     output.LogInfo();
-            // }
 
             #region 一大坨调试代码
+
+            foreach (var vertex in vertices)
+            {
+                string output = $"({vertex.x}, {vertex.y}, {vertex.VertexType})：";
+                foreach (var edge in adjacencyList[vertex])
+                {
+                    output += $" ({edge.To.x}, {edge.To.y}, {edge.moveType}, {edge.passableHeight})";
+                }
+
+                output.LogInfo();
+            }
 
             // foreach (var doubledVertex in vertices.Where(v => adjacencyList[v].Count > 1))
             // {
@@ -148,7 +149,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
             // {
             //     $"发现重复的关键结点({doubledKey.First().x},{doubledKey.First().y}), 数量是{doubledKey.Count()}, 已成功去重".LogError();
             // }
-// 以防万一的去重
+
             keyVertices = keyVertices.Distinct().ToList();
             // foreach (var vertex in keyVertices)
             // {
@@ -163,6 +164,307 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                 var keyEdges = FindKeyEdgesToAdjacentKeyVertices(keyVertex);
                 keyAdjacencyList[keyVertex] = keyEdges;
                 SetClusterCache(keyVertex, keyEdges);
+            }
+
+            #region 内部函数
+
+            void RecordAllVertices()
+            {
+                // 遍历所有基岩内部的格子（不包括基岩）
+                for (int x = 1; x < levelMatrix.Rows - 1; x++)
+                {
+                    for (int y = 1; y < levelMatrix.Columns - 1; y++)
+                    {
+                        /* cases:
+                         *  1 - (0, 0).!Block
+                         *  2 - (0,-1).Block
+                         *  3 - (0, 0).Climbable
+                         *  4 - (0, 0).Water
+                         *  5 - (0, 1).TileEmpty
+                         *
+                         * conditions:
+                         *  1 - 1100 - Plat
+                         *  2 - 1110 - PlatWithLadder
+                         *  3 - 1010 - Ladder
+                         *  4 - xxx1 - Water
+                         *  0 - else - notVertex
+                         */
+                        bool case_1 = !levelMatrix[x, y].Is(CellTypeId.Block);
+                        bool case_2 = levelMatrix[x, y - 1].Is(CellTypeId.Block);
+                        bool case_3 = levelMatrix[x, y].Is(CellTypeId.Climbable);
+                        bool case_4 = levelMatrix[x, y].Is(CellTypeId.Water);
+                        bool case_5 = levelMatrix[x, y + 1].Is(CellTypeId.TileEmpty);
+
+                        int condition = (case_1 ? 1 << 3 : 0) |
+                                        (case_2 ? 1 << 2 : 0) |
+                                        (case_3 ? 1 << 1 : 0) |
+                                        (case_4 ? 1 << 0 : 0);
+
+                        condition = condition switch
+                        {
+                            0b1100 => 1,
+                            0b1110 => 2,
+                            0b1010 => 3,
+                            _ when (condition & 0b0001) != 0 && case_5 => 4,
+                            _ => 0
+                        };
+
+                        // 获取newVertex
+                        Vertex newVertex = null;
+                        switch (condition)
+                        {
+                            case 1: // Plat
+                            {
+                                var minPassableHeight = GetMinPassableHeight(x, y);
+                                newVertex = new Vertex(x, y, VertexType.Plat, minPassableHeight);
+                                break;
+                            }
+                            case 2: // PlatWithLadder
+                            {
+                                var minPassableHeight = GetMinPassableHeight(x, y);
+                                newVertex = new Vertex(x, y, VertexType.PlatWithLadder, minPassableHeight);
+                                break;
+                            }
+                            case 3: // Ladder
+                            {
+                                var minPassableHeight = GetMinPassableHeight(x, y);
+                                newVertex = new Vertex(x, y, VertexType.Ladder, minPassableHeight);
+                                break;
+                            }
+                            case 4: // Water
+                            {
+                                var minPassableHeight = GetMinPassableHeight(x, y);
+                                newVertex = new Vertex(x, y, VertexType.Water, minPassableHeight);
+                                break;
+                            }
+                        }
+
+                        // 设置newVertex
+                        if (newVertex != null)
+                        {
+                            mapMatrix[x, y] = newVertex;
+                            vertices.Add(newVertex);
+                            adjacencyList.Add(newVertex, new List<Edge>());
+                        }
+
+
+                        int GetMinPassableHeight(int x, int y)
+                        {
+                            int heightOffset = 1;
+                            // 上限：5
+                            for (; heightOffset < 5; heightOffset++)
+                            {
+                                var currentCell = levelMatrix[x, y + heightOffset];
+                                if (currentCell.Is(CellTypeId.Block)) break;
+                            }
+
+                            return heightOffset;
+                        }
+                    }
+                }
+            }
+
+            void BuildAdjacencyList(Vertex vertex)
+            {
+                // tip: 可以忽略matrix越界检测，逻辑上不会越界（有基岩包裹）
+
+                // 核心
+                var vertexType = vertex.VertexType;
+
+                if (vertexType.IsPlat())
+                {
+                    // WalkJump TO Plat (this -> other) [直线和跳跃]
+                    {
+                        var passVertices =
+                            mapMatrix.GetNeighbors(vertex.x, vertex.y, false)
+                                .Where(v => v != null && v.VertexType.IsPlat() && CanWalkJumpTo(vertex, v));
+                        adjacencyList[vertex]
+                            .AddRange(passVertices.Select(v =>
+                                new Edge(vertex, v, MoveType.WalkJump, GetPassableHeight_WalkJump(vertex, v))));
+                    }
+                    // Climb_WalkJump TO Ladder (this <-> other) [斜着向下拉梯子]
+                    {
+                        var passVertices =
+                            new[] { (-1, -1), (1, -1) }.Select(t => mapMatrix[vertex.x + t.Item1, vertex.y + t.Item2])
+                                .Where(v => v != null && v.VertexType.IsLadder() && CanWalkJumpTo(vertex, v));
+                        foreach (var passVertex in passVertices)
+                        {
+                            var passableHeight = GetPassableHeight_WalkJump(vertex, passVertex);
+                            adjacencyList[vertex]
+                                .Add(new Edge(vertex, passVertex, MoveType.Climb_WalkJump, passableHeight));
+                            adjacencyList[passVertex]
+                                .Add(new Edge(passVertex, vertex, MoveType.Climb_WalkJump, passableHeight));
+                        }
+                    }
+                    // WalkJump_Swim TO Water (this <-> other) [下水]
+                    {
+                        var passVertices =
+                            new[] { (-1, -1), (1, -1) }.Select(t => mapMatrix[vertex.x + t.Item1, vertex.y + t.Item2])
+                                .Where(v => v != null && v.VertexType.IsWater() && CanWalkJumpTo(vertex, v));
+                        foreach (var passVertex in passVertices)
+                        {
+                            var passableHeight = GetPassableHeight_WalkJump(vertex, passVertex);
+                            adjacencyList[vertex]
+                                .Add(new Edge(vertex, passVertex, MoveType.Swim_WalkJump, passableHeight));
+                            adjacencyList[passVertex]
+                                .Add(new Edge(passVertex, vertex, MoveType.Swim_WalkJump, passableHeight));
+                        }
+                    }
+                    // Climb_WalkJump TO Ladder (this <-> other) [往正上方拉梯子]
+                    {
+                        var upVertex = mapMatrix[vertex.x, vertex.y + 1];
+                        if (upVertex != null && vertexType != VertexType.PlatWithLadder)
+                            // 此处不考虑PlatWithLadder（它应该是直接Climb的）
+                        {
+                            var passableHeight = upVertex.PassableHeight;
+                            adjacencyList[vertex]
+                                .Add(new Edge(vertex, upVertex, MoveType.Climb_WalkJump, passableHeight));
+                            adjacencyList[upVertex]
+                                .Add(new Edge(upVertex, vertex, MoveType.Climb_WalkJump, passableHeight));
+                        }
+                    }
+                    // Fall&&HumanLadder TO AnyOther (this <-> other) [往两边掉落]
+                    {
+                        var y = vertex.y;
+                        foreach (int x in new[] { vertex.x - 1, vertex.x + 1 })
+                        {
+                            if (levelMatrix[x, y].Is(CellTypeId.Block)) continue;
+                            var downVertex = GetDownVertex(x, y);
+                            if (y - downVertex.y <= 1) continue;
+
+                            var passableHeight = GetPassableHeight_Fall(vertex, downVertex);
+                            adjacencyList[vertex].Add(new Edge(vertex, downVertex, MoveType.Fall, passableHeight));
+                            adjacencyList[downVertex]
+                                .Add(new Edge(downVertex, vertex, MoveType.HumanLadder, passableHeight));
+                        }
+                    }
+                }
+
+                if (vertexType.IsLadder())
+                {
+                    // Climb TO Ladder (this -> other) [向上下爬]
+                    {
+                        var passedVertices =
+                            new[] { (0, 1), (0, -1) }.Select(t => mapMatrix[vertex.x + t.Item1, vertex.y + t.Item2])
+                                .Where(v => v != null && v.VertexType.IsLadder());
+                        adjacencyList[vertex].AddRange(passedVertices.Select(v =>
+                            new Edge(vertex, v, MoveType.ClimbLadder, v.PassableHeight)));
+                    }
+                    // Fall&&HumanLadder TO AnyOther (this <-> other) [往正下方掉落]
+                    {
+                        if (vertexType == VertexType.Ladder && mapMatrix[vertex.x, vertex.y - 1] == null)
+                        {
+                            var downVertex = GetDownVertex(vertex.x, vertex.y - 1);
+                            var passableHeight = vertex.PassableHeight;
+                            adjacencyList[vertex].Add(new Edge(vertex, downVertex, MoveType.Fall, passableHeight));
+                            adjacencyList[downVertex]
+                                .Add(new Edge(downVertex, vertex, MoveType.HumanLadder, passableHeight));
+                        }
+                    }
+                }
+
+                if (vertexType.IsWater())
+                {
+                    // Swim TO Water (this -> other) [往左右游]
+                    {
+                        var passedVertices =
+                            new[] { (-1, 0), (1, 0) }.Select(t => mapMatrix[vertex.x + t.Item1, vertex.y + t.Item2])
+                                .Where(v => v != null && v.VertexType.IsWater());
+                        adjacencyList[vertex].AddRange(passedVertices.Select(v =>
+                            new Edge(vertex, v, MoveType.Swim, GetPassableHeight_WalkJump(vertex, v))));
+                    }
+                    // Climb_Swim TO Ladder (this <-> other) [往正上方拉梯子]
+                    {
+                        var upVertex = mapMatrix[vertex.x, vertex.y + 1];
+                        if (upVertex != null)
+                        {
+                            var passableHeight = upVertex.PassableHeight;
+                            adjacencyList[vertex]
+                                .Add(new Edge(vertex, upVertex, MoveType.Climb_Swim, passableHeight));
+                            adjacencyList[upVertex]
+                                .Add(new Edge(upVertex, vertex, MoveType.Climb_Swim, passableHeight));
+                        }
+                    }
+                }
+
+
+                bool CanWalkJumpTo(Vertex a, Vertex b)
+                {
+                    return isNearBy() && haveNoFrontier();
+
+                    /* 需要满足所有条件
+                     * Case 1: 在附近
+                     * Case 2: 之间无障碍阻隔
+                     */
+                    bool isNearBy()
+                    {
+                        return Mathf.Abs(a.x - b.x) <= 1 && Mathf.Abs(a.y - b.y) <= 1;
+                    }
+
+                    bool haveNoFrontier()
+                    {
+                        if (a.y == b.y) return true;
+                        int xToTest, yToTest;
+                        xToTest = a.y < b.y ? a.x : b.x; // 较矮的那格
+                        yToTest = Mathf.Max(a.y, b.y); // 较高的那个
+                        return !levelMatrix[xToTest, yToTest].Is(CellTypeId.Block);
+                    }
+                }
+
+                int GetPassableHeight_WalkJump(Vertex from, Vertex to)
+                {
+                    if (from.y == to.y)
+                    {
+                        return Math.Min(from.PassableHeight, to.PassableHeight);
+                    }
+                    else
+                    {
+                        var lowerVertex = from.y < to.y ? from : to;
+                        var higherVertex = to.y > from.y ? to : from;
+
+                        return Math.Min(lowerVertex.PassableHeight - 1, higherVertex.PassableHeight);
+                    }
+                }
+
+                int GetPassableHeight_Fall(Vertex from, Vertex to)
+                {
+                    if (from.y <= to.y) throw new ArgumentException();
+                    var x = to.x;
+                    var y = from.y;
+
+                    int offsetY = 0;
+                    for (; offsetY < AITendency.PASSABLE_HEIGHT_最大值; offsetY++)
+                    {
+                        if (levelMatrix[x, y + offsetY].Is(CellTypeId.Block)) break;
+                    }
+
+                    return Math.Min(offsetY + 1, from.PassableHeight);
+                }
+
+                Vertex GetDownVertex(int x, int y)
+                {
+                    // 需要已经确认一定存在downVertex
+                    for (int offsetY = 0;; offsetY--)
+                    {
+                        if (mapMatrix[x, y + offsetY] != null)
+                            return mapMatrix[x, y + offsetY];
+                    }
+                }
+            }
+
+            bool ShouldBeKeyVertex(Vertex vertex)
+            {
+                var edges = adjacencyList[vertex];
+                // [特殊情况处理]
+                // 1 - 无任何相邻结点
+                if (edges.Count == 0) return false;
+                // [核心代码]
+                // 1 - 只连接一条keyEdge
+                if (edges.Count == 1) return true;
+                // 2 - 连接多条keyEdge，且移动方式不尽相同
+                if (edges.Count > 1 && edges.Any(edge => edge.moveType != edges[1].moveType)) return true;
+
+                return false;
             }
 
             void SetClusterCache(Vertex keyVertex, List<KeyEdge> keyEdges)
@@ -189,229 +491,6 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                 }
             }
 
-            #region 内部函数
-
-            void RecordAllVertices()
-            {
-                for (int x = 1; x < levelMatrix.Rows - 1; x++)
-                {
-                    // y = 0 一定是基岩，没必要考虑 (其实还有其他无需考虑的值，但只有这个会报错所以。。)
-                    for (int y = 1; y < levelMatrix.Columns - 1; y++)
-                    {
-                        /* case : (x,y).IsEmpty, (x,y-1).IsPlat, (x,y).IsClimbable
-                         * 110 -> Plat
-                         * 001 -> Ladder
-                         * 011 -> PlatWithLadder
-                         */
-                        bool _1 = levelMatrix[x, y].Is(CellTypeId.TileEmpty);
-                        bool _2 = levelMatrix[x, y - 1].Is(CellTypeId.Block);
-                        bool _3 = levelMatrix[x, y].Is(CellTypeId.Climbable);
-
-                        // ↓ 一些稍微复杂的逻辑
-                        if (_1 && _2 && !_3) //Plat
-                        {
-                            if (_3) $"find _3 at ({x},{y}), {_3}".LogWarning();
-                            var allowPassHeight = levelMatrix[x, y + 1].Is(CellTypeId.TileEmpty)
-                                ? AllowedPassHeight.TwoAndMore
-                                : AllowedPassHeight.One;
-                            var newVertex = new Vertex(x, y, VertexType.Plat, allowPassHeight);
-                            mapMatrix[x, y] = newVertex;
-                            vertices.Add(newVertex);
-                        }
-                        else if (!_1 && !_2 && _3) // Ladder
-                        {
-                            var newVertex = new Vertex(x, y, VertexType.Ladder, AllowedPassHeight.TwoAndMore);
-                            mapMatrix[x, y] = newVertex;
-                            vertices.Add(newVertex);
-                        }
-                        else if (!_1 && _2 && _3) // PlatWithLadder
-                        {
-                            var newVertex = new Vertex(x, y, VertexType.PlatWithLadder, AllowedPassHeight.TwoAndMore);
-                            mapMatrix[x, y] = newVertex;
-                            vertices.Add(newVertex);
-                        }
-                    }
-                }
-            }
-
-            void BuildAdjacencyList(Vertex vertex)
-            {
-                // #!#!# 不需要检测越界，因为不可能越界
-                // 确保每个结点都有邻接表
-                if (!adjacencyList.ContainsKey(vertex)) adjacencyList[vertex] = new List<Edge>();
-                var adjacentEdges = adjacencyList[vertex];
-
-                // [TYPE 1] WalkJump (this -> other)
-                if (vertex.VertexType is VertexType.Plat or VertexType.PlatWithLadder)
-                {
-                    // 走到平台上
-                    {
-                        var pass = mapMatrix.GetNeighbors(vertex.x, vertex.y, false).Where(v =>
-                            v != null && v.VertexType is VertexType.Plat or VertexType.PlatWithLadder &&
-                            CanWalkJumpTo(vertex, v));
-                        adjacentEdges.AddRange(pass.Select(v => new Edge(vertex, v, MoveType.WalkJump)));
-                    }
-                    // 到楼梯上
-                    {
-                        var pass = new[] { (-1, -1), (1, -1) }
-                            .Select(t => mapMatrix[vertex.x + t.Item1, vertex.y + t.Item2])
-                            .Where(v => v != null && v.VertexType is VertexType.Ladder && CanWalkJumpTo(vertex, v));
-                        adjacentEdges.AddRange(pass.Select(v => new Edge(vertex, v, MoveType.ClimbWalkJump)));
-                    }
-                }
-
-
-                // [Type 1] ClimbWalkJump (this -> other)
-                if (vertex.VertexType is VertexType.Ladder or VertexType.PlatWithLadder)
-                {
-                    // 跳到平台上
-                    {
-                        var pass = new[] { (-1, 1), (1, 1) }.Select(t =>
-                            mapMatrix[vertex.x + t.Item1, vertex.y + t.Item2]).Where(v =>
-                            v != null && v.VertexType is VertexType.Plat or VertexType.PlatWithLadder &&
-                            CanWalkJumpTo(vertex, v));
-                        adjacentEdges.AddRange(pass.Select(v => new Edge(vertex, v, MoveType.ClimbWalkJump)));
-                    }
-                }
-
-                if (vertex.VertexType is VertexType.Ladder)
-                {
-                    {
-                        var downVertex = mapMatrix[vertex.x, vertex.y - 1];
-                        bool pass = downVertex != null && downVertex.VertexType == VertexType.Plat;
-                        if (pass) adjacentEdges.Add(new Edge(vertex, downVertex, MoveType.ClimbWalkJump));
-                    }
-                }
-
-                // [Type 2] Climb (this -> other)
-                // 在梯子上往附近爬
-                if (vertex.VertexType is VertexType.Ladder or VertexType.PlatWithLadder)
-                {
-                    {
-                        var pass = mapMatrix.GetNeighbors(vertex.x, vertex.y, false).Where(v =>
-                            v != null && v.VertexType is VertexType.Ladder or VertexType.PlatWithLadder &&
-                            CanWalkJumpTo(vertex, v));
-                        adjacentEdges.AddRange(pass.Select(v => new Edge(vertex, v, MoveType.ClimbLadder)));
-                    }
-                }
-
-                // 在平台上，梯子就在正上方，直接上去
-                if (vertex.VertexType is VertexType.Plat)
-                {
-                    {
-                        var upVertex = mapMatrix[vertex.x, vertex.y + 1];
-                        var pass = upVertex != null && upVertex.VertexType == VertexType.Ladder;
-                    }
-                }
-
-                // [TYPE 3] Fall && HumanLadder (this <-> other)
-                // 这两个是相对的，代码按Fall的视角写
-                // [1] 平台往两边下落
-                if (vertex.VertexType is VertexType.Plat or VertexType.PlatWithLadder)
-                {
-                    foreach (int fallX in new int[] { vertex.x - 1, vertex.x + 1 }) // 检测左右两格
-                    {
-                        // [STEP 0] 排除不可能Fall的情况
-                        if (levelMatrix[fallX, vertex.y].Is(CellTypeId.Block)) continue; // 唯一通路被墙堵住
-                        if (mapMatrix[fallX, vertex.y] != null) continue; // 应该是WalkJump
-                        if (mapMatrix[fallX, vertex.y - 1] != null) continue; // 应该是WalkJump
-
-                        // 此时已经确认绝对是Fall
-                        // [STEP 1] 获取通路高度
-                        AllowedPassHeight allowedPassHeight;
-                        if (levelMatrix[fallX, vertex.y].Is(CellTypeId.TileEmpty) &&
-                            levelMatrix[fallX, vertex.y + 1].Is(CellTypeId.Block))
-                        {
-                            allowedPassHeight = AllowedPassHeight.One;
-                        }
-                        else
-                        {
-                            allowedPassHeight = AllowedPassHeight.TwoAndMore;
-                        }
-
-                        // [STEP 2] 向下遍历
-                        for (int y = vertex.y - 2; y > 0; y--)
-                        {
-                            var currentVertex = mapMatrix[fallX, y];
-
-                            if (currentVertex == null) continue; // 尚未找到落点
-
-                            var toVertex = currentVertex;
-                            // 设置边 (Fall)
-                            adjacentEdges.Add(new Edge(vertex, toVertex, MoveType.Fall, allowedPassHeight));
-                            // 设置边 (HumanLadder)
-                            if (!adjacencyList.ContainsKey(toVertex)) adjacencyList[toVertex] = new List<Edge>();
-                            adjacencyList[toVertex]
-                                .Add(new Edge(toVertex, vertex, MoveType.HumanLadder, allowedPassHeight));
-                            break;
-                        }
-                    }
-                }
-
-                // [2] 断楼梯往正下方下落
-                if (vertex.VertexType is VertexType.Ladder)
-                {
-                    var downVertex = mapMatrix[vertex.x, vertex.y - 1];
-                    bool pass = downVertex == null;
-                    if (pass)
-                    {
-                        for (int y = vertex.y - 2; y > 0; y--)
-                        {
-                            var currentVertex = mapMatrix[vertex.x, vertex.y];
-                            if (currentVertex == null) continue; // 尚未找到落点
-
-                            var toVertex = currentVertex;
-                            // 设置边 (Fall)
-                            adjacentEdges.Add(new Edge(vertex, toVertex, MoveType.Fall,
-                                AllowedPassHeight.TwoAndMore));
-                            // 设置边 (HumanLadder)
-                            if (!adjacencyList.ContainsKey(toVertex)) adjacencyList[toVertex] = new List<Edge>();
-                            adjacencyList[toVertex].Add(new Edge(toVertex, vertex, MoveType.HumanLadder,
-                                AllowedPassHeight.TwoAndMore));
-                        }
-                    }
-                }
-
-                bool CanWalkJumpTo(Vertex a, Vertex b)
-                {
-                    return isNearBy() && haveNoFrontier();
-
-                    /* 需要满足所有条件
-                     * Case 1: 在附近
-                     * Case 2: 之间无障碍阻隔
-                     */
-                    bool isNearBy()
-                    {
-                        return Mathf.Abs(a.x - b.x) <= 1 && Mathf.Abs(a.y - b.y) <= 1;
-                    }
-
-                    bool haveNoFrontier()
-                    {
-                        if (a.y == b.y) return true;
-                        int xToTest, yToTest;
-                        xToTest = a.y < b.y ? a.x : b.x; // 较矮的那格
-                        yToTest = Mathf.Max(a.y, b.y); // 较高的那个
-                        return levelMatrix[xToTest, yToTest].Is(CellTypeId.TileEmpty) ||
-                               levelMatrix[xToTest, yToTest].Is(CellTypeId.Climbable);
-                    }
-                }
-            }
-
-            bool ShouldBeKeyVertex(Vertex vertex)
-            {
-                var edges = adjacencyList[vertex];
-                // [特殊情况处理]
-                // 1 - 无任何相邻结点
-                if (edges.Count == 0) return false;
-                // [核心代码]
-                // 1 - 只连接一条keyEdge
-                if (edges.Count == 1) return true;
-                // 2 - 连接多条keyEdge，且移动方式不尽相同
-                if (edges.Count > 1 && edges.Any(edge => edge.moveType != edges[1].moveType)) return true;
-
-                return false;
-            }
-
             #endregion
         }
 
@@ -424,55 +503,12 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
         #region 底层函数（不调用KeyAgjecencyList）
 
         /// <summary>
-        /// 找到与vertex相邻的所有关键
-        /// </summary>
-        /// <param name="vertex"></param>
-        /// <param name="includeSelf">为true时，如果vertex.isKey，返回它自己</param>
-        /// <returns></returns>
-        public List<Vertex> FindAdjacentKeyVertices(in Vertex vertex, bool includeSelf = false)
-        {
-            // 如果vertex.isKey，返回它自己
-            if (includeSelf && vertex.isKey) return new List<Vertex>() { vertex };
-            // 利用BFS搜索附近的关键结点
-            HashSet<Vertex> visited = new HashSet<Vertex>();
-            Queue<Vertex> queue = new Queue<Vertex>();
-            List<Vertex> result = new List<Vertex>();
-
-            visited.Add(vertex);
-            queue.Enqueue(vertex);
-
-            while (queue.TryDequeue(out Vertex current))
-            {
-                if (current.isKey)
-                {
-                    result.Add(current);
-                }
-                else
-                {
-                    foreach (var edge in adjacencyList.GetValueOrDefault(current, new List<Edge>()))
-                    {
-                        if (!visited.Contains(edge.To))
-                        {
-                            visited.Add(edge.To);
-                            queue.Enqueue(edge.To);
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// 找到与vertex到相邻关键节点的Edge。如果出现环，可能会报错(没出现过)。如果vertex.isKey，不会包括自己
         /// </summary>
         /// <param name="vertex"></param>
         /// <returns></returns>
-        public List<KeyEdge> FindKeyEdgesToAdjacentKeyVertices(in Vertex vertex)
+        public List<KeyEdge> FindKeyEdgesToAdjacentKeyVertices(Vertex vertex)
         {
-            // 验证输入
-            if (!adjacencyList.ContainsKey(vertex)) throw new ArgumentException("Start/End not in graph");
-
             // 初始化数据结构
             Stack<KeyEdge> frontier = new Stack<KeyEdge>();
             List<Vertex> visited = new List<Vertex>();
@@ -529,112 +565,84 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
             return result;
         }
 
+        #endregion
+
+        #region 实用函数
+
         /// <summary>
-        /// 给两个Vertex，已知它们在同一KeyEdge里，start到end的keyEdge
+        /// 传入两个keyVertex，返回它们之间的KeyEdge
         /// </summary>
+        /// <param name="startVertex"></param>
+        /// <param name="endVertex"></param>
         /// <returns></returns>
-        public KeyEdge FindKeyEdgeInOneKeyEdge(in Vertex startVertex, in Vertex endVertex)
+        public KeyEdge GetKeyEdge(Vertex startVertex, Vertex endVertex)
         {
             // 验证输入
-            if (!(adjacencyList.ContainsKey(startVertex) && adjacencyList.ContainsKey(endVertex)))
-                throw new ArgumentException("Start/End not in graph");
-            // [Warning] 可能出bug：如果moveType不是WalkJump
-            if (startVertex == endVertex)
-                return new KeyEdge(new Edge(startVertex, endVertex, MoveType.WalkJump, AllowedPassHeight.TwoAndMore));
-            if (startVertex.isKey)
-            {
-                if (endVertex.isKey)
-                {
-                    var otherKeyVertex = endVertex; // 避免in
-                    var keyEdge = keyAdjacencyList[startVertex].FirstOrDefault(ke => ke.To == otherKeyVertex);
-                    return GetKeyEdgeInKeyEdge(startVertex, endVertex, keyEdge);
-                }
-                else
-                {
-                    var endCluster = GetCluster(endVertex);
-                    var otherKeyVertex = endCluster.vertexA == startVertex ? endCluster.vertexB : endCluster.vertexA;
-                    var keyEdge = keyAdjacencyList[startVertex].FirstOrDefault(ke => ke.To == otherKeyVertex);
-                    return GetKeyEdgeInKeyEdge(startVertex, endVertex, keyEdge);
-                }
-            }
-
-            // 初始化数据结构
-            Stack<KeyEdge> frontier = new Stack<KeyEdge>();
-            List<Vertex> visited = new List<Vertex>();
-
-            visited.Add(startVertex);
-            foreach (var each in adjacencyList[startVertex])
-            {
-                frontier.Push(new KeyEdge(each));
-                visited.Add(each.To);
-            }
-
-            // 
-            while (frontier.Count > 0)
-            {
-                var current = frontier.Peek();
-                // 探索最新的结点
-                var v = current.To;
-                // [Case 1] 找到了终点
-                if (v == endVertex) return current;
-
-                // [Case 2] 遇到了keyVertex（已规避终点是keyVertex的情况）
-                if (v.isKey)
-                {
-                    frontier.Pop();
-                    continue;
-                }
-
-                // [Case 3] 常规寻路
-
-                // 将临近的结点加入列表
-                var adj = adjacencyList[current.To].Where(edge => !visited.Contains(edge.To)).ToList();
-
-                // 异常处理
-                if (adj.Count >= 2)
-                {
-                    string exp = "GetKeyEdgesToAdjacentKeyVertices的路径中出现岔路，这是不应该的。";
-                    exp += $"源头是({current.From.x},{current.From.y})。";
-                    exp += $"正在探索：" + String.Join(",",
-                        adj.Select(each => $"({each.From.x},{each.From.y})->({each.To.x},{each.To.y})"));
-                    Debug.LogWarning(exp);
-                }
-
-
-                var next = adj.First();
-                visited.Add(next.To);
-                current.AddEdge(next);
-            }
-
-
-            throw new ArgumentException($"GetKeyEdgeInOneKeyEdge未找到路径: {startVertex.Position}->{endVertex.Position}");
-        }
-
-        public KeyEdge GetKeyEdgeInKeyEdge(in Vertex startVertex, in Vertex endVertex, in KeyEdge keyEdge)
-        {
-            // 验证输入
-            if (startVertex == endVertex) throw new ArgumentException();
+            if (!startVertex.isKey) throw new ArgumentException();
+            if (!endVertex.isKey) throw new ArgumentException();
 
             //
-            var result = new KeyEdge(keyEdge.moveType);
-            bool startRecord = false;
-            foreach (var edge in keyEdge.includeEdges)
+            return keyAdjacencyList[startVertex]
+                       .FirstOrDefault(keyEdge => keyEdge.To == endVertex) ??
+                   throw new ArgumentException(
+                       $"无法找到keyEdge：{startVertex.Position}->{endVertex.Position}, 在KeyAdjacencyList中");
+        }
+
+        /// <summary>
+        /// 传入两个vertex，已知它们在同一个Cluster（或如果有keyVertex，一定相邻）。创建或返回它们之间的KeyEdge
+        /// </summary>
+        /// <param name="startVertex"></param>
+        /// <param name="endVertex"></param>
+        /// <returns></returns>
+        public KeyEdge CreateKeyEdgeInOneCluster(Vertex startVertex, Vertex endVertex)
+        {
+            if (startVertex == endVertex) throw new ArgumentException();
+            
+            Vertex startKeyVertex;
+            if (startVertex.isKey) startKeyVertex = startVertex;
+            else
             {
-                if (edge.From == startVertex) startRecord = true;
-                if (startRecord)
-                {
-                    result.AddEdge(edge);
-                    if (edge.To == endVertex) return result;
-                }
+                var cluster = GetCluster(startVertex);
+                startKeyVertex = cluster.vertexA == endVertex ? cluster.vertexB : cluster.vertexA;
             }
 
-            throw new ArgumentException(
-                $"无法找到keyEdge：{startVertex.Position}->{endVertex.Position}, 在KeyEdge({keyEdge.From.x},{keyEdge.From.y}) -> ({keyEdge.To.x},{keyEdge.To.y})中");
+            Vertex endKeyVertex;
+            if (endVertex.isKey) endKeyVertex = endVertex;
+            else
+            {
+                var cluster = GetCluster(endVertex);
+                endKeyVertex = cluster.vertexA == startVertex ? cluster.vertexB : cluster.vertexA;
+            }
+
+            var keyEdge = GetKeyEdge(startKeyVertex, endKeyVertex);
+            if (startVertex.isKey && endKeyVertex.isKey)
+                return keyEdge;
+            else
+                return Soyo(keyEdge);
+
+
+            KeyEdge Soyo(KeyEdge keyEdge)
+            {
+                var result = new KeyEdge(keyEdge.moveType);
+                bool startRecord = false;
+                foreach (var edge in keyEdge.includeEdges)
+                {
+                    if (edge.From == startVertex) startRecord = true;
+                    if (startRecord)
+                    {
+                        result.AddEdge(edge);
+                        if (edge.To == endVertex) break;
+                    }
+                }
+
+                return result;
+            }
         }
 
         #endregion
 
-        #region 函数
+
+        #region Cluster缓存
 
         private Dictionary<Vertex, Cluster> _clusterCache = new Dictionary<Vertex, Cluster>();
 
@@ -669,7 +677,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                 }
                 else
                 {
-                    if (each.AllowedPassHeight is AllowedPassHeight.One)
+                    if (each.PassableHeight == 1)
                     {
                         tilemap.SetTile(new Vector3Int(each.x, each.y, 0), OneHeight);
                     }

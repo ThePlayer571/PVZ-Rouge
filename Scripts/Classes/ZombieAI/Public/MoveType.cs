@@ -5,10 +5,12 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
         NotSet,
         WalkJump,
         Fall,
-        Water,
+        Swim,
         HumanLadder,
         ClimbLadder,
-        ClimbWalkJump,
+        Climb_WalkJump,
+        Climb_Swim,
+        Swim_WalkJump,
     }
 
     public enum MoveStage

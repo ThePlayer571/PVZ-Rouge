@@ -1,15 +1,9 @@
 using System;
+using TPL.PVZR.Classes.ZombieAI.Public;
 using UnityEngine;
 
 namespace TPL.PVZR.Classes.ZombieAI.Class
 {
-    public enum AllowedPassHeight
-    {
-        NotSet,
-        One,
-        TwoAndMore
-    }
-
     public enum VertexType
     {
         Plat,
@@ -18,16 +12,46 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
         Water
     }
 
+    public static class VertexTypeExtensions
+    {
+        public static bool IsPlat(this VertexType vertexType)
+        {
+            return vertexType is VertexType.Plat or VertexType.PlatWithLadder;
+        }
+
+        public static bool IsLadder(this VertexType vertexType)
+        {
+            return vertexType is VertexType.Ladder or VertexType.PlatWithLadder;
+        }
+
+        public static bool IsWater(this VertexType vertexType)
+        {
+            return vertexType == VertexType.Water;
+        }
+
+        public static MoveType ToMoveType(this VertexType vertexType)
+        {
+            return vertexType switch
+            {
+                VertexType.Plat => MoveType.WalkJump,
+                VertexType.Ladder => MoveType.ClimbLadder,
+                VertexType.PlatWithLadder => MoveType.WalkJump,
+                VertexType.Water => MoveType.Swim,
+                _ => throw new ArgumentOutOfRangeException(nameof(vertexType), vertexType, null)
+            };
+        }
+    }
+
     public class Vertex
     {
         #region 构造函数
 
-        public Vertex(int x, int y, VertexType vertexType, AllowedPassHeight allowedPassHeight, bool isKey = false)
+        public Vertex(int x, int y, VertexType vertexType, int passableHeight, bool isKey = false)
         {
             this.x = x;
             this.y = y;
             this.VertexType = vertexType;
-            this.AllowedPassHeight = allowedPassHeight;
+            this.PassableHeight = passableHeight;
             this.isKey = isKey;
         }
 
@@ -41,7 +65,7 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
         /// <summary>
         /// Vertex之上有的空间（能允许几格高的僵尸通过）
         /// </summary>
-        public AllowedPassHeight AllowedPassHeight;
+        public int PassableHeight;
 
         public VertexType VertexType;
 

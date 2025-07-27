@@ -11,7 +11,8 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
         [SerializeField] [Tooltip("不可直接种植植物的Block")]
         public Tilemap Ground;
 
-        [SerializeField] [Tooltip("水")] public Tilemap Water;
+        [SerializeField] [Tooltip("水")] public Tilemap ShallowWater;
+        public Tilemap DeepWater;
 
         [SerializeField] [Tooltip("泥土")] public Tilemap Dirt;
 

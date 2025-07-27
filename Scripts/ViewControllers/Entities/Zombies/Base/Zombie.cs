@@ -151,7 +151,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         }
 
         #endregion
-        
+
         #region 字段
 
         // Designer
@@ -279,6 +279,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             _Rigidbody2D.AddForce(Direction.Value.ToVector2() * this.GetSpeed());
         }
 
+        public void SwimForward()
+        {
+            MoveForward();
+        }
+
         public void ClimbLadder()
         {
             if (ZombieNode.ClimbDetector.HasTarget)
@@ -377,7 +382,31 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
                     break;
                 }
-                case MoveType.ClimbWalkJump:
+                case MoveType.Swim:
+                {
+                    Vector2 targetPos = moveData.moveStage switch
+                    {
+                        MoveStage.FollowVertex => moveData.targetWorldPos,
+                        MoveStage.FindDave => Player.Instance.transform.position,
+                        _ => throw new ArgumentException($"不支持的MoveStage: {moveData.moveStage}")
+                    };
+
+                    var hit = Physics2D.Raycast(ZombieNode.JumpDetectionPoint.position, Direction.Value.ToVector2(),
+                        0.5f,
+                        LayerMask.GetMask("Barrier"));
+                    if (hit.collider) TryJump();
+
+                    float distance = Mathf.Abs(transform.position.x - targetPos.x);
+                    if (distance < Global.Zombie_Default_PathFindStopMinDistance) return;
+
+
+                    this.Direction.Value = (transform.position.x > targetPos.x)
+                        ? Direction2.Left
+                        : Direction2.Right;
+                    SwimForward();
+                    break;
+                }
+                case MoveType.Climb_WalkJump:
                 {
                     Vector2 targetPos = moveData.moveStage switch
                     {
@@ -399,6 +428,46 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     if (distanceY > Global.Zombie_Default_PathFindStopMinDistance)
                     {
                         bool toUp = transform.position.y < targetPos.y;
+                        if (toUp && ZombieNode.ClimbDetector.HasTarget)
+                        {
+                            ClimbLadder();
+                        }
+                    }
+
+                    break;
+                }
+                case MoveType.Swim_WalkJump:
+                {
+                    var hit = Physics2D.Raycast(ZombieNode.JumpDetectionPoint.position, Direction.Value.ToVector2(),
+                        0.3f,
+                        LayerMask.GetMask("Barrier"));
+
+                    if (hit.collider) TryJump();
+
+                    float distance = Mathf.Abs(transform.position.x - moveData.targetWorldPos.x);
+                    if (distance < Global.Zombie_Default_PathFindStopMinDistance) return;
+
+                    this.Direction.Value = (transform.position.x > moveData.targetWorldPos.x)
+                        ? Direction2.Left
+                        : Direction2.Right;
+                    MoveForward();
+                    break;
+                }
+                case MoveType.Climb_Swim:
+                {
+                    float distanceX = Mathf.Abs(transform.position.x - moveData.targetWorldPos.x);
+                    float distanceY = Mathf.Abs(transform.position.y - moveData.targetWorldPos.y);
+                    if (distanceX > Global.Zombie_Default_PathFindStopMinDistance)
+                    {
+                        this.Direction.Value = (transform.position.x > moveData.targetWorldPos.x)
+                            ? Direction2.Left
+                            : Direction2.Right;
+                        MoveForward();
+                    }
+
+                    if (distanceY > Global.Zombie_Default_PathFindStopMinDistance)
+                    {
+                        bool toUp = transform.position.y < moveData.targetWorldPos.y;
                         if (toUp && ZombieNode.ClimbDetector.HasTarget)
                         {
                             ClimbLadder();

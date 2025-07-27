@@ -13,9 +13,9 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
             { (MoveType.WalkJump, AITendency.MainAI.CanPutLadder), 10f },
             { (MoveType.WalkJump, AITendency.MainAI.CanSwim), 10f },
 
-            { (MoveType.Water, AITendency.MainAI.Default), 20f },
-            { (MoveType.Water, AITendency.MainAI.CanPutLadder), 20f },
-            { (MoveType.Water, AITendency.MainAI.CanSwim), 3f },
+            { (MoveType.Swim, AITendency.MainAI.Default), 20f },
+            { (MoveType.Swim, AITendency.MainAI.CanPutLadder), 20f },
+            { (MoveType.Swim, AITendency.MainAI.CanSwim), 3f },
 
             { (MoveType.Fall, AITendency.MainAI.Default), 1f },
             { (MoveType.Fall, AITendency.MainAI.CanPutLadder), 1f },
@@ -29,9 +29,9 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
             { (MoveType.ClimbLadder, AITendency.MainAI.CanPutLadder), 10f },
             { (MoveType.ClimbLadder, AITendency.MainAI.CanSwim), 10f },
 
-            { (MoveType.ClimbWalkJump, AITendency.MainAI.Default), 10f },
-            { (MoveType.ClimbWalkJump, AITendency.MainAI.CanPutLadder), 10f },
-            { (MoveType.ClimbWalkJump, AITendency.MainAI.CanSwim), 10f },
+            { (MoveType.Climb_WalkJump, AITendency.MainAI.Default), 10f },
+            { (MoveType.Climb_WalkJump, AITendency.MainAI.CanPutLadder), 10f },
+            { (MoveType.Climb_WalkJump, AITendency.MainAI.CanSwim), 10f },
         };
 
         public float GetWeight(MoveType edgeType, AITendency.MainAI aiTendency)

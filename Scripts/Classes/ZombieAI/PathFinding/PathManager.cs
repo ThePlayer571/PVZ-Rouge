@@ -36,26 +36,34 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
             var startCluster = _zombieAIUnit.GetCluster(startVertex);
             var endCluster = _zombieAIUnit.GetCluster(endVertex);
 
-
-            // $"调用 GetMultiPaths({startVertex.Position}->{endVertex.Position}) | IsIdentical: {startCluster.IsIdentical(endCluster)}".LogInfo();
-
             // 简单情况处理，这时不需要调用寻路算法
+            if (startVertex == endVertex)
+            {
+                var moveType = startVertex.VertexType.ToMoveType();
+                return new List<Path> { new Path(moveType) };
+            }
+
             if (startCluster.IsIdentical(endCluster))
             {
-                // todo 应该是new Path()，无keyEdge，但MoveType无法获取。现有体系不支持这个，以后重构
-                var _ = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(startVertex, endVertex);
-                return new List<Path> { new Path(_) };
+                var moveType = _zombieAIUnit.GetKeyEdge(startCluster.vertexA, startCluster.vertexB).moveType;
+                return new List<Path> { new Path(moveType) };
             }
 
             if (startCluster.GetIntersection(endCluster, out var intersection))
             {
                 var path = new Path();
 
-                var firstEdge = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(startVertex, intersection);
-                path.Add(firstEdge);
+                if (startVertex != intersection)
+                {
+                    var firstEdge = _zombieAIUnit.CreateKeyEdgeInOneCluster(startVertex, intersection);
+                    path.Add(firstEdge);
+                }
 
-                var secondEdge = _zombieAIUnit.FindKeyEdgeInOneKeyEdge(intersection, endVertex);
-                path.Add(secondEdge);
+                if (endVertex != intersection)
+                {
+                    var secondEdge = _zombieAIUnit.CreateKeyEdgeInOneCluster(intersection, endVertex);
+                    path.Add(secondEdge);
+                }
 
                 return new List<Path> { path };
             }
@@ -81,43 +89,22 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                 foreach (var path in paths)
                 {
                     // 拼接路径
-                    KeyEdge start, end;
+                    KeyEdge start = null, end = null;
 
                     var keyVertexStart = path.keyEdges.First().From;
                     var keyVertexEnd = path.keyEdges.Last().To;
 
-                    if (startVertex == keyVertexStart) start = null;
-                    else if (startVertex.isKey)
-                        start = _zombieAIUnit.keyAdjacencyList[startVertex]
-                            .First(keyEdge => keyEdge.To == keyVertexStart);
-                    else
-                        start = _zombieAIUnit.FindKeyEdgesToAdjacentKeyVertices(startVertex)
-                            .First(keyEdge => keyEdge.To == keyVertexStart);
+                    if (startVertex != keyVertexStart)
+                        start = _zombieAIUnit.CreateKeyEdgeInOneCluster(startVertex, keyVertexStart);
+                    if (endVertex != keyVertexEnd)
+                        end = _zombieAIUnit.CreateKeyEdgeInOneCluster(keyVertexEnd, endVertex);
 
-                    if (endVertex == keyVertexEnd) end = null;
-                    else if (endVertex.isKey)
-                    {
-                        var otherEndVertex = endCluster.vertexA == endVertex ? endCluster.vertexB : endCluster.vertexA;
-                        end = _zombieAIUnit.keyAdjacencyList[otherEndVertex]
-                            .First(keyEdge => keyEdge.To == endVertex);
-                    }
-                    else
-                    {
-                        if (endVertex == endCluster.vertexA)
-                        {
-                            var AToB = _zombieAIUnit.keyAdjacencyList[endCluster.vertexA]
-                                .First(e => e.To == endCluster.vertexB);
-                            end = _zombieAIUnit.GetKeyEdgeInKeyEdge(endCluster.vertexA, endVertex, AToB);
-                        }
-                        else
-                        {
-                            var BToA = _zombieAIUnit.keyAdjacencyList[endCluster.vertexB]
-                                .First(e => e.To == endCluster.vertexA);
-                            end = _zombieAIUnit.GetKeyEdgeInKeyEdge(endCluster.vertexB, endVertex, BToA);
-                        }
-                    }
+                    var newPath = new Path();
+                    if (start != null) newPath.Add(start);
+                    newPath.keyEdges.AddRange(path.keyEdges);
+                    if (end != null) newPath.Add(end);
 
-                    result.Add(new Path(start, path, end));
+                    result.Add(newPath);
                 }
 
                 return result;

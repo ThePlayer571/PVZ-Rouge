@@ -17,7 +17,7 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
         public MoveType moveType { get; private set; }
 
 
-        public AllowedPassHeight allowedPassHeight { get; private set; }
+        public int passableHeight { get; private set; }
         public Vertex From => includeEdges.First().From;
         public Vertex To => includeEdges.Last().To;
 
@@ -74,12 +74,9 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
             if (this.moveType == MoveType.NotSet) this.moveType = edge.moveType;
 
             // allowedPassHeight
-            if (edge.allowedPassHeight == AllowedPassHeight.One &&
-                this.allowedPassHeight == AllowedPassHeight.TwoAndMore)
-            {
-                this.allowedPassHeight = AllowedPassHeight.One;
-            }
+            if (this.passableHeight > edge.passableHeight) this.passableHeight = edge.passableHeight;
 
+            //
             includeEdges.Add(edge);
 
             // 清除缓存，确保后续调用 Weight 时重新计算
@@ -96,21 +93,21 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
         {
             includeEdges = new List<Edge>();
             this.moveType = moveType;
-            this.allowedPassHeight = AllowedPassHeight.TwoAndMore;
+            this.passableHeight = AITendency.PASSABLE_HEIGHT_最大值;
         }
 
         public KeyEdge(Edge startEdge)
         {
             includeEdges.Add(startEdge);
             this.moveType = startEdge.moveType;
-            this.allowedPassHeight = startEdge.allowedPassHeight;
+            this.passableHeight = startEdge.passableHeight;
         }
 
         public KeyEdge(KeyEdge startEdge, List<Edge> includeEdges = null)
         {
             this.includeEdges = includeEdges ?? startEdge.includeEdges.ToList();
             this.moveType = startEdge.moveType;
-            this.allowedPassHeight = startEdge.allowedPassHeight;
+            this.passableHeight = startEdge.passableHeight;
         }
 
         #endregion
