@@ -27,7 +27,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 
         private bool _attacked = false;
         private Timer _detectTimer;
-        [SerializeField] private CollisionDetector zombieDetector;
+        [SerializeField] private TriggerDetector zombieDetector;
         private const float turnSpeed = 2f; // 转向速度，值越大转向越快
 
         protected override void Update()

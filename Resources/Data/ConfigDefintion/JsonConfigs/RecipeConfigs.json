@@ -1,0 +1,149 @@
+[
+  {
+    "weight": 10,
+    "output": {
+      "card": "Repeater"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "PeaShooter"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "Repeater"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "PeaShooter",
+        "PeaShooter"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "Repeater"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "PeaShooter"
+      ],
+      "coinRange": [
+        10,
+        20
+      ]
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "PeaShooter"
+    },
+    "input": {
+      "cards": [
+        "Starfruit"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "PotatoMine"
+    },
+    "input": {
+      "cards": [
+        "Wallnut",
+        "Flowerpot"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "SnowPea"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "IcebergLettuce"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "SplitPea"
+    },
+    "input": {
+      "cards": [
+        "Repeater",
+        "Repeater"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "SplitPea"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "PeaShooter",
+        "Repeater"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 2,
+    "output": {
+      "card": "SplitPea"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "Repeater"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "Tallnut"
+    },
+    "input": {
+      "cards": [
+        "Wallnut",
+        "Wallnut"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "CherryBomb"
+    },
+    "input": {
+      "cards": [
+        "PotatoMine",
+        "PotatoMine"
+      ],
+      "coinRange": null
+    }
+  }
+]

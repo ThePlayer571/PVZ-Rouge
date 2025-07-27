@@ -1,0 +1,79 @@
+[
+  {
+    "lootPoolDef": {
+      "lootPoolId": "General"
+    },
+    "weight": 10.0,
+    "cards": [
+      "Sunflower",
+      "TwinSunflower",
+      "Flowerpot",
+      "TripletSunflower",
+      "GoldBloom",
+      "Marigold",
+      "CherryBomb",
+      "Squash",
+      "Jalapeno",
+      "IcebergLettuce",
+      "Wallnut",
+      "Pumpkin"
+    ],
+    "plantBooks": [],
+    "coinRanges": [
+      [
+        20,
+        20
+      ]
+    ],
+    "seedSlot": true
+  },
+  {
+    "lootPoolDef": {
+      "lootPoolId": "Dave"
+    },
+    "weight": 10.0,
+    "cards": [
+      "PotatoMine",
+      "Tallnut",
+      "Cactus",
+      "StarFruit",
+      "BonkChoy"
+    ],
+    "plantBooks": [],
+    "seedSlot": false
+  },
+  {
+    "lootPoolDef": {
+      "lootPoolId": "PeaFamily"
+    },
+    "weight": 10.0,
+    "cards": [
+      "PeaShooter",
+      "Repeater",
+      "SnowPea",
+      "SplitPea",
+      "Threepeater",
+      "SniperPea",
+      "PeaPod",
+      "GatlingPea",
+      "Torchwood"
+    ],
+    "plantBooks": [
+      "MungBeanBook"
+    ],
+    "seedSlot": false
+  },
+  {
+    "lootPoolDef": {
+      "lootPoolId": "PultFamily"
+    },
+    "weight": 10.0,
+    "cards": [
+      "CabbagePult",
+      "KernelPult",
+      "MelonPult"
+    ],
+    "plantBooks": [],
+    "seedSlot": false
+  }
+]

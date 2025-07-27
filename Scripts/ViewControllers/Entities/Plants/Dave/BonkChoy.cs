@@ -21,12 +21,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             this.HealthPoint = GlobalEntityData.Plant_Default_Health;
 
             _timer = new Timer(GlobalEntityData.Plant_BonkChoy_HitInterval);
+
+            ZombieDetector.RecordTargets = true;
         }
 
         private Timer _timer;
         private int _hitCount = 0;
 
-        [SerializeField] private CollisionDetector ZombieDetector;
+        [SerializeField] private TriggerDetector ZombieDetector;
 
         protected override void OnUpdate()
         {

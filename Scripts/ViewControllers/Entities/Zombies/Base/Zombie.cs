@@ -52,6 +52,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
             // AI / 行为主控
             FSM = new FSM<ZombieState>();
+
+
+            ZombieNode.OtherZombieDetector.RecordTargets = true;
+            ZombieNode.OtherZombieDetector.TargetPredicate = other =>
+            {
+                var zombie = other.gameObject.GetComponent<Zombie>();
+                return zombie != null && !ReferenceEquals(zombie, this);
+            };
         }
 
         protected override void Update()
@@ -105,12 +113,13 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             // AI
             this.RegisterEvent<OnPlayerChangeCluster>(e => _timeToFindPath = true)
                 .UnRegisterWhenGameObjectDestroyed(this);
+            HumanLadderPriority = Zombie.AllocateHumanLadderPriority();
 
             // 朝向
             this.Direction
                 .RegisterWithInitValue(direction => { transform.LocalScaleX(direction.ToInt()); })
                 .UnRegisterWhenGameObjectDestroyed(this);
-            // efffct反应
+            // effect反应
             effectGroup.OnEffectAdded.Register(effectData =>
             {
                 if (effectData.effectId == EffectId.Fire)
@@ -217,6 +226,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         // 变量
         public BindableProperty<Direction2> Direction;
         public BindableProperty<float> Health;
+        public int HumanLadderPriority;
 
         // 事件
         public EasyEvent<AttackData> OnDieFrom = new();
@@ -301,6 +311,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             }
         }
 
+        public void BeLifted()
+        {
+            _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x,
+                GlobalEntityData.Zombie_Default_ClimbSpeed);
+        }
+
         public virtual void MoveTowards(MoveData moveData)
         {
             switch (moveData.moveType)
@@ -317,6 +333,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     var hit = Physics2D.Raycast(ZombieNode.JumpDetectionPoint.position, Direction.Value.ToVector2(),
                         0.5f,
                         LayerMask.GetMask("Barrier"));
+                    if (hit.collider) TryJump();
                     // ====== 临时调试代码 begin ======
 #if UNITY_EDITOR
                     Color color = hit.collider ? Color.red : Color.green;
@@ -329,7 +346,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     }
 #endif
                     // ====== 临时调试代码 end ======
-                    if (hit.collider) TryJump();
 
                     float distance = Mathf.Abs(transform.position.x - targetPos.x);
                     if (distance < Global.Zombie_Default_PathFindStopMinDistance) return;
@@ -404,6 +420,34 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                         ? Direction2.Left
                         : Direction2.Right;
                     SwimForward();
+                    break;
+                }
+                case MoveType.HumanLadder:
+                {
+                    // 移动
+                    float distance = CurrentMoveData.targetWorldPos.y - transform.position.y;
+                    if (distance < 0.5f)
+                    {
+                        var hit = Physics2D.Raycast(ZombieNode.JumpDetectionPoint.position, Direction.Value.ToVector2(),
+                            0.5f,
+                            LayerMask.GetMask("Barrier"));
+                        if (hit.collider) TryJump();
+
+                        this.Direction.Value = (transform.position.x > moveData.targetWorldPos.x)
+                            ? Direction2.Left
+                            : Direction2.Right;
+                        MoveForward();
+                    }
+
+
+                    // 举起其他僵尸
+                    foreach (var each in ZombieNode.OtherZombieDetector.DetectedTargets)
+                    {
+                        var zombie = each.gameObject.GetComponent<Zombie>();
+                        if (zombie.HumanLadderPriority < this.HumanLadderPriority)
+                            zombie.BeLifted();
+                    }
+
                     break;
                 }
                 case MoveType.Climb_WalkJump:
@@ -510,9 +554,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #endregion
 
-        #region SortingLayer(Temp)
-
-        //TODO 这是僵尸SortingLayer的临时解决方案，等其他模块有类似需求再改为统一的
+        #region Shit
 
         private static int sortingLayer { get; set; } = 0;
 
@@ -521,6 +563,17 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             sortingLayer += 10;
             if (sortingLayer > 30000) sortingLayer = 0;
             return sortingLayer;
+        }
+
+        /// <summary>
+        /// 数字大的把数字小的举起来
+        /// </summary>
+        private static int humanLadderPriority = 0;
+
+        private static int AllocateHumanLadderPriority()
+        {
+            humanLadderPriority++;
+            return humanLadderPriority;
         }
 
         #endregion

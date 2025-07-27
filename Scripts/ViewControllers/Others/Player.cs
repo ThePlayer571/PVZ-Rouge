@@ -30,8 +30,8 @@ namespace TPL.PVZR.ViewControllers
         [SerializeField] private float k;
         [SerializeField] private float climbSpeed;
 
-        [SerializeField] private CollisionDetector JumpDetector;
-        [SerializeField] private CollisionDetector LadderDetector;
+        [SerializeField] private TriggerDetector JumpDetector;
+        [SerializeField] private TriggerDetector LadderDetector;
 
         private void FixedUpdate()
         {

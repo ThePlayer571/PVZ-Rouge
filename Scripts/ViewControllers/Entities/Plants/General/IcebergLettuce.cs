@@ -15,7 +15,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
     {
         public override PlantDef Def { get; } = new PlantDef(PlantId.IcebergLettuce, PlantVariant.V0);
 
-        [SerializeField] private CollisionDetector ZombieDetector;
+        [SerializeField] private TriggerDetector ZombieDetector;
 
         public override AttackData TakeAttack(AttackData attackData)
         {

@@ -3,31 +3,35 @@ using System.Collections.Generic;
 using QFramework;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace TPL.PVZR.Tools
 {
-    public class CollisionDetector : MonoBehaviour
+    public class TriggerDetector : MonoBehaviour
     {
-        // Public
-        public bool HasTarget => _targetCount > 0;
-        public readonly EasyEvent<int> OnTargetCountChanged = new EasyEvent<int>();
+        #region Public
 
-        [SerializeField] public bool RecordTargets = false;
+        // 属性
+        public bool HasTarget => _targetCount > 0 || DebugAlwaysReturnHasTarget;
+
+        public bool RecordTargets { get; set; }
+
         public IReadOnlyCollection<Collider2D> DetectedTargets => _detectedTargets;
 
-        public EasyEvent<Collider2D> OnTargetEnter = new EasyEvent<Collider2D>();
-        public EasyEvent<Collider2D> OnTargetExit = new EasyEvent<Collider2D>();
+        public Func<Collider2D, bool> TargetPredicate { get; set; } // 判别函数，只记录返回值为true的target
 
-        // 判别函数，返回true表示该碰撞体是目标
-        public Func<Collider2D, bool> TargetPredicate { get; set; }
+        // 事件
+        public readonly EasyEvent<int> OnTargetCountChanged = new EasyEvent<int>();
+        public readonly EasyEvent<Collider2D> OnTargetEnter = new EasyEvent<Collider2D>();
+        public readonly EasyEvent<Collider2D> OnTargetExit = new EasyEvent<Collider2D>();
 
-        // Private
+        #endregion
+
         private HashSet<Collider2D> _detectedTargets { get; } = new HashSet<Collider2D>();
 
-        // Public
+        private int _targetCount = 0;
 
-
-        [SerializeField, ReadOnly] private int _targetCount = 0;
+        [SerializeField] public bool DebugAlwaysReturnHasTarget = false; // Renamed from DEBUG_AlwaysReturnHasTarget
 
         private void OnTriggerEnter2D(Collider2D other)
         {

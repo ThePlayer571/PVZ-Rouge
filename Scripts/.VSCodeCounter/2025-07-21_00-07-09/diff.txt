@@ -1,0 +1,126 @@
+Date : 2025-07-21 00:07:09
+Directory : d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts
+Total : 61 files,  759 codes, 51 comments, 106 blanks, all 916 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C#       |         60 |        762 |         51 |        116 |        929 |
+| Markdown |          1 |         -3 |          0 |        -10 |        -13 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                             | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                |         61 |        759 |         51 |        106 |        916 |
+| . (Files)                                                                                                                        |          1 |          1 |          0 |          0 |          1 |
+| Classes                                                                                                                          |         15 |        256 |          0 |         29 |        285 |
+| Classes\ConfigLists                                                                                                              |          1 |         18 |          0 |          2 |         20 |
+| Classes\DataClasses                                                                                                              |         11 |        166 |          0 |         18 |        184 |
+| Classes\DataClasses (Files)                                                                                                      |          1 |         54 |          0 |          6 |         60 |
+| Classes\DataClasses\CoinTrade                                                                                                    |          1 |          1 |          0 |          1 |          2 |
+| Classes\DataClasses\Game                                                                                                         |          4 |         59 |          0 |          4 |         63 |
+| Classes\DataClasses\Item                                                                                                         |          2 |         28 |          0 |          6 |         34 |
+| Classes\DataClasses\Item\Card                                                                                                    |          1 |         15 |          0 |          3 |         18 |
+| Classes\DataClasses\Item\PlantBook                                                                                               |          1 |         13 |          0 |          3 |         16 |
+| Classes\DataClasses\Loot                                                                                                         |          2 |          3 |          0 |          0 |          3 |
+| Classes\DataClasses\Tomb                                                                                                         |          1 |         21 |          0 |          1 |         22 |
+| Classes\MazeMap                                                                                                                  |          3 |         72 |          0 |          9 |         81 |
+| Classes\MazeMap (Files)                                                                                                          |          2 |         63 |          0 |          8 |         71 |
+| Classes\MazeMap\Controllers                                                                                                      |          1 |          9 |          0 |          1 |         10 |
+| CommandEvents                                                                                                                    |         14 |         57 |          4 |         15 |         76 |
+| CommandEvents\MazeMap_StorePanel                                                                                                 |          4 |        113 |          8 |         26 |        147 |
+| CommandEvents\_NotClassified_                                                                                                    |          5 |         32 |          2 |          9 |         43 |
+| CommandEvents\__NewlyAdded__                                                                                                     |          5 |        -88 |         -6 |        -20 |       -114 |
+| Docs                                                                                                                             |          1 |         -3 |          0 |        -10 |        -13 |
+| Helpers                                                                                                                          |          5 |         66 |          9 |         14 |         89 |
+| Helpers (Files)                                                                                                                  |          2 |         41 |          6 |          7 |         54 |
+| Helpers\ClassCreator                                                                                                             |          2 |          8 |          2 |          4 |         14 |
+| Helpers\DataReader                                                                                                               |          1 |         17 |          1 |          3 |         21 |
+| Models                                                                                                                           |          3 |         38 |          0 |          4 |         42 |
+| Systems                                                                                                                          |          9 |         81 |          5 |         13 |         99 |
+| Systems (Files)                                                                                                                  |          3 |         66 |          3 |          9 |         78 |
+| Systems\Level_Data                                                                                                               |          3 |         13 |          0 |          3 |         16 |
+| Systems\MazeMap                                                                                                                  |          3 |          2 |          2 |          1 |          5 |
+| Tools                                                                                                                            |          8 |        126 |         31 |         17 |        174 |
+| Tools\Random                                                                                                                     |          2 |          3 |         11 |         -3 |         11 |
+| Tools\Save                                                                                                                       |          6 |        123 |         20 |         20 |        163 |
+| Tools\Save (Files)                                                                                                               |          5 |        131 |         20 |         21 |        172 |
+| Tools\Save\SaveClasses                                                                                                           |          1 |         -8 |          0 |         -1 |         -9 |
+| ViewControllers                                                                                                                  |          5 |        137 |          2 |         24 |        163 |
+| ViewControllers\Others                                                                                                           |          2 |         19 |          0 |          2 |         21 |
+| ViewControllers\Others\MazeMap                                                                                                   |          2 |         19 |          0 |          2 |         21 |
+| ViewControllers\UI                                                                                                               |          3 |        118 |          2 |         22 |        142 |
+| ViewControllers\UI\MazeMapScene                                                                                                  |          1 |         76 |          2 |         18 |         96 |
+| ViewControllers\UI\Panels                                                                                                        |          2 |         42 |          0 |          4 |         46 |
++----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                                         | language | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\ConfigLists\GameDefinitionList.cs                        | C#       |         18 |          0 |          2 |         20 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\CoinTrade\CoinTradeData.cs                   | C#       |          1 |          0 |          1 |          2 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Game\GameData.cs                             | C#       |         27 |          0 |          2 |         29 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Game\GameDef.cs                              | C#       |         10 |          0 |          1 |         11 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Game\GameDefinition.cs                       | C#       |         14 |          0 |          1 |         15 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Game\GameId.cs                               | C#       |          8 |          0 |          0 |          8 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\InventoryData.cs                             | C#       |         54 |          0 |          6 |         60 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Item\Card\CardData.cs                        | C#       |         15 |          0 |          3 |         18 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Item\PlantBook\PlantBookData.cs              | C#       |         13 |          0 |          3 |         16 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Loot\LootData.cs                             | C#       |          2 |          0 |          0 |          2 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Loot\LootInfo.cs                             | C#       |          1 |          0 |          0 |          1 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Tomb\TombData.cs                             | C#       |         21 |          0 |          1 |         22 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\MazeMap\Controllers\DaveLawnController.cs                | C#       |          9 |          0 |          1 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\MazeMap\MazeMapController.cs                             | C#       |         37 |          0 |          5 |         42 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\MazeMap\MazeMapData.cs                                   | C#       |         26 |          0 |          3 |         29 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\MazeMap_StorePanel\BarterCommand.cs                | C#       |         29 |          2 |          8 |         39 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\MazeMap_StorePanel\CoinStoreRefreshCommand.cs      | C#       |         22 |          2 |          4 |         28 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\MazeMap_StorePanel\CoinTradeCommand.cs             | C#       |         31 |          2 |          8 |         41 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\MazeMap_StorePanel\SellTradeCommand.cs             | C#       |         31 |          2 |          6 |         39 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\_NotClassified_\EndCurrentGameCommand.cs           | C#       |         18 |          2 |          2 |         22 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\_NotClassified_\PressTempStartGameButtonCommand.cs | C#       |        -16 |         -1 |          0 |        -17 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\_NotClassified_\StartGameCommand.cs                | C#       |         26 |          1 |          5 |         32 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\_NotClassified_\StartGameCommands.cs               | C#       |        -21 |         -3 |         -2 |        -26 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\_NotClassified_\StartNewGameCommand.cs             | C#       |         25 |          3 |          4 |         32 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\__NewlyAdded__\BarterCommand.cs                    | C#       |        -29 |         -2 |         -8 |        -39 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\__NewlyAdded__\CoinStoreRefreshCommand.cs          | C#       |        -22 |         -2 |         -4 |        -28 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\__NewlyAdded__\CoinTradeCommand.cs                 | C#       |        -31 |         -2 |         -8 |        -41 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\__NewlyAdded__\OpenLevelPreviewPanelCommand.cs     | C#       |         25 |          2 |          6 |         33 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\__NewlyAdded__\SellTradeCommand.cs                 | C#       |        -31 |         -2 |         -6 |        -39 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Docs\待办事项.md                                                     | Markdown |         -3 |          0 |        -10 |        -13 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Helpers\ClassCreator\GameCreator.cs                              | C#       |         -4 |          2 |          2 |          0 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Helpers\ClassCreator\TradeCreator.cs                             | C#       |         12 |          0 |          2 |         14 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Helpers\DataReader\GameConfigReader.cs                           | C#       |         17 |          1 |          3 |         21 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Helpers\PlantDefHelper.cs                                        | C#       |         17 |          0 |          1 |         18 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Helpers\SeedH.cs                                                 | C#       |         24 |          6 |          6 |         36 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Models\GameModel.cs                                              | C#       |          6 |          0 |          2 |          8 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Models\GamePhase.cs                                              | C#       |         24 |          0 |          2 |         26 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Models\PhaseModel.cs                                             | C#       |          8 |          0 |          0 |          8 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\PVZRouge.cs                                                      | C#       |          1 |          0 |          0 |          1 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Systems\GameSystem.cs                                            | C#       |         13 |          3 |          1 |         17 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Systems\Level_Data\HandSystem.cs                                 | C#       |          4 |          0 |          2 |          6 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Systems\Level_Data\LevelSystem.cs                                | C#       |         14 |          0 |          2 |         16 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Systems\Level_Data\SeedSystem.cs                                 | C#       |         -5 |          0 |         -1 |         -6 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Systems\MainGameSystem.cs                                        | C#       |          2 |          0 |          0 |          2 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Systems\MazeMap\AwardSystem.cs                                   | C#       |        -11 |          0 |         -1 |        -12 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Systems\MazeMap\CoinStoreSystem.cs                               | C#       |        -13 |          0 |          0 |        -13 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Systems\MazeMap\MazeMapSystem.cs                                 | C#       |         26 |          2 |          2 |         30 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Systems\SaveSystem.cs                                            | C#       |         51 |          0 |          8 |         59 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Tools\Random\DeterministicRandom.cs                              | C#       |         19 |         12 |          4 |         35 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Tools\Random\RandomHelper.cs                                     | C#       |        -16 |         -1 |         -7 |        -24 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Tools\Save\GameDataSave.cs                                       | C#       |         67 |          0 |         10 |         77 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Tools\Save\ISavable.cs                                           | C#       |         10 |          0 |          2 |         12 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Tools\Save\SaveClasses\GameSaveData.cs                           | C#       |         -8 |          0 |         -1 |         -9 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Tools\Save\SaveHelper.cs                                         | C#       |         87 |         20 |         15 |        122 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Tools\Save\SaveKey.cs                                            | C#       |         -7 |          0 |          0 |         -7 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Tools\Save\SaveModel.cs                                          | C#       |        -26 |          0 |         -6 |        -32 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\MazeMap\TempEndGameObjectController.cs    | C#       |         18 |          0 |          2 |         20 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\MazeMap\TombstoneController.cs            | C#       |          1 |          0 |          0 |          1 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\MazeMapScene\MazeMapPanelController.cs        | C#       |         76 |          2 |         18 |         96 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\Panels\UIGameStartPanel.Designer.cs           | C#       |          6 |          0 |          0 |          6 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\Panels\UIGameStartPanel.cs                    | C#       |         36 |          0 |          4 |         40 |
+| Total                                                                                                                            |          |        759 |         51 |        106 |        916 |
++----------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

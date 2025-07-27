@@ -25,6 +25,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             _timer = new Timer(GlobalEntityData.Plant_SniperPea_ShootInterval);
             _detectTimer = new Timer(Global.Plant_Peashooter_DetectInterval);
             _layerMask = LayerMask.GetMask("Zombie", "Barrier");
+            ZombieDetector.RecordTargets = true;
         }
 
         private Timer _timer;
@@ -32,7 +33,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
         private int _layerMask;
 
         [SerializeField] private Transform FirePoint;
-        [SerializeField] private CollisionDetector ZombieDetector;
+        [SerializeField] private TriggerDetector ZombieDetector;
 
         private Zombie _target;
 

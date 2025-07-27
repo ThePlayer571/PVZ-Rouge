@@ -17,12 +17,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
         public override PlantDef Def { get; } = new PlantDef(PlantId.Squash, PlantVariant.V0);
 
 
-        [SerializeField] private CollisionDetector ZombieDetector;
+        [SerializeField] private TriggerDetector ZombieDetector;
 
         private bool _attacked = false;
 
         protected override void OnInit()
         {
+            ZombieDetector.RecordTargets = true;
+            
             ZombieDetector.OnTargetEnter.Register(collider =>
             {
                 if (_attacked) return;

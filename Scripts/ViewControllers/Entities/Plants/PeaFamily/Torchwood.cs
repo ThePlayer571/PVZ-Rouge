@@ -28,7 +28,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             }).UnRegisterWhenGameObjectDestroyed(this);
         }
 
-        [SerializeField] private CollisionDetector ProjectileDetector;
+        [SerializeField] private TriggerDetector ProjectileDetector;
 
         protected override void OnUpdate()
         {

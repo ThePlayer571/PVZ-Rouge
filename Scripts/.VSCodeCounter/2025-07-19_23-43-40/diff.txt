@@ -1,0 +1,146 @@
+Date : 2025-07-19 23:43:40
+Directory : d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts
+Total : 84 files,  398 codes, 15 comments, 111 blanks, all 524 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C#       |         81 |        388 |         15 |         95 |        498 |
+| Markdown |          3 |         10 |          0 |         16 |         26 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                            | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                               |         84 |        398 |         15 |        111 |        524 |
+| Classes                                                                                                                         |         10 |        254 |         22 |         67 |        343 |
+| Classes\DataClasses                                                                                                             |          5 |         30 |          1 |          9 |         40 |
+| Classes\DataClasses\Game                                                                                                        |          2 |         -5 |          0 |          0 |         -5 |
+| Classes\DataClasses\Game (Files)                                                                                                |          1 |          5 |          0 |          1 |          6 |
+| Classes\DataClasses\Game\Interfaces                                                                                             |          1 |        -10 |          0 |         -1 |        -11 |
+| Classes\DataClasses\Level                                                                                                       |          2 |         -8 |          0 |          0 |         -8 |
+| Classes\DataClasses\Tomb                                                                                                        |          1 |         43 |          1 |          9 |         53 |
+| Classes\MazeMap                                                                                                                 |          5 |        224 |         21 |         58 |        303 |
+| Classes\MazeMap (Files)                                                                                                         |          4 |        193 |         18 |         52 |        263 |
+| Classes\MazeMap\Controllers                                                                                                     |          1 |         31 |          3 |          6 |         40 |
+| CommandEvents                                                                                                                   |          2 |         17 |        -18 |          6 |          5 |
+| CommandEvents\_NotClassified_                                                                                                   |          2 |         17 |        -18 |          6 |          5 |
+| Docs                                                                                                                            |          3 |         10 |          0 |         16 |         26 |
+| Helpers                                                                                                                         |          2 |         13 |          0 |          1 |         14 |
+| Helpers\ClassCreator                                                                                                            |          2 |         13 |          0 |          1 |         14 |
+| Models                                                                                                                          |          2 |          5 |          3 |          2 |         10 |
+| Systems                                                                                                                         |          3 |         33 |          2 |          4 |         39 |
+| Systems (Files)                                                                                                                 |          1 |        -65 |         -4 |        -11 |        -80 |
+| Systems\Level_Data                                                                                                              |          1 |         10 |          0 |          0 |         10 |
+| Systems\MazeMap                                                                                                                 |          1 |         88 |          6 |         15 |        109 |
+| Tools                                                                                                                           |          1 |         17 |          6 |          5 |         28 |
+| ViewControllers                                                                                                                 |         61 |         49 |          0 |         10 |         59 |
+| ViewControllers (Files)                                                                                                         |          3 |       -197 |         -3 |        -46 |       -246 |
+| ViewControllers\Managers                                                                                                        |          1 |        -13 |          0 |         -1 |        -14 |
+| ViewControllers\Others                                                                                                          |         23 |       -741 |        -41 |       -116 |       -898 |
+| ViewControllers\Others (Files)                                                                                                  |          3 |        199 |          3 |         45 |        247 |
+| ViewControllers\Others\MazeMap                                                                                                  |          2 |         60 |          0 |         12 |         72 |
+| ViewControllers\Others\UI                                                                                                       |         18 |     -1,000 |        -44 |       -173 |     -1,217 |
+| ViewControllers\Others\UI (Files)                                                                                               |          5 |       -320 |         -6 |        -53 |       -379 |
+| ViewControllers\Others\UI\ItemView                                                                                              |          3 |        -88 |          0 |        -14 |       -102 |
+| ViewControllers\Others\UI\MazeMap                                                                                               |         10 |       -592 |        -38 |       -106 |       -736 |
+| ViewControllers\UI                                                                                                              |         34 |      1,000 |         44 |        173 |      1,217 |
+| ViewControllers\UI (Files)                                                                                                      |          8 |       -494 |        -20 |       -100 |       -614 |
+| ViewControllers\UI\ItemView                                                                                                     |          3 |         88 |          0 |         14 |        102 |
+| ViewControllers\UI\LevelScene                                                                                                   |          5 |        320 |          6 |         53 |        379 |
+| ViewControllers\UI\MazeMapScene                                                                                                 |         10 |        592 |         38 |        106 |        736 |
+| ViewControllers\UI\Panels                                                                                                       |          8 |        494 |         20 |        100 |        614 |
++---------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                                        | language | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Game\GameData.cs                            | C#       |          5 |          0 |          1 |          6 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Game\Interfaces\IGameData.cs                | C#       |        -10 |          0 |         -1 |        -11 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Level\ILevelData.cs                         | C#       |        -39 |          0 |        -21 |        -60 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Level\LevelData.cs                          | C#       |         31 |          0 |         21 |         52 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\DataClasses\Tomb\TombData.cs                            | C#       |         43 |          1 |          9 |         53 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\MazeMap\Controllers\DaveLawnController.cs               | C#       |         31 |          3 |          6 |         40 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\MazeMap\MazeMapController.cs                            | C#       |        108 |         10 |         34 |        152 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\MazeMap\MazeMapData.cs                                  | C#       |         53 |          4 |         12 |         69 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\MazeMap\MazeMapDefinition.cs                            | C#       |          1 |          1 |          2 |          4 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Classes\MazeMap\Node.cs                                         | C#       |         31 |          3 |          4 |         38 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\_NotClassified_\OnZombieDeathCommand.cs           | C#       |         -5 |          0 |          0 |         -5 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\CommandEvents\_NotClassified_\StartLevelCommands.cs             | C#       |         22 |        -18 |          6 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Docs\待办事项.md                                                    | Markdown |          0 |          0 |         10 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Docs\我希望自己记住的东西.md                                              | Markdown |          1 |          0 |          3 |          4 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Docs\目前相对于原版做的创新.md                                             | Markdown |          9 |          0 |          3 |         12 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Helpers\ClassCreator\GameCreator.cs                             | C#       |         -1 |          0 |          0 |         -1 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Helpers\ClassCreator\TombCreator.cs                             | C#       |         14 |          0 |          1 |         15 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Models\GameModel.cs                                             | C#       |          2 |          3 |          1 |          6 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Models\PhaseModel.cs                                            | C#       |          3 |          0 |          1 |          4 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Systems\Level_Data\LevelSystem.cs                               | C#       |         10 |          0 |          0 |         10 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Systems\MazeMapSystem.cs                                        | C#       |        -65 |         -4 |        -11 |        -80 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Systems\MazeMap\MazeMapSystem.cs                                | C#       |         88 |          6 |         15 |        109 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\Tools\Extensions.cs                                             | C#       |         17 |          6 |          5 |         28 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Coin.cs                                         | C#       |        -48 |          0 |        -11 |        -59 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Managers\GameManager.cs                         | C#       |        -13 |          0 |         -1 |        -14 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\Coin.cs                                  | C#       |         49 |          0 |         10 |         59 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\MazeMap\MazeMapTilemapController.cs      | C#       |         14 |          0 |          3 |         17 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\MazeMap\TombstoneController.cs           | C#       |         46 |          0 |          9 |         55 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\Player.cs                                | C#       |        106 |          3 |         26 |        135 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\Sun.cs                                   | C#       |         44 |          0 |          9 |         53 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\ItemView\CardViewController.cs        | C#       |        -54 |          0 |         -8 |        -62 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\ItemView\CoinViewController.cs        | C#       |        -13 |          0 |         -2 |        -15 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\ItemView\PlantBookViewController.cs   | C#       |        -21 |          0 |         -4 |        -25 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\LevelStateBarPanelController.cs       | C#       |        -58 |         -2 |        -10 |        -70 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\MazeMap\AwardPanelController.cs       | C#       |        -76 |         -5 |        -15 |        -96 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\MazeMap\CardPanelController.cs        | C#       |        -48 |         -2 |        -10 |        -60 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\MazeMap\CoinStorePanelController.cs   | C#       |       -137 |        -12 |        -26 |       -175 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\MazeMap\CoinTradeNode.cs              | C#       |        -12 |          0 |         -1 |        -13 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\MazeMap\InventoryPanelController.cs   | C#       |        -38 |          0 |         -8 |        -46 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\MazeMap\PlantBookPanelController.cs   | C#       |        -38 |         -2 |         -9 |        -49 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\MazeMap\RecipeStorePanelController.cs | C#       |       -105 |        -11 |        -17 |       -133 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\MazeMap\RecipeTradeNode.cs            | C#       |        -12 |          0 |         -1 |        -13 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\MazeMap\SellTradePanelController.cs   | C#       |        -97 |         -6 |        -14 |       -117 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\MazeMap\StorePanelController.cs       | C#       |        -29 |          0 |         -5 |        -34 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\SeedController.cs                     | C#       |       -134 |         -4 |        -22 |       -160 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\SeedOptionController.cs               | C#       |        -50 |          0 |         -7 |        -57 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\ShovelController.cs                   | C#       |        -54 |          0 |         -6 |        -60 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Others\UI\SunpointController.cs                 | C#       |        -24 |          0 |         -8 |        -32 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Player.cs                                       | C#       |       -106 |         -3 |        -26 |       -135 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\Sun.cs                                          | C#       |        -43 |          0 |         -9 |        -52 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\ItemView\CardViewController.cs               | C#       |         54 |          0 |          8 |         62 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\ItemView\CoinViewController.cs               | C#       |         13 |          0 |          2 |         15 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\ItemView\PlantBookViewController.cs          | C#       |         21 |          0 |          4 |         25 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\LevelScene\LevelStateBarPanelController.cs   | C#       |         58 |          2 |         10 |         70 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\LevelScene\SeedController.cs                 | C#       |        134 |          4 |         22 |        160 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\LevelScene\SeedOptionController.cs           | C#       |         50 |          0 |          7 |         57 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\LevelScene\ShovelController.cs               | C#       |         54 |          0 |          6 |         60 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\LevelScene\SunpointController.cs             | C#       |         24 |          0 |          8 |         32 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\MazeMapScene\AwardPanelController.cs         | C#       |         76 |          5 |         15 |         96 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\MazeMapScene\CardPanelController.cs          | C#       |         48 |          2 |         10 |         60 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\MazeMapScene\CoinStorePanelController.cs     | C#       |        137 |         12 |         26 |        175 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\MazeMapScene\CoinTradeNode.cs                | C#       |         12 |          0 |          1 |         13 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\MazeMapScene\InventoryPanelController.cs     | C#       |         38 |          0 |          8 |         46 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\MazeMapScene\PlantBookPanelController.cs     | C#       |         38 |          2 |          9 |         49 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\MazeMapScene\RecipeStorePanelController.cs   | C#       |        105 |         11 |         17 |        133 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\MazeMapScene\RecipeTradeNode.cs              | C#       |         12 |          0 |          1 |         13 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\MazeMapScene\SellTradePanelController.cs     | C#       |         97 |          6 |         14 |        117 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\MazeMapScene\StorePanelController.cs         | C#       |         29 |          0 |          5 |         34 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\Panels\UIChooseSeedPanel.Designer.cs         | C#       |         44 |          1 |          8 |         53 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\Panels\UIChooseSeedPanel.cs                  | C#       |        102 |          7 |         21 |        130 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\Panels\UIGameStartPanel.Designer.cs          | C#       |         38 |          1 |          8 |         47 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\Panels\UIGameStartPanel.cs                   | C#       |         35 |          1 |          8 |         44 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\Panels\UILevelGameplayPanel.Designer.cs      | C#       |         47 |          1 |          8 |         56 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\Panels\UILevelGameplayPanel.cs               | C#       |        133 |          4 |         28 |        165 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\Panels\UIMazeMapPanel.Designer.cs            | C#       |         50 |          1 |          8 |         59 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\Panels\UIMazeMapPanel.cs                     | C#       |         45 |          4 |         11 |         60 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\UIChooseSeedPanel.Designer.cs                | C#       |        -44 |         -1 |         -8 |        -53 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\UIChooseSeedPanel.cs                         | C#       |       -102 |         -7 |        -21 |       -130 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\UIGameStartPanel.Designer.cs                 | C#       |        -38 |         -1 |         -8 |        -47 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\UIGameStartPanel.cs                          | C#       |        -35 |         -1 |         -8 |        -44 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\UILevelGameplayPanel.Designer.cs             | C#       |        -47 |         -1 |         -8 |        -56 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\UILevelGameplayPanel.cs                      | C#       |       -133 |         -4 |        -28 |       -165 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\UIMazeMapPanel.Designer.cs                   | C#       |        -50 |         -1 |         -8 |        -59 |
+| d:\FileFolder\Life\Unity\Projects\PVZR\PVZ_Rouge\Assets\Scripts\ViewControllers\UI\UIMazeMapPanel.cs                            | C#       |        -45 |         -4 |        -11 |        -60 |
+| Total                                                                                                                           |          |        398 |         15 |        111 |        524 |
++---------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

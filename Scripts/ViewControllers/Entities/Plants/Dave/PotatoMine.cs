@@ -15,7 +15,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
     {
         public override PlantDef Def { get; } = new PlantDef(PlantId.PotatoMine, PlantVariant.V0);
 
-        [SerializeField] private CollisionDetector ZombieDetector;
+        [SerializeField] private TriggerDetector ZombieDetector;
         [SerializeField] private Animator _Animator;
 
         private bool _grown = false;

@@ -27,6 +27,9 @@ MonoBehaviour:
   - StageDifficulty: 1
     ActiveStages: {x: 0, y: 10}
     IncludedLevels: 01000000
+  - StageDifficulty: 1
+    ActiveStages: {x: 0, y: 10}
+    IncludedLevels: 0100000004000000
   LootPools:
   - Id: 1
   - Id: 101

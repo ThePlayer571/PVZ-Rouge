@@ -11,7 +11,7 @@ namespace TPL.PVZR.ViewControllers.Others
     public class LevelEndObjectController : MonoBehaviour, IController
     {
         [SerializeField] private InteractionPromptController _InteractionPromptController;
-        [SerializeField] private CollisionDetector _CollisionDetector;
+        [SerializeField] private TriggerDetector _CollisionDetector;
         private PlayerInputControl _inputActions;
 
         private void Awake()
