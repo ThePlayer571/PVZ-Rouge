@@ -2,6 +2,9 @@ using System;
 
 namespace TPL.PVZR.Classes.ZombieAI.Class
 {
+    /// <summary>
+    /// 定义：一个Cluster内，可以用同种AiTendency到达
+    /// </summary>
     public class Cluster
     {
         public Vertex vertexA { get; }
@@ -42,6 +45,22 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
             }
 
             return false;
+        }
+        
+        public Vertex GetOtherVertex(Vertex vertex)
+        {
+            if (vertex == vertexA)
+            {
+                return vertexB;
+            }
+            else if (vertex == vertexB)
+            {
+                return vertexA;
+            }
+            else
+            {
+                throw new ArgumentException("Vertex not part of this cluster");
+            }
         }
 
         public override int GetHashCode()

@@ -13,6 +13,7 @@ namespace TPL.PVZR.Tools
 
         // 属性
         public bool HasTarget => _targetCount > 0 || DebugAlwaysReturnHasTarget;
+        public int TargetCount => _targetCount;
 
         public bool RecordTargets { get; set; }
 
@@ -29,7 +30,7 @@ namespace TPL.PVZR.Tools
 
         private HashSet<Collider2D> _detectedTargets { get; } = new HashSet<Collider2D>();
 
-        private int _targetCount = 0;
+         private int _targetCount = 0;
 
         [SerializeField] public bool DebugAlwaysReturnHasTarget = false; // Renamed from DEBUG_AlwaysReturnHasTarget
 

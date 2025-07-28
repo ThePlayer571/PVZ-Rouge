@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using QFramework;
 using TPL.PVZR.Classes.ZombieAI.Class;
 using TPL.PVZR.Classes.ZombieAI.PathFinding;
@@ -67,10 +68,16 @@ namespace TPL.PVZR.Systems.Level_Data
 
         private void StartRunning()
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            
             GameManager.ExecuteOnUpdate(UpdatePlayerCluster);
             ZombieAIUnit = new ZombieAIUnit();
             ZombieAIUnit.InitializeFrom(_LevelGridModel.LevelMatrix);
-            ZombieAIUnit.DebugDisplayMatrix();
+            
+            stopwatch.Stop();
+            $"算法耗时：{stopwatch.ElapsedMilliseconds} ms".LogInfo();
+            // ZombieAIUnit.DebugDisplayMatrix();
             // ZombieAIUnit.DebugLogCluster(new Vector2Int(11, 14));
         }
 

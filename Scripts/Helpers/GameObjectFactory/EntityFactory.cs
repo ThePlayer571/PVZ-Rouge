@@ -43,6 +43,11 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             public static Sun SpawnSunWithJump(Vector2 position, bool autoCollect = true)
             {
                 var go = _sunPrefab.Instantiate(position, Quaternion.identity).GetComponent<Sun>();
+                var spriteRenderer = go.GetComponent<SpriteRenderer>();
+                spriteRenderer.sortingLayerName = "MidGround";
+                spriteRenderer.sortingOrder = 360;
+                
+                
                 Vector3 endPos = new Vector3(position.x + (RandomHelper.Default.Range(-0.5f, 0.5f)),
                     position.y + (RandomHelper.Default.Range(0f, 0.2f)), 0);
                 go.transform.DOJump(endPos, 1f, 1, 0.5f);
@@ -63,6 +68,9 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
                 var startPosition = new Vector3(targetPosition.x, topY + topOffset, 0);
 
                 var go = _sunPrefab.Instantiate(startPosition, Quaternion.identity).GetComponent<Sun>();
+                var spriteRenderer = go.GetComponent<SpriteRenderer>();
+                spriteRenderer.sortingLayerName = "BackGround";
+                spriteRenderer.sortingOrder = 90;
 
                 // 匀速缓慢掉落到目标位置
                 var distance = topY - targetPosition.y;

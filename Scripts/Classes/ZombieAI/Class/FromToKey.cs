@@ -4,8 +4,8 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
 {
     public class FromToKey<T> where T : class
     {
-        private readonly T From;
-        private readonly T To;
+        public readonly T From;
+        public readonly T To;
 
         public FromToKey(T from, T to)
         {

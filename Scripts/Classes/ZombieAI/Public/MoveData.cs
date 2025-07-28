@@ -9,29 +9,38 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
     {
         public MoveType moveType;
         public Vector2Int target;
+        public Vector2Int from;
         public MoveStage moveStage;
 
-        [NonSerialized]
-        private Vector2? _cachedWorldPos;
+        
+        private Vector2? _cachedTargetWorldPos;
+        private Vector2? _cachedFromWorldPos;
+        
 
         public Vector2 targetWorldPos
         {
             get
             {
-                if (_cachedWorldPos == null)
-                {
-                    // 假设有一个静态工具类用于转换
-                    _cachedWorldPos = LevelGridHelper.CellToWorld(target);
-                }
+                _cachedTargetWorldPos ??= LevelGridHelper.CellToWorld(target);
 
-                return _cachedWorldPos.Value;
+                return _cachedTargetWorldPos.Value;
+            }
+        }
+        public Vector2 fromWorldPos
+        {
+            get
+            {
+                _cachedFromWorldPos ??= LevelGridHelper.CellToWorld(from);
+
+                return _cachedFromWorldPos.Value;
             }
         }
 
-        public MoveData(MoveType moveType, Vector2Int target, MoveStage moveStage)
+        public MoveData(MoveType moveType, Vector2Int target, Vector2Int from, MoveStage moveStage)
         {
             this.moveType = moveType;
             this.target = target;
+            this.from = from;
             this.moveStage = moveStage;
         }
     }

@@ -5,7 +5,7 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
 {
     public class PathKey
     {
-        private readonly FromToKey<Cluster> fromToKey;
+        public readonly FromToKey<Cluster> fromToKey;
         private readonly AITendency aiTendency;
 
         public PathKey(FromToKey<Cluster> fromToKey, AITendency aiTendency)

@@ -111,5 +111,10 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return $"KeyEdge: {From.Position} -> {To.Position}, Type: {moveType}, PassableHeight: {passableHeight}";
+        }
     }
 }

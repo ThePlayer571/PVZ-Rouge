@@ -45,8 +45,14 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 
             if (startCluster.IsIdentical(endCluster))
             {
-                var moveType = _zombieAIUnit.GetKeyEdge(startCluster.vertexA, startCluster.vertexB).moveType;
-                return new List<Path> { new Path(moveType) };
+                var keyEdge = _zombieAIUnit.CreateKeyEdgeInOneCluster(startVertex, endVertex);
+                // 已经被逻辑地确定，不需要这行代码。但以防万一，请不要删除
+                // if (aiTendency.IsBannedKeyEdge(keyEdge))
+                // {
+                //     goto flagCallAlgorithm;
+                // }
+
+                return new List<Path> { new Path(keyEdge.moveType) };
             }
 
             if (startCluster.GetIntersection(endCluster, out var intersection))
@@ -56,12 +62,22 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                 if (startVertex != intersection)
                 {
                     var firstEdge = _zombieAIUnit.CreateKeyEdgeInOneCluster(startVertex, intersection);
+                    if (aiTendency.IsBannedKeyEdge(firstEdge))
+                    {
+                        goto flagCallAlgorithm;
+                    }
+
                     path.Add(firstEdge);
                 }
 
                 if (endVertex != intersection)
                 {
                     var secondEdge = _zombieAIUnit.CreateKeyEdgeInOneCluster(intersection, endVertex);
+                    if (aiTendency.IsBannedKeyEdge(secondEdge, true))
+                    {
+                        goto flagCallAlgorithm;
+                    }
+
                     path.Add(secondEdge);
                 }
 
@@ -69,6 +85,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
             }
 
             // 调用寻路算法
+            flagCallAlgorithm:
 
             var pathKey = new PathKey(new FromToKey<Cluster>(startCluster, endCluster), aiTendency);
 

@@ -10,6 +10,7 @@ using TPL.PVZR.Classes.ZombieAI.Public;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Others.LevelScene;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 
 namespace TPL.PVZR.Classes.ZombieAI.PathFinding
@@ -123,16 +124,16 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 
             #region 一大坨调试代码
 
-            foreach (var vertex in vertices)
-            {
-                string output = $"({vertex.x}, {vertex.y}, {vertex.VertexType})：";
-                foreach (var edge in adjacencyList[vertex])
-                {
-                    output += $" ({edge.To.x}, {edge.To.y}, {edge.moveType}, {edge.passableHeight})";
-                }
-
-                output.LogInfo();
-            }
+            // foreach (var vertex in vertices)
+            // {
+            //     string output = $"({vertex.x}, {vertex.y}, {vertex.VertexType})：";
+            //     foreach (var edge in adjacencyList[vertex])
+            //     {
+            //         output += $" ({edge.To.x}, {edge.To.y}, {edge.moveType}, {edge.passableHeight})";
+            //     }
+            //
+            //     output.LogInfo();
+            // }
 
             // foreach (var doubledVertex in vertices.Where(v => adjacencyList[v].Count > 1))
             // {
@@ -251,8 +252,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                         int GetMinPassableHeight(int x, int y)
                         {
                             int heightOffset = 1;
-                            // 上限：5
-                            for (; heightOffset < 5; heightOffset++)
+                            for (; heightOffset < AITendency.PASSABLE_HEIGHT_最大值; heightOffset++)
                             {
                                 var currentCell = levelMatrix[x, y + heightOffset];
                                 if (currentCell.Is(CellTypeId.Block)) break;
@@ -462,21 +462,24 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                 // 1 - 只连接一条keyEdge
                 if (edges.Count == 1) return true;
                 // 2 - 连接多条keyEdge，且移动方式不尽相同
-                if (edges.Count > 1 && edges.Any(edge => edge.moveType != edges[1].moveType)) return true;
+                if (edges.Count > 1 && edges.Skip(1).Any(e =>
+                        e.moveType != edges[0].moveType || e.passableHeight != edges[0].passableHeight)) return true;
 
                 return false;
             }
 
             void SetClusterCache(Vertex keyVertex, List<KeyEdge> keyEdges)
             {
-                // keyVertex的Cluster
-                // 两种逻辑：[1] 附近结点中有WalkJump能达到的 -> 和最近的组合成一个Cluster [2] 没有WalkJump能达到的 -> 和自己组合成一个Cluster
-                var temp = keyEdges.Where(ke => ke.moveType == MoveType.WalkJump)
-                    .OrderBy(keyEdge => keyEdge.Weight(AITendency.Default)).ToList();
-                var closest = temp.Count > 0 ? temp.First().To : keyVertex;
-                _clusterCache[keyVertex] = new Cluster(keyVertex, closest);
+                // 逻辑：先把keyVertex解决，再把keyEdge中的所有vertex解决
+                // 优先选择WalkJump且可到达的相邻keyVertex，如果没有，就与自己组成Cluster
 
-                // 每个keyEdge的vertex的Cluster
+                // [1] KeyVertex
+                var idealKeyVertex = keyEdges.FirstOrDefault(k =>
+                    k.moveType == MoveType.WalkJump && k.passableHeight >= keyVertex.PassableHeight)?.To;
+                idealKeyVertex ??= keyVertex;
+                _clusterCache.Add(keyVertex, new Cluster(keyVertex, idealKeyVertex));
+
+                // [2] Vertex
                 foreach (var keyEdge in keyEdges)
                 {
                     var includeVertices = keyEdge.IncludeVertices();
@@ -486,7 +489,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                     var cluster = new Cluster(includeVertices.First(), includeVertices.Last());
                     for (int i = 1; i < includeVertices.Count - 1; i++)
                     {
-                        _clusterCache[includeVertices[i]] = cluster;
+                        _clusterCache.Add(includeVertices[i], cluster);
                     }
                 }
             }
@@ -597,46 +600,39 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
         public KeyEdge CreateKeyEdgeInOneCluster(Vertex startVertex, Vertex endVertex)
         {
             if (startVertex == endVertex) throw new ArgumentException();
-            
-            Vertex startKeyVertex;
-            if (startVertex.isKey) startKeyVertex = startVertex;
-            else
-            {
-                var cluster = GetCluster(startVertex);
-                startKeyVertex = cluster.vertexA == endVertex ? cluster.vertexB : cluster.vertexA;
-            }
 
-            Vertex endKeyVertex;
-            if (endVertex.isKey) endKeyVertex = endVertex;
-            else
-            {
-                var cluster = GetCluster(endVertex);
-                endKeyVertex = cluster.vertexA == startVertex ? cluster.vertexB : cluster.vertexA;
-            }
+            var cluster = startVertex.isKey && endVertex.isKey
+                ? new Cluster(startVertex, endVertex)
+                : startVertex.isKey
+                    ? GetCluster(endVertex)
+                    : GetCluster(startVertex);
 
-            var keyEdge = GetKeyEdge(startKeyVertex, endKeyVertex);
-            if (startVertex.isKey && endKeyVertex.isKey)
-                return keyEdge;
-            else
-                return Soyo(keyEdge);
-
-
-            KeyEdge Soyo(KeyEdge keyEdge)
+            var keyEdges = new[]
+                { GetKeyEdge(cluster.vertexA, cluster.vertexB), GetKeyEdge(cluster.vertexB, cluster.vertexA) };
+            foreach (var keyEdge in keyEdges)
             {
                 var result = new KeyEdge(keyEdge.moveType);
                 bool startRecord = false;
+                bool findResult = false;
                 foreach (var edge in keyEdge.includeEdges)
                 {
                     if (edge.From == startVertex) startRecord = true;
+                    if (edge.To == endVertex && !startRecord) break;
                     if (startRecord)
                     {
                         result.AddEdge(edge);
-                        if (edge.To == endVertex) break;
+                        if (edge.To == endVertex)
+                        {
+                            findResult = true;
+                            break;
+                        }
                     }
                 }
 
-                return result;
+                if (findResult) return result;
             }
+
+            throw new Exception($"未找到keyEdge: {startVertex.Position}->{endVertex.Position}");
         }
 
         #endregion
@@ -754,10 +750,5 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
         // }
 
         #endregion
-
-        public IArchitecture GetArchitecture()
-        {
-            return PVZRouge.Interface;
-        }
     }
 }

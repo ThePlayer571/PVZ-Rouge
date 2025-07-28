@@ -23,7 +23,6 @@ namespace TPL.PVZR.ViewControllers
         public static Player Instance { get; private set; }
         private PlayerInputControl _inputActions;
         private Rigidbody2D _Rigidbody2D;
-        private Collider2D _Collider;
 
         [SerializeField] private float speed;
         [SerializeField] private float jumpForce;
@@ -95,12 +94,11 @@ namespace TPL.PVZR.ViewControllers
         {
             Player.Instance = this;
             _Rigidbody2D = this.GetComponent<Rigidbody2D>();
-            _Collider = this.GetComponent<Collider2D>();
-
+            
             JumpDetector.TargetPredicate = (collider2D) =>
             {
                 if (collider2D.IsInLayerMask(LayerMask.GetMask("Plant")) &&
-                    collider2D.GetComponent<Plant>().Def.Id is not (PlantId.Flowerpot or PlantId.LilyPad)) return false;
+                    collider2D.GetComponent<Plant>().Def.Id is not PlantId.Flowerpot ) return false;
                 return true;
             };
 

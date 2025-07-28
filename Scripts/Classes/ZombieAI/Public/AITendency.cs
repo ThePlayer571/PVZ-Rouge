@@ -13,8 +13,8 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
     /// </summary>
     public class AITendency
     {
-        public const int PASSABLE_HEIGHT_最大值 = 5;
-        
+        public const int PASSABLE_HEIGHT_最大值 = 3; // 请至少设为“游戏内最大僵尸高度+1”，不然存在“高度差”的地形都无法正确处理
+
         public readonly MainAI mainAI;
         public readonly int minPassableHeight;
         public readonly float seed;
@@ -24,12 +24,20 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
         #region 公有方法
 
         /// <summary>
-        /// 根据当前 AI 倾向过滤路径列表，移除不符合条件的路径
+        /// 判断该边是否被禁止（该ai绝对不能通过）
         /// </summary>
-        /// <param name="paths">路径列表</param>
-        public void ApplyFilter(List<Path> paths)
+        /// <param name="keyEdge"></param>
+        /// <returns></returns>
+        public bool IsBannedKeyEdge(KeyEdge keyEdge, bool withDebug = false)
         {
-            throw new NotImplementedException();
+            if (keyEdge.passableHeight < minPassableHeight)
+            {
+                if (withDebug)
+                    $"find ban: {keyEdge}".LogInfo();
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

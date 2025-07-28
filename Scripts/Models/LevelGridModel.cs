@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes;
@@ -97,7 +98,11 @@ namespace TPL.PVZR.Models
 
         public void Initialize(ILevelData levelData)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             this.LevelMatrix = LevelMatrixHelper.BakeLevelMatrix(LevelTilemapNode.Instance, levelData);
+            stopwatch.Stop();
+            $"算法耗时：{stopwatch.ElapsedMilliseconds} ms".LogInfo();
             // LevelMatrixHelper.SetDebugTiles(LevelMatrix, ReferenceHelper.LevelTilemap.Debug);
         }
 

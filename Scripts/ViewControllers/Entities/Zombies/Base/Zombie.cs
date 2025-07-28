@@ -272,10 +272,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         #region 移动
 
         public bool _timeToFindPath = false;
-        public AITendency AITendency = AITendency.Default;
+        public virtual AITendency AITendency { get; } = AITendency.Default;
         public IZombiePath CachePath = null;
         [SerializeField, ReadOnly] public MoveData CurrentMoveData = null;
-
 
         [Unsafe("调用此方法前，请确保路径百分百能被找到，不然会出错误。安全的调用方法：_timeToFindPath = true，然后让FSM自动响应")]
         public void FindPath(Vector2Int targetPos)
@@ -316,6 +315,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x,
                 GlobalEntityData.Zombie_Default_ClimbSpeed);
         }
+
+        public int DEBUD = -1;
 
         public virtual void MoveTowards(MoveData moveData)
         {
@@ -425,27 +426,39 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                 case MoveType.HumanLadder:
                 {
                     // 移动
-                    float distance = CurrentMoveData.targetWorldPos.y - transform.position.y;
-                    if (distance < 0.5f)
+                    float distanceYToTarget = CurrentMoveData.targetWorldPos.y - transform.position.y;
+                    float distanceXToFrom = Mathf.Abs(transform.position.x - moveData.fromWorldPos.x);
+                    if (distanceYToTarget > 1.5f)
                     {
-                        var hit = Physics2D.Raycast(ZombieNode.JumpDetectionPoint.position, Direction.Value.ToVector2(),
-                            0.5f,
-                            LayerMask.GetMask("Barrier"));
-                        if (hit.collider) TryJump();
+                        DEBUD = 1;
+                        if (distanceXToFrom > Global.Zombie_Default_PathFindStopMinDistance)
+                        {
+                            this.Direction.Value = (transform.position.x > moveData.fromWorldPos.x)
+                                ? Direction2.Left
+                                : Direction2.Right;
+                            MoveForward();
+                        }
 
+                        // 举起其他僵尸
+                        foreach (var each in ZombieNode.OtherZombieDetector.DetectedTargets)
+                        {
+                            var zombie = each.gameObject.GetComponent<Zombie>();
+                            if (zombie.HumanLadderPriority < this.HumanLadderPriority)
+                                zombie.BeLifted();
+                        }
+                    }
+                    else
+                    {
+                        DEBUD = 2;
                         this.Direction.Value = (transform.position.x > moveData.targetWorldPos.x)
                             ? Direction2.Left
                             : Direction2.Right;
                         MoveForward();
-                    }
 
-
-                    // 举起其他僵尸
-                    foreach (var each in ZombieNode.OtherZombieDetector.DetectedTargets)
-                    {
-                        var zombie = each.gameObject.GetComponent<Zombie>();
-                        if (zombie.HumanLadderPriority < this.HumanLadderPriority)
-                            zombie.BeLifted();
+                        var hit = Physics2D.Raycast(ZombieNode.JumpDetectionPoint.position, Direction.Value.ToVector2(),
+                            0.5f,
+                            LayerMask.GetMask("Barrier"));
+                        if (hit.collider) TryJump();
                     }
 
                     break;

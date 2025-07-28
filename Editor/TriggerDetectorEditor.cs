@@ -11,7 +11,7 @@ public class TriggerDetectorEditor : Editor
         TriggerDetector triggerDetector = (TriggerDetector)target;
 
         // 显示 targetCount
-        EditorGUILayout.LabelField("Target Count", triggerDetector.HasTarget ? triggerDetector.DetectedTargets.Count.ToString() : "0");
+        EditorGUILayout.LabelField("Target Count", triggerDetector.TargetCount.ToString());
 
         // 显示 RecordTargets 状态
         EditorGUILayout.LabelField("Record Targets", triggerDetector.RecordTargets ? "Enabled" : "Disabled");
@@ -34,7 +34,8 @@ public class TriggerDetectorEditor : Editor
         EditorGUILayout.LabelField("Has Target Predicate", triggerDetector.TargetPredicate != null ? "Yes" : "No");
 
         // 显示并允许调试 DEBUG_AlwaysReturnHasTarget
-        triggerDetector.DebugAlwaysReturnHasTarget = EditorGUILayout.Toggle("Debug Always Return Has Target", triggerDetector.DebugAlwaysReturnHasTarget);
+        triggerDetector.DebugAlwaysReturnHasTarget = EditorGUILayout.Toggle("Debug Always Return Has Target",
+            triggerDetector.DebugAlwaysReturnHasTarget);
 
         // 保存更改
         if (GUI.changed)

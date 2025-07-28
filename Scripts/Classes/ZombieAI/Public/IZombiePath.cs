@@ -32,7 +32,8 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
         {
             foreach (var keyEdge in path.keyEdges.Where(keyEdge => keyEdge.To.isKey))
             {
-                moveQueue.Enqueue(new MoveData(keyEdge.moveType, keyEdge.To.Position, MoveStage.FollowVertex));
+                moveQueue.Enqueue(new MoveData(keyEdge.moveType, keyEdge.To.Position, keyEdge.From.Position,
+                    MoveStage.FollowVertex));
             }
 
 
@@ -47,7 +48,7 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
             };
 
 
-            moveQueue.Enqueue(new MoveData(moveType, Vector2Int.zero, MoveStage.FindDave));
+            moveQueue.Enqueue(new MoveData(moveType, Vector2Int.zero, Vector2Int.zero, MoveStage.FindDave));
         }
     }
 }
