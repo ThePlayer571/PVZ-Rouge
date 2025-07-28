@@ -94,11 +94,11 @@ namespace TPL.PVZR.ViewControllers
         {
             Player.Instance = this;
             _Rigidbody2D = this.GetComponent<Rigidbody2D>();
-            
+
             JumpDetector.TargetPredicate = (collider2D) =>
             {
                 if (collider2D.IsInLayerMask(LayerMask.GetMask("Plant")) &&
-                    collider2D.GetComponent<Plant>().Def.Id is not PlantId.Flowerpot ) return false;
+                    collider2D.GetComponent<Plant>().Def.Id is not (PlantId.Flowerpot or PlantId.LilyPad)) return false;
                 return true;
             };
 

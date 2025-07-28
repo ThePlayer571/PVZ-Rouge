@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using QFramework;
 using UnityEngine;
@@ -12,6 +13,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.Components
 
         protected const float factor = 0.5f;
 
+        private void Awake()
+        {
+            if (Collider2D == null) $"{nameof(gameObject)}未设置Collider2D".LogError();
+        }
+
         public void DisassembleWithForce(Vector2 force)
         {
             Rigidbody2D.simulated = true;
@@ -22,13 +28,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.Components
 
             ActionKit.Sequence()
                 .Delay(2f)
-                .Callback(() =>
-                {
-                    SpriteRenderer.DOFade(0, 2f).OnComplete(() =>
-                    {
-                        gameObject.DestroySelf();
-                    });
-                }).Start(this);
+                .Callback(() => { SpriteRenderer.DOFade(0, 2f).OnComplete(() => { gameObject.DestroySelf(); }); })
+                .Start(this);
         }
     }
 }

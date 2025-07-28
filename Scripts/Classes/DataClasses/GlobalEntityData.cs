@@ -38,5 +38,6 @@ namespace TPL.PVZR.Classes.DataClasses
 
         public float Zombie_Default_Health = 181f;
         public float Zombie_Default_ClimbSpeed = 1.5f;
+        public float Zombie_DuckyTubeZombie_SwimSpeedMultiplier = 2f;
     }
 }

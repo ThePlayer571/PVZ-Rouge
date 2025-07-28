@@ -11,5 +11,8 @@ namespace TPL.PVZR.Classes.InfoClasses
         BucketHeadZombie = 3,
         ScreenDoorZombie = 4,
         NewspaperZombie = 5,
+        DuckyTubeNormalZombie = 6,
+        DuckyTubeConeheadZombie = 7,
+        DuckyTubeBucketHeadZombie = 8,
     }
 }

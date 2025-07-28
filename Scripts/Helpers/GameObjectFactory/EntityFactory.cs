@@ -26,7 +26,6 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
         {
             ResKit.Init();
             _resLoader = ResLoader.Allocate();
-            //todo 难以归还
         }
 
         #region SunFactory
@@ -46,8 +45,8 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
                 var spriteRenderer = go.GetComponent<SpriteRenderer>();
                 spriteRenderer.sortingLayerName = "MidGround";
                 spriteRenderer.sortingOrder = 360;
-                
-                
+
+
                 Vector3 endPos = new Vector3(position.x + (RandomHelper.Default.Range(-0.5f, 0.5f)),
                     position.y + (RandomHelper.Default.Range(0f, 0.2f)), 0);
                 go.transform.DOJump(endPos, 1f, 1, 0.5f);
@@ -171,6 +170,12 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
                         _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.ScreenDoorZombie),
                     [ZombieId.NewspaperZombie] =
                         _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.NewspaperZombie),
+                    [ZombieId.DuckyTubeNormalZombie] =
+                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.DuckyTubeNormalZombie),
+                    [ZombieId.DuckyTubeConeheadZombie] =
+                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.DuckyTubeConeheadZombie),
+                    [ZombieId.DuckyTubeBucketHeadZombie] =
+                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.DuckyTubeBucketHeadZombie),
                 };
             }
 

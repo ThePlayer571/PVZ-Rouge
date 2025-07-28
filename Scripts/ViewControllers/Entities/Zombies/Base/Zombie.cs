@@ -1,19 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using QFramework;
-using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.DataClasses_InLevel.Effect;
 using TPL.PVZR.Classes.DataClasses_InLevel.ZombieArmor;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Classes.ZombieAI.Public;
-using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.CommandEvents.New.Level_Shit;
 using TPL.PVZR.Helpers.New.Methods;
-using TPL.PVZR.Systems;
 using TPL.PVZR.Systems.Level_Data;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase;
@@ -21,18 +16,11 @@ using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Zombies.States;
 using Unity.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 {
     public abstract class Zombie : Entity, IZombie
     {
-        #region 调试
-
-        [SerializeField] public bool triggerDebug = false;
-
-        #endregion
-
         #region 生命周期函数
 
         protected override void Awake()
@@ -111,7 +99,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         public void Initialize()
         {
             // AI
-            this.RegisterEvent<OnPlayerChangeCluster>(e => _timeToFindPath = true)
+            this.RegisterEvent<OnPlayerChangeCluster>(_ => _timeToFindPath = true)
                 .UnRegisterWhenGameObjectDestroyed(this);
             HumanLadderPriority = Zombie.AllocateHumanLadderPriority();
 
@@ -174,7 +162,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         public abstract ZombieId Id { get; }
 
         [NonSerialized] public float baseSpeed = 1.2f;
-        [SerializeField] public float baseJumpForce = 5f;
+        [NonSerialized] public float baseJumpForce = 5f;
         public AttackData baseAttackData = null;
 
         #region 当前属性（考虑Effect后）
@@ -189,8 +177,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                 {
                     case EffectId.Chill:
                         attackData.MultiplyDamage(EffectHelper.Zombie_Chill_AttackFactor(effectData.level));
-                        break;
-                    default:
                         break;
                 }
             }
@@ -207,8 +193,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                 {
                     case EffectId.Chill:
                         speed *= EffectHelper.Zombie_Chill_SpeedFactor(effectData.level);
-                        break;
-                    default:
                         break;
                 }
             }
@@ -283,17 +267,17 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             CurrentMoveData = CachePath.NextTarget();
         }
 
-        public void MoveForward()
+        public virtual void MoveForward()
         {
             _Rigidbody2D.AddForce(Direction.Value.ToVector2() * this.GetSpeed());
         }
 
-        public void SwimForward()
+        public virtual void SwimForward()
         {
             MoveForward();
         }
 
-        public void ClimbLadder()
+        public virtual void ClimbLadder()
         {
             if (ZombieNode.ClimbDetector.HasTarget)
             {
@@ -302,7 +286,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             }
         }
 
-        public void HoldOnLadder()
+        public virtual void HoldOnLadder()
         {
             if (ZombieNode.ClimbDetector.HasTarget)
             {
@@ -310,13 +294,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             }
         }
 
-        public void BeLifted()
+        public virtual void BeLifted()
         {
             _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x,
                 GlobalEntityData.Zombie_Default_ClimbSpeed);
         }
-
-        public int DEBUD = -1;
 
         public virtual void MoveTowards(MoveData moveData)
         {
@@ -352,7 +334,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     if (distance < Global.Zombie_Default_PathFindStopMinDistance) return;
 
 
-                    this.Direction.Value = (transform.position.x > targetPos.x)
+                    this.Direction.Value = transform.position.x > targetPos.x
                         ? Direction2.Left
                         : Direction2.Right;
                     MoveForward();
@@ -364,7 +346,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     if (distance < Global.Zombie_Default_PathFindStopMinDistance) return;
 
 
-                    this.Direction.Value = (transform.position.x > CurrentMoveData.targetWorldPos.x)
+                    this.Direction.Value = transform.position.x > CurrentMoveData.targetWorldPos.x
                         ? Direction2.Left
                         : Direction2.Right;
                     MoveForward();
@@ -382,7 +364,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     float distanceY = Mathf.Abs(transform.position.y - targetPos.y);
                     if (distanceX > Global.Zombie_Default_PathFindStopMinDistance)
                     {
-                        this.Direction.Value = (transform.position.x > targetPos.x)
+                        this.Direction.Value = transform.position.x > targetPos.x
                             ? Direction2.Left
                             : Direction2.Right;
                         MoveForward();
@@ -417,7 +399,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     if (distance < Global.Zombie_Default_PathFindStopMinDistance) return;
 
 
-                    this.Direction.Value = (transform.position.x > targetPos.x)
+                    this.Direction.Value = transform.position.x > targetPos.x
                         ? Direction2.Left
                         : Direction2.Right;
                     SwimForward();
@@ -430,10 +412,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     float distanceXToFrom = Mathf.Abs(transform.position.x - moveData.fromWorldPos.x);
                     if (distanceYToTarget > 1.5f)
                     {
-                        DEBUD = 1;
                         if (distanceXToFrom > Global.Zombie_Default_PathFindStopMinDistance)
                         {
-                            this.Direction.Value = (transform.position.x > moveData.fromWorldPos.x)
+                            this.Direction.Value = transform.position.x > moveData.fromWorldPos.x
                                 ? Direction2.Left
                                 : Direction2.Right;
                             MoveForward();
@@ -449,8 +430,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     }
                     else
                     {
-                        DEBUD = 2;
-                        this.Direction.Value = (transform.position.x > moveData.targetWorldPos.x)
+                        this.Direction.Value = transform.position.x > moveData.targetWorldPos.x
                             ? Direction2.Left
                             : Direction2.Right;
                         MoveForward();
@@ -476,7 +456,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     float distanceY = Mathf.Abs(transform.position.y - targetPos.y);
                     if (distanceX > Global.Zombie_Default_PathFindStopMinDistance)
                     {
-                        this.Direction.Value = (transform.position.x > targetPos.x)
+                        this.Direction.Value = transform.position.x > targetPos.x
                             ? Direction2.Left
                             : Direction2.Right;
                         MoveForward();
@@ -496,15 +476,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                 case MoveType.Swim_WalkJump:
                 {
                     var hit = Physics2D.Raycast(ZombieNode.JumpDetectionPoint.position, Direction.Value.ToVector2(),
-                        0.3f,
+                        0.5f,
                         LayerMask.GetMask("Barrier"));
-
                     if (hit.collider) TryJump();
 
                     float distance = Mathf.Abs(transform.position.x - moveData.targetWorldPos.x);
                     if (distance < Global.Zombie_Default_PathFindStopMinDistance) return;
 
-                    this.Direction.Value = (transform.position.x > moveData.targetWorldPos.x)
+                    this.Direction.Value = transform.position.x > moveData.targetWorldPos.x
                         ? Direction2.Left
                         : Direction2.Right;
                     MoveForward();
@@ -516,7 +495,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                     float distanceY = Mathf.Abs(transform.position.y - moveData.targetWorldPos.y);
                     if (distanceX > Global.Zombie_Default_PathFindStopMinDistance)
                     {
-                        this.Direction.Value = (transform.position.x > moveData.targetWorldPos.x)
+                        this.Direction.Value = transform.position.x > moveData.targetWorldPos.x
                             ? Direction2.Left
                             : Direction2.Right;
                         MoveForward();
@@ -563,7 +542,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         /// <summary>
         /// 存在盔甲则必须放到这里面，用于与外界数据交换
         /// </summary>
-        public readonly List<ZombieArmorData> ZombieArmorList = new List<ZombieArmorData>();
+        public readonly List<ZombieArmorData> ZombieArmorList = new();
 
         #endregion
 
