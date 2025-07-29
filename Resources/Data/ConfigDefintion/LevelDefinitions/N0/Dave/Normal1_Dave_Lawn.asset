@@ -64,12 +64,12 @@ MonoBehaviour:
     ActiveWaves: {x: 16, y: 20}
   - Zombie: 1
     SpawnPos: 2
-    Weight: 6
+    Weight: 5
     Value: 12
     ActiveWaves: {x: 11, y: 20}
   - Zombie: 2
     SpawnPos: 2
-    Weight: 10
+    Weight: 5
     Value: 30
     ActiveWaves: {x: 15, y: 20}
   - Zombie: 5
@@ -86,4 +86,6 @@ MonoBehaviour:
     specialLoots: []
     totalValue: 100
     choiceCount: 3
+  InitialDayPhase: 1
+  InitialWeather: 1
   InitialPlants: []

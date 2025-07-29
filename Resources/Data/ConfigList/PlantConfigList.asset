@@ -78,6 +78,27 @@ MonoBehaviour:
       Variant: 0
     card: {fileID: 11400000, guid: 1e7e443c3cd4fae40b86a10887315100, type: 2}
     prefab: {fileID: 453119421544998344, guid: 8c23640e6d86c444f9c9d83483793ac6, type: 3}
+  GeneralMushroom:
+  - def:
+      Id: 31
+      Variant: 0
+    card: {fileID: 11400000, guid: 35784fccc0f8c4d47a707ed17a32a716, type: 2}
+    prefab: {fileID: 3683093870365557178, guid: 344a28a871d378d479d051cab2165361, type: 3}
+  - def:
+      Id: 32
+      Variant: 0
+    card: {fileID: 11400000, guid: 02dc06296eebf574da785a5c619ea0b1, type: 2}
+    prefab: {fileID: 3984926557784555740, guid: 3c2b4bf73efd21443a3c69b24a9154a7, type: 3}
+  - def:
+      Id: 34
+      Variant: 0
+    card: {fileID: 11400000, guid: 4d9cc8c99e293c443b2bebfe8ab8fcb5, type: 2}
+    prefab: {fileID: 2219647743912888874, guid: c6032555d2cd2354fb441ce773125f05, type: 3}
+  - def:
+      Id: 35
+      Variant: 0
+    card: {fileID: 11400000, guid: eda5534e330eb7d4da0d30d8223d3f7d, type: 2}
+    prefab: {fileID: 2994037290229691364, guid: 1edf7b2c34c4a844b968f4c0b62152dc, type: 3}
   Dave:
   - def:
       Id: 8

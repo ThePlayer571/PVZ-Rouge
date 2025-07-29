@@ -1,0 +1,65 @@
+using TPL.PVZR.Classes;
+using TPL.PVZR.Classes.DataClasses.Level;
+using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Helpers;
+using TPL.PVZR.Helpers.New.GameObjectFactory;
+using TPL.PVZR.Helpers.New.Methods;
+using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers.Entities.Plants.Base;
+using UnityEngine;
+using Time = UnityEngine.Time;
+
+namespace TPL.PVZR.ViewControllers.Entities.Plants
+{
+    public sealed class ScaredyShroom : SleepyMushroomBase
+    {
+        public override PlantDef Def { get; } = new PlantDef(PlantId.ScaredyShroom, PlantVariant.V0);
+
+        protected override void OnShroomInit()
+        {
+            this.HealthPoint = GlobalEntityData.Plant_Default_Health;
+
+            _timer = new Timer(GlobalEntityData.Plant_Peashooter_ShootInterval);
+            _detectTimer = new Timer(Global.Plant_Peashooter_DetectInterval);
+            _layerMask = LayerMask.GetMask("Zombie", "Barrier");
+        }
+
+        private Timer _timer;
+        private Timer _detectTimer;
+        private int _layerMask;
+        [SerializeField] private TriggerDetector ZombieDetector;
+        private bool _scared;
+
+        [SerializeField] private Transform FirePoint;
+
+        protected override void OnShroomUpdate()
+        {
+            // 胆小
+            var shouldScared = ZombieDetector.HasTarget;
+            if (shouldScared != _scared)
+            {
+                _scared = shouldScared;
+            }
+
+            if (_scared) return;
+            
+            // 射击
+            _timer.Update(Time.deltaTime);
+            _detectTimer.Update(Time.deltaTime);
+
+            if (_timer.Ready && _detectTimer.Ready)
+            {
+                _detectTimer.Reset();
+                var hit = Physics2D.Raycast(FirePoint.position, Direction.ToVector2(),
+                    GlobalEntityData.Plant_Peashooter_ShootDistance, _layerMask);
+
+                if (hit.collider && hit.collider.CompareTag("Zombie"))
+                {
+                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Spore, Direction.ToVector2(),
+                        FirePoint.position);
+                    _timer.Reset();
+                }
+            }
+        }
+    }
+}

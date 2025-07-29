@@ -12,7 +12,7 @@ namespace TPL.PVZR.ViewControllers
     {
         private SpriteRenderer _SpriteRenderer;
         private bool _isCollected = false;
-        public int SunPoint { get; private set; } = 25; // 以后把Sun做成接口，可以创建各种Sun（比如大阳光/月光）
+        [SerializeField] public int SunPoint = 25;
 
 
         private void Awake()

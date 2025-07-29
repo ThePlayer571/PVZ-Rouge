@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using QFramework;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.DataReader;
+using TPL.PVZR.ViewControllers.Entities.Plants;
+using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 
 namespace TPL.PVZR.Classes.DataClasses_InLevel
 {
@@ -13,6 +16,11 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
     {
         // spawn
         public bool bannedSpawn = false;
+
+        // OR Condition
+        public bool canAndOnlyCanSpawnOnSleepingShroom = false;
+
+        // AND Condition
         public List<CellTypeId> currentCellConditions = new();
         public List<CellTypeId> belowCellConditions = new();
         public List<CellTypeId> aboveCellConditions = new();
@@ -44,6 +52,9 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
                 case PlantingLocationTypeId.OnAnyPlant:
                     currentCellConditions.Add(CellTypeId.HasPlant);
                     break;
+                case PlantingLocationTypeId.OnSleepingShroom:
+                    canAndOnlyCanSpawnOnSleepingShroom = true;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(id), id, null);
             }
@@ -51,28 +62,55 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
 
         public bool CheckSpawn(PlantDef plantDef, Cell currentCell = null, Cell belowCell = null, Cell aboveCell = null)
         {
-            if (currentCellConditions.Count > 0 &&
-                (currentCell == null || currentCellConditions.Any(cellTypeId => !currentCell.Is(cellTypeId))))
-                return false;
+            if (bannedSpawn) return false;
 
-            if (belowCellConditions.Count > 0 &&
-                (belowCell == null || belowCellConditions.Any(cellTypeId => !belowCell.Is(cellTypeId))))
-                return false;
-
-            if (aboveCellConditions.Count > 0 &&
-                (aboveCell == null || aboveCellConditions.Any(cellTypeId => !aboveCell.Is(cellTypeId))))
-                return false;
-
-
+            // （硬性条件）当前槽位不能有植物
             var slot = PlantConfigReader.GetPlacementSlot(plantDef);
             if (currentCell.CellPlantData.HasPlant(slot)) return false;
+
+            // OR Condition
+            if (canAndOnlyCanSpawnOnSleepingShroom)
+            {
+                return currentCell.CellPlantData.GetPlant(PlacementSlot.Normal) is ISleepyShroom { IsAwake: false };
+            }
+
+            // 上中下Tile判定
+            if (currentCellConditions.Count > 0)
+            {
+                if (currentCell == null || currentCellConditions.Any(cellTypeId => !currentCell.Is(cellTypeId)))
+                {
+                    return false;
+                }
+            }
+
+            if (belowCellConditions.Count > 0)
+            {
+                if (belowCell == null || belowCellConditions.Any(cellTypeId => !belowCell.Is(cellTypeId)))
+                {
+                    return false;
+                }
+            }
+
+            if (aboveCellConditions.Count > 0)
+            {
+                if (aboveCell == null || aboveCellConditions.Any(cellTypeId => !aboveCell.Is(cellTypeId)))
+                {
+                    return false;
+                }
+            }
 
             return true;
         }
 
         public bool CheckStack(PlantDef plantDef, Cell currentCell, Cell belowCell, Cell aboveCell)
         {
-            return canStackOnSamePlant && currentCell.CellPlantData.HasPlant(plantDef);
+            if (canStackOnSamePlant)
+            {
+                if (currentCell.CellPlantData.GetPlant(plantDef) is ICanBeStackedOn plant && plant.CanStack(plantDef))
+                    return true;
+            }
+
+            return false;
         }
     }
 
@@ -88,5 +126,6 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
         // Plant Conditions
         OnSamePlant_OnlyStack, // 可以种在相同植物上（以Stack的形式）
         OnAnyPlant, // 可以种在任何植物上（以Spawn的形式）
+        OnSleepingShroom, // 可以种在睡眠植物上（以Spawn的形式）
     }
 }

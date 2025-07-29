@@ -19,6 +19,7 @@ namespace TPL.PVZR.Classes.ConfigLists
     public class PlantConfigList : ScriptableObject
     {
         public List<PlantConfig> General;
+        public List<PlantConfig> GeneralMushroom;
         public List<PlantConfig> Dave;
         public List<PlantConfig> PeaFamily;
         public List<PlantConfig> PultFamily;

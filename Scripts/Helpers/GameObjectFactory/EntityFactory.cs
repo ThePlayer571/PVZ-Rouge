@@ -35,13 +35,20 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             static SunFactory()
             {
                 _sunPrefab = _resLoader.LoadSync<GameObject>(Sun_prefab.BundleName, Sun_prefab.Sun);
+                _smallSunPrefab = _resLoader.LoadSync<GameObject>(Smallsun_prefab.BundleName, Smallsun_prefab.SmallSun);
             }
 
             private static GameObject _sunPrefab;
+            private static GameObject _smallSunPrefab;
 
-            public static Sun SpawnSunWithJump(Vector2 position, bool autoCollect = true)
+            public static Sun SpawnSunWithJump(SunId sunId, Vector2 position, bool autoCollect = true)
             {
-                var go = _sunPrefab.Instantiate(position, Quaternion.identity).GetComponent<Sun>();
+                var sunPrefab = sunId switch
+                {
+                    SunId.Sun => _sunPrefab,
+                    SunId.SmallSun => _smallSunPrefab
+                };
+                var go = sunPrefab.Instantiate(position, Quaternion.identity).GetComponent<Sun>();
                 var spriteRenderer = go.GetComponent<SpriteRenderer>();
                 spriteRenderer.sortingLayerName = "MidGround";
                 spriteRenderer.sortingOrder = 360;
@@ -59,14 +66,19 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
                 return go;
             }
 
-            public static Sun SpawnSunWithFall(Vector2 targetPosition, bool autoCollect = true)
+            public static Sun SpawnSunWithFall(SunId sunId, Vector2 targetPosition, bool autoCollect = true)
             {
+                var sunPrefab = sunId switch
+                {
+                    SunId.Sun => _sunPrefab,
+                    SunId.SmallSun => _smallSunPrefab
+                };
                 const float topOffset = 1f;
                 // 从屏幕顶端之上开始
                 var topY = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane)).y;
                 var startPosition = new Vector3(targetPosition.x, topY + topOffset, 0);
 
-                var go = _sunPrefab.Instantiate(startPosition, Quaternion.identity).GetComponent<Sun>();
+                var go = sunPrefab.Instantiate(startPosition, Quaternion.identity).GetComponent<Sun>();
                 var spriteRenderer = go.GetComponent<SpriteRenderer>();
                 spriteRenderer.sortingLayerName = "BackGround";
                 spriteRenderer.sortingOrder = 90;
@@ -237,6 +249,10 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
                             _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.Butter),
                         [ProjectileId.Melon] =
                             _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.Melon),
+                        [ProjectileId.ShortSpore] =
+                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.ShortSpore),
+                        [ProjectileId.Spore] =
+                            _resLoader.LoadSync<GameObject>(Projectiles.BundleName, Projectiles.Spore),
                     };
             }
 
@@ -265,5 +281,11 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
         }
 
         #endregion
+    }
+
+    public enum SunId
+    {
+        Sun,
+        SmallSun
     }
 }

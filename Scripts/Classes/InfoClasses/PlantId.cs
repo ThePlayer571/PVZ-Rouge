@@ -36,6 +36,11 @@ namespace TPL.PVZR.Classes.InfoClasses
         KernelPult = 28,
         MelonPult = 29,
         LilyPad = 30,
+        PuffShroom = 31,
+        SunShroom = 32,
+        SeaShroom = 33,
+        ScaredyShroom = 34,
+        CoffeeBean = 35,
 
 
         // Blover,

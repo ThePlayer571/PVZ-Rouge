@@ -76,6 +76,8 @@ MonoBehaviour:
     specialLoots: []
     totalValue: 100
     choiceCount: 3
+  InitialDayPhase: 1
+  InitialWeather: 1
   InitialPlants:
   - PlantDef:
       Id: 4

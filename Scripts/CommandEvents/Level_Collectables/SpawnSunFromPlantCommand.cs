@@ -11,12 +11,14 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay
 {
     public class SpawnSunFromPlantCommand : AbstractCommand
     {
-        public SpawnSunFromPlantCommand(Plant plant)
+        public SpawnSunFromPlantCommand(Plant plant, SunId sunId)
         {
             this._plant = plant;
+            this._sunId = sunId;
         }
 
         private Plant _plant;
+        private SunId _sunId;
 
         protected override void OnExecute()
         {
@@ -26,8 +28,8 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay
             if (_plant == null)
                 throw new ArgumentException("尝试调用SpawnSunFromPlantCommand，但Plant对象为null"); // Plant对象不为null
 
-            var go = EntityFactory.SunFactory.SpawnSunWithJump(_plant.transform.position +
-                                                               new Vector3(0, 0.5f, 0));
+            var go = EntityFactory.SunFactory.SpawnSunWithJump(_sunId,
+                _plant.transform.position + new Vector3(0, 0.5f, 0));
         }
     }
 }

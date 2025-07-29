@@ -3,6 +3,7 @@ using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents.Level_Gameplay;
+using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
@@ -31,8 +32,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             if (_sunTimer.Ready)
             {
                 _sunTimer.Reset();
-                this.SendCommand<SpawnSunFromPlantCommand>(new SpawnSunFromPlantCommand(this));
-                this.SendCommand<SpawnSunFromPlantCommand>(new SpawnSunFromPlantCommand(this));
+                this.SendCommand<SpawnSunFromPlantCommand>(new SpawnSunFromPlantCommand(this, SunId.Sun));
+                this.SendCommand<SpawnSunFromPlantCommand>(new SpawnSunFromPlantCommand(this, SunId.Sun));
             }
         }
 

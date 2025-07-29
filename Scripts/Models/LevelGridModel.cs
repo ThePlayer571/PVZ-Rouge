@@ -1,10 +1,7 @@
-using System;
 using System.Diagnostics;
 using System.Linq;
 using QFramework;
-using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.DataClasses_InLevel;
-using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.DataReader;
@@ -51,7 +48,7 @@ namespace TPL.PVZR.Models
 
         public bool CanSpawnPlantOn(Vector2Int pos, PlantDef def)
         {
-            var unionConditionGroup = PlantConfigReader.GetAllowedPlantingLocations(def);
+            var unionConditionGroup = PlantConfigReader.GetAllowingPlantingLocations(def);
 
             if (!IsValidPos(pos) || !IsValidPos(pos.Down()) || !IsValidPos(pos.Up())) return false; // 超出地图
             var cell = LevelMatrix[pos.x, pos.y];
@@ -65,22 +62,19 @@ namespace TPL.PVZR.Models
 
         public bool CanStackPlantOn(Vector2Int pos, PlantDef def)
         {
-            var unionConditionGroup = PlantConfigReader.GetAllowedPlantingLocations(def);
+            var unionConditionGroup = PlantConfigReader.GetAllowingPlantingLocations(def);
 
             if (!IsValidPos(pos) || !IsValidPos(pos.Down()) || !IsValidPos(pos.Up())) return false; // 超出地图
             var cell = LevelMatrix[pos.x, pos.y];
             var belowCell = LevelMatrix[pos.x, pos.y - 1];
             var aboveCell = LevelMatrix[pos.x, pos.y + 1];
 
-            //todo 不同植物叠种的支持
             if (unionConditionGroup.Any(condition => condition.CheckStack(def, cell, belowCell, aboveCell)))
             {
-                return (cell.CellPlantData.GetPlant(def) as ICanBeStackedOn).CanStack(def);
+                return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public Cell GetCell(Vector2Int cellPos)

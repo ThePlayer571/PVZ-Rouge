@@ -76,8 +76,6 @@ namespace TPL.PVZR.Systems.MazeMap
                         {
                             case PhaseStage.EnterNormal:
                                 IsAwardAvailable = true;
-                                $"null is : GameData: {_GameModel.GameData == null}, AwardData : {_GameModel.GameData.AwardData == null}, AwardsToGenerate : {_GameModel.GameData?.AwardData?.AwardsToGenerate == null}"
-                                    .LogInfo();
                                 WriteLoots(_GameModel.GameData.AwardData.AwardsToGenerate);
                                 break;
                         }

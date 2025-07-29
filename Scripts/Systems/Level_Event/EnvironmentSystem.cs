@@ -1,6 +1,6 @@
 using QFramework;
+using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.CommandEvents.Phase;
-using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
@@ -13,17 +13,15 @@ namespace TPL.PVZR.Systems.Level_Event
 {
     public interface IEnvironmentSystem : IAutoUpdateSystem
     {
-        
     }
 
-    
-    public class EnvironmentSystem: AbstractSystem, IEnvironmentSystem
-    {
 
+    public class EnvironmentSystem : AbstractSystem, IEnvironmentSystem
+    {
         private void StartRunning()
         {
             _sunTimer.SetRemaining(5f);
-            
+
             GameManager.ExecuteOnUpdate(Update);
         }
 
@@ -33,27 +31,31 @@ namespace TPL.PVZR.Systems.Level_Event
         }
 
         private Timer _sunTimer;
+
         private void Update()
         {
-            _sunTimer.Update(Time.deltaTime);
-
-            if (_sunTimer.Ready)
+            if (_LevelModel.CurrentDayPhase.Value is DayPhaseType.Day or DayPhaseType.Sunset)
             {
-                var pos = LevelGridHelper.CellToWorld(_LevelModel.LevelData.GetRandomSunFallCellPos());
-                EntityFactory.SunFactory.SpawnSunWithFall(pos);
-                _sunTimer.Reset();
+                _sunTimer.Update(Time.deltaTime);
+
+                if (_sunTimer.Ready)
+                {
+                    var pos = LevelGridHelper.CellToWorld(_LevelModel.LevelData.GetRandomSunFallCellPos());
+                    EntityFactory.SunFactory.SpawnSunWithFall(SunId.Sun, pos);
+                    _sunTimer.Reset();
+                }
             }
         }
-        
-        
+
+
         private ILevelModel _LevelModel;
-        
+
         protected override void OnInit()
         {
             _LevelModel = this.GetModel<ILevelModel>();
-            
+
             _sunTimer = new Timer(10f);
-            
+
             this.RegisterEvent<OnPhaseChangeEvent>(e =>
             {
                 switch (e.GamePhase)
@@ -68,6 +70,7 @@ namespace TPL.PVZR.Systems.Level_Event
                                 StopRunning();
                                 break;
                         }
+
                         break;
                 }
             });

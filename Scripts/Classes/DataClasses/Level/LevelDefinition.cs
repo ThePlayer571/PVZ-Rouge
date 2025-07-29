@@ -7,6 +7,7 @@ using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Classes.LootPool;
 using TPL.PVZR.Tools;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace TPL.PVZR.Classes.DataClasses.Level
 {
@@ -135,6 +136,9 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 //
         [Header("Award")] public AwardGenerateInfo AwardGenerateInfo;
 
+        [Header("Environment")] public DayPhaseType InitialDayPhase;
+        public WeatherType InitialWeather;
+
         [Header("Others")] public List<InitialPlantConfig> InitialPlants;
     }
 
@@ -144,5 +148,29 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public PlantDef PlantDef;
         public Direction2 Direction;
         public Vector2Int SpawnPos;
+    }
+
+    public enum DayPhaseType
+    {
+        NotSet = 0,
+        Day = 1,
+        Sunset = 2,
+        Night = 3,
+        MidNight = 4
+    }
+
+    public static class DayPhaseTypeExtensions
+    {
+        public static bool ShouldMushroomAwake(this DayPhaseType dayPhaseType)
+        {
+            return dayPhaseType is DayPhaseType.Night or DayPhaseType.MidNight;
+        }
+    }
+
+    public enum WeatherType
+    {
+        NotSet = 0,
+        Sunny = 1,
+        Rainy = 2,
     }
 }

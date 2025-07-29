@@ -28,5 +28,9 @@
   "CabbagePult": 30,
   "KernelPult": 20,
   "MelonPult": 120,
-  "LilyPad": 5
+  "LilyPad": 5,
+  "PuffShroom": 20,
+  "SunShroom": 20,
+  "ScaredyShroom": 30,
+  "CoffeeBean": 50
 }

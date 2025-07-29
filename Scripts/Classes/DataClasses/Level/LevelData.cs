@@ -63,6 +63,12 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         #endregion
 
+        #region Environment
+
+        DayPhaseType InitialDayPhase { get; }
+
+        #endregion
+
         #region Others
 
         IReadOnlyList<InitialPlantConfig> InitialPlants { get; }
@@ -232,6 +238,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         #endregion
 
+        public DayPhaseType InitialDayPhase { get; }
+
         #region Others
 
         public IReadOnlyList<InitialPlantConfig> InitialPlants { get; }
@@ -271,6 +279,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             this.ZombieSpawnConfigs = levelDefinition.ZombieSpawnConfigs;
 
             this.AwardGenerateInfo = levelDefinition.AwardGenerateInfo;
+
+            this.InitialDayPhase = levelDefinition.InitialDayPhase;
 
             this.InitialPlants = levelDefinition.InitialPlants;
         }

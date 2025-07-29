@@ -27,6 +27,8 @@ namespace TPL.PVZR.Classes.DataClasses
         public float Plant_CabbagePult_ThrowInterval = 3f;
         public float Plant_CabbagePult_ThrowDistance = 16f;
         public float Plant_KernelPult_ButterChance = 0.25f;
+        public float Plant_PuffShroom_ShootDistance = 4f;
+        public float Plant_SunShroom_GrowTime = 120f;
 
         public float Projectile_Pea_Speed = 10f;
         public float Projectile_SnipePea_Speed = 20f;

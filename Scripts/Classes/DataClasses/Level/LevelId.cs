@@ -13,10 +13,11 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         Dave_Fortress = 3,
         Dave_House = 4,
         Dave_FullYard = 5,
+        Dave_LawnNight = 6,
+        Dave_Bridge = 7,
         Dave_Basement, // 僵尸挖地道
         Dave_Garage, // 实验室（瑞克莫迪）
         Dave_Graveyard, // 恶心的出怪点
-        Dave_Bridge,
         // Dave_LawnNight = 2,
         // DaveHouseNight,DaveHouseRainNight, 
         // DaveBackyardRain,

@@ -24,10 +24,10 @@ namespace TPL.PVZR.ViewControllers
         private PlayerInputControl _inputActions;
         private Rigidbody2D _Rigidbody2D;
 
-        [SerializeField] private float speed;
-        [SerializeField] private float jumpForce;
-        [SerializeField] private float k;
-        [SerializeField] private float climbSpeed;
+        [SerializeField] private float speed = 30;
+        [SerializeField] private float jumpForce = 9;
+        [SerializeField] private float k = 5;
+        [SerializeField] private float climbSpeed = 5;
 
         [SerializeField] private TriggerDetector JumpDetector;
         [SerializeField] private TriggerDetector LadderDetector;

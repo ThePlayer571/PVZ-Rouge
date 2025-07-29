@@ -42,6 +42,12 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 _plantPrefabDict[config.def] = config.prefab;
             }
 
+            foreach (var config in plantConfigList.GeneralMushroom)
+            {
+                _cardDefinitionDict[config.def] = config.card;
+                _plantPrefabDict[config.def] = config.prefab;
+            }
+
             foreach (var config in plantConfigList.PeaFamily)
             {
                 _cardDefinitionDict[config.def] = config.card;
@@ -79,7 +85,7 @@ namespace TPL.PVZR.Helpers.New.DataReader
             throw new ArgumentException($"找不到对应的PlantPrefab: {def.Id}, {def.Variant}");
         }
 
-        public static List<PlantingLocationCondition> GetAllowedPlantingLocations(PlantDef def)
+        public static List<PlantingLocationCondition> GetAllowingPlantingLocations(PlantDef def)
         {
             var key = GetPlantingLocationTypeId(def);
             if (_plantingLocationConditionDict.TryGetValue(key, out var condition))
@@ -115,6 +121,7 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 PlantId.PeaPod => (PlantingLocationTypeId.OnPlatOfNormal, PlantingLocationTypeId.OnSamePlant_OnlyStack),
                 PlantId.Pumpkin => (PlantingLocationTypeId.OnPlatOfNormal, PlantingLocationTypeId.OnAnyPlant),
                 PlantId.LilyPad => (PlantingLocationTypeId.OnWaterSurface, PlantingLocationTypeId.NotSet),
+                PlantId.CoffeeBean => (PlantingLocationTypeId.OnSleepingShroom, PlantingLocationTypeId.NotSet),
                 _ => (PlantingLocationTypeId.OnPlatOfNormal, PlantingLocationTypeId.NotSet),
             };
         }
@@ -124,6 +131,7 @@ namespace TPL.PVZR.Helpers.New.DataReader
             return def.Id switch
             {
                 PlantId.Pumpkin => PlacementSlot.Overlay,
+                PlantId.CoffeeBean => PlacementSlot.Air,
                 _ => PlacementSlot.Normal,
             };
         }

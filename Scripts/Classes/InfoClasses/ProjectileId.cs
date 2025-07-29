@@ -19,5 +19,7 @@ namespace TPL.PVZR.Classes.InfoClasses
         Butter = 11,
         Melon = 12,
         FrozenMelon = 13,
+        ShortSpore = 14,
+        Spore = 15,
     }
 }
