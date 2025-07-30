@@ -181,7 +181,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                          *  2 - (0,-1).Block
                          *  3 - (0, 0).Climbable
                          *  4 - (0, 0).Water
-                         *  5 - (0, 1).TileEmpty
+                         *  5 - (0, 1).!Water
                          *
                          * conditions:
                          *  1 - 1100 - Plat
@@ -194,7 +194,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                         bool case_2 = levelMatrix[x, y - 1].Is(CellTypeId.Block);
                         bool case_3 = levelMatrix[x, y].Is(CellTypeId.Climbable);
                         bool case_4 = levelMatrix[x, y].Is(CellTypeId.Water);
-                        bool case_5 = levelMatrix[x, y + 1].Is(CellTypeId.TileEmpty);
+                        bool case_5 = !levelMatrix[x, y + 1].Is(CellTypeId.Water);
 
                         int condition = (case_1 ? 1 << 3 : 0) |
                                         (case_2 ? 1 << 2 : 0) |
@@ -443,11 +443,19 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 
                 Vertex GetDownVertex(int x, int y)
                 {
-                    // 需要已经确认一定存在downVertex
-                    for (int offsetY = 0;; offsetY--)
+                    try
                     {
-                        if (mapMatrix[x, y + offsetY] != null)
-                            return mapMatrix[x, y + offsetY];
+                        for (int offsetY = 0;; offsetY--)
+                            // 需要已经确认一定存在downVertex
+                        {
+                            if (mapMatrix[x, y + offsetY] != null)
+                                return mapMatrix[x, y + offsetY];
+                        }
+                    }
+                    catch
+                    {
+                        $"error: {x},{y}".LogInfo();
+                        throw new Exception();
                     }
                 }
             }

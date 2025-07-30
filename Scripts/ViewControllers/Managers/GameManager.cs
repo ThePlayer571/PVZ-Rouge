@@ -55,7 +55,7 @@ namespace TPL.PVZR.ViewControllers.Managers
 
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 260, 120, 40), "获得100硬币"))
             {
-                this.GetModel<IGameModel>().GameData.InventoryData.Coins.Value += (100);
+                this.GetModel<IGameModel>().GameData.InventoryData.Coins.Value += (1000000000);
             }
 
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 310, 120, 40), "获取一张豌豆射手"))

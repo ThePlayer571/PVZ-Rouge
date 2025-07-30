@@ -8,10 +8,47 @@ using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Classes.ZombieAI.Public;
 using UnityEngine;
 
 namespace TPL.PVZR.Helpers.New.DataReader
 {
+    public static class ZombieConfigReader
+    {
+        #region 数据存储
+
+        private static readonly Dictionary<ZombieId, ZombieConfig> _zombieConfigs;
+
+        static ZombieConfigReader()
+        {
+            ResKit.Init();
+            var _resLoader = ResLoader.Allocate();
+            var zombieConfigList = _resLoader.LoadSync<ZombieConfigList>(Configlist.ZombieConfigList);
+
+            _zombieConfigs = new Dictionary<ZombieId, ZombieConfig>();
+            foreach (var config in zombieConfigList.Dave)
+            {
+                _zombieConfigs[config.id] = config;
+            }
+        }
+
+        #endregion
+
+        #region 数据读取
+
+        public static GameObject GetZombiePrefab(ZombieId zombieId)
+        {
+            if (_zombieConfigs.TryGetValue(zombieId, out var config))
+            {
+                return config.prefab;
+            }
+
+            throw new ArgumentException($"找不到对应的ZombiePrefab: {zombieId}");
+        }
+
+        #endregion
+    }
+
     public static class PlantConfigReader
     {
         #region 数据存储

@@ -24,4 +24,5 @@ namespace TPL.PVZR.Classes.ConfigLists
         public List<PlantConfig> PeaFamily;
         public List<PlantConfig> PultFamily;
     }
+
 }

@@ -97,8 +97,9 @@ namespace TPL.PVZR.ViewControllers
 
             JumpDetector.TargetPredicate = (collider2D) =>
             {
-                if (collider2D.IsInLayerMask(LayerMask.GetMask("Plant")) &&
-                    collider2D.GetComponent<Plant>().Def.Id is not (PlantId.Flowerpot or PlantId.LilyPad)) return false;
+                if (collider2D.IsInLayerMask(LayerMask.GetMask("PlantPlayerInteraction")) &&
+                    collider2D.GetComponentInParent<Plant>().Def.Id is not (PlantId.Flowerpot or PlantId.LilyPad))
+                    return false;
                 return true;
             };
 

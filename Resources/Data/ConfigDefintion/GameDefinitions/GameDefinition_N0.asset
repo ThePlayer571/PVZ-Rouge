@@ -57,7 +57,7 @@ MonoBehaviour:
     plantBookId: 0
     coinAmount: 0
   - lootType: 0
-    plantId: 8
+    plantId: 30
     locked: 0
     plantBookId: 0
     coinAmount: 0

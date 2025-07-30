@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,6 +11,8 @@ using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
 using TPL.PVZR.Tools.SoyoFramework;
+using UnityEngine;
+using UnityEngineInternal;
 
 namespace TPL.PVZR.Systems.MazeMap
 {
@@ -25,6 +28,7 @@ namespace TPL.PVZR.Systems.MazeMap
         private IGameModel _GameModel;
         private List<CoinTradeData> _activeTrades { get; } = new List<CoinTradeData>();
         private bool _hasTradeData = false;
+        private int _refreshCount = 0;
 
 
         private void AutoWriteCoinTrades()
@@ -33,10 +37,9 @@ namespace TPL.PVZR.Systems.MazeMap
 
             for (int i = 0; i < 10; i++)
             {
-                var coinTradeData = TradeCreator.CreateRandomCoinTradeDataByMazeMap();
+                var coinTradeData = TradeCreator.CreateRandomCoinTradeDataByMazeMap(_refreshCount * 5);
                 // 卡槽上限
-                if (coinTradeData.LootData.LootType == LootType.SeedSlot &&
-                    !_GameModel.GameData.InventoryData.HasAvailableSeedSlotSlots())
+                if (!IsAllowingTrade(coinTradeData))
                 {
                     i--;
                     continue;
@@ -49,12 +52,25 @@ namespace TPL.PVZR.Systems.MazeMap
             _hasTradeData = true;
         }
 
+        private bool IsAllowingTrade(CoinTradeData tradeData)
+        {
+            // 卡槽上限
+            if (tradeData.LootData.LootType == LootType.SeedSlot &&
+                !_GameModel.GameData.InventoryData.HasAvailableSeedSlotSlots())
+                return false;
+            // 秘籍重复
+            if (tradeData.LootData.LootType == LootType.PlantBook &&
+                _GameModel.GameData.InventoryData.HasPlantBook(tradeData.LootData.PlantBookId))
+                return false;
+
+            return true;
+        }
+
         private void ClearCoinTrades()
         {
             _activeTrades.Clear();
             _hasTradeData = false;
         }
-
 
         protected override void OnInit()
         {
@@ -68,11 +84,7 @@ namespace TPL.PVZR.Systems.MazeMap
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
-                                var sw = new Stopwatch();
-                                sw.Start();
                                 TradeCreator.InitializeCoinTradeGenerator(_GameModel.GameData.MazeMapData);
-                                sw.Stop();
-                                $"商店预处理耗时：{sw.ElapsedMilliseconds} ms".LogInfo();
                                 break;
                         }
 
@@ -81,7 +93,7 @@ namespace TPL.PVZR.Systems.MazeMap
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
-                                RefreshCost = 5;
+                                _refreshCount = 0;
                                 AutoWriteCoinTrades();
                                 break;
                         }
@@ -102,7 +114,7 @@ namespace TPL.PVZR.Systems.MazeMap
             this.RegisterEvent<CoinStoreRefreshEvent>(e =>
             {
                 _GameModel.GameData.InventoryData.Coins.Value -= RefreshCost;
-                RefreshCost *= 2;
+                _refreshCount++;
 
                 AutoWriteCoinTrades();
             });
@@ -128,6 +140,6 @@ namespace TPL.PVZR.Systems.MazeMap
             return _activeTrades[index];
         }
 
-        public int RefreshCost { get; private set; }
+        public int RefreshCost => 10 * (1 << _refreshCount);
     }
 }

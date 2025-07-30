@@ -146,11 +146,6 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             public static Plant SpawnPlant(PlantDef def, Direction2 direction, Vector2Int cellPos)
             {
                 var plantPrefab = PlantConfigReader.GetPlantPrefab(def);
-                if (plantPrefab == null)
-                {
-                    $"发现null的PlantPrefab: {def.Id}, {def.Variant}".LogInfo();
-                    throw new Exception();
-                }
 
                 var plant = plantPrefab
                     .Instantiate(LevelGridHelper.CellToWorldBottom(cellPos), Quaternion.identity)
@@ -169,44 +164,15 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
         {
             public static HashSet<Zombie> ActiveZombies = new();
 
-            static ZombieFactory()
-            {
-                _zombieDict = new Dictionary<ZombieId, GameObject>
-                {
-                    [ZombieId.NormalZombie] = _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.NormalZombie),
-                    [ZombieId.ConeheadZombie] =
-                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.ConeheadZombie),
-                    [ZombieId.BucketHeadZombie] =
-                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.BucketheadZombie),
-                    [ZombieId.ScreenDoorZombie] =
-                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.ScreenDoorZombie),
-                    [ZombieId.NewspaperZombie] =
-                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.NewspaperZombie),
-                    [ZombieId.DuckyTubeNormalZombie] =
-                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.DuckyTubeNormalZombie),
-                    [ZombieId.DuckyTubeConeheadZombie] =
-                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.DuckyTubeConeheadZombie),
-                    [ZombieId.DuckyTubeBucketHeadZombie] =
-                        _resLoader.LoadSync<GameObject>(Zombies.BundleName, Zombies.DuckyTubeBucketHeadZombie),
-                };
-            }
-
-            private static readonly Dictionary<ZombieId, GameObject> _zombieDict;
-
             public static Zombie SpawnZombie(ZombieId id, Vector2 pos)
             {
-                if (_zombieDict.TryGetValue(id, out var zombiePrefab))
-                {
-                    var zombie = zombiePrefab.Instantiate(pos, Quaternion.identity).GetComponent<Zombie>();
-                    zombie.Initialize();
+                var zombiePrefab = ZombieConfigReader.GetZombiePrefab(id);
 
-                    ActiveZombies.Add(zombie);
-                    return zombie;
-                }
-                else
-                {
-                    throw new ArgumentException($"未考虑的僵尸类型：{id}");
-                }
+                var zombie = zombiePrefab.Instantiate(pos, Quaternion.identity).GetComponent<Zombie>();
+                zombie.Initialize();
+
+                ActiveZombies.Add(zombie);
+                return zombie;
             }
 
             public static void RemoveZombie(Zombie zombie)

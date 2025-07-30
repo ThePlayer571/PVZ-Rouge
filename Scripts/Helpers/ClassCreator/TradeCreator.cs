@@ -125,10 +125,13 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
             _lootPoolPool = new RandomPool<LootPoolInfo, LootPoolInfo>(_, 1, RandomHelper.Game);
         }
 
-        public static CoinTradeData CreateRandomCoinTradeDataByMazeMap()
+        public static CoinTradeData CreateRandomCoinTradeDataByMazeMap(int offset)
         {
+            $"offset: {offset}".LogInfo();
             var lootPoolId = _lootPoolPool.GetRandomOutput().lootPoolDef.Id;
-            return CreateCoinTradeDataWithRandomVariation(_coinTradePoolDict[lootPoolId].GetRandomOutput(),
+            var targetRandomPool = _coinTradePoolDict[lootPoolId];
+            targetRandomPool.SetWeightModifier(info => info.weight == 0 ? 0 : info.weight + offset);
+            return CreateCoinTradeDataWithRandomVariation(targetRandomPool.GetRandomOutput(),
                 randomVariationRange: 0.2f);
         }
 

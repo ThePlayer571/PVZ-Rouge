@@ -37,6 +37,7 @@ namespace TPL.PVZR.Classes.DataClasses
         EasyEvent<PlantBookData> OnPlantBookRemoved { get; }
 
         bool HasAvailableCardSlots(int count = 1);
+        bool HasPlantBook(PlantBookId plantBookId);
         bool HasAvailableSeedSlotSlots(int count = 1);
         bool CanAfford(RecipeData recipe);
         bool HasTradableCard(PlantId plantId);
@@ -233,6 +234,11 @@ namespace TPL.PVZR.Classes.DataClasses
             return _cards.Count + count <= MaxCardCount;
         }
 
+        public bool HasPlantBook(PlantBookId plantBookId)
+        {
+            return _plantBooks.Any(book => book.Id == plantBookId);
+        }
+
         public bool HasAvailableSeedSlotSlots(int count = 1)
         {
             if (count <= 0) return true;
@@ -254,6 +260,7 @@ namespace TPL.PVZR.Classes.DataClasses
             }
 
             // 背包空位
+            // todo 可能不是换卡牌
             if (!HasAvailableCardSlots(1 - recipe.consumeCards.Count)) return false;
 
             //

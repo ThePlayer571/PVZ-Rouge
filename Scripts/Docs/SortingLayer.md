@@ -29,7 +29,8 @@
 | Tile(BackGround_3~4) | BackGround | 91~99                |
 | Sun(AutoFall)        | BackGround | 90                   |
 | Tile(BackGround_1~2) | BackGround | 80~89                |
-| BackGround           | Pa         | 50~59                |
+| Rain                 | BackGround | 70                   |
+| BackGround           | Parallax   | 50~59                |
 |                      |            |                      |
 |                      |            |                      |
 |                      |            |                      |
