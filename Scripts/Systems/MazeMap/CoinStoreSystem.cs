@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.CoinTrade;
@@ -67,7 +68,11 @@ namespace TPL.PVZR.Systems.MazeMap
                         switch (e.PhaseStage)
                         {
                             case PhaseStage.EnterNormal:
+                                var sw = new Stopwatch();
+                                sw.Start();
                                 TradeCreator.InitializeCoinTradeGenerator(_GameModel.GameData.MazeMapData);
+                                sw.Stop();
+                                $"商店预处理耗时：{sw.ElapsedMilliseconds} ms".LogInfo();
                                 break;
                         }
 

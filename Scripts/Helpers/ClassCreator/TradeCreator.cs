@@ -109,9 +109,9 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
         {
             _coinTradePoolDict.Clear();
             var _ = new List<LootPoolInfo>();
-            foreach (var lootDef in mazeMapData.LootPools)
+            foreach (var poolDef in mazeMapData.LootPools)
             {
-                var id = lootDef.Id;
+                var id = poolDef.Id;
                 var lootPool = LootPoolConfigReader.GetLootPoolInfo(id);
                 _.Add(lootPool);
                 var coinTrades = new List<CoinTradeGenerateInfo>();
