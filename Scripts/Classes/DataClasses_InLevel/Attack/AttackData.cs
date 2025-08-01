@@ -80,20 +80,26 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
         public Vector2 Punch(Vector2 punchTo)
         {
             if (punchForce == 0) return Vector2.zero;
+            // 固定方向模式
             if (punchDirection.HasValue)
             {
-                // todo 史山，未考虑PunchType
                 return punchDirection.Value * punchForce;
             }
 
-            if (!punchFrom.HasValue) throw new Exception("未设置 PunchFrom");
+            // 
             var direction = punchType switch
             {
-                PunchType.Free => (punchTo - punchFrom.Value).normalized,
-                PunchType.ConstrainHorizontal => (punchTo - punchFrom.Value).x > 0
-                    ? new Vector2(1, 0)
-                    : new Vector2(-1, 0),
+                PunchType.Free => punchFrom.HasValue
+                    ? (punchTo - punchFrom.Value).normalized
+                    : throw new Exception("未设置 PunchFrom"),
+                PunchType.ConstrainHorizontal =>
+                    punchFrom.HasValue
+                        ? (punchTo - punchFrom.Value).x > 0
+                            ? new Vector2(1, 0)
+                            : new Vector2(-1, 0)
+                        : throw new Exception("未设置 PunchFrom"),
                 PunchType.ConstrainUp => Vector2.up,
+                PunchType.ConstrainDown => Vector2.down,
                 _ => throw new ArgumentException()
             };
 

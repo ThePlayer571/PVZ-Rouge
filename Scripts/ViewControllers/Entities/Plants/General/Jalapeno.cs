@@ -25,11 +25,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                 var posRight = Physics2DExtensions.GetRaycastEndPoint(RaycastOrigin.position, Vector2.right,
                     GlobalEntityData.Plant_Jalapeno_ExplosionLength, LayerMask.GetMask("Barrier"));
                 var targets = Physics2D.LinecastAll(posLeft, posRight, LayerMask.GetMask("Zombie"));
-
+                var attackTemplate = AttackCreator.CreateAttackData(AttackId.JalapenoExplosion);
 
                 foreach (var target in targets)
                 {
-                    var attackData = AttackCreator.CreateAttackData(AttackId.JalapenoExplosion).WithPunchFrom(this.transform.position);
+                    var attackData = new AttackData(attackTemplate);
                     target.collider.GetComponent<IAttackable>().TakeAttack(attackData);
                 }
 

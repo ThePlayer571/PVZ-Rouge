@@ -1,4 +1,5 @@
 using System;
+using QFramework;
 using UnityEngine;
 
 namespace TPL.PVZR.Tools
@@ -10,6 +11,8 @@ namespace TPL.PVZR.Tools
         [SerializeField] private bool ready = false;
         [SerializeField] private bool justReady = false; // 是否刚刚变为Ready状态，只维持一帧的true
         [SerializeField] private float elapsedTime = 0;
+
+        public EasyEvent<bool> OnReadyChangeEvent { get; } = new();
 
         public Timer(float duration)
         {
@@ -25,7 +28,11 @@ namespace TPL.PVZR.Tools
         public bool Ready
         {
             get => ready;
-            private set => ready = value;
+            private set
+            {
+                if (value != ready) OnReadyChangeEvent.Trigger(value);
+                ready = value;
+            }
         }
 
         public bool JustReady => justReady;
@@ -54,7 +61,7 @@ namespace TPL.PVZR.Tools
         {
             bool wasReady = Ready;
             Ready = ElapsedTime >= Duration;
-            
+
             // 如果从非Ready状态变为Ready状态，设置justReady为true
             if (!wasReady && Ready)
             {

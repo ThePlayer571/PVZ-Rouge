@@ -32,5 +32,8 @@
   "PuffShroom": 20,
   "SunShroom": 20,
   "ScaredyShroom": 30,
-  "CoffeeBean": 50
+  "CoffeeBean": 50,
+  "TangleKelp": 50,
+  "GraveBuster": 5,
+  "Chomper": 50
 }

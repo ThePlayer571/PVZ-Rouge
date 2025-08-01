@@ -55,6 +55,8 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
                 case PlantingLocationTypeId.OnSleepingShroom:
                     canAndOnlyCanSpawnOnSleepingShroom = true;
                     break;
+                case PlantingLocationTypeId.OnGravestone:
+                    currentCellConditions.Add(CellTypeId.Gravestone); break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(id), id, null);
             }
@@ -122,6 +124,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
         OnPlatOfNormal, // 可以种在 PlatOfNormal 上
         OnPlat, // 可以种在 Plat 上
         OnWaterSurface, // 可以种在水面上
+        OnGravestone, // 可以种在墓碑上
 
         // Plant Conditions
         OnSamePlant_OnlyStack, // 可以种在相同植物上（以Stack的形式）

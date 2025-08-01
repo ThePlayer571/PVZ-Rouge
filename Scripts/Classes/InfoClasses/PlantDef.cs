@@ -1,11 +1,12 @@
 using System;
+using PVZR.Tools;
 
 namespace TPL.PVZR.Classes.InfoClasses
 {
     [Serializable]
     public struct PlantDef : IEquatable<PlantDef>
     {
-        public PlantId Id;
+        [EnumPaging(20)] public PlantId Id;
         public PlantVariant Variant;
 
         public PlantDef(PlantId id, PlantVariant variant)

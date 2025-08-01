@@ -78,6 +78,16 @@ MonoBehaviour:
       Variant: 0
     card: {fileID: 11400000, guid: 1e7e443c3cd4fae40b86a10887315100, type: 2}
     prefab: {fileID: 453119421544998344, guid: 8c23640e6d86c444f9c9d83483793ac6, type: 3}
+  - def:
+      Id: 36
+      Variant: 0
+    card: {fileID: 11400000, guid: ff4cf4ae1fb510c48969263d9ce786fa, type: 2}
+    prefab: {fileID: 6282867572045887836, guid: d2f8325319b51b349b79c0ab48e9f8cf, type: 3}
+  - def:
+      Id: 37
+      Variant: 0
+    card: {fileID: 11400000, guid: 6f43fd84ff406cf4b8008327042839f8, type: 2}
+    prefab: {fileID: 4592143245165256684, guid: 7e03a08b94713c243a592f187a15c5c5, type: 3}
   GeneralMushroom:
   - def:
       Id: 31
@@ -125,6 +135,11 @@ MonoBehaviour:
       Variant: 0
     card: {fileID: 11400000, guid: c9480348cd704f448b979b68546a994a, type: 2}
     prefab: {fileID: 6631570351419943447, guid: c0bcdb4f0a1622f4a889c35a46ea6ee0, type: 3}
+  - def:
+      Id: 39
+      Variant: 0
+    card: {fileID: 11400000, guid: 7f71cd3442e7fc44ea9a607596fd2710, type: 2}
+    prefab: {fileID: 6538817173332862684, guid: 5c9e7641d2a77bb42b581f6b1ca1925e, type: 3}
   PeaFamily:
   - def:
       Id: 1

@@ -30,5 +30,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
         MelonAOE = 22,
         FrozenMelon = 23,
         Spore = 24,
+        TangleKelp = 25,
+        ChomperDevour = 26
     }
 }

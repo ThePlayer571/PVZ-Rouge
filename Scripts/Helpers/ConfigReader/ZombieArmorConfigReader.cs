@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.ConfigLists;
 using TPL.PVZR.Classes.DataClasses_InLevel.ZombieArmor;
 using TPL.PVZR.Classes.DataClasses.Recipe;
+using UnityEngine.AddressableAssets;
 
 namespace TPL.PVZR.Helpers.New.DataReader
 {
@@ -12,22 +14,20 @@ namespace TPL.PVZR.Helpers.New.DataReader
     {
         #region 数据存储
 
-        private static readonly Dictionary<ZombieArmorId, ZombieArmorDefinition> _zombieArmorDefinitionDict;
+        private static Dictionary<ZombieArmorId, ZombieArmorDefinition> _zombieArmorDefinitionDict;
 
-        static ZombieArmorConfigReader()
+
+        public static async Task Initialize()
         {
-            ResKit.Init();
-            var _resLoader = ResLoader.Allocate();
-            var zombieArmorConfigList = _resLoader
-                .LoadSync<ZombieArmorDefinitionList>(Configlist.BundleName, Configlist.ZombieArmorDefinitionList)
-                .zombieArmorDefinitionList;
-
-            // ZombieArmorDefinition
+            var handle = Addressables.LoadAssetsAsync<ZombieArmorDefinition>("ZombieArmorDefinition", null);
+            await handle.Task;
             _zombieArmorDefinitionDict = new Dictionary<ZombieArmorId, ZombieArmorDefinition>();
-            foreach (var config in zombieArmorConfigList)
+            foreach (var zombieArmorDefinition in handle.Result)
             {
-                _zombieArmorDefinitionDict.Add(config.zombieArmorId, config.zombieArmorDefinition);
+                _zombieArmorDefinitionDict.Add(zombieArmorDefinition.zombieArmorId, zombieArmorDefinition);
             }
+
+            handle.Release();
         }
 
         #endregion

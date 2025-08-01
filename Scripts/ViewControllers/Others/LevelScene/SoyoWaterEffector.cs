@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
+using QFramework;
 
 [RequireComponent(typeof(Collider2D))]
 public class SoyoWaterEffector : MonoBehaviour
@@ -15,10 +17,28 @@ public class SoyoWaterEffector : MonoBehaviour
         public float angularDrag = 1f; // 角阻力
     }
 
+    [Tooltip("设置配置数据")] public bool initConfig = false;
     public WaterLayerParams[] layerParams;
 
     // 为了快速查找
     Dictionary<int, WaterLayerParams> paramDict;
+
+    private void Update()
+    {
+        if (initConfig)
+        {
+            initConfig = false;
+            paramDict = new Dictionary<int, WaterLayerParams>();
+            foreach (var param in layerParams)
+            {
+                int layer = LayerMask.NameToLayer(param.layerName);
+                if (!paramDict.ContainsKey(layer))
+                {
+                    paramDict.Add(layer, param);
+                }
+            }
+        }
+    }
 
     void Awake()
     {
@@ -52,7 +72,7 @@ public class SoyoWaterEffector : MonoBehaviour
         if (param == null) return;
 
         // 施加浮力（正弦波效果）
-        float sinForce = param.baseForce + Mathf.Sin(Time.time * param.frequency) * param.amplitude;
+        float sinForce = param.baseForce + Mathf.Cos(Time.time * param.frequency) * param.amplitude;
         rb.AddForce(Vector2.up * sinForce, ForceMode2D.Force);
 
         // 施加阻力（用力模拟，而不是直接改 drag）
@@ -60,8 +80,8 @@ public class SoyoWaterEffector : MonoBehaviour
         Vector2 dragForce = -velocity * param.drag; // drag可以调成一个阻力系数
         rb.AddForce(dragForce, ForceMode2D.Force);
 
-        // 角阻力同理
-        float angularDragForce = -rb.angularVelocity * param.angularDrag;
-        rb.AddTorque(angularDragForce, ForceMode2D.Force);
+        // 角阻力同理 有bug，暂时禁用了
+        // float angularDragForce = -rb.angularVelocity * param.angularDrag;
+        // rb.AddTorque(angularDragForce, ForceMode2D.Force);
     }
 }

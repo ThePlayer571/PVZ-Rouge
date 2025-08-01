@@ -14,6 +14,7 @@ namespace TPL.PVZR
         {
             // ===== Game =====
             this.RegisterSystem<IMainGameSystem>(new MainGameSystem());
+            this.RegisterSystem<IConfigLoadSystem>(new ConfigLoadSystem());
             this.RegisterSystem<IGameSystem>(new GameSystem());
             this.RegisterModel<IGameModel>(new GameModel());
             this.RegisterSystem<IMazeMapSystem>(new MazeMapSystem());
@@ -25,6 +26,7 @@ namespace TPL.PVZR
             this.RegisterSystem<ISaveSystem>(new SaveSystem());
             this.RegisterSystem<ILevelGridSystem>(new LevelGridSystem());
             this.RegisterSystem<IPlantSpawnSystem>(new PlantSpawnSystem());
+            this.RegisterSystem<IGravestoneSystem>(new GravestoneSystem());
             // ===== Level =====
             this.RegisterModel<ILevelModel>(new LevelModel());
             this.RegisterModel<ILevelGridModel>(new LevelGridModel());
@@ -39,10 +41,7 @@ namespace TPL.PVZR
 
             // ===== Others =====
             this.RegisterModel<IPhaseModel>(new PhaseModel());
-            
-            EntityFactory.CoinFactory.InitializeAsync();
-            EntityFactory.SunFactory.InitializeAsync();
-            ShitFactory.InitializeAsync();
+
         }
     }
 }

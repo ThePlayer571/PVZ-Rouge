@@ -157,8 +157,10 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 PlantId.Flowerpot => (PlantingLocationTypeId.OnPlat, PlantingLocationTypeId.NotSet),
                 PlantId.PeaPod => (PlantingLocationTypeId.OnPlatOfNormal, PlantingLocationTypeId.OnSamePlant_OnlyStack),
                 PlantId.Pumpkin => (PlantingLocationTypeId.OnPlatOfNormal, PlantingLocationTypeId.OnAnyPlant),
-                PlantId.LilyPad => (PlantingLocationTypeId.OnWaterSurface, PlantingLocationTypeId.NotSet),
+                PlantId.LilyPad or PlantId.TangleKelp => (PlantingLocationTypeId.OnWaterSurface,
+                    PlantingLocationTypeId.NotSet),
                 PlantId.CoffeeBean => (PlantingLocationTypeId.OnSleepingShroom, PlantingLocationTypeId.NotSet),
+                PlantId.GraveBuster => (PlantingLocationTypeId.OnGravestone, PlantingLocationTypeId.NotSet),
                 _ => (PlantingLocationTypeId.OnPlatOfNormal, PlantingLocationTypeId.NotSet),
             };
         }

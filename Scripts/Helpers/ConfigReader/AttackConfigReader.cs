@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.ConfigLists;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.DataClasses.Recipe;
+using UnityEngine.AddressableAssets;
 
 namespace TPL.PVZR.Helpers.New.DataReader
 {
@@ -11,21 +13,19 @@ namespace TPL.PVZR.Helpers.New.DataReader
     {
         #region 数据存储
 
-        private static readonly Dictionary<AttackId, AttackDefinition> _attackDefinitionDict;
+        private static Dictionary<AttackId, AttackDefinition> _attackDefinitionDict;
 
-        static AttackConfigReader()
+        public static async Task Initialize()
         {
-            ResKit.Init();
-            var resLoader = ResLoader.Allocate();
-
-            var attackDefinitionList = resLoader
-                .LoadSync<AttackDefinitionList>(Configlist.BundleName, Configlist.AttackDefinitionList)
-                .attackDefinitionList;
+            var handle = Addressables.LoadAssetsAsync<AttackDefinition>("AttackDefinition", null);
+            await handle.Task;
             _attackDefinitionDict = new Dictionary<AttackId, AttackDefinition>();
-            foreach (var attackDefinition in attackDefinitionList)
+            foreach (var attackDefinition in handle.Result)
             {
                 _attackDefinitionDict.Add(attackDefinition.attackId, attackDefinition);
             }
+
+            handle.Release();
         }
 
         #endregion

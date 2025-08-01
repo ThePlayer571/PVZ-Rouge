@@ -30,6 +30,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
 
         public Cell AttachedCell { get; private set; }
 
+        //
+        protected Animator _Animator;
+
         #endregion
 
         #region 被攻击
@@ -72,6 +75,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
 
             OnInit();
             OnViewInit();
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            _Animator = this.GetComponent<Animator>();
         }
 
         protected override void Update()

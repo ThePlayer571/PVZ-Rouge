@@ -11,6 +11,7 @@ using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
 using TPL.PVZR.Tools.SoyoFramework;
 using TPL.PVZR.ViewControllers.Managers;
+using TPL.PVZR.ViewControllers.Others.LevelScene;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -124,10 +125,10 @@ namespace TPL.PVZR.Systems.Level_Event
                             var targetCellPos = RandomHelper.Default.RandomChoose(idealPosList);
                             Addressables.LoadAssetAsync<GameObject>("Gravestone").Completed += handle =>
                             {
-                                handle.Result.Instantiate(LevelGridHelper.CellToWorld(targetCellPos),
+                                var go = handle.Result.Instantiate(LevelGridHelper.CellToWorld(targetCellPos),
                                     Quaternion.identity);
                                 this.SendEvent<OnGravestoneSpawned>(new OnGravestoneSpawned
-                                    { CellPos = targetCellPos });
+                                    { CellPos = targetCellPos, Gravestone = go });
                             };
                         }
                     }).Start(GameManager.Instance);
@@ -139,5 +140,6 @@ namespace TPL.PVZR.Systems.Level_Event
     public struct OnGravestoneSpawned
     {
         public Vector2Int CellPos;
+        public GameObject Gravestone;
     }
 }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea8699ad8ee84058ac4fc7a22d9c1f5a, type: 3}
   m_Name: ZombieArmorDefinition_TrafficCone
   m_EditorClassIdentifier: 
+  zombieArmorId: 1
   armorHealth: 370
   damageReductionRate: 1
   punchResistanceRate: 0.5

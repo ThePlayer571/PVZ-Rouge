@@ -1,3 +1,4 @@
+using System;
 using TPL.PVZR.Classes.InfoClasses;
 using UnityEngine;
 
@@ -41,15 +42,17 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
                 CellTypeId.Block => CellTileState is CellTileState.Dirt or CellTileState.Barrier or CellTileState.Bound,
                 CellTypeId.Climbable => CellTileState == CellTileState.Ladder,
                 CellTypeId.Water => CellTileState == CellTileState.Water,
-                CellTypeId.Plat => CellTileState is CellTileState.Dirt or CellTileState.Barrier or CellTileState.Bound ||
-                                   CellPlantData.HasPlant(PlantId.Flowerpot) ||
-                                   CellPlantData.HasPlant(PlantId.LilyPad),
+                CellTypeId.Plat =>
+                    CellTileState is CellTileState.Dirt or CellTileState.Barrier or CellTileState.Bound ||
+                    CellPlantData.HasPlant(PlantId.Flowerpot) ||
+                    CellPlantData.HasPlant(PlantId.LilyPad),
                 CellTypeId.PlatOfNormal => CellTileState == CellTileState.Dirt ||
                                            CellPlantData.HasPlant(PlantId.Flowerpot) ||
                                            CellPlantData.HasPlant(PlantId.LilyPad),
                 CellTypeId.HasPlant => CellPlantData.HasPlant(),
                 CellTypeId.SoftObstacle => CellTileState == CellTileState.SoftObstacle,
-                _ => false
+                CellTypeId.Gravestone => CellTileState == CellTileState.Gravestone,
+                _ => throw new ArgumentException()
             };
         }
 

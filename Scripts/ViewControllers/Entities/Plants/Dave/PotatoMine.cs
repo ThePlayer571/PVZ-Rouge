@@ -14,7 +14,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
         public override PlantDef Def { get; } = new PlantDef(PlantId.PotatoMine, PlantVariant.V0);
 
         [SerializeField] private TriggerDetector ZombieDetector;
-        [SerializeField] private Animator _Animator;
 
         private bool _grown = false;
 
@@ -48,7 +47,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
         private void Boom()
         {
-            var attackData = AttackCreator.CreateAttackData(AttackId.PotatoMineExplosion).WithPunchFrom(this.transform.position);
+            var attackData = AttackCreator.CreateAttackData(AttackId.PotatoMineExplosion)
+                .WithPunchFrom(this.transform.position);
 
             var targets = Physics2D.OverlapCircleAll(
                 transform.position,
@@ -57,7 +57,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
             foreach (var target in targets)
             {
-                var _ = new AttackData(attackData).WithPunchFrom(this.transform.position);
+                var _ = new AttackData(attackData);
                 target.GetComponent<IAttackable>().TakeAttack(_);
             }
         }

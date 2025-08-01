@@ -10,6 +10,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
         Free = 0,
         ConstrainHorizontal = 1,
         ConstrainUp = 2,
+        ConstrainDown = 3,
     }
 
     [CreateAssetMenu(fileName = "AttackDefinition_", menuName = "PVZR/AttackDefinition", order = 2)]

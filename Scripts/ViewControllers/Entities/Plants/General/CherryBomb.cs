@@ -21,9 +21,10 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                     GlobalEntityData.Plant_CherryBomb_ExplosionRadius,
                     LayerMask.GetMask("Zombie"));
 
+                var attackTemplate = AttackCreator.CreateAttackData(AttackId.CherryBombExplosion);
                 foreach (var target in targets)
                 {
-                    var attackData = AttackCreator.CreateAttackData(AttackId.CherryBombExplosion).WithPunchFrom(this.transform.position);
+                    var attackData = new AttackData(attackTemplate);
                     target.GetComponent<IAttackable>().TakeAttack(attackData);
                 }
 
