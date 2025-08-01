@@ -1,12 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DG.Tweening;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Models;
-using TPL.PVZR.Systems.Level_Event;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 namespace TPL.PVZR.ViewControllers.Others.UI
@@ -16,6 +17,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI
         [SerializeField] private Image Fill;
         [SerializeField] private RectTransform Flags;
         private ILevelModel _LevelModel;
+        private AsyncOperationHandle<GameObject> _flagsHandle;
 
         private const float FlagStartX = -46;
         private const float FlagEndX = -485;
@@ -24,11 +26,15 @@ namespace TPL.PVZR.ViewControllers.Others.UI
 
         private Dictionary<int, RectTransform> _flagsDict;
 
-        public void SpawnFlags()
+        public async Task SpawnFlags()
         {
-            var resLoader = ResLoader.Allocate();
-            var flagPrefab = resLoader.LoadSync<GameObject>(Levelstatebarflag_prefab.BundleName,
-                Levelstatebarflag_prefab.LevelStateBarFlag);
+            if (!_flagsHandle.IsValid() || _flagsHandle.Status != AsyncOperationStatus.Succeeded)
+            {
+                _flagsHandle = Addressables.LoadAssetAsync<GameObject>("LevelStateBarFlag");
+                await _flagsHandle.Task;
+            }
+            
+            var flagPrefab = _flagsHandle.Result;
             var hugeWaves = _LevelModel.LevelData.HugeWaves;
             foreach (var hugeWave in hugeWaves)
             {

@@ -21,17 +21,21 @@ namespace TPL.PVZR.Systems.Level_Event
 
             if (WaveTimer.Ready)
             {
-                _LevelModel.   CurrentWave.Value++;
+                _LevelModel.CurrentWave.Value++;
                 WaveTimer.SetRemaining(_LevelModel.LevelData.DurationOfWave(_LevelModel.CurrentWave.Value));
                 this.SendEvent<OnWaveStart>(new OnWaveStart { Wave = _LevelModel.CurrentWave.Value });
+                if (_LevelModel.CurrentWave.Value == _LevelModel.LevelData.TotalWaveCount)
+                {
+                    this.SendEvent<OnFinalWaveStart>();
+                }
             }
         }
 
         private void StartRunning()
         {
-            _LevelModel. CurrentWave.Value = 0;
+            _LevelModel.CurrentWave.Value = 0;
             WaveTimer.SetRemaining(_LevelModel.LevelData.DurationOfWave(0));
-            
+
             GameManager.ExecuteOnUpdate(Update);
         }
 

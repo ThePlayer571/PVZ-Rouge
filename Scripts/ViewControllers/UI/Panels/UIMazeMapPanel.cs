@@ -1,8 +1,5 @@
-using UnityEngine;
-using UnityEngine.UI;
 using QFramework;
 using TPL.PVZR.Models;
-using TPL.PVZR.Systems;
 using TPL.PVZR.Systems.MazeMap;
 
 namespace TPL.PVZR.ViewControllers.UI

@@ -21,8 +21,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         protected override void OnUpdate()
         {
-            mTarget.HoldOnLadder();
             mTarget.AttackingTarget.TakeAttack(mTarget.CreateAttackData());
+        }
+
+        protected override void OnFixedUpdate()
+        {
+            mTarget.HoldOnLadder();
         }
 
         protected override void OnExit()

@@ -23,13 +23,13 @@ namespace TPL.PVZR.Helpers.New.Methods
                     var pos = new Vector3Int(x, y, 0);
                     var cell = new Cell(x, y);
                     LevelMatrix[x, y] = cell;
-                    if (LevelTileMap.Bound.HasTile(pos)) cell.CellTileState = TileState.Bound;
-                    else if (LevelTileMap.Ground.HasTile(pos)) cell.CellTileState = TileState.Barrier;
-                    else if (LevelTileMap.ShallowWater.HasTile(pos) || LevelTileMap.DeepWater.HasTile(pos)) cell.CellTileState = TileState.Water;
-                    else if (LevelTileMap.Dirt.HasTile(pos)) cell.CellTileState = TileState.Dirt;
-                    else if (LevelTileMap.Ladder.HasTile(pos)) cell.CellTileState = TileState.Ladder;
-                    else if (LevelTileMap.SoftObstacle.HasTile(pos)) cell.CellTileState = TileState.SoftObstacle;
-                    else cell.CellTileState = TileState.Empty;
+                    if (LevelTileMap.Bound.HasTile(pos)) cell.CellTileState = CellTileState.Bound;
+                    else if (LevelTileMap.Ground.HasTile(pos)) cell.CellTileState = CellTileState.Barrier;
+                    else if (LevelTileMap.ShallowWater.HasTile(pos) || LevelTileMap.DeepWater.HasTile(pos)) cell.CellTileState = CellTileState.Water;
+                    else if (LevelTileMap.Dirt.HasTile(pos)) cell.CellTileState = CellTileState.Dirt;
+                    else if (LevelTileMap.Ladder.HasTile(pos)) cell.CellTileState = CellTileState.Ladder;
+                    else if (LevelTileMap.SoftObstacle.HasTile(pos)) cell.CellTileState = CellTileState.SoftObstacle;
+                    else cell.CellTileState = CellTileState.Empty;
                 }
             }
 
@@ -52,11 +52,11 @@ namespace TPL.PVZR.Helpers.New.Methods
             {
                 for (int y = 0; y < LevelMatrix.Columns; y++)
                 {
-                    if (LevelMatrix[x, y].CellTileState == TileState.Dirt)
+                    if (LevelMatrix[x, y].CellTileState == CellTileState.Dirt)
                         DebugTilemap.SetTile(new Vector3Int(x, y, 0), dirt);
-                    else if (LevelMatrix[x, y].CellTileState == TileState.Barrier)
+                    else if (LevelMatrix[x, y].CellTileState == CellTileState.Barrier)
                         DebugTilemap.SetTile(new Vector3Int(x, y, 0), barrier);
-                    else if (LevelMatrix[x, y].CellTileState == TileState.Ladder)
+                    else if (LevelMatrix[x, y].CellTileState == CellTileState.Ladder)
                         DebugTilemap.SetTile(new Vector3Int(x, y, 0), climbable);
                 }
             }

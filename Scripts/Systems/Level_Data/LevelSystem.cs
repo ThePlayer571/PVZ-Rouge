@@ -17,6 +17,8 @@ using TPL.PVZR.ViewControllers;
 using TPL.PVZR.ViewControllers.Managers;
 using TPL.PVZR.ViewControllers.UI;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 
 namespace TPL.PVZR.Systems.Level_Data
@@ -54,6 +56,8 @@ namespace TPL.PVZR.Systems.Level_Data
                                 var tombData = e.Parameters["TombData"] as ITombData;
                                 var levelData = GameCreator.CreateLevelData(_GameModel.GameData,
                                     tombData.LevelDefinition.LevelDef);
+                                var daveHandle = Addressables.LoadAssetAsync<GameObject>("Dave");
+                                var levelSetHandle = Addressables.LoadAssetAsync<GameObject>(levelData.LevelPrefab);
 
                                 ActionKit.Sequence()
                                     .Callback(() =>
@@ -63,24 +67,26 @@ namespace TPL.PVZR.Systems.Level_Data
                                         SceneManager.LoadScene("LevelScene");
                                     })
                                     .DelayFrame(1) // 等待场景加载
+                                    .Condition(() => levelSetHandle.IsDone)
                                     .Callback(() =>
                                     {
-                                        var levelSet = levelData.LevelPrefab.Instantiate();
+                                        var levelSet = levelSetHandle.Result.Instantiate();
+                                        levelSetHandle.Release();
                                         // TODO 地图生成算法
                                     })
                                     .DelayFrame(1) // 等待LevelPrefab加载
+                                    .Condition(() => daveHandle.IsDone)
                                     .Callback(() =>
                                     {
                                         _LevelGridModel.Initialize(levelData);
                                         //
-                                        var DavePrefab = _ResLoader.LoadSync<Player>(Dave_prefab.BundleName,
-                                            Dave_prefab.Dave);
-                                        //
                                         var VirtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
-                                        var Player = DavePrefab.Instantiate(levelData.InitialPlayerPos,
+                                        var Player = daveHandle.Result.Instantiate(levelData.InitialPlayerPos,
                                             Quaternion.identity);
                                         VirtualCamera.Follow = Player.transform;
                                         VirtualCamera.PreviousStateIsValid = false;
+
+                                        daveHandle.Release();
                                     })
                                     .DelayFrame(1)
                                     .Callback(() => { this.SendEvent<OnLevelGameObjectPrepared>(); })

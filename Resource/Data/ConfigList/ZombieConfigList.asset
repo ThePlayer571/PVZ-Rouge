@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ce524d52ec14742b206b22032c653ed, type: 3}
+  m_Name: ZombieConfigList
+  m_EditorClassIdentifier: 
+  Dave:
+  - id: 1
+    prefab: {fileID: 5119479380994748218, guid: 2ba5d570670b2a044a9de982a1cc66ce, type: 3}
+  - id: 2
+    prefab: {fileID: 6814100908929645976, guid: ca6485cd53686b74282992c33cb037ba, type: 3}
+  - id: 3
+    prefab: {fileID: 7261761531320356217, guid: 46d3efb541afa924aab37b0b3fae2827, type: 3}
+  - id: 4
+    prefab: {fileID: 8709810907009301242, guid: e694b39ee8efbe04e81261e70c60087a, type: 3}
+  - id: 5
+    prefab: {fileID: 8759200573347800875, guid: e519a1a7a97da8c4db1add02c40bb966, type: 3}
+  - id: 6
+    prefab: {fileID: 5659138213253811074, guid: 61909e3561b31ad498ae42ddb30cad74, type: 3}
+  - id: 7
+    prefab: {fileID: 1611879138940489100, guid: 86d28e8267e0ad842b84855d2c203573, type: 3}
+  - id: 8
+    prefab: {fileID: 2871971506496235582, guid: c04b9de4387ae7840b718d7a05f80afd, type: 3}

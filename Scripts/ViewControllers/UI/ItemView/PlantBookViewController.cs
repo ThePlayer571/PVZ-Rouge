@@ -1,5 +1,4 @@
 using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
-using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.Helpers.New.DataReader;
 using UnityEngine;
 using UnityEngine.UI;

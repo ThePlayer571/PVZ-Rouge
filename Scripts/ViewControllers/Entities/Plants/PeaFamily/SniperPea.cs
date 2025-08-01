@@ -1,14 +1,11 @@
 using System.Linq;
 using QFramework;
-using TPL.PVZR.Classes;
 using TPL.PVZR.Classes.InfoClasses;
-using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
-using TPL.PVZR.ViewControllers.Entities.Zombies.Instances;
 using UnityEngine;
 using Time = UnityEngine.Time;
 

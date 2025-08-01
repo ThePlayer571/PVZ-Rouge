@@ -5,6 +5,7 @@ using QAssetBundle;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Tools.SoyoFramework;
 using TPL.PVZR.ViewControllers.UI;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
 namespace TPL.PVZR.Systems
@@ -27,15 +28,15 @@ namespace TPL.PVZR.Systems
                             case PhaseStage.EnterEarly:
                                 // 初始化设置
                                 ResKit.Init();
-                                var resLoader = ResLoader.Allocate();
-                                var gm = resLoader.LoadSync<GameObject>(Gamemanager_prefab.BundleName,
-                                    Gamemanager_prefab.GameManager).Instantiate();
-                                Object.DontDestroyOnLoad(gm);
+                                Addressables.LoadAssetAsync<GameObject>("GameManager").Completed += handle =>
+                                {
+                                    var gm = handle.Result.Instantiate();
+                                    Object.DontDestroyOnLoad(gm);
+                                };
+
                                 UIKit.Root.SetResolution(1920, 1080, 0);
 
                                 this.GetModel<IPhaseModel>().DelayChangePhase(GamePhase.MainMenu);
-
-                                resLoader.Recycle2Cache();
                                 break;
                         }
 

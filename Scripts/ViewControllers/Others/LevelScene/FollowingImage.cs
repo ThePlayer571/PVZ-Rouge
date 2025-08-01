@@ -1,4 +1,3 @@
-using System;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Systems.Level_Data;
@@ -11,7 +10,7 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
     public class FollowingImage : MonoBehaviour, IController
     {
         private Image _Image;
-        private Sprite ShovelSprite;
+        [SerializeField] private Sprite ShovelSprite;
 
         private IHandSystem _HandSystem;
 
@@ -43,7 +42,6 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
         {
             _resLoader = ResLoader.Allocate();
             _Image = this.GetComponent<Image>();
-            ShovelSprite = _resLoader.LoadSync<Sprite>(Shovel_png.BundleName, Shovel_png.Shovel);
 
 
             _HandSystem = this.GetSystem<IHandSystem>();

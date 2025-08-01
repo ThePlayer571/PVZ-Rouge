@@ -10,22 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40c64bd27b5f4c169a34661c12480e1c, type: 3}
-  m_Name: Normal1_Dave_Roof
+  m_Name: Normal1_Dave_Bridge
   m_EditorClassIdentifier: 
   LevelDef:
-    Id: 2
+    Id: 7
     Difficulty: 1
     StageDifficulty: 1
-  MapSize: {x: 47, y: 48}
-  InitialPlayerPos: {x: 13.5, y: 23}
-  LevelPrefab: {fileID: 2643563934430439774, guid: e7e974866d8c8954d89107ed8044a97b, type: 3}
+  MapSize: {x: 49, y: 38}
+  InitialPlayerPos: {x: 44.5, y: 21}
+  LevelPrefab:
+    m_AssetGUID: d970e9a35801e1d4fbd0a11be5eb062b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   MapGenerationAlgorithmId: 0
   SunFallPositions:
-  - Key: {x: 21, y: 25}
-    Value: {x: 25, y: 25}
+  - Key: {x: 30, y: 20}
+    Value: {x: 37, y: 20}
   BaseValue: 10
-  maxValue: 65
-  validCellCount: 15
+  maxValue: 100
+  validCellCount: 46
   DifficultyGrowthType: 0
   TotalWaveCount: 20
   HugeWaves: 0a00000014000000
@@ -40,38 +44,48 @@ MonoBehaviour:
   HugeWaveDurationOffset: 30
   PosDef:
   - Key: 1
-    Value: {x: 44.5, y: 29}
+    Value: {x: 7.5, y: 20}
   - Key: 2
-    Value: {x: 6, y: 4}
+    Value: {x: 3.5, y: 6}
   PosGroupDef:
   - Key: 101
     Value: 0100000002000000
   ZombieSpawnConfigs:
   - Zombie: 1
-    SpawnPos: 1
+    SpawnPos: 101
     Weight: 10
     Value: 10
     ActiveWaves: {x: 1, y: 20}
-  - Zombie: 1
-    SpawnPos: 2
-    Weight: 5
-    Value: 15
-    ActiveWaves: {x: 5, y: 20}
   - Zombie: 2
-    SpawnPos: 1
+    SpawnPos: 101
     Weight: 10
     Value: 25
     ActiveWaves: {x: 6, y: 20}
+  - Zombie: 6
+    SpawnPos: 101
+    Weight: 10
+    Value: 15
+    ActiveWaves: {x: 3, y: 20}
   - Zombie: 2
-    SpawnPos: 2
-    Weight: 5
-    Value: 35
-    ActiveWaves: {x: 12, y: 20}
+    SpawnPos: 101
+    Weight: 10
+    Value: 25
+    ActiveWaves: {x: 6, y: 20}
+  - Zombie: 7
+    SpawnPos: 101
+    Weight: 10
+    Value: 30
+    ActiveWaves: {x: 6, y: 20}
   - Zombie: 3
-    SpawnPos: 1
-    Weight: 5
+    SpawnPos: 101
+    Weight: 10
     Value: 65
     ActiveWaves: {x: 15, y: 20}
+  - Zombie: 8
+    SpawnPos: 2
+    Weight: 10
+    Value: 70
+    ActiveWaves: {x: 18, y: 20}
   AwardGenerateInfo:
     basicLoots:
     - Id: 1
@@ -87,25 +101,10 @@ MonoBehaviour:
   - PlantDef:
       Id: 4
       Variant: 0
-    Direction: 0
-    SpawnPos: {x: 21, y: 25}
+    Direction: 1
+    SpawnPos: {x: 43, y: 14}
   - PlantDef:
       Id: 4
       Variant: 0
     Direction: 0
-    SpawnPos: {x: 22, y: 25}
-  - PlantDef:
-      Id: 4
-      Variant: 0
-    Direction: 0
-    SpawnPos: {x: 23, y: 25}
-  - PlantDef:
-      Id: 4
-      Variant: 0
-    Direction: 0
-    SpawnPos: {x: 24, y: 25}
-  - PlantDef:
-      Id: 4
-      Variant: 0
-    Direction: 0
-    SpawnPos: {x: 25, y: 25}
+    SpawnPos: {x: 45, y: 14}

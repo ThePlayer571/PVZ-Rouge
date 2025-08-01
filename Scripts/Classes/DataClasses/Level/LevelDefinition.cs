@@ -7,6 +7,7 @@ using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Classes.LootPool;
 using TPL.PVZR.Tools;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Serialization;
 
 namespace TPL.PVZR.Classes.DataClasses.Level
@@ -94,7 +95,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public Vector2Int MapSize;
 
         public Vector2 InitialPlayerPos;
-        public GameObject LevelPrefab;
+        public AssetReference LevelPrefab;
 
         [Tooltip("地图生成算法（暂未启用）")]
         public MapGenerationAlgorithmId MapGenerationAlgorithmId = MapGenerationAlgorithmId.None;

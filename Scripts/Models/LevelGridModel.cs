@@ -14,6 +14,14 @@ using UnityEngine;
 
 namespace TPL.PVZR.Models
 {
+    public struct OnTileChanged
+    {
+        public int x;
+        public int y;
+        public CellTileState OldState;
+        public CellTileState NewState;
+    }
+
     public interface ILevelGridModel : IModel
     {
         /// <summary>
@@ -21,6 +29,11 @@ namespace TPL.PVZR.Models
         /// 与Scene内的坐标|每个Tilemap的坐标对应
         /// </summary>
         Matrix<Cell> LevelMatrix { get; }
+
+        EasyEvent<OnTileChanged> OnTileChanged { get; }
+
+        // 修改方法
+        void SetTile(int x, int y, CellTileState tileState);
 
         // 实用方法
         bool IsValidPos(Vector2Int pos);
@@ -37,6 +50,19 @@ namespace TPL.PVZR.Models
     public class LevelGridModel : AbstractModel, ILevelGridModel
     {
         #region 实用方法
+
+        public EasyEvent<OnTileChanged> OnTileChanged { get; } = new();
+
+        public void SetTile(int x, int y, CellTileState tileState)
+        {
+            var targetCell = LevelMatrix[x, y];
+            if (targetCell.CellTileState != tileState)
+            {
+                var oldState = targetCell.CellTileState;
+                targetCell.CellTileState = tileState;
+                OnTileChanged.Trigger(new OnTileChanged { x = x, y = y, OldState = oldState, NewState = tileState });
+            }
+        }
 
         public bool IsValidPos(Vector2Int pos)
         {

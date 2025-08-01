@@ -3,7 +3,6 @@ using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
-using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Projectiles

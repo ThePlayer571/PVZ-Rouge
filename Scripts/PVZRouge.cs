@@ -1,4 +1,5 @@
 using QFramework;
+using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems;
 using TPL.PVZR.Systems.Level_Data;
@@ -38,6 +39,10 @@ namespace TPL.PVZR
 
             // ===== Others =====
             this.RegisterModel<IPhaseModel>(new PhaseModel());
+            
+            EntityFactory.CoinFactory.InitializeAsync();
+            EntityFactory.SunFactory.InitializeAsync();
+            ShitFactory.InitializeAsync();
         }
     }
 }

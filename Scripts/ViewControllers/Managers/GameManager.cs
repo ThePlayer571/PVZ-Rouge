@@ -1,26 +1,19 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using QFramework;
-using TPL.PVZR.Classes;
-using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.InfoClasses;
-using TPL.PVZR.Classes.MazeMap;
-using TPL.PVZR.CommandEvents._NotClassified_;
-using TPL.PVZR.Helpers;
+using TPL.PVZR.CommandEvents.Level_Gameplay.Waves;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems.Level_Data;
-using TPL.PVZR.Tools;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace TPL.PVZR.ViewControllers.Managers
 {
-    public class GameManager : MonoSingleton<GameManager>, ICanGetModel, ICanGetSystem, ICanSendCommand
+    public class GameManager : MonoSingleton<GameManager>, ICanGetModel, ICanGetSystem, ICanSendCommand, ICanSendEvent
     {
         private void OnGUI()
         {
@@ -53,6 +46,11 @@ namespace TPL.PVZR.ViewControllers.Managers
                 }
             }
 
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 210, 120, 40), "开始波次1"))
+            {
+                this.SendEvent<OnWaveStart>(new OnWaveStart { Wave = 6 });
+            }
+
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 260, 120, 40), "获得100硬币"))
             {
                 this.GetModel<IGameModel>().GameData.InventoryData.Coins.Value += (1000000000);
@@ -69,7 +67,7 @@ namespace TPL.PVZR.ViewControllers.Managers
             //     var LevelGridModel = this.GetModel<ILevelGridModel>();
             //     var handPos = HandHelper.HandCellPos();
             //     var handCell = LevelGridModel.GetCell(handPos);
-            //     $"手所在的Cell信息：pos: {handPos}, TileState: {handCell.CellTileState}, PlantState: {handCell.CellPlantState}"
+            //     $"手所在的Cell信息：pos: {handPos}, CellTileState: {handCell.CellTileState}, PlantState: {handCell.CellPlantState}"
             //         .LogInfo();
             // }
             if (Input.GetKeyDown(KeyCode.LeftShift))

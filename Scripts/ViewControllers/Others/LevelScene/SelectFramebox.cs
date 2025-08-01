@@ -1,7 +1,5 @@
 using System;
 using QFramework;
-using TPL.PVZR.Classes.DataClasses_InLevel;
-using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems.Level_Data;

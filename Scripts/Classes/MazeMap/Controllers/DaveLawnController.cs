@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
 using TPL.PVZR.ViewControllers.Others.MazeMap;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Tilemaps;
 
 namespace TPL.PVZR.Classes.MazeMap.Controllers
@@ -294,15 +296,18 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
 
         #region 场景中GameObject
 
-        protected override void SetUpTiles()
+        protected override async Task SetUpTiles()
         {
             // 准备
-            var dirtTile =
-                resLoader.LoadSync<Tile>(Mazemapdirttile_asset.BundleName, Mazemapdirttile_asset.MazeMapDirtTile);
-            var grassTile = resLoader.LoadSync<Tile>(Mazemapgrasstile_asset.BundleName,
-                Mazemapgrasstile_asset.MazeMapGrassTile);
-            var stoneTile = resLoader.LoadSync<Tile>(Mazemapstonetile_asset.BundleName,
-                Mazemapstonetile_asset.MazeMapStoneTile);
+            var handle_dirtTile = Addressables.LoadAssetAsync<Tile>("MazeMapTileDirt");
+            var handle_grassTile = Addressables.LoadAssetAsync<Tile>("MazeMapTileGrass");
+            var handle_stoneTile = Addressables.LoadAssetAsync<Tile>("MazeMapTileStone");
+            await Task.WhenAll(handle_stoneTile.Task, handle_dirtTile.Task, handle_grassTile.Task);
+
+            var dirtTile = handle_dirtTile.Result;
+            var grassTile = handle_grassTile.Result;
+            var stoneTile = handle_stoneTile.Result;
+
             var GroundTilemap = MazeMapTilemapController.Instance.Ground;
             Matrix<Tile> tileMatrix = new(mazeMatrix.Rows * 3 - 2, mazeMatrix.Columns * 3 - 2);
             //
@@ -349,10 +354,13 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
             GroundTilemap.SetTilesBlock(bounds, ToArrayByColumn(tileMatrix));
         }
 
-        protected override void SetUpTombs()
+        protected override async Task SetUpTombs()
         {
-            var tombstonePrefab =
-                resLoader.LoadSync<GameObject>(Tombstone_prefab.BundleName, Tombstone_prefab.Tombstone);
+            var handle = Addressables.LoadAssetAsync<GameObject>("Tombstone");
+
+            await handle.Task;
+
+            var tombstonePrefab = handle.Result;
             foreach (var node in mazeMatrix)
             {
                 if (node == null || !node.isKey || node == startNode) continue;
@@ -364,16 +372,17 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
             //  $"Discoverd: {String.Join(",", MazeMapData.DiscoveredTombs.Select(tomb => tomb.Position))}\n").LogInfo();
         }
 
-        protected override void DisplayFinalObject()
+        protected override async Task DisplayFinalObject()
         {
             var finalMatrixPos = new Vector2Int(mazeMatrix.Rows + 1, mazeMatrix.Columns / 2);
             var finalTilemapPos = MatrixToTilemapPosition(finalMatrixPos);
             var finalWorldPos =
                 MazeMapTilemapController.Instance.Ground.CellToWorld(new Vector3Int(finalTilemapPos.x,
                     finalTilemapPos.y, 0));
-            var finalObject =
-                resLoader.LoadSync<GameObject>(Finalobject_prefab.BundleName, Finalobject_prefab.FinalObject)
-                    .Instantiate(finalWorldPos, Quaternion.identity);
+            var handle = Addressables.LoadAssetAsync<GameObject>("FinalObject");
+            await handle.Task;
+            handle.Result.Instantiate(finalWorldPos, Quaternion.identity);
+            handle.Release();
         }
 
         #endregion

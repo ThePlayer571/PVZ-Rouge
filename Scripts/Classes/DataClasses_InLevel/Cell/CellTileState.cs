@@ -1,6 +1,6 @@
 namespace TPL.PVZR.Classes.DataClasses_InLevel
 {
-    public enum TileState
+    public enum CellTileState
     {
         NotSet,
         Empty,
@@ -10,5 +10,6 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
         Water,
         Ladder,
         SoftObstacle,
+        Gravestone,
     }
 }

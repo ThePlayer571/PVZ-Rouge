@@ -1,16 +1,12 @@
 using System;
-using System.Collections.Generic;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
-using TPL.PVZR.ViewControllers.Entities;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
-using TPL.PVZR.ViewControllers.Entities.Plants;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace TPL.PVZR.ViewControllers
 {

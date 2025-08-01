@@ -13,6 +13,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
         Block, // 有实体Tile - Dirt, Barrier, Bound | N/A
         Climbable, // 可攀爬 - Ladder | <待定义>
         Water, // 水 - Water | N/A
+        Gravestone, // 墓碑 - Gravestone | N/A
 
         Plat, // 平台 - Block | 花盆, 睡莲
         PlatOfNormal, // Normal植物能接受的平台 - Dirt | 花盆, 睡莲
@@ -28,26 +29,26 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
     {
         public Vector2Int Position;
 
-        public TileState CellTileState { get; set; } = TileState.NotSet;
+        public CellTileState CellTileState { get; set; } = CellTileState.NotSet;
         public CellPlantData CellPlantData { get; } = new CellPlantData();
 
         public bool Is(CellTypeId cellTypeId)
         {
             return cellTypeId switch
             {
-                CellTypeId.Empty => CellTileState == TileState.Empty && CellPlantData.IsEmpty(),
-                CellTypeId.TileEmpty => CellTileState == TileState.Empty,
-                CellTypeId.Block => CellTileState is TileState.Dirt or TileState.Barrier or TileState.Bound,
-                CellTypeId.Climbable => CellTileState == TileState.Ladder,
-                CellTypeId.Water => CellTileState == TileState.Water,
-                CellTypeId.Plat => CellTileState is TileState.Dirt or TileState.Barrier or TileState.Bound ||
+                CellTypeId.Empty => CellTileState == CellTileState.Empty && CellPlantData.IsEmpty(),
+                CellTypeId.TileEmpty => CellTileState == CellTileState.Empty,
+                CellTypeId.Block => CellTileState is CellTileState.Dirt or CellTileState.Barrier or CellTileState.Bound,
+                CellTypeId.Climbable => CellTileState == CellTileState.Ladder,
+                CellTypeId.Water => CellTileState == CellTileState.Water,
+                CellTypeId.Plat => CellTileState is CellTileState.Dirt or CellTileState.Barrier or CellTileState.Bound ||
                                    CellPlantData.HasPlant(PlantId.Flowerpot) ||
                                    CellPlantData.HasPlant(PlantId.LilyPad),
-                CellTypeId.PlatOfNormal => CellTileState == TileState.Dirt ||
+                CellTypeId.PlatOfNormal => CellTileState == CellTileState.Dirt ||
                                            CellPlantData.HasPlant(PlantId.Flowerpot) ||
                                            CellPlantData.HasPlant(PlantId.LilyPad),
                 CellTypeId.HasPlant => CellPlantData.HasPlant(),
-                CellTypeId.SoftObstacle => CellTileState == TileState.SoftObstacle,
+                CellTypeId.SoftObstacle => CellTileState == CellTileState.SoftObstacle,
                 _ => false
             };
         }

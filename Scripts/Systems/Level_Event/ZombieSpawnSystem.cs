@@ -12,6 +12,7 @@ using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
 using TPL.PVZR.Tools.SoyoFramework;
 using TPL.PVZR.ViewControllers.Managers;
+using TPL.PVZR.ViewControllers.Others.LevelScene;
 using UnityEngine;
 
 namespace TPL.PVZR.Systems.Level_Event
@@ -96,6 +97,17 @@ namespace TPL.PVZR.Systems.Level_Event
                 var value = _LevelModel.LevelData.ValueOfWave(e.Wave);
                 var task = new RandomPool<ZombieSpawnInfo, ZombieSpawnInfo>(infos, value, RandomHelper.Default);
                 ActiveTasks.Add(task);
+            });
+
+            this.RegisterEvent<OnFinalWaveStart>(e =>
+            {
+                var infos = _LevelModel.LevelData.ZombieSpawnInfosOfWave(_LevelModel.LevelData.TotalWaveCount);
+                var pool = new RandomPool<ZombieSpawnInfo, ZombieSpawnInfo>(infos, 100000, RandomHelper.Default);
+                foreach (var gravestone in GravestoneController.Instances)
+                {
+                    var pos = gravestone.transform.position;
+                    EntityFactory.ZombieFactory.SpawnZombie(pool.GetRandomOutput().ZombieId, pos);
+                }
             });
         }
 

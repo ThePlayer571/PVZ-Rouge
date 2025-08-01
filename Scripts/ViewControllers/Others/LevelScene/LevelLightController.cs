@@ -1,11 +1,9 @@
-using System;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.U2D;
 
 namespace TPL.PVZR.ViewControllers.Others.LevelScene
 {
@@ -21,18 +19,29 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
             var _LevelModel = this.GetModel<ILevelModel>();
             PlayerLight = Player.Instance.GetComponentInChildren<Light2D>();
 
+            //
+            var globalLightIntensity = 1f;
+            var globalParallaxLightIntensity = 0.4f;
+            var playerLightEnabled = false;
+
             switch (_LevelModel.CurrentDayPhase.Value)
             {
-                case DayPhaseType.Day:
-                    GlobalLight.intensity = 1;
-                    GlobalParallaxLight.intensity = 0.4f;
-                    break;
                 case DayPhaseType.Night:
-                    GlobalLight.intensity = 0.5f;
-                    GlobalParallaxLight.intensity = 0.2f;
-                    PlayerLight.enabled = true;
+                    globalLightIntensity -= 0.5f;
+                    globalParallaxLightIntensity -= 0.2f;
+                    playerLightEnabled = true;
                     break;
             }
+
+            if (_LevelModel.CurrentWeather.Value == WeatherType.Rainy)
+            {
+                globalLightIntensity -= 0.2f;
+                globalParallaxLightIntensity -= 0.05f;
+            }
+
+            GlobalLight.intensity = globalLightIntensity;
+            GlobalParallaxLight.intensity = globalParallaxLightIntensity;
+            PlayerLight.enabled = playerLightEnabled;
         }
 
         public void Awake()

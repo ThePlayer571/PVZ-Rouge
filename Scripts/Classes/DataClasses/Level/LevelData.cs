@@ -9,6 +9,7 @@ using TPL.PVZR.Classes.ZombieSpawner;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Tools.Random;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngineInternal;
 
 namespace TPL.PVZR.Classes.DataClasses.Level
@@ -26,7 +27,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         Vector2Int MapSize { get; }
         Vector2 InitialPlayerPos { get; }
-        GameObject LevelPrefab { get; }
+        AssetReference LevelPrefab { get; }
         Vector2Int GetRandomSunFallCellPos();
 
         #endregion
@@ -66,6 +67,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         #region Environment
 
         DayPhaseType InitialDayPhase { get; }
+        WeatherType InitialWeather { get; }
 
         #endregion
 
@@ -99,7 +101,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         public Vector2Int MapSize { get; }
         public Vector2 InitialPlayerPos { get; }
-        public GameObject LevelPrefab { get; }
+        public AssetReference LevelPrefab { get; }
 
         private IReadOnlyList<SerializableKeyValuePair<Vector2Int, Vector2Int>> SunFallPositions { get; }
 
@@ -239,6 +241,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         #endregion
 
         public DayPhaseType InitialDayPhase { get; }
+        public WeatherType InitialWeather { get; }
 
         #region Others
 
@@ -281,6 +284,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             this.AwardGenerateInfo = levelDefinition.AwardGenerateInfo;
 
             this.InitialDayPhase = levelDefinition.InitialDayPhase;
+            this.InitialWeather = levelDefinition.InitialWeather;
 
             this.InitialPlants = levelDefinition.InitialPlants;
         }

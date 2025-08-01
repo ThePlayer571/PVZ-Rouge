@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Tomb;
 using TPL.PVZR.Classes.MazeMap.Controllers;
@@ -210,9 +211,9 @@ namespace TPL.PVZR.Classes.MazeMap
         #region overridable
 
         protected abstract void ValidateMazeMapData();
-        protected abstract void SetUpTiles();
-        protected abstract void SetUpTombs();
-        protected abstract void DisplayFinalObject();
+        protected abstract Task SetUpTiles();
+        protected abstract Task SetUpTombs();
+        protected abstract Task DisplayFinalObject();
 
         #endregion
 

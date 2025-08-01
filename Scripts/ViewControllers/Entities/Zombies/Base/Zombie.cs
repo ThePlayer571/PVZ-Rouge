@@ -16,6 +16,7 @@ using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Zombies.States;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 {
@@ -63,6 +64,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         private void FixedUpdate()
         {
+            FSM.FixedUpdate();
             // 水平方向的拉力
             var dragForce = new Vector2(-10 * _Rigidbody2D.velocity.x, 0);
             _Rigidbody2D.AddForce(dragForce);
@@ -161,7 +163,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         // 基础属性
         public abstract ZombieId Id { get; }
 
-        [NonSerialized] public float baseSpeed = 1.2f;
+        [NonSerialized] public float baseSpeed = 6f;
         [NonSerialized] public float baseJumpForce = 5f;
         public AttackData baseAttackData = null;
 
@@ -291,6 +293,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             if (ZombieNode.ClimbDetector.HasTarget)
             {
                 _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x, 0);
+                
+                var balancedForceY = _Rigidbody2D.gravityScale * _Rigidbody2D.mass * Physics2D.gravity.y;
+                _Rigidbody2D.AddForce(new Vector2(0, -balancedForceY));
             }
         }
 

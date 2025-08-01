@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DG.Tweening;
 using QAssetBundle;
 using QFramework;
@@ -15,6 +16,7 @@ using TPL.PVZR.ViewControllers.Entities.Projectiles;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace TPL.PVZR.Helpers.New.GameObjectFactory
 {
@@ -32,12 +34,17 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
 
         public static class SunFactory
         {
-            static SunFactory()
+            public static async Task InitializeAsync()
             {
-                _sunPrefab = _resLoader.LoadSync<GameObject>(Sun_prefab.BundleName, Sun_prefab.Sun);
-                _smallSunPrefab = _resLoader.LoadSync<GameObject>(Smallsun_prefab.BundleName, Smallsun_prefab.SmallSun);
-            }
+                var sunTask = Addressables.LoadAssetAsync<GameObject>("Sun").Task;
+                var smallSunTask = Addressables.LoadAssetAsync<GameObject>("SmallSun").Task;
 
+                await Task.WhenAll(sunTask, smallSunTask);
+
+                _sunPrefab = sunTask.Result;
+                _smallSunPrefab = smallSunTask.Result;
+            }
+    
             private static GameObject _sunPrefab;
             private static GameObject _smallSunPrefab;
 
@@ -104,15 +111,19 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
 
         public static class CoinFactory
         {
+            public static async Task InitializeAsync()
+            {
+                var goldTask = Addressables.LoadAssetAsync<GameObject>("CoinGold").Task;
+                var silverTask = Addressables.LoadAssetAsync<GameObject>("CoinSilver").Task;
+
+                await Task.WhenAll(goldTask, silverTask);
+
+                _goldCoinPrefab = goldTask.Result;
+                _silverCoinPrefab = silverTask.Result;
+            }
+            
             private static GameObject _silverCoinPrefab;
             private static GameObject _goldCoinPrefab;
-
-            static CoinFactory()
-            {
-                _silverCoinPrefab =
-                    _resLoader.LoadSync<GameObject>(Coinsilver_prefab.BundleName, Coinsilver_prefab.CoinSilver);
-                _goldCoinPrefab = _resLoader.LoadSync<GameObject>(Coingold_prefab.BundleName, Coingold_prefab.CoinGold);
-            }
 
             public static Coin SpawnCoinWithJump(CoinId coinId, Vector2 position, bool autoCollect = true)
             {

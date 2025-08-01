@@ -1,9 +1,6 @@
-using System.Runtime.CompilerServices;
 using QFramework;
 using TPL.PVZR.Classes.ZombieAI.Public;
-using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
-using TPL.PVZR.ViewControllers.Entities.Plants;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using UnityEngine;
 
@@ -46,8 +43,10 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
                     //     .LogInfo();
                 }
             }
+        }
 
-            //
+        protected override void OnFixedUpdate()
+        {
             mTarget.MoveTowards(mTarget.CurrentMoveData);
         }
 

@@ -5,6 +5,7 @@ using TPL.PVZR.Models;
 using TPL.PVZR.Systems.Level_Event;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace TPL.PVZR.CommandEvents._NotClassified_
 {
@@ -38,11 +39,12 @@ namespace TPL.PVZR.CommandEvents._NotClassified_
             {
                 var resLoader = ResLoader.Allocate();
                 // 生成LevelEndObject
-                var go = resLoader.LoadSync<GameObject>(Levelendobject_prefab.BundleName,
-                    Levelendobject_prefab.LevelEndObject).Instantiate(zombie.transform.position, Quaternion.identity);
+                Addressables.LoadAssetAsync<GameObject>("LevelEndObject").Completed += handle =>
+                {
+                    handle.Result.Instantiate(zombie.transform.position, Quaternion.identity);
+                    handle.Release();
+                };
                 _PhaseModel.ChangePhase(GamePhase.AllEnemyKilled);
-
-                // resLoader.Recycle2Cache();
             }
         }
     }

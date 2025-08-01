@@ -18,7 +18,11 @@ MonoBehaviour:
     StageDifficulty: 1
   MapSize: {x: 47, y: 37}
   InitialPlayerPos: {x: 26.5, y: 10}
-  LevelPrefab: {fileID: 7388497215744707142, guid: 9124b867a823b804b9f652fb932e0d03, type: 3}
+  LevelPrefab:
+    m_AssetGUID: 9124b867a823b804b9f652fb932e0d03
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   MapGenerationAlgorithmId: 0
   SunFallPositions:
   - Key: {x: 21, y: 17}

@@ -10,22 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40c64bd27b5f4c169a34661c12480e1c, type: 3}
-  m_Name: Normal1_Dave_House
+  m_Name: Normal1_Dave_Roof
   m_EditorClassIdentifier: 
   LevelDef:
-    Id: 4
+    Id: 2
     Difficulty: 1
     StageDifficulty: 1
-  MapSize: {x: 37, y: 37}
-  InitialPlayerPos: {x: 32.5, y: 10}
-  LevelPrefab: {fileID: 4471356202241085175, guid: dcb87577ab7605445aca203f1af8f987, type: 3}
+  MapSize: {x: 47, y: 48}
+  InitialPlayerPos: {x: 13.5, y: 23}
+  LevelPrefab:
+    m_AssetGUID: e7e974866d8c8954d89107ed8044a97b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   MapGenerationAlgorithmId: 0
   SunFallPositions:
-  - Key: {x: 5, y: 9}
-    Value: {x: 15, y: 10}
+  - Key: {x: 21, y: 25}
+    Value: {x: 25, y: 25}
   BaseValue: 10
-  maxValue: 90
-  validCellCount: 22
+  maxValue: 65
+  validCellCount: 15
   DifficultyGrowthType: 0
   TotalWaveCount: 20
   HugeWaves: 0a00000014000000
@@ -40,9 +44,9 @@ MonoBehaviour:
   HugeWaveDurationOffset: 30
   PosDef:
   - Key: 1
-    Value: {x: 34.5, y: 9}
+    Value: {x: 44.5, y: 29}
   - Key: 2
-    Value: {x: 34.5, y: 26}
+    Value: {x: 6, y: 4}
   PosGroupDef:
   - Key: 101
     Value: 0100000002000000
@@ -51,22 +55,27 @@ MonoBehaviour:
     SpawnPos: 1
     Weight: 10
     Value: 10
-    ActiveWaves: {x: 1, y: 6}
+    ActiveWaves: {x: 1, y: 20}
   - Zombie: 1
-    SpawnPos: 101
-    Weight: 10
-    Value: 10
-    ActiveWaves: {x: 7, y: 20}
+    SpawnPos: 2
+    Weight: 5
+    Value: 15
+    ActiveWaves: {x: 5, y: 20}
   - Zombie: 2
-    SpawnPos: 101
+    SpawnPos: 1
     Weight: 10
     Value: 25
-    ActiveWaves: {x: 7, y: 20}
-  - Zombie: 3
-    SpawnPos: 101
-    Weight: 10
-    Value: 65
+    ActiveWaves: {x: 6, y: 20}
+  - Zombie: 2
+    SpawnPos: 2
+    Weight: 5
+    Value: 35
     ActiveWaves: {x: 12, y: 20}
+  - Zombie: 3
+    SpawnPos: 1
+    Weight: 5
+    Value: 65
+    ActiveWaves: {x: 15, y: 20}
   AwardGenerateInfo:
     basicLoots:
     - Id: 1
@@ -82,45 +91,25 @@ MonoBehaviour:
   - PlantDef:
       Id: 4
       Variant: 0
-    Direction: 1
-    SpawnPos: {x: 31, y: 9}
-  - PlantDef:
-      Id: 22
-      Variant: 0
-    Direction: 1
-    SpawnPos: {x: 31, y: 10}
+    Direction: 0
+    SpawnPos: {x: 21, y: 25}
   - PlantDef:
       Id: 4
       Variant: 0
-    Direction: 1
-    SpawnPos: {x: 22, y: 10}
+    Direction: 0
+    SpawnPos: {x: 22, y: 25}
   - PlantDef:
       Id: 4
       Variant: 0
-    Direction: 1
-    SpawnPos: {x: 5, y: 15}
+    Direction: 0
+    SpawnPos: {x: 23, y: 25}
   - PlantDef:
       Id: 4
       Variant: 0
-    Direction: 1
-    SpawnPos: {x: 6, y: 15}
+    Direction: 0
+    SpawnPos: {x: 24, y: 25}
   - PlantDef:
       Id: 4
       Variant: 0
-    Direction: 1
-    SpawnPos: {x: 7, y: 9}
-  - PlantDef:
-      Id: 4
-      Variant: 0
-    Direction: 1
-    SpawnPos: {x: 8, y: 9}
-  - PlantDef:
-      Id: 4
-      Variant: 0
-    Direction: 1
-    SpawnPos: {x: 12, y: 9}
-  - PlantDef:
-      Id: 4
-      Variant: 0
-    Direction: 1
-    SpawnPos: {x: 13, y: 9}
+    Direction: 0
+    SpawnPos: {x: 25, y: 25}

@@ -19,6 +19,7 @@ namespace TPL.PVZR.Models
         List<SeedData> ChosenSeeds { get; }
         BindableProperty<int> CurrentWave { get; }
         BindableProperty<DayPhaseType> CurrentDayPhase { get; }
+        BindableProperty<WeatherType> CurrentWeather { get; }
 
         // Runtime Definition
         ILevelData LevelData { get; }
@@ -37,6 +38,7 @@ namespace TPL.PVZR.Models
         public List<SeedData> ChosenSeeds { get; private set; }
         public BindableProperty<int> CurrentWave { get; private set; }
         public BindableProperty<DayPhaseType> CurrentDayPhase { get; private set; }
+        public BindableProperty<WeatherType> CurrentWeather { get; private set; }
 
         public ILevelData LevelData { get; private set; }
 
@@ -55,6 +57,7 @@ namespace TPL.PVZR.Models
             this.SunPoint.SetValueWithoutEvent(levelData.InitialSunPoint);
             CurrentWave.Value = 0;
             CurrentDayPhase.SetValueWithoutEvent(levelData.InitialDayPhase);
+            CurrentWeather.SetValueWithoutEvent(levelData.InitialWeather);
         }
 
         public void Reset()
@@ -64,6 +67,7 @@ namespace TPL.PVZR.Models
             SunPoint.SetValueWithoutEvent(0);
             CurrentWave.SetValueWithoutEvent(0);
             CurrentDayPhase.SetValueWithoutEvent(DayPhaseType.NotSet);
+             CurrentWeather.SetValueWithoutEvent(WeatherType.NotSet);
         }
 
 
@@ -72,6 +76,7 @@ namespace TPL.PVZR.Models
             ChosenSeeds = new List<SeedData>();
             CurrentWave = new BindableProperty<int>(0);
             CurrentDayPhase = new BindableProperty<DayPhaseType>(DayPhaseType.NotSet);
+            CurrentWeather = new  BindableProperty<WeatherType>(WeatherType.NotSet);
             SunPoint = new BindableProperty<int>(0);
         }
     }

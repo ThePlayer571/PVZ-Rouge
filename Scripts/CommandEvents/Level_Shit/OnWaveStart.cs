@@ -4,4 +4,8 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.Waves
     {
         public int Wave;
     }
+
+    public struct OnFinalWaveStart
+    {
+    }
 }

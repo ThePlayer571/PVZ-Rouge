@@ -3,6 +3,7 @@ using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn;
 using TPL.PVZR.Helpers.New.DataReader;
 using TPL.PVZR.Models;
+using TPL.PVZR.Systems.Level_Event;
 using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.Systems.Level_Data
@@ -29,6 +30,11 @@ namespace TPL.PVZR.Systems.Level_Data
             {
                 var targetCell = e.Plant.AttachedCell;
                 targetCell.CellPlantData.SetPlant(null, PlantConfigReader.GetPlacementSlot(e.Plant.Def));
+            });
+
+            this.RegisterEvent<OnGravestoneSpawned>(e =>
+            {
+                _LevelGridModel.SetTile(e.CellPos.x, e.CellPos.y, CellTileState.Gravestone);
             });
         }
     }
