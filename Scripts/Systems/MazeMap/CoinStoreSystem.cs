@@ -20,7 +20,7 @@ namespace TPL.PVZR.Systems.MazeMap
     {
         EasyEvent OnRewrite { get; }
         CoinTradeData GetCoinTradeByIndex(int index);
-        int RefreshCost { get; }
+        int CurrentRefreshCost { get; }
     }
 
     public class CoinStoreSystem : AbstractSystem, ICoinStoreSystem
@@ -113,7 +113,7 @@ namespace TPL.PVZR.Systems.MazeMap
 
             this.RegisterEvent<CoinStoreRefreshEvent>(e =>
             {
-                _GameModel.GameData.InventoryData.Coins.Value -= RefreshCost;
+                _GameModel.GameData.InventoryData.Coins.Value -= CurrentRefreshCost;
                 _refreshCount++;
 
                 AutoWriteCoinTrades();
@@ -140,6 +140,16 @@ namespace TPL.PVZR.Systems.MazeMap
             return _activeTrades[index];
         }
 
-        public int RefreshCost => 10 * (1 << _refreshCount);
+        public int CurrentRefreshCost => RefreshCostOf(_refreshCount + 1);
+
+        public int RefreshCostOf(int refreshCount)
+        {
+            return refreshCount switch
+            {
+                1 => 5,
+                <= 4 => 10 * (refreshCount - 1),
+                _ => 20 + 30 * (refreshCount - 4)
+            };
+        }
     }
 }

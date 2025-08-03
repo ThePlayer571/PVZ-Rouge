@@ -18,9 +18,9 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
             var _CoinStoreSystem = this.GetSystem<ICoinStoreSystem>();
 
             // 异常处理
-            if (_GameModel.GameData.InventoryData.Coins.Value < _CoinStoreSystem.RefreshCost)
+            if (_GameModel.GameData.InventoryData.Coins.Value < _CoinStoreSystem.CurrentRefreshCost)
                 throw new Exception(
-                    $"尝试刷新商店，但金币不足: {_GameModel.GameData.InventoryData.Coins.Value} < {_CoinStoreSystem.RefreshCost}");
+                    $"尝试刷新商店，但金币不足: {_GameModel.GameData.InventoryData.Coins.Value} < {_CoinStoreSystem.CurrentRefreshCost}");
 
             //
             this.SendEvent<CoinStoreRefreshEvent>();

@@ -26,7 +26,7 @@ MonoBehaviour:
   TombContentConfigs:
   - StageDifficulty: 1
     ActiveStages: {x: 0, y: 10}
-    IncludedLevels: 0b00000005000000
+    IncludedLevels: 0100000006000000
   LootPools:
   - Id: 1
   - Id: 101

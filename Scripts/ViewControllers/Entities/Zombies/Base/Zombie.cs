@@ -293,7 +293,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             if (ZombieNode.ClimbDetector.HasTarget)
             {
                 _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x, 0);
-                
+
                 var balancedForceY = _Rigidbody2D.gravityScale * _Rigidbody2D.mass * Physics2D.gravity.y;
                 _Rigidbody2D.AddForce(new Vector2(0, -balancedForceY));
             }
@@ -301,8 +301,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         public virtual void BeLifted()
         {
-            _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x,
-                GlobalEntityData.Zombie_Default_ClimbSpeed);
+            if (CurrentMoveData.moveType == MoveType.HumanLadder)
+            {
+                _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x,
+                    GlobalEntityData.Zombie_Default_ClimbSpeed);
+            }
         }
 
         public virtual void MoveTowards(MoveData moveData)

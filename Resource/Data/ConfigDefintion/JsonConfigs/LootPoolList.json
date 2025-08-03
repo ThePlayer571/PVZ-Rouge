@@ -7,16 +7,19 @@
     "cards": [
       "Sunflower",
       "TwinSunflower",
-      "Flowerpot",
       "TripletSunflower",
       "GoldBloom",
       "Marigold",
+      "Flowerpot",
+      "LilyPad",
       "CherryBomb",
       "Squash",
       "Jalapeno",
+      "TangleKelp",
       "IcebergLettuce",
       "Wallnut",
-      "Pumpkin"
+      "Pumpkin",
+      "GraveBuster"
     ],
     "plantBooks": [],
     "coinRanges": [
@@ -31,13 +34,18 @@
     "lootPoolDef": {
       "lootPoolId": "Dave"
     },
-    "weight": 10.0,
+    "weight": 6.0,
     "cards": [
       "PotatoMine",
+      "Chomper",
       "Tallnut",
       "Cactus",
       "StarFruit",
-      "BonkChoy"
+      "BonkChoy",
+      "PuffShroom",
+      "SunShroom",
+      "ScaredyShroom",
+      "CoffeeBean"
     ],
     "plantBooks": [],
     "seedSlot": false
@@ -67,7 +75,7 @@
     "lootPoolDef": {
       "lootPoolId": "PultFamily"
     },
-    "weight": 10.0,
+    "weight": 5.0,
     "cards": [
       "CabbagePult",
       "KernelPult",

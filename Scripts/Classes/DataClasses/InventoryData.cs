@@ -52,7 +52,7 @@ namespace TPL.PVZR.Classes.DataClasses
 
         public int MaxSeedSlotCount => 10;
 
-        private const int DefaultInitialSunPoint = 50;
+        private const int DefaultInitialSunPoint = 100;
 
         private const int DefaultSeedSlotCount = 6;
 

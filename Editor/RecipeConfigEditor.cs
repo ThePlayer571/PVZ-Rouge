@@ -50,9 +50,9 @@ namespace TPL.PVZR.Editor
 
     public class RecipeConfigEditor : EditorWindow
     {
-        private string csvFilePath = "Assets/Resources/Data/ConfigDefintion/RecipeConfigTable.csv";
-        private string jsonFilePath = "Assets/Resources/Data/ConfigDefintion/JsonConfigs/RecipeConfigs.json";
-        private string plantValuePath = "Assets/Resources/Data/ConfigDefintion/JsonConfigs/PlantValueList.json";
+        private string csvFilePath = "Assets/Resource/Data/ConfigDefintion/RecipeConfigTable.csv";
+        private string jsonFilePath = "Assets/Resource/Data/ConfigDefintion/JsonConfigs/RecipeConfigs.json";
+        private string plantValuePath = "Assets/Resource/Data/ConfigDefintion/JsonConfigs/PlantValueList.json";
 
         private Dictionary<string, int> plantValueDict = new Dictionary<string, int>();
         private Vector2 scrollPosition;

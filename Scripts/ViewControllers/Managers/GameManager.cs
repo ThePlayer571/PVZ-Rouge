@@ -62,6 +62,15 @@ namespace TPL.PVZR.ViewControllers.Managers
                 this.GetModel<IGameModel>().GameData.InventoryData.AddCard(_);
             }
 
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 360, 120, 40), "时间流速加快"))
+            {
+                ActionKit.Sequence()
+                    .Callback(() => Time.timeScale = 100)
+                    .Delay(1f)
+                    .Callback(() => Time.timeScale = 1)
+                    .Start(this);
+            }
+
             // if (Input.GetKeyDown(KeyCode.LeftShift))
             // {
             //     var LevelGridModel = this.GetModel<ILevelGridModel>();

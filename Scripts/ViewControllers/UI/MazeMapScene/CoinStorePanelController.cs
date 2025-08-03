@@ -63,16 +63,16 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
 
             _GameModel.GameData.InventoryData.Coins.RegisterWithInitValue(coin =>
             {
-                RefreshBtn.interactable = coin >= _CoinStoreSystem.RefreshCost;
+                RefreshBtn.interactable = coin >= _CoinStoreSystem.CurrentRefreshCost;
             }).UnRegisterWhenGameObjectDestroyed(this);
 
             // todo 不精确，应该是订阅刷新的事件，现在的代码只能说是暂时不出错
             _CoinStoreSystem.OnRewrite.Register(() =>
             {
                 RefreshBtn.interactable =
-                    _GameModel.GameData.InventoryData.Coins.Value >= _CoinStoreSystem.RefreshCost;
+                    _GameModel.GameData.InventoryData.Coins.Value >= _CoinStoreSystem.CurrentRefreshCost;
                 // 这个也是，应该订阅RefreshCost才对
-                RefreshCostText.text = "Cost: " + _CoinStoreSystem.RefreshCost.ToString();
+                RefreshCostText.text = "Cost: " + _CoinStoreSystem.CurrentRefreshCost.ToString();
             }).UnRegisterWhenGameObjectDestroyed(this);
 
             RefreshBtn.onClick.AddListener(() => { this.SendCommand<CoinStoreRefreshCommand>(); });

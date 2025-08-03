@@ -55,20 +55,7 @@
     }
   },
   {
-    "weight": 10,
-    "output": {
-      "card": "PotatoMine"
-    },
-    "input": {
-      "cards": [
-        "Wallnut",
-        "Flowerpot"
-      ],
-      "coinRange": null
-    }
-  },
-  {
-    "weight": 10,
+    "weight": 5,
     "output": {
       "card": "SnowPea"
     },
@@ -121,6 +108,564 @@
     }
   },
   {
+    "weight": 10,
+    "output": {
+      "card": "Threepeater"
+    },
+    "input": {
+      "cards": [
+        "Repeater",
+        "Repeater"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Threepeater"
+    },
+    "input": {
+      "cards": [
+        "SplitPea",
+        "PeaShooter"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "Threepeater"
+    },
+    "input": {
+      "cards": [
+        "Starfruit",
+        "Starfruit"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "SniperPea"
+    },
+    "input": {
+      "cards": [
+        "SplitPea",
+        "Threepeater"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "SniperPea"
+    },
+    "input": {
+      "cards": [
+        "SplitPea",
+        "Repeater"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 4,
+    "output": {
+      "card": "SniperPea"
+    },
+    "input": {
+      "cards": [
+        "Starfruit",
+        "Repeater",
+        "Repeater"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 1,
+    "output": {
+      "card": "PeaPod"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "PeaShooter",
+        "PeaShooter",
+        "PeaShooter",
+        "PeaShooter"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "PeaPod"
+    },
+    "input": {
+      "cards": [
+        "Threepeater",
+        "Threepeater"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "PeaPod"
+    },
+    "input": {
+      "cards": [
+        "Threepeater",
+        "Threepeater"
+      ],
+      "coinRange": [
+        10,
+        20
+      ]
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "GatlingPea"
+    },
+    "input": {
+      "cards": [
+        "PeaPod",
+        "SniperPea",
+        "Threepeater",
+        "SplitPea"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Torchwood"
+    },
+    "input": {
+      "cards": [
+        "Wallnut",
+        "Wallnut",
+        "PotatoMine"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Torchwood"
+    },
+    "input": {
+      "cards": [
+        "Flowerpot",
+        "Wallnut",
+        "PotatoMine"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 2,
+    "output": {
+      "card": "Cactus"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "Starfruit"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 2,
+    "output": {
+      "card": "Starfruit"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter",
+        "PeaShooter",
+        "PeaShooter",
+        "PeaShooter"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "PuffShroom"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Sunflower"
+    },
+    "input": {
+      "cards": [
+        "Marigold"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "TwinSunflower"
+    },
+    "input": {
+      "cards": [
+        "Sunflower",
+        "Sunflower"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "TwinSunflower"
+    },
+    "input": {
+      "cards": [
+        "Sunflower",
+        "Sunflower"
+      ],
+      "coinRange": [
+        10,
+        20
+      ]
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "TripletSunflower"
+    },
+    "input": {
+      "cards": [
+        "TwinSunflower",
+        "TwinSunflower"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "TwinSunflower"
+    },
+    "input": {
+      "cards": [
+        "Sunflower",
+        "GoldBloom"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 2,
+    "output": {
+      "card": "GoldBloom"
+    },
+    "input": {
+      "cards": [
+        "Sunflower",
+        "Sunflower"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "GoldBloom"
+    },
+    "input": {
+      "cards": [
+        "Sunflower",
+        "TwinSunflower"
+      ],
+      "coinRange": [
+        10,
+        20
+      ]
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "SunShroom"
+    },
+    "input": {
+      "cards": [
+        "Sunflower"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 2,
+    "output": {
+      "card": "Marigold"
+    },
+    "input": {
+      "cards": [
+        "Sunflower"
+      ],
+      "coinRange": [
+        20,
+        40
+      ]
+    }
+  },
+  {
+    "weight": 3,
+    "output": {
+      "card": "Flowerpot"
+    },
+    "input": {
+      "cards": [
+        "Wallnut"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Flowerpot"
+    },
+    "input": {
+      "cards": [
+        "LilyPad"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "LilyPad"
+    },
+    "input": {
+      "cards": [
+        "Flowerpot"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "CherryBomb"
+    },
+    "input": {
+      "cards": [
+        "PotatoMine",
+        "PotatoMine",
+        "PotatoMine"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "CherryBomb"
+    },
+    "input": {
+      "cards": [
+        "Jalapeno"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "CherryBomb"
+    },
+    "input": {
+      "cards": [
+        "Squash",
+        "Squash"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 2,
+    "output": {
+      "card": "Squash"
+    },
+    "input": {
+      "cards": [
+        "CherryBomb"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Squash"
+    },
+    "input": {
+      "cards": [
+        "Wallnut",
+        "Wallnut"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Jalapeno"
+    },
+    "input": {
+      "cards": [
+        "CherryBomb"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Jalapeno"
+    },
+    "input": {
+      "cards": [
+        "PotatoMine",
+        "PotatoMine"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Wallnut"
+    },
+    "input": {
+      "cards": [
+        "Flowerpot",
+        "Flowerpot"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "TangleKelp"
+    },
+    "input": {
+      "cards": [
+        "LilyPad",
+        "PotatoMine"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Pumpkin"
+    },
+    "input": {
+      "cards": [
+        "Wallnut",
+        "Wallnut",
+        "Wallnut"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "Pumpkin"
+    },
+    "input": {
+      "cards": [
+        "Tallnut"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "GraveBuster"
+    },
+    "input": {
+      "cards": [
+        "Flowerpot"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "PotatoMine"
+    },
+    "input": {
+      "cards": [
+        "Flowerpot",
+        "Flowerpot",
+        "Flowerpot"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "PotatoMine"
+    },
+    "input": {
+      "cards": [
+        "Flowerpot",
+        "Wallnut"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 4,
+    "output": {
+      "card": "Chomper"
+    },
+    "input": {
+      "cards": [
+        "Squash"
+      ],
+      "coinRange": null
+    }
+  },
+  {
     "weight": 5,
     "output": {
       "card": "Tallnut"
@@ -136,12 +681,53 @@
   {
     "weight": 5,
     "output": {
-      "card": "CherryBomb"
+      "card": "Cactus"
     },
     "input": {
       "cards": [
-        "PotatoMine",
-        "PotatoMine"
+        "Tallnut",
+        "Starfruit"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Cactus"
+    },
+    "input": {
+      "cards": [
+        "Chomper",
+        "Chomper",
+        "Chomper"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Starfruit"
+    },
+    "input": {
+      "cards": [
+        "Sunflower"
+      ],
+      "coinRange": [
+        10,
+        20
+      ]
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "Starfruit"
+    },
+    "input": {
+      "cards": [
+        "Marigold"
       ],
       "coinRange": null
     }

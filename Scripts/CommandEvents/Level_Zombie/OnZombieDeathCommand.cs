@@ -37,11 +37,11 @@ namespace TPL.PVZR.CommandEvents._NotClassified_
                         EntityFactory.ZombieFactory.ActiveZombies.Count == 0;
             if (pass)
             {
-                var resLoader = ResLoader.Allocate();
                 // 生成LevelEndObject
+                var zombiePosition = zombie.transform.position;
                 Addressables.LoadAssetAsync<GameObject>("LevelEndObject").Completed += handle =>
                 {
-                    handle.Result.Instantiate(zombie.transform.position, Quaternion.identity);
+                    handle.Result.Instantiate(zombiePosition, Quaternion.identity);
                     handle.Release();
                 };
                 _PhaseModel.ChangePhase(GamePhase.AllEnemyKilled);

@@ -26,8 +26,13 @@ MonoBehaviour:
   MapGenerationAlgorithmId: 0
   SunFallPositions: []
   BaseValue: 10
-  maxValue: 60
-  validCellCount: 20
+  maxValue: 42
+  LevelValueDetail:
+    RecommendedDPS: 13.3
+    ValidCellCount: 18
+    MultiplierOfCell: 0.4
+    ValidSunpointWhenFinalWave: 2075
+    MultiplierOfSunpoint: 0.2
   DifficultyGrowthType: 0
   TotalWaveCount: 20
   HugeWaves: 0a00000014000000
@@ -64,11 +69,6 @@ MonoBehaviour:
     Weight: 5
     Value: 12
     ActiveWaves: {x: 11, y: 20}
-  - Zombie: 2
-    SpawnPos: 2
-    Weight: 5
-    Value: 30
-    ActiveWaves: {x: 15, y: 20}
   - Zombie: 5
     SpawnPos: 2
     Weight: 5

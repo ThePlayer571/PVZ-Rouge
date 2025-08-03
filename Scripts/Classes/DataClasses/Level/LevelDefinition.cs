@@ -111,7 +111,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
                  " - Easy(完全不会被破阵): plantValue * (ValidCellCount - 2) / 4")]
         public float maxValue;
 
-        public float validCellCount;
+        public LevelValueDetail LevelValueDetail;
 
         [Tooltip("难度增长型")] public DifficultyGrowthType DifficultyGrowthType;
 
@@ -141,6 +141,30 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public WeatherType InitialWeather;
 
         [Header("Others")] public List<InitialPlantConfig> InitialPlants;
+    }
+
+    [Serializable]
+    public class LevelValueDetail
+    {
+        [Tooltip("本关推荐植物的DPS\n参考值：\n- 豌豆射手: 13.3")]
+        public float RecommendedDPS = 13.3f;
+
+        [Tooltip("本关可放置攻击植物的格子数 - 玩家利用这么多个格子就能通关")]
+        public int ValidCellCount;
+
+        [Tooltip("推荐值：\n- N0: 0.4")] public float MultiplierOfCell = 0.4f;
+        [Tooltip("最后一波的可支配阳光（请使用参考值）")] public int ValidSunpointWhenFinalWave;
+
+        [Tooltip("推荐值：\n- N0|白天: 0.4\n- N0|夜晚向日葵: 0.2")]
+        public float MultiplierOfSunpoint = 0.4f;
+
+        public float DPS2Value(float dps) => dps / 13.3f * 10f;
+        public float Sunpoint2Value(float sunpoint) => sunpoint / 100f * 10f;
+
+        public float MaxValue_Cell => DPS2Value(RecommendedDPS) * ValidCellCount;
+        public float MaxValue_Sunpoint => Sunpoint2Value(ValidSunpointWhenFinalWave);
+        public float RecommendedValue_Cell => MaxValue_Cell * MultiplierOfCell;
+        public float RecommendedValue_Sunpoint => MaxValue_Sunpoint * MultiplierOfSunpoint;
     }
 
     [Serializable]

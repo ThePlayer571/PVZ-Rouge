@@ -28,8 +28,13 @@ MonoBehaviour:
   - Key: {x: 30, y: 20}
     Value: {x: 37, y: 20}
   BaseValue: 10
-  maxValue: 100
-  validCellCount: 46
+  maxValue: 104
+  LevelValueDetail:
+    RecommendedDPS: 13.3
+    ValidCellCount: 26
+    MultiplierOfCell: 0.4
+    ValidSunpointWhenFinalWave: 4400
+    MultiplierOfSunpoint: 0.4
   DifficultyGrowthType: 0
   TotalWaveCount: 20
   HugeWaves: 0a00000014000000
