@@ -7,7 +7,7 @@ using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.CommandEvents.__NewlyAdded__
 {
-    public struct CoinTradeEvent : IServiceEvent
+    public struct CoinTradeEvent
     {
         public int index;
     }
@@ -36,7 +36,7 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
                 throw new Exception($"金币不足，无法进行交易，index: {_index}");
 
             // 
-            this.SendEvent<CoinTradeEvent>(new CoinTradeEvent { index = _index });
+            this.SendEvent<CoinTradeEvent>(new CoinTradeEvent() { index = _index });
         }
     }
 }

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using QFramework;
 using UnityEngine;
 
 namespace TPL.PVZR.Tools
@@ -166,6 +168,21 @@ namespace TPL.PVZR.Tools
             {
                 return origin + direction.normalized * maxDistance;
             }
+        }
+    }
+
+    public static class ActionTask
+    {
+        /// <summary>
+        /// 返回一个等待指定帧数后完成的Task。
+        /// 需要在Unity环境下配合MonoBehaviour的Update或使用第三方如ActionKit等帧调度器。
+        /// </summary>
+        public static Task WaitForFrame(int frameCount)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            ActionKit.DelayFrame(frameCount, () => tcs.SetResult(true)).StartGlobal();
+
+            return tcs.Task;
         }
     }
 }

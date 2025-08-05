@@ -2,6 +2,7 @@ using System;
 using QFramework;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 
 namespace TPL.PVZR.CommandEvents.Level_Gameplay.Coins

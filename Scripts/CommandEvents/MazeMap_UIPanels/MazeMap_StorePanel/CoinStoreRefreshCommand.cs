@@ -6,10 +6,11 @@ using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.CommandEvents.__NewlyAdded__
 {
-    public struct CoinStoreRefreshEvent : IServiceEvent
+    public struct OnCoinStoreRefreshed
     {
+        
     }
-
+    
     public class CoinStoreRefreshCommand : AbstractCommand
     {
         protected override void OnExecute()
@@ -22,8 +23,9 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
                 throw new Exception(
                     $"尝试刷新商店，但金币不足: {_GameModel.GameData.InventoryData.Coins.Value} < {_CoinStoreSystem.CurrentRefreshCost}");
 
-            //
-            this.SendEvent<CoinStoreRefreshEvent>();
+            // todo ： gaichengTriggerEvent
+            _GameModel.GameData.InventoryData.Coins.Value -= _CoinStoreSystem.CurrentRefreshCost;
+            this.SendEvent<OnCoinStoreRefreshed>();
         }
     }
 }

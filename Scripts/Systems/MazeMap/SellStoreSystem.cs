@@ -1,17 +1,18 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.CoinTrade;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
-using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools.Random;
 using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.Systems.MazeMap
 {
-    public interface ISellStoreSystem : IServiceManageSystem, IDataSystem
+    public interface ISellStoreSystem : IDataSystem
     {
         CoinTradeData GetCoinTradeByIndex(int index);
     }
@@ -26,7 +27,7 @@ namespace TPL.PVZR.Systems.MazeMap
             _activeTrades[index] = GetRandomCoinTradeData();
         }
 
-        private void AutoWriteCoinTrades()
+        private void AutoWriteSellTrades()
         {
             _activeTrades.Clear();
 
@@ -56,10 +57,9 @@ namespace TPL.PVZR.Systems.MazeMap
             }
         }
 
-        private void ClearCoinTrades()
+        private void ClearSellTrades()
         {
             _activeTrades.Clear();
-            Available = false;
         }
 
 
@@ -69,53 +69,42 @@ namespace TPL.PVZR.Systems.MazeMap
         {
             _GameModel = this.GetModel<IGameModel>();
 
-            this.RegisterEvent<OnPhaseChangeEvent>(e =>
+            var phaseService = this.GetService<IPhaseService>();
+
+            phaseService.RegisterCallBack((GamePhase.MazeMapInitialization, PhaseStage.EnterEarly), e =>
             {
-                switch (e.GamePhase)
-                {
-                    case GamePhase.MazeMapInitialization:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                AutoWriteCoinTrades();
-                                break;
-                        }
-
-                        break;
-                    case GamePhase.MazeMap:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.LeaveLate:
-                                ClearCoinTrades();
-                                break;
-                        }
-
-                        break;
-                }
+                var notRefresh = (bool)e.Paras.GetValueOrDefault<string, object>("NotRefresh", false);
+                if (notRefresh) return;
+                //
+                AutoWriteSellTrades();
             });
+
 
             this.RegisterEvent<SellTradeEvent>(e =>
             {
-                var trade = GetCoinTradeByIndex(e.index);
                 var inventory = _GameModel.GameData.InventoryData;
-
+                var trade = GetCoinTradeByIndex(e.index);
+                // 重新生成售卖对象
+                AutoWriteIndex(e.index);
                 // 消耗
                 inventory.RemoveCard(inventory.Cards.First(cardData =>
                     !cardData.Locked && cardData.CardDefinition.PlantDef.Id == trade.LootData.PlantId));
-
                 // 添加
                 inventory.Coins.Value += trade.CoinAmount;
-
-                // 重新生成售卖对象
-                AutoWriteIndex(e.index);
             });
         }
 
         public CoinTradeData GetCoinTradeByIndex(int index)
         {
-            return _activeTrades[index];
+            try
+            {
+                return _activeTrades[index];
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index),
+                    $"试图访问超出范围的索引: {index}，而当前列表长度为: {_activeTrades.Count}");
+            }
         }
-
-        public bool Available { get; private set; }
     }
 }

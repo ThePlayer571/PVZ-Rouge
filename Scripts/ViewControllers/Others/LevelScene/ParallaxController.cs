@@ -20,7 +20,7 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
         {
             this.RegisterEvent<OnLevelGameObjectPrepared>(e =>
                 {
-                   InitializeCamera();
+                    InitializeCamera();
                 })
                 .UnRegisterWhenGameObjectDestroyed(this);
         }

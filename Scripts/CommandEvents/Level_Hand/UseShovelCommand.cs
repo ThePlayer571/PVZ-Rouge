@@ -5,6 +5,7 @@ using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Systems;
 using TPL.PVZR.Systems.Level_Data;
 using UnityEngine;
@@ -39,9 +40,8 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs
                 throw new ArgumentException($"此处不存在植物，却调用了ShovelPlantCommand，pos:{_position}");
             if (!HandHelper.DaveCanReach(_position)) throw new Exception("尝试调用UseShovelCommand，但是戴夫的手够不到目标植物");
             //
-            var plant = targetCell.CellPlantData.GetPlantToShovelFirst();
-            this.SendEvent<OnShovelUsed>();
-            this.SendCommand<RemovePlantCommand>(new RemovePlantCommand(plant));
+            var handService = this.GetService<IHandService>();
+            handService.UseShovel();
         }
     }
 }

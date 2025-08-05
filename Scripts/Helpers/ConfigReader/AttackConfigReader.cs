@@ -15,7 +15,7 @@ namespace TPL.PVZR.Helpers.New.DataReader
 
         private static Dictionary<AttackId, AttackDefinition> _attackDefinitionDict;
 
-        public static async Task Initialize()
+        public static async Task InitializeAsync()
         {
             var handle = Addressables.LoadAssetsAsync<AttackDefinition>("AttackDefinition", null);
             await handle.Task;

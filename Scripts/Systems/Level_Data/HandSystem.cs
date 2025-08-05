@@ -2,8 +2,8 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs;
-using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.Systems.Level_Data
@@ -12,7 +12,7 @@ namespace TPL.PVZR.Systems.Level_Data
     /// 相关：手持的是什么；
     /// 无关：选择手持物品 / 放置手持植物的逻辑
     /// </summary>
-    public interface IHandSystem : IServiceManageSystem, IDataSystem
+    public interface IHandSystem : IDataSystem
     {
         BindableProperty<HandInfo> HandInfo { get; }
     }
@@ -20,50 +20,32 @@ namespace TPL.PVZR.Systems.Level_Data
 
     public class HandSystem : AbstractSystem, IHandSystem
     {
+        public BindableProperty<HandInfo> HandInfo { get; private set; }
+
         private void Reset()
         {
             HandInfo.Value = new HandInfo(HandState.Empty, null);
         }
-        
+
         protected override void OnInit()
         {
             HandInfo = new BindableProperty<HandInfo>(new HandInfo(HandState.Empty, null));
 
-            this.RegisterEvent<OnPhaseChangeEvent>(e =>
-            {
-                switch (e.GamePhase)
-                {
-                    case GamePhase.LevelExiting:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.LeaveNormal:
-                                Reset();
-                                break;
-                        }
+            var phaseService = this.GetService<IPhaseService>();
+            phaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.LeaveNormal), e => { Reset(); });
 
-                        break;
-                }
+            this.RegisterEvent<OnShovelUsed>(e =>
+            {
+                //
+                HandInfo.Value = new HandInfo(HandState.Empty, null);
             });
 
-            #region 关卡内触发事件
-
-            this.RegisterEvent<SelectSeedEvent>(e =>
+            this.RegisterEvent<OnSeedInHandPlanted>(e =>
             {
-                HandInfo.Value = new HandInfo(HandState.HaveSeed, e.SelectedSeedData);
+                //
+                HandInfo.Value = new HandInfo(HandState.Empty, null);
             });
-
-            this.RegisterEvent<DeselectEvent>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
-
-            this.RegisterEvent<SelectShovelEvent>(e => { HandInfo.Value = new HandInfo(HandState.HaveShovel, null); });
-
-            this.RegisterEvent<OnSeedInHandPlanted>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
-
-            this.RegisterEvent<OnShovelUsed>(e => { HandInfo.Value = new HandInfo(HandState.Empty, null); });
-
-            #endregion
         }
-
-        public BindableProperty<HandInfo> HandInfo { get; private set; }
     }
 
     public struct HandInfo

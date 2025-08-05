@@ -1,11 +1,16 @@
 using System;
+using DG.Tweening;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.Helpers.New.Methods;
+using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
+using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers
@@ -14,33 +19,114 @@ namespace TPL.PVZR.ViewControllers
     {
     }
 
-    public class Player : MonoBehaviour, IPlayer
+    public partial class Player
     {
-        public static Player Instance { get; private set; }
-        private PlayerInputControl _inputActions;
-        private Rigidbody2D _Rigidbody2D;
+        [SerializeField] private Transform _View;
+        [SerializeField] private SpriteRenderer _SpriteRenderer;
 
+        private void OnViewInit()
+        {
+            _direction.Register(dir => { transform.LocalScaleX(dir.ToInt() * 0.7f); }
+            ).UnRegisterWhenGameObjectDestroyed(this);
+
+            hitCount.Register(val =>
+            {
+                var red = val == 0 ? 0 : Mathf.Lerp(0.1f, 1, val / 20f);
+                _SpriteRenderer.DOColor(new Color(1, 1 - red, 1 - red, 1), 0.05f);
+
+                $"hit count changed: {val}".LogInfo();
+            }).UnRegisterWhenGameObjectDestroyed(this);
+
+            _healthFSM.OnStateChanged((oldState, newState) =>
+            {
+                if (oldState == PlayerHealthState.Healthy)
+                {
+                    _View.DOLocalRotate(new Vector3(0, 0, 90), 0.2f).SetEase(Ease.Linear).SetId("DownedRotation");
+                }
+
+                if (newState == PlayerHealthState.Healthy)
+                {
+                    _View.DOLocalRotate(Vector3.zero, 0.2f).SetEase(Ease.Linear).SetId("DownedRotation");
+                }
+            });
+        }
+
+        private float _targetRotationZ = 0;
+        private float _currentRotationZ = 0;
+        private const float _rotationSpeed = 5f;
+
+        private void OnViewUpdate()
+        {
+            if (!Mathf.Approximately(_movementInput.x, 0))
+            {
+                _targetRotationZ = -5f;
+            }
+            else
+            {
+                _targetRotationZ = 0f;
+            }
+
+            if (!Mathf.Approximately(_targetRotationZ, _currentRotationZ))
+            {
+                _currentRotationZ = Mathf.Lerp(_currentRotationZ, _targetRotationZ, Time.deltaTime * _rotationSpeed);
+                if (_healthFSM.CurrentStateId == PlayerHealthState.Healthy && !DOTween.IsTweening("DownedRotation"))
+                {
+                    _View.LocalEulerAnglesZ(_currentRotationZ);
+                }
+            }
+        }
+    }
+
+    public partial class Player : MonoBehaviour, IPlayer
+    {
+        #region 字段
+
+        // 可配置项
         [SerializeField] private float speed = 30;
         [SerializeField] private float jumpForce = 9;
         [SerializeField] private float k = 5;
         [SerializeField] private float climbSpeed = 5;
 
+        // 
+        public static Player Instance { get; private set; }
+        private PlayerInputControl _inputActions;
+        private IPhaseModel _PhaseModel;
+
         [SerializeField] private TriggerDetector JumpDetector;
         [SerializeField] private TriggerDetector LadderDetector;
+
+        private Rigidbody2D _Rigidbody2D;
+
+        // 变量
+        private bool _hasTwiceJumped = false; // 已经进行二段跳
+        private BindableProperty<int> hitCount = new BindableProperty<int>(0);
+        private bool _isDowned = false;
+        private FSM<PlayerHealthState> _healthFSM;
+
+        #endregion
+
+        #region 生命周期
+
+        private BindableProperty<Direction2> _direction = new(Direction2.Right);
+        private Vector2 _movementInput;
 
         private void FixedUpdate()
         {
             // input
-            var movement = _inputActions.Level.Movement.ReadValue<Vector2>();
-            if (!Mathf.Approximately(movement.x, 0))
+            if (_healthFSM.CurrentStateId == PlayerHealthState.Healthy)
             {
-                var direction = movement.x > 0 ? 1 : -1;
-                _Rigidbody2D.AddForce(new Vector2(speed * direction, 0));
-            }
+                _movementInput = _inputActions.Level.Movement.ReadValue<Vector2>();
 
-            if (movement.y > 0 && LadderDetector.HasTarget)
-            {
-                ClimbLadder();
+                if (!Mathf.Approximately(_movementInput.x, 0))
+                {
+                    _direction.Value = _movementInput.x > 0 ? Direction2.Right : Direction2.Left;
+                    _Rigidbody2D.AddForce(new Vector2(speed * _direction.Value.ToInt(), 0));
+                }
+
+                if (_movementInput.y > 0 && LadderDetector.HasTarget)
+                {
+                    ClimbLadder();
+                }
             }
 
             // dragForce
@@ -48,8 +134,59 @@ namespace TPL.PVZR.ViewControllers
             _Rigidbody2D.AddForce(dragForce);
         }
 
+        private void Update()
+        {
+            if (_hasTwiceJumped && JumpDetector.HasTarget)
+            {
+                _hasTwiceJumped = false;
+            }
 
-        private bool _hasTwiceJumped = false; // 已经进行二段跳
+            _healthFSM.Update();
+
+            OnViewUpdate();
+        }
+
+        private void OnDestroy()
+        {
+            _inputActions.Level.Disable();
+        }
+
+        private void Awake()
+        {
+            Player.Instance = this;
+
+            _PhaseModel = this.GetModel<IPhaseModel>();
+
+            _Rigidbody2D = this.GetComponent<Rigidbody2D>();
+
+            JumpDetector.TargetPredicate = (collider2D) =>
+            {
+                if (collider2D.IsInLayerMask(LayerMask.GetMask("PlantPlayerInteraction")) &&
+                    collider2D.GetComponentInParent<Plant>().Def.Id is not (PlantId.Flowerpot or PlantId.LilyPad))
+                    return false;
+                return true;
+            };
+
+            SetUpHealthFSM();
+
+
+            _inputActions = new PlayerInputControl();
+            _inputActions.Level.Enable();
+
+            _inputActions.Level.Jump.performed += (context) =>
+            {
+                if (_healthFSM.CurrentStateId == PlayerHealthState.Healthy)
+                {
+                    Jump();
+                }
+            };
+
+            OnViewInit();
+        }
+
+        #endregion
+
+        #region 移动
 
         private void Jump()
         {
@@ -73,39 +210,46 @@ namespace TPL.PVZR.ViewControllers
             _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x, climbSpeed);
         }
 
-        private void Update()
+        #endregion
+
+        #region 击倒
+
+        private void SetUpHealthFSM()
         {
-            if (_hasTwiceJumped && JumpDetector.HasTarget)
-            {
-                _hasTwiceJumped = false;
-            }
+            Timer hitCountClearTimer = new Timer(1);
+            Timer invulnerableTimer = new Timer(0.5f);
+
+            _healthFSM = new FSM<PlayerHealthState>();
+            _healthFSM.State(PlayerHealthState.Healthy);
+            _healthFSM.State(PlayerHealthState.Downed)
+                .OnEnter(() => { hitCountClearTimer.SetRemaining(2); })
+                .OnUpdate(() =>
+                {
+                    hitCountClearTimer.Update(Time.deltaTime);
+                    if (hitCountClearTimer.Ready)
+                    {
+                        hitCount.Value--;
+                        hitCountClearTimer.Reset();
+                        if (hitCount.Value <= 0)
+                        {
+                            _healthFSM.ChangeState(PlayerHealthState.Healthy);
+                        }
+                    }
+                });
+            _healthFSM.State(PlayerHealthState.DownedInvulnerable)
+                .OnEnter(() => { invulnerableTimer.Reset(); })
+                .OnUpdate(() =>
+                {
+                    invulnerableTimer.Update(Time.deltaTime);
+                    if (invulnerableTimer.Ready)
+                    {
+                        _healthFSM.ChangeState(PlayerHealthState.Downed);
+                    }
+                });
+            _healthFSM.StartState(PlayerHealthState.Healthy);
         }
 
-        private void OnDestroy()
-        {
-            _inputActions.Level.Disable();
-        }
-
-        private void Awake()
-        {
-            Player.Instance = this;
-            _Rigidbody2D = this.GetComponent<Rigidbody2D>();
-
-            JumpDetector.TargetPredicate = (collider2D) =>
-            {
-                if (collider2D.IsInLayerMask(LayerMask.GetMask("PlantPlayerInteraction")) &&
-                    collider2D.GetComponentInParent<Plant>().Def.Id is not (PlantId.Flowerpot or PlantId.LilyPad))
-                    return false;
-                return true;
-            };
-
-
-            _inputActions = new PlayerInputControl();
-            _inputActions.Level.Enable();
-
-            _inputActions.Level.Jump.performed += (context) => { Jump(); };
-        }
-
+        #endregion
 
         #region 接口
 
@@ -119,8 +263,35 @@ namespace TPL.PVZR.ViewControllers
 
         public AttackData TakeAttack(AttackData attackData)
         {
+            if (GameManager.Instance.invulnerable) return null;
+
+            switch (_healthFSM.CurrentStateId)
+            {
+                case PlayerHealthState.Downed:
+                    hitCount.Value++;
+                    _Rigidbody2D.AddForce(attackData.Punch(MassCenter.position), ForceMode2D.Impulse);
+                    if (hitCount.Value >= 20)
+                    {
+                        if (_PhaseModel.GamePhase != GamePhase.LevelDefeat)
+                        {
+                            this.SendCommand<OnKilledByZombieCommand>();
+                        }
+                    }
+
+                    _healthFSM.ChangeState(PlayerHealthState.DownedInvulnerable);
+
+                    break;
+                case PlayerHealthState.Healthy:
+                    hitCount.Value++;
+                    _Rigidbody2D.AddForce(attackData.Punch(MassCenter.position), ForceMode2D.Impulse);
+                    _healthFSM.ChangeState(PlayerHealthState.DownedInvulnerable);
+                    break;
+            }
+
             return null;
         }
+
+        [SerializeField] private Transform MassCenter;
 
         public void Kill()
         {
@@ -128,5 +299,12 @@ namespace TPL.PVZR.ViewControllers
         }
 
         #endregion
+    }
+
+    internal enum PlayerHealthState
+    {
+        Healthy,
+        Downed,
+        DownedInvulnerable,
     }
 }

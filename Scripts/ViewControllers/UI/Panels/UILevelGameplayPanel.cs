@@ -1,6 +1,5 @@
 using DG.Tweening;
 using QFramework;
-using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
 using TPL.PVZR.ViewControllers.Others.UI;
@@ -21,7 +20,7 @@ namespace TPL.PVZR.ViewControllers.UI
 
         private bool _isUIVisible = true;
         private bool _isSlotPanelShowing = true;
-        private bool _allowChangeUI = false;
+        public bool _allowChangeUI { private get; set; } = false;
         [SerializeField] private LevelStateBarPanelController LevelStateBarPanelController;
 
 
@@ -51,7 +50,7 @@ namespace TPL.PVZR.ViewControllers.UI
             SlotPanel.DOAnchorPosY(0, 0.2f);
         }
 
-        private void HideUISlotPanel()
+        public void HideUISlotPanel()
         {
             _isSlotPanelShowing = false;
             SlotPanel.DOAnchorPosY(200, 0.2f);
@@ -88,33 +87,6 @@ namespace TPL.PVZR.ViewControllers.UI
             {
                 if (_allowChangeUI) SlotPanelVisibilityToggle();
             });
-
-            this.RegisterEvent<OnPhaseChangeEvent>(e =>
-            {
-                switch (e.GamePhase)
-                {
-                    case GamePhase.Gameplay:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                _allowChangeUI = true;
-                                ShowUI();
-                                break;
-                        }
-
-                        break;
-                    case GamePhase.AllEnemyKilled:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                _allowChangeUI = false;
-                                HideUISlotPanel();
-                                break;
-                        }
-
-                        break;
-                }
-            }).UnRegisterWhenGameObjectDestroyed(this);
         }
 
         protected override void OnOpen(IUIData uiData = null)

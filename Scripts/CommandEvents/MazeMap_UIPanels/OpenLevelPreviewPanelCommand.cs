@@ -2,6 +2,7 @@ using System;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Tomb;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 
 namespace TPL.PVZR.CommandEvents.__NewlyAdded__
 {

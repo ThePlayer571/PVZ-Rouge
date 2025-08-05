@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using QFramework;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Managers;
 using TPL.PVZR.ViewControllers.Others;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.ConfigLists;
@@ -6,6 +7,7 @@ using TPL.PVZR.Classes.DataClasses.Game;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.Classes.MazeMap;
+using UnityEngine.AddressableAssets;
 
 namespace TPL.PVZR.Helpers.New.DataReader
 {
@@ -17,41 +19,31 @@ namespace TPL.PVZR.Helpers.New.DataReader
         private static Dictionary<MazeMapDef, MazeMapDefinition> _mazeMapDefinitionDict;
         private static Dictionary<GameDef, GameDefinition> _gameDefinitionDict;
 
-        static GameConfigReader()
+        public static async Task InitializeAsync()
         {
-            ResKit.Init();
-            var resLoader = ResLoader.Allocate();
+            var levelDefinition_handle = Addressables.LoadAssetsAsync<LevelDefinition>("LevelDefinition", null);
+            var mazeMapDefinition_handle = Addressables.LoadAssetsAsync<MazeMapDefinition>("MazeMapDefinition", null);
+            var gameDefinition_handle = Addressables.LoadAssetsAsync<GameDefinition>("GameDefinition", null);
 
-            // LevelDefinition
-            var levelDefinitionList = resLoader
-                .LoadSync<LevelDefinitionList>(Configlist.BundleName, Configlist.LevelDefinitionList)
-                .levelDefinitionList;
+            await Task.WhenAll(levelDefinition_handle.Task, mazeMapDefinition_handle.Task, gameDefinition_handle.Task);
+
             _levelDefinitionDict = new Dictionary<LevelDef, LevelDefinition>();
-            foreach (var levelDefinition in levelDefinitionList)
+            foreach (var levelDefinition in levelDefinition_handle.Result)
             {
                 _levelDefinitionDict.Add(levelDefinition.LevelDef, levelDefinition);
             }
 
-            // MazeMapDefinition
-            var mazeMapDefinitionList = resLoader
-                .LoadSync<MazeMapDefinitionList>(Configlist.BundleName, Configlist.MazeMapDefinitionList)
-                .mazeMapDefinitionList;
             _mazeMapDefinitionDict = new Dictionary<MazeMapDef, MazeMapDefinition>();
-            foreach (var mazeMapConfig in mazeMapDefinitionList)
+            foreach (var mazeMapDefinition in mazeMapDefinition_handle.Result)
             {
-                _mazeMapDefinitionDict.Add(mazeMapConfig.mazeMapDef, mazeMapConfig.mazeMapDefinition);
+                _mazeMapDefinitionDict.Add(mazeMapDefinition.Def, mazeMapDefinition);
             }
 
-            // GameDefinition
-            var gameDefinitionList = resLoader
-                .LoadSync<GameDefinitionList>(Configlist.BundleName, Configlist.GameDefinitionList)
-                .gameDefinitionList;
             _gameDefinitionDict = new Dictionary<GameDef, GameDefinition>();
-            foreach (var gameConfig in gameDefinitionList)
+            foreach (var gameDefinition in gameDefinition_handle.Result)
             {
-                _gameDefinitionDict.Add(gameConfig.gameDef, gameConfig.gameDefinition);
+                _gameDefinitionDict.Add(gameDefinition.GameDef, gameDefinition);
             }
-
         }
 
         #endregion

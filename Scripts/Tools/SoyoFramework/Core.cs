@@ -5,19 +5,14 @@ namespace TPL.PVZR.Tools.SoyoFramework
     public interface IEvent
     {
     }
-
+    
     /// <summary>
-    /// 该事件作为某服务的唯一入口（只允许单个接收者）
+    /// 存在与这个层级紧密相关的Service
     /// </summary>
-    public interface IServiceEvent : IEvent
+    /// <typeparam name="T"></typeparam>
+    public interface IHasService<out T> where T : IService
     {
-    }
-
-    /// <summary>
-    /// 该系统只用于处理服务相关的事件
-    /// </summary>
-    public interface IServiceManageSystem : ISystem
-    {
+        T Service { get; }
     }
 
     /// <summary>

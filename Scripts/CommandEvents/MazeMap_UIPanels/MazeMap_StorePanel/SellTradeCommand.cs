@@ -8,7 +8,7 @@ using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.CommandEvents.__NewlyAdded__
 {
-    public struct SellTradeEvent : IServiceEvent
+    public struct SellTradeEvent
     {
         public int index;
     }
@@ -30,10 +30,12 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
             // 异常处理
             var trade = _SellStoreSystem.GetCoinTradeByIndex(_index);
             var inventory = _GameModel.GameData.InventoryData;
-            if (!inventory.Cards.Any(cardData => !cardData.Locked && cardData.CardDefinition.PlantDef.Id == trade.LootData.PlantId))
+            if (!inventory.Cards.Any(cardData =>
+                    !cardData.Locked && cardData.CardDefinition.PlantDef.Id == trade.LootData.PlantId))
                 throw new Exception($"没有对应的卡牌，无法进行交易，index: {_index}");
 
-            // 
+            //
+
             this.SendEvent<SellTradeEvent>(new SellTradeEvent { index = _index });
         }
     }

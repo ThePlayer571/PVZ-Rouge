@@ -5,8 +5,8 @@ using TPL.PVZR.Classes.ZombieAI.PathFinding;
 using TPL.PVZR.Classes.ZombieAI.Public;
 using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.CommandEvents.New.Level_Shit;
-using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers;
 using TPL.PVZR.ViewControllers.Managers;
@@ -22,11 +22,17 @@ namespace TPL.PVZR.Systems.Level_Data
 
     public class ZombieAISystem : AbstractSystem, IZombieAISystem
     {
+        #region 字段
+
         public IZombieAIUnit ZombieAIUnit { get; private set; }
         private ILevelGridModel _LevelGridModel;
         public Vector2Int PlayerVertexPos => new Vector2Int(_playerVertexOnLastFrame.x, _playerVertexOnLastFrame.y);
 
         private Vertex _playerVertexOnLastFrame;
+
+        #endregion
+
+        #region 操作
 
         private void UpdatePlayerCluster()
         {
@@ -70,11 +76,11 @@ namespace TPL.PVZR.Systems.Level_Data
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            
+
             GameManager.ExecuteOnUpdate(UpdatePlayerCluster);
             ZombieAIUnit = new ZombieAIUnit();
             ZombieAIUnit.InitializeFrom(_LevelGridModel.LevelMatrix);
-            
+
             stopwatch.Stop();
             $"算法耗时：{stopwatch.ElapsedMilliseconds} ms".LogInfo();
             // ZombieAIUnit.DebugDisplayMatrix();
@@ -88,33 +94,22 @@ namespace TPL.PVZR.Systems.Level_Data
             _playerVertexOnLastFrame = null;
         }
 
+        #endregion
+
         protected override void OnInit()
         {
             _LevelGridModel = this.GetModel<ILevelGridModel>();
 
-            this.RegisterEvent<OnPhaseChangeEvent>(e =>
+            var phaseService = this.GetService<IPhaseService>();
+            phaseService.RegisterCallBack((GamePhase.LevelInitialization, PhaseStage.EnterNormal), e =>
             {
-                switch (e.GamePhase)
-                {
-                    case GamePhase.LevelInitialization:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                StartRunning();
-                                break;
-                        }
-
-                        break;
-                    case GamePhase.LevelExiting:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                StopRunning();
-                                break;
-                        }
-
-                        break;
-                }
+                //
+                StartRunning();
+            });
+            phaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterNormal), e =>
+            {
+                //
+                StopRunning();
             });
         }
     }

@@ -183,7 +183,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                 }
             }
 
-            return attackData;
+            return attackData.WithPunchFrom(CoreWorldPos);
         }
 
         public float GetSpeed()

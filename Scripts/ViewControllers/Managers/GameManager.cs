@@ -7,20 +7,23 @@ using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Systems.Level_Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace TPL.PVZR.ViewControllers.Managers
 {
-    public class GameManager : MonoSingleton<GameManager>, ICanGetModel, ICanGetSystem, ICanSendCommand, ICanSendEvent
+    public class GameManager : MonoSingleton<GameManager>, ICanGetModel, ICanGetSystem, ICanSendCommand, ICanSendEvent,
+        ICanGetService
     {
         private void OnGUI()
         {
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 10, 120, 40), "Pos1生成僵尸"))
             {
                 var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(22, 9));
-                EntityFactory.ZombieFactory.SpawnZombie(ZombieId.DuckyTubeNormalZombie, pos);
+                var zombieService = this.GetService<IZombieService>();
+                zombieService.SpawnZombie(ZombieId.DuckyTubeNormalZombie, pos);
             }
 
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 60, 120, 40), "获取500阳光"))
@@ -39,7 +42,8 @@ namespace TPL.PVZR.ViewControllers.Managers
 
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 160, 120, 40), "杀死所有僵尸"))
             {
-                var list = EntityFactory.ZombieFactory.ActiveZombies.ToList();
+                var zombieService = this.GetService<IZombieService>();
+                var list = zombieService.ActiveZombies.ToList();
                 foreach (var zombie in list)
                 {
                     zombie.Kill();
@@ -62,13 +66,22 @@ namespace TPL.PVZR.ViewControllers.Managers
                 this.GetModel<IGameModel>().GameData.InventoryData.AddCard(_);
             }
 
-            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 360, 120, 40), "时间流速加快"))
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 360, 120, 40), fast ? "恢复正常速度" : "时间流速加快"))
             {
-                ActionKit.Sequence()
-                    .Callback(() => Time.timeScale = 100)
-                    .Delay(1f)
-                    .Callback(() => Time.timeScale = 1)
-                    .Start(this);
+                if (fast)
+                {
+                    Time.timeScale = 1;
+                    fast = false;
+                }
+                else
+                {
+                    Time.timeScale = 100;
+                    fast = true;
+                }
+            }
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 410, 120, 40), invulnerable ? "解除无敌" : "玩家无敌"))
+            {
+                invulnerable = !invulnerable;
             }
 
             // if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -86,6 +99,9 @@ namespace TPL.PVZR.ViewControllers.Managers
                 ZombieAISystem.ZombieAIUnit.DebugLogCluster(handPos);
             }
         }
+
+        private bool fast;
+        public bool invulnerable;
 
 
         public static event Action OnUpdate;

@@ -127,7 +127,6 @@ namespace TPL.PVZR.Helpers.New.ClassCreator
 
         public static CoinTradeData CreateRandomCoinTradeDataByMazeMap(int offset)
         {
-            $"offset: {offset}".LogInfo();
             var lootPoolId = _lootPoolPool.GetRandomOutput().lootPoolDef.Id;
             var targetRandomPool = _coinTradePoolDict[lootPoolId];
             targetRandomPool.SetWeightModifier(info => info.weight == 0 ? 0 : info.weight + offset);

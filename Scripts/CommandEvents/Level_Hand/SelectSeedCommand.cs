@@ -3,17 +3,13 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Systems;
 using TPL.PVZR.Systems.Level_Data;
 using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs
 {
-    public struct SelectSeedEvent : IServiceEvent
-    {
-        public SeedData SelectedSeedData;
-    }
-
     public class SelectSeedCommand : AbstractCommand
     {
         public SelectSeedCommand(SeedData seedData)
@@ -39,7 +35,8 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs
                 throw new Exception($"尝试选择植物，但是他还在冷却时间");
 
             // 
-            this.SendEvent<SelectSeedEvent>(new SelectSeedEvent { SelectedSeedData = _selectedSeed });
+            var handService = this.GetService<IHandService>();
+            handService.SelectSeed(_selectedSeed);
         }
     }
 }

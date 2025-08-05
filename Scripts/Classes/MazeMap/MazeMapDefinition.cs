@@ -12,6 +12,7 @@ namespace TPL.PVZR.Classes.MazeMap
     {
         NotSet = 0,
         N0 = 1,
+        N1 = 2,
     }
 
     [Serializable]
@@ -54,10 +55,9 @@ namespace TPL.PVZR.Classes.MazeMap
         public List<SerializableKeyValuePair<Vector2Int, Vector2Int>> TombCountRangeOfStage;
 
         [Tooltip("墓碑内容配置")] public List<TombContentConfig> TombContentConfigs;
-        
+
         // Loot
-        [Header("LootPool")]
-        public List<LootPoolDef> LootPools;
+        [Header("LootPool")] public List<LootPoolDef> LootPools;
         public AwardGenerateInfo InitialAwards;
     }
 }

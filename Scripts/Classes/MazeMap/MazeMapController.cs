@@ -17,11 +17,13 @@ namespace TPL.PVZR.Classes.MazeMap
     {
         #region 操作
 
+        // 初始化阶段
         void GenerateMazeMatrix();
-        void InitializeTombData();
-        void LoadTombData();
+
+        void LoadTombDataFromMazeMapData();
+
+        // 过程阶段
         void BreakTomb(ITombData tombData);
-        void BreakFinalTomb(ITombData tombData);
         void SetUpView();
 
         #endregion
@@ -53,43 +55,45 @@ namespace TPL.PVZR.Classes.MazeMap
 
         public abstract void GenerateMazeMatrix();
 
-        public void LoadTombData()
+        public void LoadTombDataFromMazeMapData()
         {
             if (mazeMatrix == null) throw new Exception("MazeMatrix尚未生成，请先调用GenerateMazeMatrix()方法");
 
-            var currentNode = MazeMapData.PassedRoute.Any()
-                ? mazeMatrix[MazeMapData.PassedRoute.Last().x, MazeMapData.PassedRoute.Last().y]
-                : startNode;
-            var active = keyAdjacencyList[currentNode].Select(node => node.Position).ToList();
-
-            foreach (var tomb in MazeMapData.DiscoveredTombs)
+            if (MazeMapData.DiscoveredTombs.Count == 0)
+                // 不存在任何墓碑数据 - 初始化这个MazeMapData
             {
-                if (MazeMapData.PassedRoute.Any(passed => passed == tomb.Position))
+                foreach (var node in keyAdjacencyList[startNode])
                 {
-                    PassedTombs.Add(tomb);
-                }
-                else if (active.Contains(tomb.Position))
-                {
-                    ActiveTombs.Add(tomb);
-                }
-                else
-                {
-                    FormlyDiscoveredTombs.Add(tomb);
+                    // $"find: {startNode.Position}->{node.Position}".LogInfo();
+                    var chosenLevelDef = MazeMapData.GetRandomLevelOfStage(node.level);
+                    var tombData =
+                        TombCreator.CreateTombData(new Vector2Int(node.x, node.y), node.level, chosenLevelDef);
+                    MazeMapData.AddDiscoveredTomb(tombData);
+                    ActiveTombs.Add(tombData);
                 }
             }
-        }
-
-        public void InitializeTombData()
-        {
-            if (mazeMatrix == null) throw new Exception("MazeMatrix尚未生成，请先调用GenerateMazeMatrix()方法");
-
-            foreach (var node in keyAdjacencyList[startNode])
+            else
             {
-                // $"find: {startNode.Position}->{node.Position}".LogInfo();
-                var chosenLevelDef = MazeMapData.GetRandomLevelOfStage(node.level);
-                var tombData = TombCreator.CreateTombData(new Vector2Int(node.x, node.y), node.level, chosenLevelDef);
-                MazeMapData.AddDiscoveredTomb(tombData);
-                ActiveTombs.Add(tombData);
+                var currentNode = MazeMapData.PassedRoute.Any()
+                    ? mazeMatrix[MazeMapData.PassedRoute.Last().x, MazeMapData.PassedRoute.Last().y]
+                    : startNode;
+                var active = keyAdjacencyList[currentNode].Select(node => node.Position).ToList();
+
+                foreach (var tomb in MazeMapData.DiscoveredTombs)
+                {
+                    if (MazeMapData.PassedRoute.Any(passed => passed == tomb.Position))
+                    {
+                        PassedTombs.Add(tomb);
+                    }
+                    else if (active.Contains(tomb.Position))
+                    {
+                        ActiveTombs.Add(tomb);
+                    }
+                    else
+                    {
+                        FormlyDiscoveredTombs.Add(tomb);
+                    }
+                }
             }
         }
 
@@ -97,30 +101,31 @@ namespace TPL.PVZR.Classes.MazeMap
         {
             if (mazeMatrix == null) throw new Exception("MazeMatrix尚未生成，请先调用GenerateMazeMatrix()方法");
 
-            MazeMapData.AddPassedTomb(tombData);
-            PassedTombs.Add(tombData);
-            FormlyDiscoveredTombs.AddRange(ActiveTombs);
-            ActiveTombs.Clear();
-            var current = mazeMatrix[tombData.Position.x, tombData.Position.y];
-
-            foreach (var toDiscover in keyAdjacencyList[current])
+            if (tombData.Stage >= MazeMapData.TotalStageCount)
+                // 通关了
             {
-                var chosenLevelDef = MazeMapData.GetRandomLevelOfStage(toDiscover.level);
-                var data = TombCreator.CreateTombData(new Vector2Int(toDiscover.x, toDiscover.y), toDiscover.level,
-                    chosenLevelDef);
-                MazeMapData.AddDiscoveredTomb(data);
-                ActiveTombs.Add(data);
+                MazeMapData.AddPassedTomb(tombData);
+                PassedTombs.Add(tombData);
+                FormlyDiscoveredTombs.AddRange(ActiveTombs);
+                ActiveTombs.Clear();
             }
-        }
+            else
+            {
+                MazeMapData.AddPassedTomb(tombData);
+                PassedTombs.Add(tombData);
+                FormlyDiscoveredTombs.AddRange(ActiveTombs);
+                ActiveTombs.Clear();
+                var current = mazeMatrix[tombData.Position.x, tombData.Position.y];
 
-        public void BreakFinalTomb(ITombData tombData)
-        {
-            if (mazeMatrix == null) throw new Exception("MazeMatrix尚未生成，请先调用GenerateMazeMatrix()方法");
-
-            MazeMapData.AddPassedTomb(tombData);
-            PassedTombs.Add(tombData);
-            FormlyDiscoveredTombs.AddRange(ActiveTombs);
-            ActiveTombs.Clear();
+                foreach (var toDiscover in keyAdjacencyList[current])
+                {
+                    var chosenLevelDef = MazeMapData.GetRandomLevelOfStage(toDiscover.level);
+                    var data = TombCreator.CreateTombData(new Vector2Int(toDiscover.x, toDiscover.y), toDiscover.level,
+                        chosenLevelDef);
+                    MazeMapData.AddDiscoveredTomb(data);
+                    ActiveTombs.Add(data);
+                }
+            }
         }
 
         public void SetUpView()

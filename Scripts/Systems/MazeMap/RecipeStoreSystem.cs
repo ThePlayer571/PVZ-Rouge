@@ -3,16 +3,16 @@ using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
-using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.Systems.MazeMap
 {
-    public interface IRecipeStoreSystem : IServiceManageSystem, IDataSystem
+    public interface IRecipeStoreSystem : IDataSystem
     {
         RecipeData GetRecipeByIndex(int index);
     }
@@ -33,7 +33,7 @@ namespace TPL.PVZR.Systems.MazeMap
             if (ownedPlants.Count > 0)
             {
                 recipePool = TradeCreator.CreateRelatedRecipePool(ownedPlants);
-                
+
                 if (recipePool.IsFinished)
                 {
                     var lockedPlants = _GameModel.GameData.InventoryData.Cards
@@ -67,30 +67,14 @@ namespace TPL.PVZR.Systems.MazeMap
         protected override void OnInit()
         {
             _GameModel = this.GetModel<IGameModel>();
+            var phaseService = this.GetService<IPhaseService>();
 
-            this.RegisterEvent<OnPhaseChangeEvent>(e =>
+            phaseService.RegisterCallBack((GamePhase.MazeMapInitialization, PhaseStage.EnterEarly), e =>
             {
-                switch (e.GamePhase)
-                {
-                    case GamePhase.MazeMapInitialization:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                AutoWriteRecipes();
-                                break;
-                        }
-
-                        break;
-                    case GamePhase.MazeMap:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.LeaveLate:
-                                ClearRecipes();
-                                break;
-                        }
-
-                        break;
-                }
+                var notRefresh = (bool)e.Paras.GetValueOrDefault<string, object>("NotRefresh", false);
+                if (notRefresh) return;
+                //
+                AutoWriteRecipes();
             });
 
             this.RegisterEvent<BarterEvent>(e =>

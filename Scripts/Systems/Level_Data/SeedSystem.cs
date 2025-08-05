@@ -1,7 +1,7 @@
 using QFramework;
 using TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs;
-using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools.SoyoFramework;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
@@ -42,24 +42,9 @@ namespace TPL.PVZR.Systems.Level_Data
         {
             _LevelModel = this.GetModel<ILevelModel>();
 
-            this.RegisterEvent<OnPhaseChangeEvent>(e =>
-            {
-                switch (e.GamePhase)
-                {
-                    case GamePhase.Gameplay:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                StartRunning();
-                                break;
-                            case PhaseStage.LeaveNormal:
-                                StopRunning();
-                                break;
-                        }
-
-                        break;
-                }
-            });
+            var phaseService = this.GetService<IPhaseService>();
+            phaseService.RegisterCallBack((GamePhase.Gameplay, PhaseStage.EnterNormal), e => { StartRunning(); });
+            phaseService.RegisterCallBack((GamePhase.Gameplay, PhaseStage.LeaveNormal), e => { StopRunning(); });
 
             this.RegisterEvent<OnSeedInHandPlanted>(e => { e.PlantedSeed.ColdTimeTimer.Reset(); });
         }

@@ -1,5 +1,6 @@
 using QFramework;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 
 namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
 {
@@ -13,7 +14,8 @@ namespace TPL.PVZR.CommandEvents.Level_ChooseSeeds
                 throw new System.Exception($"在不正确的阶段执行OnStartGameBtnPressedCommand：{PhaseModel.GamePhase}");
             
             // 进入游戏阶段
-            PhaseModel.ChangePhase(GamePhase.ReadyToStart);
+            var phaseService = this.GetService<IPhaseService>();
+            phaseService.ChangePhase(GamePhase.ReadyToStart);
         }
     }
 }

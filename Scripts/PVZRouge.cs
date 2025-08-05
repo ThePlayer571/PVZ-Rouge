@@ -1,6 +1,7 @@
 using QFramework;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Systems;
 using TPL.PVZR.Systems.Level_Data;
 using TPL.PVZR.Systems.Level_Event;
@@ -25,7 +26,6 @@ namespace TPL.PVZR
             this.RegisterSystem<ISellStoreSystem>(new SellStoreSystem());
             this.RegisterSystem<ISaveSystem>(new SaveSystem());
             this.RegisterSystem<ILevelGridSystem>(new LevelGridSystem());
-            this.RegisterSystem<IPlantSpawnSystem>(new PlantSpawnSystem());
             this.RegisterSystem<IGravestoneSystem>(new GravestoneSystem());
             // ===== Level =====
             this.RegisterModel<ILevelModel>(new LevelModel());
@@ -41,7 +41,11 @@ namespace TPL.PVZR
 
             // ===== Others =====
             this.RegisterModel<IPhaseModel>(new PhaseModel());
-
+            this.RegisterService<IPhaseService>(new PhaseService());
+            this.RegisterService<IGamePhaseChangeService>(new GamePhaseChangeService());
+            this.RegisterService<ISaveService>(new SaveService());
+            this.RegisterService<IPlantService>(new PlantService());
+            this.RegisterService<IZombieService>(new ZombieService());
         }
     }
 }

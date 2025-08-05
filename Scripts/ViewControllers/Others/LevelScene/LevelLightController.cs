@@ -1,7 +1,8 @@
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Level;
-using TPL.PVZR.CommandEvents.Phase;
+using TPL.PVZR.CommandEvents.New.Level_Shit;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -46,21 +47,9 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
 
         public void Awake()
         {
-            this.RegisterEvent<OnPhaseChangeEvent>(e =>
-            {
-                switch (e.GamePhase)
-                {
-                    case GamePhase.LevelInitialization:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                SetUpLights();
-                                break;
-                        }
-
-                        break;
-                }
-            }).UnRegisterWhenGameObjectDestroyed(this);
+            var phaseService = this.GetService<IPhaseService>();
+            this.RegisterEvent<OnLevelGameObjectPrepared>(e => { SetUpLights(); })
+                .UnRegisterWhenGameObjectDestroyed(this);
         }
 
         public IArchitecture GetArchitecture()

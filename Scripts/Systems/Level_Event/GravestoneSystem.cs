@@ -3,9 +3,9 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.CommandEvents.Level_Gameplay.Waves;
 using TPL.PVZR.CommandEvents.Level_Shit;
-using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
 using TPL.PVZR.Tools.SoyoFramework;
@@ -44,21 +44,8 @@ namespace TPL.PVZR.Systems.Level_Event
                 }
             });
 
-            this.RegisterEvent<OnPhaseChangeEvent>(e =>
-            {
-                switch (e.GamePhase)
-                {
-                    case GamePhase.LevelExiting:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                Reset();
-                                break;
-                        }
-
-                        break;
-                }
-            });
+            var phaseService = this.GetService<IPhaseService>();
+            phaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterNormal), e => { Reset(); });
         }
 
         public GameObject GetGravestoneObject(Vector2Int cellPos)

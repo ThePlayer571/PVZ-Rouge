@@ -4,6 +4,7 @@ using TMPro;
 using TPL.PVZR.Classes.DataClasses.Tomb;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents._NotClassified_;
+using TPL.PVZR.Services;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,7 +41,7 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
 
             StartLevelBtn.onClick.AddListener(() =>
             {
-                this.SendCommand<StartLevelCommand>(new StartLevelCommand(_openedTombData));
+                this.GetService<IGamePhaseChangeService>().StartLevel(_openedTombData);
             });
 
             toggle.onValueChanged.AddListener(Display);

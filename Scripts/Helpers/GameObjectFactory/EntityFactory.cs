@@ -150,48 +150,9 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
 
         #endregion
 
-        #region PlantFactory
-
-        public static class PlantFactory
-        {
-            public static Plant SpawnPlant(PlantDef def, Direction2 direction, Vector2Int cellPos)
-            {
-                var plantPrefab = PlantConfigReader.GetPlantPrefab(def);
-
-                var plant = plantPrefab
-                    .Instantiate(LevelGridHelper.CellToWorldBottom(cellPos), Quaternion.identity)
-                    .GetComponent<Plant>();
-                plant.Initialize(direction);
-
-                return plant;
-            }
-        }
-
-        #endregion
-
         #region ZombieFactory
 
-        public static class ZombieFactory
-        {
-            public static HashSet<Zombie> ActiveZombies = new();
-
-            public static Zombie SpawnZombie(ZombieId id, Vector2 pos)
-            {
-                var zombiePrefab = ZombieConfigReader.GetZombiePrefab(id);
-
-                var zombie = zombiePrefab.Instantiate(pos, Quaternion.identity).GetComponent<Zombie>();
-                zombie.Initialize();
-
-                ActiveZombies.Add(zombie);
-                return zombie;
-            }
-
-            public static void RemoveZombie(Zombie zombie)
-            {
-                zombie.gameObject.DestroySelf();
-                ActiveZombies.Remove(zombie);
-            }
-        }
+       
 
         #endregion
 

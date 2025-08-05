@@ -5,6 +5,7 @@ using TPL.PVZR.CommandEvents.__NewlyAdded__;
 using TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Systems;
 using TPL.PVZR.Systems.Level_Data;
 using TPL.PVZR.Tools;
@@ -12,9 +13,9 @@ using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 
 namespace TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs
 {
-    public class PlantingSeedInHandCommand : AbstractCommand
+    public class PlantSeedInHandCommand : AbstractCommand
     {
-        public PlantingSeedInHandCommand(Direction2 direction)
+        public PlantSeedInHandCommand(Direction2 direction)
         {
             this._direction = direction;
         }
@@ -42,21 +43,11 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs
             var canStack = _LevelGridModel.CanStackPlantOn(cellPos, def);
             if (!canStack && !canSpawn)
                 throw new Exception($"无法在此处种植植物，Pos:{cellPos}, Plant: {def}"); // 
+            
+            //
+            var handService = this.GetService<IHandService>();
+            handService.PlantSeedInHand(_direction, bySpawn: canSpawn);
 
-            this.SendEvent<OnSeedInHandPlanted>(new OnSeedInHandPlanted
-                { Direction = _direction, PlantedSeed = _HandSystem.HandInfo.Value.PickedSeed });
-
-            if (canSpawn)
-            {
-                this.SendCommand<SpawnPlantCommand>(new SpawnPlantCommand(def, cellPos, _direction));
-            }
-
-            else if (canStack)
-            {
-                var plant =
-                    _LevelGridModel.GetCell(cellPos).CellPlantData.GetPlant(def) as ICanBeStackedOn;
-                plant.StackAdd();
-            }
         }
     }
 }

@@ -1,7 +1,7 @@
 using System.Linq;
 using QFramework;
-using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 
 namespace TPL.PVZR.Systems
 {
@@ -19,35 +19,20 @@ namespace TPL.PVZR.Systems
             _GameModel = this.GetModel<IGameModel>();
             _LevelModel = this.GetModel<ILevelModel>();
 
-            this.RegisterEvent<OnPhaseChangeEvent>(e =>
+            var phaseService = this.GetService<IPhaseService>();
+
+            phaseService.RegisterCallBack((GamePhase.LevelPassed, PhaseStage.EnterNormal), e =>
             {
-                switch (e.GamePhase)
+                foreach (var chosenCard in _LevelModel.ChosenSeeds.Select(seedData => seedData.CardData))
                 {
-                    case GamePhase.LevelPassed or GamePhase.LevelDefeat:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                foreach (var chosenCard in
-                                         _LevelModel.ChosenSeeds.Select(seedData => seedData.CardData))
-                                {
-                                    if (!chosenCard.Locked)
-                                        _GameModel.GameData.InventoryData.RemoveCard(chosenCard);
-                                }
-
-                                break;
-                        }
-
-                        break;
-                    case GamePhase.MazeMap:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.LeaveLate:
-                                _GameModel.GameData.InventoryData.SortCards();
-                                break;
-                        }
-
-                        break;
+                    if (!chosenCard.Locked) _GameModel.GameData.InventoryData.RemoveCard(chosenCard);
                 }
+            });
+
+            phaseService.RegisterCallBack((GamePhase.MazeMap, PhaseStage.LeaveLate), e =>
+            {
+                //
+                _GameModel.GameData.InventoryData.SortCards();
             });
         }
     }

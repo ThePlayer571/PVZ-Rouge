@@ -36,14 +36,7 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
 
         public static SeedController CreateSeedController(SeedData seedData)
         {
-            if (seedData == null)
-            {
-                throw new ArgumentNullException(nameof(seedData));
-            }
-
-            var go = _seedControllerPrefab
-                .Instantiate(Vector3.zero, Quaternion.identity, UIKit.GetPanel<UIChooseSeedPanel>().transform)
-                .GetComponent<SeedController>();
+            var go = _seedControllerPrefab.Instantiate().GetComponent<SeedController>();
             go.Initialize(seedData);
             return go;
         }

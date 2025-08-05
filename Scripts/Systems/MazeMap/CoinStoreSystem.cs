@@ -6,20 +6,21 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses.CoinTrade;
 using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.CommandEvents.__NewlyAdded__;
-using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools.SoyoFramework;
 using UnityEngine;
 using UnityEngineInternal;
 
 namespace TPL.PVZR.Systems.MazeMap
 {
-    public interface ICoinStoreSystem : IServiceManageSystem, IDataSystem
+    public interface ICoinStoreSystem : IDataSystem
     {
         EasyEvent OnRewrite { get; }
         CoinTradeData GetCoinTradeByIndex(int index);
+
         int CurrentRefreshCost { get; }
     }
 
@@ -76,44 +77,22 @@ namespace TPL.PVZR.Systems.MazeMap
         {
             _GameModel = this.GetModel<IGameModel>();
 
-            this.RegisterEvent<OnPhaseChangeEvent>(e =>
+            var phaseService = this.GetService<IPhaseService>();
+            phaseService.RegisterCallBack((GamePhase.GameInitialization, PhaseStage.EnterNormal), e =>
             {
-                switch (e.GamePhase)
-                {
-                    case GamePhase.GameInitialization:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                TradeCreator.InitializeCoinTradeGenerator(_GameModel.GameData.MazeMapData);
-                                break;
-                        }
-
-                        break;
-                    case GamePhase.MazeMapInitialization:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                _refreshCount = 0;
-                                AutoWriteCoinTrades();
-                                break;
-                        }
-
-                        break;
-                    case GamePhase.MazeMap:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.LeaveLate:
-                                ClearCoinTrades();
-                                break;
-                        }
-
-                        break;
-                }
+                //
+                TradeCreator.InitializeCoinTradeGenerator(_GameModel.GameData.MazeMapData);
+            });
+            phaseService.RegisterCallBack((GamePhase.MazeMapInitialization, PhaseStage.EnterEarly), e =>
+            {
+                var notRefresh = (bool)e.Paras.GetValueOrDefault<string, object>("NotRefresh", false);
+                if (notRefresh) return;
+                _refreshCount = 0;
+                AutoWriteCoinTrades();
             });
 
-            this.RegisterEvent<CoinStoreRefreshEvent>(e =>
+            this.RegisterEvent<OnCoinStoreRefreshed>(e =>
             {
-                _GameModel.GameData.InventoryData.Coins.Value -= CurrentRefreshCost;
                 _refreshCount++;
 
                 AutoWriteCoinTrades();
@@ -121,9 +100,9 @@ namespace TPL.PVZR.Systems.MazeMap
 
             this.RegisterEvent<CoinTradeEvent>(e =>
             {
+                var inventory = _GameModel.GameData.InventoryData;
                 var tradeData = GetCoinTradeByIndex(e.index);
                 tradeData.Used = true;
-                var inventory = _GameModel.GameData.InventoryData;
 
                 // 消耗
                 inventory.Coins.Value -= tradeData.CoinAmount;
@@ -141,6 +120,16 @@ namespace TPL.PVZR.Systems.MazeMap
         }
 
         public int CurrentRefreshCost => RefreshCostOf(_refreshCount + 1);
+
+        public void Refresh()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DealCoinTrade(int index)
+        {
+            throw new NotImplementedException();
+        }
 
         public int RefreshCostOf(int refreshCount)
         {

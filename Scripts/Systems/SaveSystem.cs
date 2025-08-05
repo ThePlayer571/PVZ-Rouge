@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using QFramework;
-using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools.Save;
 
 namespace TPL.PVZR.Systems
@@ -17,39 +18,28 @@ namespace TPL.PVZR.Systems
         {
             _GameModel = this.GetModel<IGameModel>();
 
-            this.RegisterEvent<OnPhaseChangeEvent>(e =>
+            var phaseService = this.GetService<IPhaseService>();
+            var saveService = this.GetService<ISaveService>();
+
+            phaseService.RegisterCallBack((GamePhase.GameInitialization, PhaseStage.LeaveLate), e =>
             {
-                switch (e.GamePhase)
+                var isNewGame = (bool)e.Paras["IsNewGame"];
+                if (isNewGame)
+                    saveService.SaveManager.Save(SaveManager.GAME_DATA_FILE_NAME, _GameModel.GameData.ToSaveData());
+            });
+
+            phaseService.RegisterCallBack((GamePhase.LevelPassed, PhaseStage.LeaveLate), e =>
+            {
+                //
+                saveService.SaveManager.Save(SaveManager.GAME_DATA_FILE_NAME, _GameModel.GameData.ToSaveData());
+            });
+
+            phaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.LeaveLate), e =>
+            {
+                var deleteSave = (bool)e.Paras.GetValueOrDefault("DeleteSave", false);
+                if (deleteSave)
                 {
-                    case GamePhase.GameInitialization:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.LeaveLate:
-                                var isNewGame = (bool)e.Parameters["IsNewGame"];
-                                if (isNewGame)
-                                    SaveHelper.Save(SaveHelper.GAME_DATA_FILE_NAME, _GameModel.GameData.ToSaveData());
-                                break;
-                        }
-
-                        break;
-                    case GamePhase.LevelPassed:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.LeaveLate:
-                                SaveHelper.Save(SaveHelper.GAME_DATA_FILE_NAME, _GameModel.GameData.ToSaveData());
-                                break;
-                        }
-
-                        break;
-                    case GamePhase.GameExiting:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.LeaveLate:
-                                SaveHelper.Delete(SaveHelper.GAME_DATA_FILE_NAME);
-                                break;
-                        }
-
-                        break;
+                    saveService.SaveManager.Delete(SaveManager.GAME_DATA_FILE_NAME);
                 }
             });
         }

@@ -1,8 +1,10 @@
 using System;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Game;
+using TPL.PVZR.Classes.MazeMap;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools.Random;
 
 namespace TPL.PVZR.CommandEvents._NotClassified_
@@ -24,9 +26,10 @@ namespace TPL.PVZR.CommandEvents._NotClassified_
                 throw new Exception($"在不正确的阶段执行StartNewGameCommand：{PhaseModel.GamePhase}");
 
             // 生成一个新的游戏数据
-            IGameData GameData = GameCreator.CreateGameData(new GameDef { Id = GameId.N0 }, _seed);
+            IGameData GameData = GameCreator.CreateGameData(new GameDef { GameDifficulty = GameDifficulty.N0}, _seed);
             // 开始游戏
-            this.SendCommand<StartGameCommand>(new StartGameCommand(GameData, true));
+            var gamePhaseChangeService = this.GetService<IGamePhaseChangeService>();
+            gamePhaseChangeService.StartGame(GameData, false);
         }
     }
 }

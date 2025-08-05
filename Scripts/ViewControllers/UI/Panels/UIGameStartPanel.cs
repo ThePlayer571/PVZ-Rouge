@@ -3,6 +3,7 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses.Game;
 using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.Helpers.New;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools.Save;
 
 namespace TPL.PVZR.ViewControllers.UI
@@ -20,19 +21,24 @@ namespace TPL.PVZR.ViewControllers.UI
             mData = uiData as UIGameStartPanelData ?? new UIGameStartPanelData();
             // please add init code here
 
-            if (!SaveHelper.Exists(SaveHelper.GAME_DATA_FILE_NAME))
+            var saveService = this.GetService<ISaveService>();
+            var gamePhaseChangeService = this.GetService<IGamePhaseChangeService>();
+            
+            if (!saveService.SaveManager.Exists(SaveManager.GAME_DATA_FILE_NAME))
             {
                 ContinueBtn.interactable = false;
             }
 
             ContinueBtn.onClick.AddListener(() =>
             {
-                var savedGameData = new GameData(SaveHelper.Load<GameSaveData>(SaveHelper.GAME_DATA_FILE_NAME));
-                this.SendCommand<StartGameCommand>(new StartGameCommand(savedGameData, false));
+                // 加载数据并开始游戏
+                var savedGameData = new GameData(saveService.SaveManager.Load<GameSaveData>(SaveManager.GAME_DATA_FILE_NAME));
+                gamePhaseChangeService.StartGame(savedGameData, false);
             });
 
             StartBtn.onClick.AddListener(() =>
             {
+                // 开始随机新游戏（史山，怎么一会儿service一会儿command的）
                 this.SendCommand<StartNewGameCommand>(new StartNewGameCommand(_inputSeed));
             });
 

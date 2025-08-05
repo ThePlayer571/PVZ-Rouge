@@ -17,7 +17,7 @@ namespace TPL.PVZR.Helpers.New.DataReader
         private static Dictionary<ZombieArmorId, ZombieArmorDefinition> _zombieArmorDefinitionDict;
 
 
-        public static async Task Initialize()
+        public static async Task InitializeAsync()
         {
             var handle = Addressables.LoadAssetsAsync<ZombieArmorDefinition>("ZombieArmorDefinition", null);
             await handle.Task;

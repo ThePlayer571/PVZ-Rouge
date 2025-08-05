@@ -1,8 +1,8 @@
 using QFramework;
 using TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs;
-using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Systems.Level_Data;
 using TPL.PVZR.Tools;
 using UnityEngine;
@@ -39,7 +39,7 @@ namespace TPL.PVZR.ViewControllers.Managers
                 if (!_LevelGridModel.CanSpawnPlantOn(pos, def) && !_LevelGridModel.CanStackPlantOn(pos, def))
                     return; // 
 
-                this.SendCommand<PlantingSeedInHandCommand>(new PlantingSeedInHandCommand(Direction2.Left));
+                this.SendCommand<PlantSeedInHandCommand>(new PlantSeedInHandCommand(Direction2.Left));
             };
 
             _inputActions.Level.PlantingRight.performed += context =>
@@ -53,7 +53,7 @@ namespace TPL.PVZR.ViewControllers.Managers
                 if (!_LevelGridModel.CanSpawnPlantOn(pos, def) && !_LevelGridModel.CanStackPlantOn(pos, def))
                     return; // 
 
-                this.SendCommand<PlantingSeedInHandCommand>(new PlantingSeedInHandCommand(Direction2.Right));
+                this.SendCommand<PlantSeedInHandCommand>(new PlantSeedInHandCommand(Direction2.Right));
             };
 
             _inputActions.Level.Deselect.performed += (context) =>
@@ -133,29 +133,16 @@ namespace TPL.PVZR.ViewControllers.Managers
             }
 
             // _inputActions的开关
-            this.RegisterEvent<OnPhaseChangeEvent>(e =>
+            var phaseService = this.GetService<IPhaseService>();
+            phaseService.RegisterCallBack((GamePhase.LevelInitialization, PhaseStage.EnterNormal), e =>
             {
-                switch (e.GamePhase)
-                {
-                    case GamePhase.LevelInitialization:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                _inputActions.Level.Enable();
-                                break;
-                        }
-
-                        break;
-                    case GamePhase.LevelExiting:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                _inputActions.Level.Disable();
-                                break;
-                        }
-
-                        break;
-                }
+                //
+                _inputActions.Level.Enable();
+            });
+            phaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterNormal), e =>
+            {
+                //
+                _inputActions.Level.Disable();
             });
         }
 

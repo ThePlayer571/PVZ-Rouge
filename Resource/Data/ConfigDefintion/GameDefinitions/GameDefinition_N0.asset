@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f02b54c1f36d487a8c873bb47715120f, type: 3}
   m_Name: GameDefinition_N0
   m_EditorClassIdentifier: 
+  GameDef:
+    GameDifficulty: 1
   MazeMapDef:
     Id: 0
     Difficulty: 1

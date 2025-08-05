@@ -7,19 +7,13 @@ using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.SoyoFramework;
 using UnityEngine;
 
 namespace TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn
 {
-    public struct SpawnPlantEvent : IServiceEvent
-    {
-        public PlantDef Def;
-        public Vector2Int CellPos;
-        public Direction2 Direction;
-    }
-
     public class SpawnPlantCommand : AbstractCommand
     {
         public SpawnPlantCommand(PlantDef def, Vector2Int cellPos, Direction2 direction)
@@ -45,9 +39,8 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn
                 throw new Exception($"无法在此处种植植物，Pos:{_cellPos}, Plant: {_def}"); // 
 
             //
-            this.SendEvent<SpawnPlantEvent>(new SpawnPlantEvent
-                { Def = _def, CellPos = _cellPos, Direction = _direction });
-            //
+            var plantService = this.GetService<IPlantService>();
+            plantService.SpawnPlant(_def, _cellPos, _direction);
         }
     }
 }

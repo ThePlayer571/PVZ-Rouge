@@ -7,6 +7,7 @@ using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.SoyoFramework;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
@@ -14,11 +15,6 @@ using UnityEngine;
 
 namespace TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn
 {
-    public struct RemovePlantEvent : IServiceEvent
-    {
-        public Plant Plant;
-    }
-
     public class RemovePlantCommand : AbstractCommand
     {
         public RemovePlantCommand(Plant plant)
@@ -33,11 +29,12 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn
             var _PhaseModel = this.GetModel<IPhaseModel>();
 
             // 异常处理
-            if (!_PhaseModel.GamePhase.IsInRoughPhase(RoughPhase.Level))
+            if (!_PhaseModel.IsInRoughPhase(RoughPhase.Level))
                 throw new Exception($"尝试调用RemovePlantCommand，但GameState: {_PhaseModel.GamePhase}"); // 游戏阶段正确
 
             //
-            this.SendEvent<RemovePlantEvent>(new RemovePlantEvent { Plant = _plant });
+            var plantService = this.GetService<IPlantService>();
+            plantService.RemovePlant(_plant);
         }
     }
 }

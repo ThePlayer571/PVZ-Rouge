@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TPL.PVZR.Tools.Save
 {
-    public static class SaveHelper
+    public class SaveManager
     {
         public const string GAME_DATA_FILE_NAME = "GameData";
 
@@ -16,7 +16,7 @@ namespace TPL.PVZR.Tools.Save
         /// <param name="fileName">文件名</param>
         /// <param name="defaultValue">加载失败时的默认值</param>
         /// <returns>加载的数据或默认值</returns>
-        public static TSave Load<TSave>(string fileName, TSave defaultValue = default(TSave)) where TSave : ISaveData
+        public TSave Load<TSave>(string fileName, TSave defaultValue = default(TSave)) where TSave : ISaveData
         {
             try
             {
@@ -53,7 +53,7 @@ namespace TPL.PVZR.Tools.Save
         /// <param name="fileName">文件名</param>
         /// <param name="saveData">要保存的数据</param>
         /// <returns>保存是否成功</returns>
-        public static bool Save<TSave>(string fileName, TSave saveData) where TSave : ISaveData
+        public bool Save<TSave>(string fileName, TSave saveData) where TSave : ISaveData
         {
             try
             {
@@ -90,7 +90,7 @@ namespace TPL.PVZR.Tools.Save
         /// </summary>
         /// <param name="fileName">要删除的文件名</param>
         /// <returns>删除是否成功</returns>
-        public static bool Delete(string fileName)
+        public bool Delete(string fileName)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace TPL.PVZR.Tools.Save
             }
         }
 
-        public static bool Exists(string fileName)
+        public bool Exists(string fileName)
         {
             string path = Path.Combine(Application.persistentDataPath, fileName);
             return File.Exists(path);

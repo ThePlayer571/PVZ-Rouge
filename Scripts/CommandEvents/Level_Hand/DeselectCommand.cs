@@ -1,15 +1,12 @@
 using QFramework;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Systems;
 using TPL.PVZR.Systems.Level_Data;
 using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs
 {
-    public struct DeselectEvent : IServiceEvent
-    {
-    }
-
     public class DeselectCommand : AbstractCommand
     {
         public DeselectCommand()
@@ -27,7 +24,8 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs
                 throw new System.Exception($"执行了DeselectCommand，但是手的状态为：{HandSystem.HandInfo.Value.HandState}");
 
             //
-            this.SendEvent<DeselectEvent>();
+            var handService = this.GetService<IHandService>();
+            handService.Deselect();
         }
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackId: 4
   damage: 100
-  punchForce: 0
-  punchType: 0
+  punchForce: 5
+  punchType: 1
   isFrameDamage: 1
   effects: []

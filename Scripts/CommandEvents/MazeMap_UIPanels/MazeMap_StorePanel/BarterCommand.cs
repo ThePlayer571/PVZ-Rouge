@@ -1,12 +1,15 @@
 using System;
+using System.Linq;
 using QFramework;
+using TPL.PVZR.Helpers.New;
+using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Models;
 using TPL.PVZR.Systems.MazeMap;
 using TPL.PVZR.Tools.SoyoFramework;
 
 namespace TPL.PVZR.CommandEvents.__NewlyAdded__
 {
-    public struct BarterEvent : IServiceEvent
+    public struct BarterEvent
     {
         public int index;
     }
@@ -34,6 +37,8 @@ namespace TPL.PVZR.CommandEvents.__NewlyAdded__
             if (!inventory.CanAfford(recipe)) throw new Exception($"材料不足，无法兑换，index: {_index}");
 
             //
+
+         
             this.SendEvent<BarterEvent>(new BarterEvent { index = _index });
         }
     }

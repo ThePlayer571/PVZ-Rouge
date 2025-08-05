@@ -3,10 +3,10 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.CommandEvents.Level_Gameplay.Waves;
-using TPL.PVZR.CommandEvents.Phase;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
 using TPL.PVZR.Tools.SoyoFramework;
@@ -71,24 +71,9 @@ namespace TPL.PVZR.Systems.Level_Event
 
             _sunTimer = new Timer(10f);
 
-            this.RegisterEvent<OnPhaseChangeEvent>(e =>
-            {
-                switch (e.GamePhase)
-                {
-                    case GamePhase.Gameplay:
-                        switch (e.PhaseStage)
-                        {
-                            case PhaseStage.EnterNormal:
-                                StartRunning();
-                                break;
-                            case PhaseStage.LeaveNormal:
-                                StopRunning();
-                                break;
-                        }
-
-                        break;
-                }
-            });
+            var phaseService = this.GetService<IPhaseService>();
+            phaseService.RegisterCallBack((GamePhase.Gameplay, PhaseStage.EnterNormal), e => { StartRunning(); });
+            phaseService.RegisterCallBack((GamePhase.Gameplay, PhaseStage.LeaveNormal), e => { StopRunning(); });
 
             this.RegisterEvent<OnWaveStart>(e =>
             {

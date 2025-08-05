@@ -1,5 +1,6 @@
 using QFramework;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Managers
@@ -13,9 +14,10 @@ namespace TPL.PVZR.ViewControllers.Managers
                 .Delay(0.1f)
                 .Callback(() =>
                 {
-                    _.ChangePhase(GamePhase.PreInitialization);
+                    var phaseService = this.GetService<IPhaseService>();
+                    phaseService.ChangePhase(GamePhase.PreInitialization);
                 }).Start(this);
-            
+
             // ActionKit.Sequence()
             //     .Delay(0.5f)
             //     .Callback(() =>
