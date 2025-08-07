@@ -13,11 +13,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
         private float currentRotation;
         private float targetRotation;
         private const float rotationChangeFactor = 5f;
-        
+
         protected override void SetUpFSM()
         {
             ViewFSM.State(ZombieState.DefaultTargeting)
-                .OnEnter(() => { _Animator.SetTrigger("EnterDefaultTargeting"); })
+                .OnEnter(() => { _Animator.SetInteger("ZombieState", (int)ZombieState.DefaultTargeting); })
                 .OnUpdate(() =>
                 {
                     targetRotation = Mathf.Clamp(Mathf.Abs(Zombie._Rigidbody2D.velocity.x), 0, 1) * 10f;
@@ -27,16 +27,16 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
             ViewFSM.State(ZombieState.Attacking)
                 .OnEnter(() =>
                 {
-                    _Animator.SetTrigger("EnterAttacking");
+                    _Animator.SetInteger("ZombieState", (int)ZombieState.Attacking);
                     currentRotation = 0;
                 });
             ViewFSM.State(ZombieState.Stunned)
                 .OnEnter(() =>
                 {
-                    _Animator.SetTrigger("EnterFrozen");
+                    _Animator.SetInteger("ZombieState", (int)ZombieState.Stunned);
                     currentRotation = 0;
                 });
-            
+
             ViewFSM.StartState(ZombieState.DefaultTargeting);
         }
 

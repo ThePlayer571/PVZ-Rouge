@@ -22,7 +22,7 @@ namespace TPL.PVZR.CommandEvents.MazeMap_AwardPanel
             var _AwardSystem = this.GetSystem<IAwardSystem>();
             var _GameModel = this.GetModel<IGameModel>();
 
-            if (!_AwardSystem.IsAwardAvailable)
+            if (!_AwardSystem.IsAwardAvailable.Value)
                 throw new Exception($"调用了 {nameof(ChooseAwardCommand)}，但AwardSystem.IsAwardAvailable: false");
             
             //
@@ -38,7 +38,8 @@ namespace TPL.PVZR.CommandEvents.MazeMap_AwardPanel
                 inventory.AddLootAuto(lootData);
             }
             
-            _AwardSystem.IsAwardAvailable = false;
+            _AwardSystem.ChosenAwardIndex.Value = index;
+            _AwardSystem.IsAwardAvailable.Value = false;
         }
     }
 }

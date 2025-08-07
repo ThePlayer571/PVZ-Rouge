@@ -18,10 +18,7 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
 
         void Start()
         {
-            this.RegisterEvent<OnLevelGameObjectPrepared>(e =>
-                {
-                    InitializeCamera();
-                })
+            this.RegisterEvent<OnLevelGameObjectPrepared>(e => { InitializeCamera(); })
                 .UnRegisterWhenGameObjectDestroyed(this);
         }
 
@@ -49,7 +46,15 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
         {
             if (_mainCamera == null) return;
             Vector3 cameraDelta = virtualCamera.State.FinalPosition - _lastCameraPosition;
-            transform.position += cameraDelta * parallaxFactor;
+
+            // 只在X和Y轴应用视差效果，保持Z轴不变
+            Vector3 parallaxMovement = new Vector3(
+                cameraDelta.x * parallaxFactor,
+                cameraDelta.y * parallaxFactor,
+                0f // 保持Z轴不变
+            );
+
+            transform.position += parallaxMovement;
             _lastCameraPosition = virtualCamera.State.FinalPosition;
         }
 

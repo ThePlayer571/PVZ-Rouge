@@ -132,7 +132,10 @@ namespace TPL.PVZR.Systems.Level_Data
                 }
 
                 //
-                UIKit.ClosePanel<UIChooseSeedPanel>();
+                ActionKit.Sequence()
+                    .Delay(1f)
+                    .Callback(UIKit.ClosePanel<UIChooseSeedPanel>)
+                    .StartGlobal();
             });
 
             #endregion

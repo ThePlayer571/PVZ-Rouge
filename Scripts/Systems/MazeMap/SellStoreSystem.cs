@@ -78,6 +78,10 @@ namespace TPL.PVZR.Systems.MazeMap
                 //
                 AutoWriteSellTrades();
             });
+            phaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.LeaveNormal), e =>
+            {
+                ClearSellTrades();
+            });
 
 
             this.RegisterEvent<SellTradeEvent>(e =>

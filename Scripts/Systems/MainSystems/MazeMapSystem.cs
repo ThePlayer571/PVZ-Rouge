@@ -81,8 +81,11 @@ namespace TPL.PVZR.Systems
                     .Callback(() => _MazeMapSceneHandle.Release())
                     .StartGlobal();
             });
-            phaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.LeaveLate),
-                e => { _MazeMapController = null; });
+            phaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.LeaveLate), e =>
+            {
+                //
+                _MazeMapController = null;
+            });
         }
     }
 }

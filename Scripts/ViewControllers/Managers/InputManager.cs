@@ -1,34 +1,42 @@
+using System;
 using QFramework;
+using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.Services;
 using TPL.PVZR.Systems.Level_Data;
 using TPL.PVZR.Tools;
-using UnityEngine;
+using TPL.PVZR.ViewControllers.UI;
 
 namespace TPL.PVZR.ViewControllers.Managers
 {
-    /// <summary>
-    /// 为解耦良好而设立：监听部分Input 
-    /// </summary>
-    public class SomeInputController : MonoBehaviour, IController
+    public class InputManager : MonoSingleton<InputManager>, IController
     {
-        private PlayerInputControl _inputActions;
+        #region Public
+
+        public PlayerInputControl InputActions { get; private set; }
+
+        #endregion
+
         private IHandSystem _HandSystem;
         private ILevelModel _LevelModel;
+        private IGameModel _GameModel;
         private ILevelGridModel _LevelGridModel;
         private IPhaseModel _PhaseModel;
 
-        public void Awake()
+        private void Awake()
         {
             _HandSystem = this.GetSystem<IHandSystem>();
             _LevelModel = this.GetModel<ILevelModel>();
+            _GameModel = this.GetModel<IGameModel>();
             _LevelGridModel = this.GetModel<ILevelGridModel>();
             _PhaseModel = this.GetModel<IPhaseModel>();
-            _inputActions = new PlayerInputControl();
+            InputActions = new PlayerInputControl();
 
-            _inputActions.Level.PlantingLeft.performed += context =>
+            #region Level
+
+            InputActions.Level.PlantingLeft.performed += _ =>
             {
                 if (_PhaseModel.GamePhase != GamePhase.Gameplay) return; // 游戏阶段正确
                 if (HandHelper.IsHandOnUI()) return; // 手不在UI上
@@ -42,7 +50,7 @@ namespace TPL.PVZR.ViewControllers.Managers
                 this.SendCommand<PlantSeedInHandCommand>(new PlantSeedInHandCommand(Direction2.Left));
             };
 
-            _inputActions.Level.PlantingRight.performed += context =>
+            InputActions.Level.PlantingRight.performed += _ =>
             {
                 if (_PhaseModel.GamePhase != GamePhase.Gameplay) return; // 游戏阶段正确
                 if (HandHelper.IsHandOnUI()) return; // 手不在UI上
@@ -56,7 +64,7 @@ namespace TPL.PVZR.ViewControllers.Managers
                 this.SendCommand<PlantSeedInHandCommand>(new PlantSeedInHandCommand(Direction2.Right));
             };
 
-            _inputActions.Level.Deselect.performed += (context) =>
+            InputActions.Level.Deselect.performed += _ =>
             {
                 if (_PhaseModel.GamePhase == GamePhase.Gameplay &&
                     _HandSystem.HandInfo.Value.HandState != HandState.Empty)
@@ -65,7 +73,7 @@ namespace TPL.PVZR.ViewControllers.Managers
                 }
             };
 
-            _inputActions.Level.UseShovel.performed += context =>
+            InputActions.Level.UseShovel.performed += _ =>
             {
                 // 异常处理
                 // $"Conditions: 游戏阶段正确：{_PhaseModel.GamePhase == GamePhase.Gameplay}, 手不在UI上：{!HandHelper.IsHandOnUI()}, 手上持有铲子：{_HandSystem.HandInfo.Value.HandState == HandState.HaveShovel}, 手在地图内部：{_LevelGridModel.IsValidPos(HandHelper.HandCellPos())}, 目标位置有植物：{!_LevelGridModel.LevelMatrix[HandHelper.HandCellPos().x, HandHelper.HandCellPos().y].IsEmpty}"
@@ -82,7 +90,7 @@ namespace TPL.PVZR.ViewControllers.Managers
                 this.SendCommand<UseShovelCommand>(new UseShovelCommand(position));
             };
 
-            _inputActions.Level.SelectShovel.performed += context =>
+            InputActions.Level.SelectShovel.performed += _ =>
             {
                 if (_PhaseModel.GamePhase != GamePhase.Gameplay) return;
 
@@ -99,14 +107,14 @@ namespace TPL.PVZR.ViewControllers.Managers
                 }
             };
 
-            _inputActions.Level.SelectSeed_1.performed += (context) => TrySelectSeedByIndex(1);
-            _inputActions.Level.SelectSeed_2.performed += (context) => TrySelectSeedByIndex(2);
-            _inputActions.Level.SelectSeed_3.performed += (context) => TrySelectSeedByIndex(3);
-            _inputActions.Level.SelectSeed_4.performed += (context) => TrySelectSeedByIndex(4);
-            _inputActions.Level.SelectSeed_5.performed += (context) => TrySelectSeedByIndex(5);
-            _inputActions.Level.SelectSeed_6.performed += (context) => TrySelectSeedByIndex(6);
-            _inputActions.Level.SelectSeed_7.performed += (context) => TrySelectSeedByIndex(7);
-            _inputActions.Level.SelectSeed_8.performed += (context) => TrySelectSeedByIndex(8);
+            InputActions.Level.SelectSeed_1.performed += _ => TrySelectSeedByIndex(1);
+            InputActions.Level.SelectSeed_2.performed += _ => TrySelectSeedByIndex(2);
+            InputActions.Level.SelectSeed_3.performed += _ => TrySelectSeedByIndex(3);
+            InputActions.Level.SelectSeed_4.performed += _ => TrySelectSeedByIndex(4);
+            InputActions.Level.SelectSeed_5.performed += _ => TrySelectSeedByIndex(5);
+            InputActions.Level.SelectSeed_6.performed += _ => TrySelectSeedByIndex(6);
+            InputActions.Level.SelectSeed_7.performed += _ => TrySelectSeedByIndex(7);
+            InputActions.Level.SelectSeed_8.performed += _ => TrySelectSeedByIndex(8);
 
             void TrySelectSeedByIndex(int index)
             {
@@ -132,17 +140,59 @@ namespace TPL.PVZR.ViewControllers.Managers
                 }
             }
 
+            #endregion
+
+            #region GameUI
+
+            var uiStackService = this.GetService<IUIStackService>();
+            var gamePhaseChangeService = this.GetService<IGamePhaseChangeService>();
+
+            InputActions.GameUI.Esc.performed += _ =>
+            {
+                if (!_PhaseModel.IsInRoughPhase(RoughPhase.Process)) return;
+
+                if (_GameModel.IsGamePaused)
+                {
+                    gamePhaseChangeService.ResumeGame();
+                }
+                else
+                {
+                    if (uiStackService.HasPanelInStack())
+                    {
+                        uiStackService.PopTop();
+                    }
+                    else
+                    {
+                        gamePhaseChangeService.PauseGame();
+                    }
+                }
+            };
+
+            #endregion
+
             // _inputActions的开关
             var phaseService = this.GetService<IPhaseService>();
-            phaseService.RegisterCallBack((GamePhase.LevelInitialization, PhaseStage.EnterNormal), e =>
+            phaseService.RegisterCallBack((GamePhase.LevelInitialization, PhaseStage.EnterNormal),
+                e => { InputActions.Level.Enable(); });
+            phaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterNormal),
+                e => { InputActions.GameUI.Enable(); });
+            phaseService.RegisterCallBack((GamePhase.GameInitialization, PhaseStage.EnterNormal),
+                e => { InputActions.GameUI.Enable(); });
+            phaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.EnterNormal),
+                e => { InputActions.GameUI.Disable(); });
+            this.RegisterEvent<OnGamePaused>(e =>
             {
-                //
-                _inputActions.Level.Enable();
+                if (_PhaseModel.IsInRoughPhase(RoughPhase.Level))
+                {
+                    InputActions.Level.Disable();
+                }
             });
-            phaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterNormal), e =>
+            this.RegisterEvent<OnGameResumed>(e =>
             {
-                //
-                _inputActions.Level.Disable();
+                if (_PhaseModel.IsInRoughPhase(RoughPhase.Level))
+                {
+                    InputActions.Level.Enable();
+                }
             });
         }
 

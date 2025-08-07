@@ -7,6 +7,8 @@ using TPL.PVZR.Models;
 using TPL.PVZR.Services;
 using TPL.PVZR.Tools.Random;
 using TPL.PVZR.Tools.SoyoFramework;
+using TPL.PVZR.ViewControllers.UI;
+using UnityEngine;
 
 namespace TPL.PVZR.Systems
 {
@@ -33,6 +35,8 @@ namespace TPL.PVZR.Systems
                 // 本质史山：为了其他地方的代码优雅而设
                 PlantDefHelper.SetInventory(_GameModel.GameData.InventoryData);
                 RandomHelper.SetGame(_GameModel.GameData);
+                // 常驻Panel
+                UIKit.OpenPanel<UIGamePausePanel>(UILevel.PopUI);
                 //
                 phaseService.ChangePhase(GamePhase.MazeMapInitialization);
             });
@@ -47,9 +51,29 @@ namespace TPL.PVZR.Systems
             {
                 // 卸载数据
                 _GameModel.Reset();
+                // 卸载常驻UI
+                UIKit.ClosePanel<UIGamePausePanel>();
                 // 本质史山：为了其他地方的代码优雅而设
                 PlantDefHelper.SetInventory(null);
                 RandomHelper.SetGame(null);
+            });
+
+            this.RegisterEvent<OnGamePaused>(_ =>
+            {
+                // 时间
+                Time.timeScale = 0;
+                // panel显示
+                var panel = UIKit.GetPanel<UIGamePausePanel>();
+                panel.ShowUI();
+            });
+            
+            this.RegisterEvent<OnGameResumed>(_ =>
+            {
+                // 时间
+                Time.timeScale = 1;
+                // panel隐藏
+                var panel = UIKit.GetPanel<UIGamePausePanel>();
+                panel.HideUI();
             });
         }
     }

@@ -15,18 +15,23 @@ MonoBehaviour:
   Def:
     Id: 0
     Difficulty: 1
-  RowCount: 7
+  RowCount: 9
   ColCount: 7
-  TotalStageCount: 3
+  TotalStageCount: 4
   TombCountRangeOfStage:
   - Key: {x: 1, y: 1}
     Value: {x: 3, y: 3}
-  - Key: {x: 2, y: 10}
+  - Key: {x: 2, y: 3}
     Value: {x: 2, y: 4}
+  - Key: {x: 4, y: 4}
+    Value: {x: 1, y: 1}
   TombContentConfigs:
   - StageDifficulty: 1
-    ActiveStages: {x: 0, y: 10}
-    IncludedLevels: 0100000006000000
+    ActiveStages: {x: 1, y: 3}
+    IncludedLevels: 01000000060000000200000003000000040000000500000007000000080000000a000000090000000b000000
+  - StageDifficulty: 11
+    ActiveStages: {x: 4, y: 4}
+    IncludedLevels: 07000000
   LootPools:
   - Id: 1
   - Id: 101

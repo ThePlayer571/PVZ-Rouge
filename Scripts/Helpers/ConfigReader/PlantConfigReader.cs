@@ -17,34 +17,15 @@ namespace TPL.PVZR.Helpers.New.DataReader
     {
         #region 数据存储
 
-        private static readonly Dictionary<ZombieId, ZombieConfig> _zombieConfigs;
-
         static ZombieConfigReader()
         {
             ResKit.Init();
             var _resLoader = ResLoader.Allocate();
-            var zombieConfigList = _resLoader.LoadSync<ZombieConfigList>(Configlist.ZombieConfigList);
-
-            _zombieConfigs = new Dictionary<ZombieId, ZombieConfig>();
-            foreach (var config in zombieConfigList.Dave)
-            {
-                _zombieConfigs[config.id] = config;
-            }
         }
 
         #endregion
 
         #region 数据读取
-
-        public static GameObject GetZombiePrefab(ZombieId zombieId)
-        {
-            if (_zombieConfigs.TryGetValue(zombieId, out var config))
-            {
-                return config.prefab;
-            }
-
-            throw new ArgumentException($"找不到对应的ZombiePrefab: {zombieId}");
-        }
 
         #endregion
     }
@@ -56,6 +37,18 @@ namespace TPL.PVZR.Helpers.New.DataReader
         private static readonly Dictionary<PlantDef, CardDefinition> _cardDefinitionDict;
         private static readonly Dictionary<PlantDef, GameObject> _plantPrefabDict;
 
+
+        private static readonly Dictionary<ZombieId, ZombieConfig> _zombieConfigs;
+
+        public static GameObject GetZombiePrefab(ZombieId zombieId)
+        {
+            if (_zombieConfigs.TryGetValue(zombieId, out var config))
+            {
+                return config.prefab;
+            }
+
+            throw new ArgumentException($"找不到对应的ZombiePrefab: {zombieId}");
+        }
 
         static PlantConfigReader()
         {
@@ -95,6 +88,15 @@ namespace TPL.PVZR.Helpers.New.DataReader
             {
                 _cardDefinitionDict[config.def] = config.card;
                 _plantPrefabDict[config.def] = config.prefab;
+            }
+            //
+
+            var zombieConfigList = _resLoader.LoadSync<ZombieConfigList>(Configlist.ZombieConfigList);
+
+            _zombieConfigs = new Dictionary<ZombieId, ZombieConfig>();
+            foreach (var config in zombieConfigList.Dave)
+            {
+                _zombieConfigs[config.id] = config;
             }
         }
 

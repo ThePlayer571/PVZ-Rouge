@@ -18,7 +18,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
         protected override void SetUpFSM()
         {
             ViewFSM.State(ZombieState.DefaultTargeting)
-                .OnEnter(() => { _Animator.SetTrigger("EnterDefaultTargeting"); })
+                .OnEnter(() => { _Animator.SetInteger("ZombieState", (int)ZombieState.DefaultTargeting); })
                 .OnUpdate(() =>
                 {
                     targetRotation = Mathf.Clamp(Mathf.Abs(Zombie._Rigidbody2D.velocity.x), 0, 1) * 10f;
@@ -28,8 +28,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
             ViewFSM.State(ZombieState.Attacking)
                 .OnEnter(() =>
                 {
+                    _Animator.SetInteger("ZombieState", (int)ZombieState.Attacking);
                     currentRotation = 0;
-                    _Animator.SetTrigger("EnterAttacking");
                 });
             ViewFSM.State(ZombieState.OnNewspaperDestroyed)
                 .OnEnter(() =>
@@ -40,7 +40,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
             ViewFSM.State(ZombieState.Stunned)
                 .OnEnter(() =>
                 {
-                    _Animator.SetTrigger("EnterFrozen");
+                    _Animator.SetInteger("ZombieState", (int)ZombieState.Stunned);
                     currentRotation = 0;
                 });
 

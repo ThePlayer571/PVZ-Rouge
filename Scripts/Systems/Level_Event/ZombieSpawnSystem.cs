@@ -61,7 +61,8 @@ namespace TPL.PVZR.Systems.Level_Event
         private void StopRunning()
         {
             GameManager.StopOnUpdate(Update);
-            if (ActiveTasks.Count != 0) throw new Exception("ActiveTasks尚未清空为0，ZombieSpawnSystem就尝试停止运行");
+            ActiveTasks.Clear();
+            SpawnTimer.Reset();
         }
 
         private ILevelModel _LevelModel;

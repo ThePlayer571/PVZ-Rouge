@@ -141,6 +141,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public WeatherType InitialWeather;
 
         [Header("Others")] public List<InitialPlantConfig> InitialPlants;
+        public int InitialSunpointOffset = 0;
     }
 
     [Serializable]

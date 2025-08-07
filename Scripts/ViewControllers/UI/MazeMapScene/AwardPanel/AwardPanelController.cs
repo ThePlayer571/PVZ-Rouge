@@ -30,7 +30,8 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
             toggle.onValueChanged.AddListener(Display);
 
             if (_AwardSystem.AwardCount == 0) return;
-            for (int index = 0; index < 3; index++)
+            // 初始化UI
+            for (int index = 0; index < _AwardSystem.AwardCount; index++)
             {
                 // 创建Choice节点
                 var Choice = AwardChoicePrefab.Instantiate().GetComponent<Button>();
@@ -53,19 +54,29 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                 Choice.onClick.AddListener(() =>
                 {
                     this.SendCommand<ChooseAwardCommand>(new ChooseAwardCommand(capturedIndex));
-
-                    // 被选择对象保持高亮
-                    var newColor = Choice.colors;
-                    newColor.disabledColor = new Color(0, 0, 0, 0);
-                    Choice.colors = newColor; // 设置禁用颜色
-
-                    // 禁用所有按钮
-                    foreach (var choice in choices)
-                    {
-                        choice.interactable = false;
-                    }
                 });
             }
+
+            // UI变化事件
+            _AwardSystem.IsAwardAvailable.RegisterWithInitValue(val =>
+            {
+                foreach (var choice in choices)
+                {
+                    choice.interactable = val;
+                }
+            }).UnRegisterWhenGameObjectDestroyed(this);
+
+            _AwardSystem.ChosenAwardIndex.RegisterWithInitValue(val =>
+            {
+                if (val != -1)
+                {
+                    var chosenChoice = choices[val];
+                    // 高亮被选择的按钮
+                    var newColor = chosenChoice.colors;
+                    newColor.disabledColor = new Color(0, 0, 0, 0); // 设置高亮颜色
+                    chosenChoice.colors = newColor;
+                }
+            }).UnRegisterWhenGameObjectDestroyed(this);
         }
 
         private void Display(bool show)

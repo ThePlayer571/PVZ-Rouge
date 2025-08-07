@@ -1,5 +1,6 @@
 using Cinemachine;
 using QFramework;
+using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Others.LevelScene
@@ -23,7 +24,7 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
             }
 
             _transposer = _virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-            _inputActions = new PlayerInputControl();
+            _inputActions = InputManager.Instance.InputActions;
         }
 
         private void OnEnable()

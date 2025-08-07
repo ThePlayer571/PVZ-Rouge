@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using QFramework;
 using TPL.PVZR.Models;
+using UnityEngine;
 
 namespace TPL.PVZR.Services
 {
@@ -157,7 +158,8 @@ namespace TPL.PVZR.Services
             [GamePhase.PreInitialization] = new[] { GamePhase.BeforeStart },
             [GamePhase.MainMenu] = new[] { GamePhase.PreInitialization, GamePhase.GameExiting },
             [GamePhase.GameInitialization] = new[] { GamePhase.MainMenu },
-            [GamePhase.MazeMapInitialization] = new[] { GamePhase.GameInitialization, GamePhase.LevelExiting, GamePhase.LevelDefeatPanel },
+            [GamePhase.MazeMapInitialization] = new[]
+                { GamePhase.GameInitialization, GamePhase.LevelExiting, GamePhase.LevelDefeatPanel },
             [GamePhase.MazeMap] = new[] { GamePhase.MazeMapInitialization },
             [GamePhase.LevelPreInitialization] = new[] { GamePhase.MazeMap },
             [GamePhase.LevelInitialization] = new[] { GamePhase.LevelPreInitialization },
@@ -165,50 +167,76 @@ namespace TPL.PVZR.Services
             [GamePhase.ReadyToStart] = new[] { GamePhase.ChooseSeeds },
             [GamePhase.Gameplay] = new[] { GamePhase.ReadyToStart },
             [GamePhase.AllEnemyKilled] = new[] { GamePhase.Gameplay },
-            [GamePhase.LevelInterrupted] =
-                new[] { GamePhase.ChooseSeeds, GamePhase.Gameplay, GamePhase.AllEnemyKilled },
             [GamePhase.LevelDefeat] =
                 new[] { GamePhase.ChooseSeeds, GamePhase.Gameplay, GamePhase.AllEnemyKilled },
             [GamePhase.LevelDefeatPanel] = new[] { GamePhase.LevelExiting },
             [GamePhase.LevelPassed] = new[] { GamePhase.AllEnemyKilled },
             [GamePhase.LevelExiting] = new[]
-                { GamePhase.LevelDefeat, GamePhase.LevelPassed, GamePhase.LevelInterrupted },
-            [GamePhase.GameExiting] = new[] { GamePhase.MazeMap, GamePhase.LevelDefeatPanel },
+            {
+                GamePhase.LevelDefeat, GamePhase.LevelPassed, GamePhase.ChooseSeeds, GamePhase.Gameplay,
+                GamePhase.AllEnemyKilled
+            },
+            [GamePhase.GameExiting] = new[] { GamePhase.MazeMap, GamePhase.LevelDefeatPanel, GamePhase.LevelExiting },
         };
     }
 
     public enum GamePhase
     {
         // 启动之前（初始的默认状态）
-        BeforeStart,
+        [RoughPhase(RoughPhase.Instant)] BeforeStart = 0,
 
         // 启动与初始化阶段
-        PreInitialization, // 预初始化（加载核心资源）
-        SplashScreen, // 开场动画
+        [RoughPhase(RoughPhase.Instant)] PreInitialization = 10, // 预初始化（加载核心资源）
+        SplashScreen = 11, // 开场动画
 
         // 菜单导航阶段
-        MainMenu, // 主菜单（开始/设置/退出）
+        [RoughPhase(RoughPhase.Process)] MainMenu = 100, // 主菜单（开始/设置/退出）
 
         // 核心游戏循环阶段
-        GameInitialization, // 初始化游戏（从其他地方进入游戏时调用）
-        MazeMapInitialization, // 初始化迷宫地图（生成/加载）
-        MazeMap, // 迷宫地图
+        [RoughPhase(RoughPhase.Instant, RoughPhase.Game)]
+        GameInitialization = 1000, // 初始化游戏（从其他地方进入游戏时调用）
+
+        [RoughPhase(RoughPhase.Instant, RoughPhase.Game)]
+        MazeMapInitialization = 1100, // 初始化迷宫地图（生成/加载）
+
+        [RoughPhase(RoughPhase.Process, RoughPhase.Game)]
+        MazeMap = 1101, // 迷宫地图
+        // MazeMapExiting,
 
         // 关卡内阶段
-        LevelPreInitialization, // 最初的初始化，主要用于构建场景等；之后的初始化可能会调用场景中的东西，所以加了这个阶段
-        LevelInitialization, // 初始化关卡（非核心数据设置，请在此处设置）
-        ChooseSeeds,
-        ReadyToStart,
-        Gameplay,
-        AllEnemyKilled,
-        LevelInterrupted, // 关卡中断（仅用于强行退出只主菜单）
-        LevelDefeat, // 关卡失败
-        LevelDefeatPanel, // 关卡失败面板（显示失败信息等）
-        LevelPassed, // 关卡通关
-        LevelExiting, // 离开关卡（仅用于清除关卡的数据，不涉及GameData）
+        [RoughPhase(RoughPhase.Instant, RoughPhase.Game, RoughPhase.Level)]
+        LevelPreInitialization = 1200, // 最初的初始化，主要用于构建场景等；之后的初始化可能会调用场景中的东西，所以加了这个阶段
+
+        [RoughPhase(RoughPhase.Instant, RoughPhase.Game, RoughPhase.Level)]
+        LevelInitialization = 1201, // 初始化关卡（非核心数据设置，请在此处设置）
+
+        [RoughPhase(RoughPhase.Process, RoughPhase.Game, RoughPhase.Level)]
+        ChooseSeeds = 1203,
+
+        [RoughPhase(RoughPhase.Process, RoughPhase.Game, RoughPhase.Level)]
+        ReadyToStart = 1204,
+
+        [RoughPhase(RoughPhase.Process, RoughPhase.Game, RoughPhase.Level)]
+        Gameplay = 1205,
+
+        [RoughPhase(RoughPhase.Process, RoughPhase.Game, RoughPhase.Level)]
+        AllEnemyKilled = 1206, // 【过程】
+
+        [RoughPhase(RoughPhase.ShortProcess, RoughPhase.Game, RoughPhase.Level)]
+        LevelDefeat = 1220, // 【短过程】关卡失败
+
+        [RoughPhase(RoughPhase.Instant, RoughPhase.Game, RoughPhase.Level)]
+        LevelPassed = 1221, // 【瞬时】关卡通关
+
+        [RoughPhase(RoughPhase.Instant, RoughPhase.Game, RoughPhase.Level)]
+        LevelExiting = 1222, // 【瞬时】离开关卡（仅用于清除关卡的数据，不涉及GameData）
+
+        [RoughPhase(RoughPhase.Process, RoughPhase.Game)]
+        LevelDefeatPanel, // 【过程】关卡失败面板（显示失败信息等）
 
         // 游戏结束阶段
-        GameExiting,
+        [RoughPhase(RoughPhase.Instant, RoughPhase.Game)]
+        GameExiting = 1900,
 
 
         GameOverDefeat, // 失败结局

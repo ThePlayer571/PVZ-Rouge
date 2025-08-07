@@ -8,6 +8,7 @@ namespace TPL.PVZR.Tools.Save
     public class SaveManager
     {
         public const string GAME_DATA_FILE_NAME = "GameData";
+        public const string PLAYER_STATS_SUNPOINT_FILE_NAME = "PlayerStats/PlayerStatsSunPoint";
 
         /// <summary>
         /// 加载存档数据，支持异常处理和默认值

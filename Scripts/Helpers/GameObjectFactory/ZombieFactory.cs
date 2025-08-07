@@ -13,10 +13,12 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
 
         public Zombie SpawnZombie(ZombieId id, Vector2 pos)
         {
-            var zombiePrefab = ZombieConfigReader.GetZombiePrefab(id);
+            var zombiePrefab = PlantConfigReader.GetZombiePrefab(id);
+            $"spawn: name:{zombiePrefab.name}".LogInfo();
 
             var zombie = zombiePrefab.Instantiate(pos, Quaternion.identity).GetComponent<Zombie>();
             zombie.Initialize();
+            $"after initialize: name:{zombie.name}".LogInfo();
 
             ActiveZombies.Add(zombie);
             return zombie;

@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
 {
-    public class MazeMapPanelController : MonoBehaviour, IController
+    public class MazeMapPanelController : MonoBehaviour, IController, ICanPutInUIStack
     {
         // 引用
         [SerializeField] private Toggle toggle;
@@ -24,11 +24,14 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
 
         [SerializeField] private Button BlackMaskBtn;
 
+        private IUIStackService _UIStackService;
+
         // UIInfo
         private ITombData _openedTombData;
 
         private void Start()
         {
+            _UIStackService = this.GetService<IUIStackService>();
             HideUIInstantly();
 
             this.RegisterEvent<OpenLevelPreviewPanelEvent>(e =>
@@ -56,20 +59,23 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
 
         private void ShowUI()
         {
+            _UIStackService.PushPanel(this);
             CanvasGroup.blocksRaycasts = true;
-            CanvasGroup.DOFade(1, 0.2f);
-            PreviewPanelBg.DOAnchorPosY(0, 0.2f);
+            CanvasGroup.DOFade(1, 0.2f).SetUpdate(true);
+            PreviewPanelBg.DOAnchorPosY(0, 0.2f).SetUpdate(true);
         }
 
         private void HideUI()
         {
+            _UIStackService.PopIfTop(this);
             CanvasGroup.blocksRaycasts = false;
-            CanvasGroup.DOFade(0, 0.2f);
-            PreviewPanelBg.DOAnchorPosY(-80, 0.2f);
+            CanvasGroup.DOFade(0, 0.2f).SetUpdate(true);
+            PreviewPanelBg.DOAnchorPosY(-80, 0.2f).SetUpdate(true);
         }
 
         private void HideUIInstantly()
         {
+            _UIStackService.PopIfTop(this);
             CanvasGroup.blocksRaycasts = false;
             CanvasGroup.alpha = 0;
             PreviewPanelBg.anchoredPosition = new Vector2(PreviewPanelBg.anchoredPosition.x, -80);
@@ -92,6 +98,11 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
         public IArchitecture GetArchitecture()
         {
             return PVZRouge.Interface;
+        }
+
+        void ICanPutInUIStack.OnPopped()
+        {
+            HideUI();
         }
     }
 }

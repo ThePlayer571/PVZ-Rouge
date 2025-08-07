@@ -90,6 +90,12 @@ namespace TPL.PVZR.Systems.MazeMap
                 _refreshCount = 0;
                 AutoWriteCoinTrades();
             });
+            
+            phaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.LeaveNormal), e =>
+            {
+                _refreshCount = 0;
+                ClearCoinTrades();
+            });
 
             this.RegisterEvent<OnCoinStoreRefreshed>(e =>
             {

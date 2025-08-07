@@ -99,8 +99,7 @@ namespace TPL.PVZR.ViewControllers
 
         // 变量
         private bool _hasTwiceJumped = false; // 已经进行二段跳
-        private BindableProperty<int> hitCount = new BindableProperty<int>(0);
-        private bool _isDowned = false;
+        private BindableProperty<int> hitCount = new(0);
         private FSM<PlayerHealthState> _healthFSM;
 
         #endregion
@@ -170,10 +169,10 @@ namespace TPL.PVZR.ViewControllers
             SetUpHealthFSM();
 
 
-            _inputActions = new PlayerInputControl();
+            _inputActions = InputManager.Instance.InputActions;
             _inputActions.Level.Enable();
 
-            _inputActions.Level.Jump.performed += (context) =>
+            _inputActions.Level.Jump.performed += _ =>
             {
                 if (_healthFSM.CurrentStateId == PlayerHealthState.Healthy)
                 {

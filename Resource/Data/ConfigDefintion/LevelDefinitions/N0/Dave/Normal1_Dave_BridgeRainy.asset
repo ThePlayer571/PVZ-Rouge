@@ -101,7 +101,7 @@ MonoBehaviour:
     totalValue: 100
     choiceCount: 3
   InitialDayPhase: 1
-  InitialWeather: 1
+  InitialWeather: 2
   InitialPlants:
   - PlantDef:
       Id: 4
@@ -123,3 +123,4 @@ MonoBehaviour:
       Variant: 0
     Direction: 0
     SpawnPos: {x: 33, y: 10}
+  InitialSunpointOffset: 0

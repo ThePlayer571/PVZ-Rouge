@@ -6,6 +6,7 @@ namespace TPL.PVZR.Models
 {
     public interface IGameModel : IModel
     {
+        bool IsGamePaused { get; set; }
         IGameData GameData { get; set; }
 
         /// <summary>
@@ -18,6 +19,8 @@ namespace TPL.PVZR.Models
 
     public class GameModel : AbstractModel, IGameModel
     {
+        public bool IsGamePaused { get; set; } = false;
+
         protected override void OnInit()
         {
         }

@@ -4,7 +4,6 @@ using QFramework;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.CommandEvents.Level_Gameplay.Waves;
 using TPL.PVZR.Helpers.New.ClassCreator;
-using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
 using TPL.PVZR.Services;
@@ -23,7 +22,7 @@ namespace TPL.PVZR.ViewControllers.Managers
             {
                 var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(22, 9));
                 var zombieService = this.GetService<IZombieService>();
-                zombieService.SpawnZombie(ZombieId.DuckyTubeNormalZombie, pos);
+                zombieService.SpawnZombie(ZombieId.NewspaperZombie, pos);
             }
 
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 60, 120, 40), "获取500阳光"))
@@ -79,6 +78,7 @@ namespace TPL.PVZR.ViewControllers.Managers
                     fast = true;
                 }
             }
+
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 410, 120, 40), invulnerable ? "解除无敌" : "玩家无敌"))
             {
                 invulnerable = !invulnerable;
@@ -89,9 +89,10 @@ namespace TPL.PVZR.ViewControllers.Managers
             //     var LevelGridModel = this.GetModel<ILevelGridModel>();
             //     var handPos = HandHelper.HandCellPos();
             //     var handCell = LevelGridModel.GetCell(handPos);
-            //     $"手所在的Cell信息：pos: {handPos}, CellTileState: {handCell.CellTileState}, PlantState: {handCell.CellPlantState}"
+            //     $"手所在的Cell信息：pos: {handPos}, CellTileState: {handCell.CellTileState}, PlantState: {handCell.CellTileState}"
             //         .LogInfo();
             // }
+
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 var handPos = HandHelper.HandCellPos();

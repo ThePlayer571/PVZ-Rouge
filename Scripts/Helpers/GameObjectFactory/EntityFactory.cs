@@ -6,15 +6,9 @@ using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.CommandEvents.Level_Gameplay.Coins;
-using TPL.PVZR.Helpers.New.DataReader;
-using TPL.PVZR.Helpers.New.Methods;
-using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
 using TPL.PVZR.ViewControllers;
-using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using TPL.PVZR.ViewControllers.Entities.Projectiles;
-using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
-using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 

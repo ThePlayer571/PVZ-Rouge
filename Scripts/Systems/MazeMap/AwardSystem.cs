@@ -16,8 +16,9 @@ namespace TPL.PVZR.Systems.MazeMap
 {
     public interface IAwardSystem : IDataSystem
     {
-        IReadOnlyList<LootData> GetLootGroupByIndex(int index);
-        bool IsAwardAvailable { get; set; }
+        IReadOnlyList<LootData> GetLootGroupByIndex(int index); 
+        BindableProperty<bool> IsAwardAvailable { get; set; }
+        BindableProperty<int> ChosenAwardIndex { get; set; }
         int AwardCount { get; }
     }
 
@@ -32,7 +33,8 @@ namespace TPL.PVZR.Systems.MazeMap
             return CurrentAwards[index];
         }
 
-        public bool IsAwardAvailable { get; set; }
+        public BindableProperty<bool> IsAwardAvailable { get; set; } = new();
+        public BindableProperty<int> ChosenAwardIndex { get; set; } = new();
 
         public int AwardCount => CurrentAwards.Count;
 
@@ -70,7 +72,8 @@ namespace TPL.PVZR.Systems.MazeMap
                 var notRefresh = (bool)e.Paras.GetValueOrDefault<string, object>("NotRefresh", false);
                 if (notRefresh) return;
                 // 清空现有数据，生成新的奖励
-                IsAwardAvailable = true;
+                IsAwardAvailable.Value = true;
+                ChosenAwardIndex.Value = -1;
                 WriteLoots(_GameModel.GameData.AwardData.AwardsToGenerate);
             });
 

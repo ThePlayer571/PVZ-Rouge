@@ -1,6 +1,7 @@
 using QFramework;
 using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.Tools;
+using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Others
@@ -13,7 +14,7 @@ namespace TPL.PVZR.ViewControllers.Others
 
         private void Awake()
         {
-            _inputActions = new PlayerInputControl();
+            _inputActions = InputManager.Instance.InputActions;
 
             _inputActions.Level.Enable();
             _inputActions.Level.InteractionE.performed += context =>

@@ -2,6 +2,7 @@ using DG.Tweening;
 using QFramework;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
+using TPL.PVZR.ViewControllers.Managers;
 using TPL.PVZR.ViewControllers.Others.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -77,7 +78,7 @@ namespace TPL.PVZR.ViewControllers.UI
 
             _LevelModel = this.GetModel<ILevelModel>();
 
-            _inputActions = new PlayerInputControl();
+            _inputActions = InputManager.Instance.InputActions;
             _inputActions.Level.SlotPanelVisibilityToggle.performed += (context) =>
             {
                 if (_allowChangeUI) SlotPanelVisibilityToggle();

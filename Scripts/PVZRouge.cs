@@ -38,6 +38,7 @@ namespace TPL.PVZR
             this.RegisterSystem<IZombieSpawnSystem>(new ZombieSpawnSystem());
             this.RegisterSystem<IWaveSystem>(new WaveSystem());
             this.RegisterSystem<IEnvironmentSystem>(new EnvironmentSystem());
+            this.RegisterSystem<IPlayerStatsSystem>(new PlayerStatsSystem());
 
             // ===== Others =====
             this.RegisterModel<IPhaseModel>(new PhaseModel());
@@ -46,6 +47,8 @@ namespace TPL.PVZR
             this.RegisterService<ISaveService>(new SaveService());
             this.RegisterService<IPlantService>(new PlantService());
             this.RegisterService<IZombieService>(new ZombieService());
+            this.RegisterService<IUIStackService>(new UIStackService());
+            this.RegisterService<IHandService>(new HandService());
         }
     }
 }

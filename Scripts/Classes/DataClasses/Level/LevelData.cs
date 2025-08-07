@@ -25,6 +25,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         #region Map
 
+        LevelDef LevelDef { get; }
         Vector2Int MapSize { get; }
         Vector2 InitialPlayerPos { get; }
         AssetReference LevelPrefab { get; }
@@ -99,6 +100,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         #region Map
 
+        public LevelDef LevelDef { get; }
         public Vector2Int MapSize { get; }
         public Vector2 InitialPlayerPos { get; }
         public AssetReference LevelPrefab { get; }
@@ -258,7 +260,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         public LevelData(in IGameData gameData, in LevelDefinition levelDefinition)
         {
-            this.InitialSunPoint = gameData.InventoryData.InitialSunPoint;
+            this.LevelDef = levelDefinition.LevelDef;
+            this.InitialSunPoint = gameData.InventoryData.InitialSunPoint + levelDefinition.InitialSunpointOffset;
             this.GlobalEntityData = gameData.GlobalEntityData;
 
             this.MapSize = levelDefinition.MapSize;

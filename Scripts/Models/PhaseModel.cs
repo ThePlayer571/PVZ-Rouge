@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using QFramework;
 using TPL.PVZR.Services;
 using UnityEngine;
@@ -16,39 +17,73 @@ namespace TPL.PVZR.Models
     public class PhaseModel : AbstractModel, IPhaseModel
     {
         public GamePhase GamePhase { get; set; }
+
+        private readonly Dictionary<GamePhase, HashSet<RoughPhase>> _phaseToRoughPhaseCache = new();
+
         protected override void OnInit()
         {
+            InitializePhaseCache();
             GamePhase = GamePhase.BeforeStart;
         }
 
-
         public bool IsInRoughPhase(RoughPhase roughPhase)
         {
-            return roughPhase switch
+            if (_phaseToRoughPhaseCache.TryGetValue(GamePhase, out var roughPhases))
             {
-                RoughPhase.Game => GamePhase is GamePhase.GameInitialization or GamePhase.MazeMapInitialization
-                    or GamePhase.MazeMap or GamePhase.LevelPreInitialization or GamePhase.LevelInitialization
-                    or GamePhase.ChooseSeeds or GamePhase.ReadyToStart or GamePhase.Gameplay or GamePhase.AllEnemyKilled
-                    or GamePhase.LevelExiting or GamePhase.LevelInterrupted or GamePhase.LevelPassed
-                    or GamePhase.LevelDefeat or GamePhase.LevelDefeatPanel,
-                RoughPhase.Level => GamePhase is GamePhase.LevelPreInitialization or GamePhase.LevelInitialization
-                    or GamePhase.ChooseSeeds or GamePhase.ReadyToStart or GamePhase.Gameplay or GamePhase.AllEnemyKilled
-                    or GamePhase.LevelExiting or GamePhase.LevelInterrupted or GamePhase.LevelPassed
-                    or GamePhase.LevelDefeat or GamePhase.LevelDefeatPanel,
-                RoughPhase.Loading => GamePhase is GamePhase.GameInitialization or GamePhase.MazeMapInitialization
-                    or GamePhase.LevelPreInitialization or GamePhase.LevelInitialization or GamePhase.LevelInterrupted
-                    or GamePhase.LevelPassed or GamePhase.LevelDefeat or GamePhase.LevelExiting
-                    or GamePhase.GameExiting,
-                _ => throw new ArgumentOutOfRangeException(nameof(roughPhase), roughPhase, null)
-            };
+                return roughPhases.Contains(roughPhase);
+            }
+
+            // 如果没有找到对应的RoughPhase配置，返回false
+            return false;
+        }
+
+        private void InitializePhaseCache()
+        {
+            var gamePhaseType = typeof(GamePhase);
+            var gamePhaseValues = Enum.GetValues(gamePhaseType).Cast<GamePhase>();
+
+            foreach (var gamePhase in gamePhaseValues)
+            {
+                var fieldInfo = gamePhaseType.GetField(gamePhase.ToString());
+                if (fieldInfo == null) continue;
+
+                var roughPhaseAttribute = fieldInfo.GetCustomAttribute<RoughPhaseAttribute>();
+                if (roughPhaseAttribute?.RoughPhases != null)
+                {
+                    _phaseToRoughPhaseCache[gamePhase] = new HashSet<RoughPhase>(roughPhaseAttribute.RoughPhases);
+                }
+                else
+                {
+                    // 没有属性标记的GamePhase使用空集合
+                    _phaseToRoughPhaseCache[gamePhase] = new HashSet<RoughPhase>();
+                }
+            }
         }
     }
 
 
     public enum RoughPhase
     {
+        /* 
+         * 【过程】需要玩家操作退出
+         * 【短过程】进入后隔一段时间自动退出
+         * 【瞬时】进入后立刻退出
+         */
         Game,
         Level,
-        Loading
+        Process,
+        ShortProcess,
+        Instant,
+    }
+
+    [AttributeUsage(AttributeTargets.Field)]
+    public class RoughPhaseAttribute : Attribute
+    {
+        public RoughPhase[] RoughPhases { get; }
+
+        public RoughPhaseAttribute(params RoughPhase[] roughPhases)
+        {
+            RoughPhases = roughPhases;
+        }
     }
 }

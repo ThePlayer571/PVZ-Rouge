@@ -23,6 +23,8 @@ namespace TPL.PVZR.Systems.MazeMap
 
         private void AutoWriteRecipes()
         {
+            _activeRecipes.Clear();
+            
             RandomPool<RecipeGenerateInfo, RecipeInfo> recipePool;
 
             var ownedPlants = _GameModel.GameData.InventoryData.Cards
@@ -50,6 +52,10 @@ namespace TPL.PVZR.Systems.MazeMap
                     .Select(cardData => cardData.CardDefinition.PlantDef.Id)
                     .ToHashSet();
                 recipePool = TradeCreator.CreateRelatedRecipePool(lockedPlants);
+                if (recipePool.IsFinished)
+                {
+                    // todo 触发一个成就: 故障2
+                }
             }
 
 
@@ -75,6 +81,10 @@ namespace TPL.PVZR.Systems.MazeMap
                 if (notRefresh) return;
                 //
                 AutoWriteRecipes();
+            });
+            phaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.LeaveNormal), e =>
+            {
+                ClearRecipes();
             });
 
             this.RegisterEvent<BarterEvent>(e =>
