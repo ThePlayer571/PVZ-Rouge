@@ -32,6 +32,7 @@ namespace TPL.PVZR.Models
         {
             GameData = null;
             ActiveTombData = null;
+            IsGamePaused = false;
         }
     }
 }

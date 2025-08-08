@@ -93,12 +93,17 @@ namespace TPL.PVZR.ViewControllers.Managers
             //         .LogInfo();
             // }
 
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                var handPos = HandHelper.HandCellPos();
-                var ZombieAISystem = this.GetSystem<IZombieAISystem>();
-                ZombieAISystem.ZombieAIUnit.DebugLogCluster(handPos);
-            }
+            // if (Input.GetKeyDown(KeyCode.LeftShift))
+            // {
+            //     var handPos = HandHelper.HandCellPos();
+            //     var ZombieAISystem = this.GetSystem<IZombieAISystem>();
+            //     ZombieAISystem.ZombieAIUnit.DebugLogCluster(handPos);
+            // }
+            // if (Input.GetKeyDown(KeyCode.LeftShift))
+            // {
+            //     $"GameUI: {InputManager.Instance.InputActions.GameUI.enabled}, Level: {InputManager.Instance.InputActions.Level.enabled}"
+            //         .LogInfo();
+            // }
         }
 
         private bool fast;

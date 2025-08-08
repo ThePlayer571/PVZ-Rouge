@@ -9,10 +9,15 @@ using UnityEngine.AddressableAssets;
 
 namespace TPL.PVZR.Services
 {
+    public struct OnTransitionEffectHoldingBegin
+    {
+    }
+
     public interface ISceneTransitionEffectService : IService
     {
         Task PlayTransitionAsync(TransitionEffectType transitionEffectType = TransitionEffectType.Slide);
-        Task EndTransition();
+        Task EndTransition(bool ignoreDebug = false);
+        TransitionState CurrentTransitionState { get; }
     }
 
     public class SceneTransitionEffectService : AbstractService, ISceneTransitionEffectService
@@ -30,14 +35,32 @@ namespace TPL.PVZR.Services
             _transitionState = TransitionState.FadingIn;
             await PlaySlideTransitionAsync();
             _transitionState = TransitionState.Holding;
+            this.SendEvent<OnTransitionEffectHoldingBegin>();
+
+            // 记录进入Holding状态的时间
+            _holdingStartTime = Time.realtimeSinceStartup;
         }
 
-        public async Task EndTransition()
+        public async Task EndTransition(bool ignoreDebug = false)
         {
             if (_transitionState is not ( /*TransitionState.FadingIn or*/ TransitionState.Holding))
             {
-                $"在错误的transitionState调用EndTransition：{_transitionState}。".LogError();
+                if (!ignoreDebug)
+                    $"在错误的transitionState调用EndTransition：{_transitionState}。".LogError();
                 return;
+            }
+
+            // 如果在Holding状态，需要确保维持至少0.8秒
+            if (_transitionState == TransitionState.Holding)
+            {
+                float elapsedTime = Time.realtimeSinceStartup - _holdingStartTime;
+                float remainingTime = HOLDING_MIN_DURATION - elapsedTime;
+
+                if (remainingTime > 0)
+                {
+                    // 等待剩余时间
+                    await Task.Delay(Mathf.RoundToInt(remainingTime * 1000));
+                }
             }
 
             _transitionState = TransitionState.FadingOut;
@@ -45,12 +68,16 @@ namespace TPL.PVZR.Services
             _transitionState = TransitionState.Idle;
         }
 
+        public TransitionState CurrentTransitionState => _transitionState;
+
         #endregion
 
         #region 实现细节
 
+        private const float HOLDING_MIN_DURATION = 0.8f; // Holding阶段最短维持时间
         private TransitionState _transitionState = TransitionState.Idle;
         private TransitionEffectNode _transitionEffectNode;
+        private float _holdingStartTime; // Holding阶段开始时间
 
         private async Task PlaySlideTransitionAsync()
         {

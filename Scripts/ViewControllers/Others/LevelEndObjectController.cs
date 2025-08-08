@@ -1,8 +1,10 @@
+using System;
 using QFramework;
 using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace TPL.PVZR.ViewControllers.Others
 {
@@ -10,20 +12,11 @@ namespace TPL.PVZR.ViewControllers.Others
     {
         [SerializeField] private InteractionPromptController _InteractionPromptController;
         [SerializeField] private TriggerDetector _CollisionDetector;
-        private PlayerInputControl _inputActions;
+
 
         private void Awake()
         {
-            _inputActions = InputManager.Instance.InputActions;
-
-            _inputActions.Level.Enable();
-            _inputActions.Level.InteractionE.performed += context =>
-            {
-                if (_CollisionDetector.HasTarget)
-                {
-                    this.SendCommand<OnCollectLevelEndObjectCommand>();
-                }
-            };
+            InputManager.Instance.InputActions.Level.InteractionE.performed += OnInterationEPressed;
 
             _CollisionDetector.OnTargetCountChanged.Register(count =>
             {
@@ -38,9 +31,17 @@ namespace TPL.PVZR.ViewControllers.Others
             }).UnRegisterWhenGameObjectDestroyed(this);
         }
 
+        private void OnInterationEPressed(InputAction.CallbackContext _)
+        {
+            if (_CollisionDetector.HasTarget)
+            {
+                this.SendCommand<OnCollectLevelEndObjectCommand>();
+            }
+        }
+
         private void OnDestroy()
         {
-            _inputActions.Level.Disable();
+            InputManager.Instance.InputActions.Level.InteractionE.performed -= OnInterationEPressed;
         }
 
         private void Update()

@@ -12,6 +12,7 @@ using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using TPL.PVZR.ViewControllers.Managers;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace TPL.PVZR.ViewControllers
 {
@@ -33,8 +34,6 @@ namespace TPL.PVZR.ViewControllers
             {
                 var red = val == 0 ? 0 : Mathf.Lerp(0.1f, 1, val / 20f);
                 _SpriteRenderer.DOColor(new Color(1, 1 - red, 1 - red, 1), 0.05f);
-
-                $"hit count changed: {val}".LogInfo();
             }).UnRegisterWhenGameObjectDestroyed(this);
 
             _healthFSM.OnStateChanged((oldState, newState) =>
@@ -147,8 +146,18 @@ namespace TPL.PVZR.ViewControllers
 
         private void OnDestroy()
         {
-            _inputActions.Level.Disable();
+            _inputActions.Level.Jump.performed -= TryJump;
         }
+
+
+        private void TryJump(InputAction.CallbackContext _)
+        {
+            if (_healthFSM.CurrentStateId == PlayerHealthState.Healthy)
+            {
+                Jump();
+            }
+        }
+
 
         private void Awake()
         {
@@ -170,15 +179,8 @@ namespace TPL.PVZR.ViewControllers
 
 
             _inputActions = InputManager.Instance.InputActions;
-            _inputActions.Level.Enable();
 
-            _inputActions.Level.Jump.performed += _ =>
-            {
-                if (_healthFSM.CurrentStateId == PlayerHealthState.Healthy)
-                {
-                    Jump();
-                }
-            };
+            _inputActions.Level.Jump.performed += TryJump;
 
             OnViewInit();
         }
@@ -271,7 +273,7 @@ namespace TPL.PVZR.ViewControllers
                     _Rigidbody2D.AddForce(attackData.Punch(MassCenter.position), ForceMode2D.Impulse);
                     if (hitCount.Value >= 20)
                     {
-                        if (_PhaseModel.GamePhase != GamePhase.LevelDefeat)
+                        if (_PhaseModel.GamePhase is GamePhase.ChooseSeeds or GamePhase.Gameplay)
                         {
                             this.SendCommand<OnKilledByZombieCommand>();
                         }

@@ -9,7 +9,7 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
     {
         [SerializeField] private float offsetScaleX = 10f;
         [SerializeField] private float offsetScaleY = 6f;
-        private PlayerInputControl _inputActions;
+        
         private CinemachineVirtualCamera _virtualCamera;
         private CinemachineFramingTransposer _transposer;
 
@@ -24,22 +24,11 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
             }
 
             _transposer = _virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-            _inputActions = InputManager.Instance.InputActions;
-        }
-
-        private void OnEnable()
-        {
-            _inputActions.Enable();
-        }
-
-        private void OnDisable()
-        {
-            _inputActions.Disable();
         }
 
         private void Update()
         {
-            Vector2 offset = _inputActions.Level.CamaraOffset.ReadValue<Vector2>();
+            Vector2 offset = InputManager.Instance.InputActions.Level.CamaraOffset.ReadValue<Vector2>();
             if (offset.sqrMagnitude > 0.0001f) // 有输入
             {
                 _transposer.m_TrackedObjectOffset = new Vector3(offset.x * offsetScaleX, offset.y * offsetScaleY, 0);

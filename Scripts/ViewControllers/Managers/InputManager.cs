@@ -172,10 +172,10 @@ namespace TPL.PVZR.ViewControllers.Managers
 
             // _inputActions的开关
             var phaseService = this.GetService<IPhaseService>();
-            phaseService.RegisterCallBack((GamePhase.LevelInitialization, PhaseStage.EnterNormal),
+            phaseService.RegisterCallBack((GamePhase.LevelInitialization, PhaseStage.LeaveLate),
                 e => { InputActions.Level.Enable(); });
-            phaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterNormal),
-                e => { InputActions.GameUI.Enable(); });
+            phaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterEarly),
+                e => { InputActions.Level.Disable(); });
             phaseService.RegisterCallBack((GamePhase.GameInitialization, PhaseStage.EnterNormal),
                 e => { InputActions.GameUI.Enable(); });
             phaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.EnterNormal),

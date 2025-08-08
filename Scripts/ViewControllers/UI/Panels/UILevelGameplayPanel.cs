@@ -16,7 +16,6 @@ namespace TPL.PVZR.ViewControllers.UI
     public partial class UILevelGameplayPanel : UIPanel, IController
     {
         private ILevelModel _LevelModel;
-        private PlayerInputControl _inputActions;
 
 
         private bool _isUIVisible = true;
@@ -78,11 +77,8 @@ namespace TPL.PVZR.ViewControllers.UI
 
             _LevelModel = this.GetModel<ILevelModel>();
 
-            _inputActions = InputManager.Instance.InputActions;
-            _inputActions.Level.SlotPanelVisibilityToggle.performed += (context) =>
-            {
-                if (_allowChangeUI) SlotPanelVisibilityToggle();
-            };
+            InputManager.Instance.InputActions.Level.SlotPanelVisibilityToggle.performed +=
+                OnSlotPanelVisibilityTogglePressed;
 
             FoldPanel.onClick.AddListener(() =>
             {
@@ -90,9 +86,13 @@ namespace TPL.PVZR.ViewControllers.UI
             });
         }
 
+        private void OnSlotPanelVisibilityTogglePressed(UnityEngine.InputSystem.InputAction.CallbackContext _)
+        {
+            if (_allowChangeUI) SlotPanelVisibilityToggle();
+        }
+
         protected override void OnOpen(IUIData uiData = null)
         {
-            _inputActions.Level.Enable();
             // 调整SeedSlots的大小
             var GridLayoutGroup = SeedSlots.GetComponent<GridLayoutGroup>();
             var PaddingLeft = GridLayoutGroup.padding.left;
@@ -124,7 +124,8 @@ namespace TPL.PVZR.ViewControllers.UI
 
         protected override void OnClose()
         {
-            _inputActions.Level.Disable();
+            InputManager.Instance.InputActions.Level.SlotPanelVisibilityToggle.performed -=
+                OnSlotPanelVisibilityTogglePressed;
             FoldPanel.onClick.RemoveAllListeners();
         }
 

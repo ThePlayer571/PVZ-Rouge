@@ -76,16 +76,24 @@ namespace TPL.PVZR.Services
             if (!allowedPhaseToFrom.ContainsKey(changeTo))
             {
                 $"未设置切换规则：{changeTo}".LogWarning();
+                return;
             }
 
             if (!allowedPhaseToFrom[changeTo].Contains(leaveFrom))
             {
                 $"进行了不允许的状态切换：{leaveFrom}->{changeTo}".LogWarning();
+                return;
             }
 
             if (_changingPhase)
             {
-                if (_nextPhase.HasValue) throw new Exception("通道堵塞，无法处理新的阶段变更请求");
+                if (_nextPhase.HasValue)
+                {
+                    $"通道堵塞，无法处理新的阶段变更请求: current:{_PhaseModel.GamePhase}, cache:{_nextPhase.Value.phase}, next:{phase}"
+                        .LogError();
+                    return;
+                }
+
                 _nextPhase = (phase, paras);
                 return;
             }

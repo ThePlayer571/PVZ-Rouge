@@ -1,6 +1,7 @@
 using DG.Tweening;
 using QFramework;
 using TPL.PVZR.CommandEvents.Level_Gameplay;
+using TPL.PVZR.Models;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,10 +13,13 @@ namespace TPL.PVZR.ViewControllers
         private bool _isCollected = false;
         [SerializeField] public int SunPoint = 25;
 
+        private IPhaseModel _PhaseModel;
+
 
         private void Awake()
         {
             _SpriteRenderer = this.GetComponent<SpriteRenderer>();
+            _PhaseModel = this.GetModel<IPhaseModel>();
         }
 
 
@@ -34,7 +38,8 @@ namespace TPL.PVZR.ViewControllers
         public void TryCollect()
         {
             if (_isCollected) return; // 如果已经被收集了，就不再执行收集逻辑
-            this.SendCommand<CollectSunCommand>(new CollectSunCommand(this));
+            if (_PhaseModel.IsInRoughPhase(RoughPhase.Process))
+                this.SendCommand<CollectSunCommand>(new CollectSunCommand(this));
         }
 
 

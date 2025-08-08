@@ -23,14 +23,18 @@ namespace TPL.PVZR.Systems
 
         private IPhaseService _PhaseService;
         private ISceneTransitionEffectService _SceneTransitionEffectService;
+        private IUIStackService _UIStackService;
+        private IGamePhaseChangeService _GamePhaseChangeService;
 
         protected override void OnInit()
         {
             _PhaseModel = this.GetModel<IPhaseModel>();
             _GameModel = this.GetModel<IGameModel>();
-            
+
             _PhaseService = this.GetService<IPhaseService>();
             _SceneTransitionEffectService = this.GetService<ISceneTransitionEffectService>();
+            _UIStackService = this.GetService<IUIStackService>();
+            _GamePhaseChangeService = this.GetService<IGamePhaseChangeService>();
 
             _PhaseService.RegisterCallBack((GamePhase.GameInitialization, PhaseStage.EnterEarly), e =>
             {
@@ -65,6 +69,8 @@ namespace TPL.PVZR.Systems
                 RandomHelper.SetGame(null);
             });
 
+            #region Pause
+
             this.RegisterEvent<OnGamePaused>(_ =>
             {
                 // 时间
@@ -82,6 +88,17 @@ namespace TPL.PVZR.Systems
                 var panel = UIKit.GetPanel<UIGamePausePanel>();
                 panel.HideUI();
             });
+
+            this.RegisterEvent<OnTransitionEffectHoldingBegin>(e =>
+            {
+                _UIStackService.Clear();
+                if (_GameModel.IsGamePaused)
+                {
+                    _GamePhaseChangeService.ResumeGame();
+                }
+            });
+
+            #endregion
         }
     }
 }

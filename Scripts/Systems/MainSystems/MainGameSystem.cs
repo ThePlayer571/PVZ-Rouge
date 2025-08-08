@@ -41,6 +41,12 @@ namespace TPL.PVZR.Systems
                 _mainMenuSceneHandle = Addressables.LoadSceneAsync("MainMenu");
                 UIKit.OpenPanel<UIGameStartPanel>();
             });
+            
+            phaseService.RegisterCallBack((GamePhase.MainMenu, PhaseStage.EnterLate), e =>
+            {
+                var _ = this.GetService<ISceneTransitionEffectService>();
+                _.EndTransition(true);
+            });
             phaseService.RegisterCallBack((GamePhase.MainMenu, PhaseStage.LeaveNormal),
                 e =>
                 {
