@@ -24,6 +24,9 @@ namespace TPL.PVZR.Systems
         private IGameModel _GameModel;
         private IPhaseModel _PhaseModel;
 
+        private ISceneTransitionEffectService _SceneTransitionEffectService;
+        private IPhaseService _PhaseService;
+
         private AsyncOperationHandle<SceneInstance> _MazeMapSceneHandle;
 
         public IMazeMapController _MazeMapController { get; private set; }
@@ -32,10 +35,11 @@ namespace TPL.PVZR.Systems
         {
             _GameModel = this.GetModel<IGameModel>();
             _PhaseModel = this.GetModel<IPhaseModel>();
+            _SceneTransitionEffectService = this.GetService<ISceneTransitionEffectService>();
+            _PhaseService = this.GetService<IPhaseService>();
 
-            var phaseService = this.GetService<IPhaseService>();
 
-            phaseService.RegisterCallBack((GamePhase.GameInitialization, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.GameInitialization, PhaseStage.EnterNormal), e =>
             {
                 _MazeMapController = MazeMapController.Create(_GameModel.GameData.MazeMapData);
                 // MazeController数据结构生成
@@ -43,16 +47,16 @@ namespace TPL.PVZR.Systems
                 _MazeMapController.LoadTombDataFromMazeMapData();
             });
 
-            phaseService.RegisterCallBack((GamePhase.LevelPassed, PhaseStage.EnterNormal),
+            _PhaseService.RegisterCallBack((GamePhase.LevelPassed, PhaseStage.EnterNormal),
                 e => { _MazeMapController.BreakTomb(_GameModel.ActiveTombData); });
 
-            phaseService.RegisterCallBack((GamePhase.MazeMapInitialization, PhaseStage.EnterEarly), e =>
+            _PhaseService.RegisterCallBack((GamePhase.MazeMapInitialization, PhaseStage.EnterEarly), e =>
             {
                 _MazeMapSceneHandle = Addressables.LoadSceneAsync("MazeMapScene");
-                phaseService.AddAwait(_MazeMapSceneHandle.Task);
+                _PhaseService.AddAwait(_MazeMapSceneHandle.Task);
             });
 
-            phaseService.RegisterCallBack((GamePhase.MazeMapInitialization, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.MazeMapInitialization, PhaseStage.EnterNormal), e =>
             {
                 // 设置场景
                 _MazeMapController.SetUpView();
@@ -64,16 +68,28 @@ namespace TPL.PVZR.Systems
 
                 Camera.main.Position2D(worldPos);
                 // 切换状态
-                phaseService.ChangePhase(GamePhase.MazeMap);
+                _PhaseService.ChangePhase(GamePhase.MazeMap);
             });
 
-            phaseService.RegisterCallBack((GamePhase.MazeMapInitialization, PhaseStage.EnterLate), e =>
+            _PhaseService.RegisterCallBack((GamePhase.MazeMapInitialization, PhaseStage.EnterLate), e =>
             {
                 //
                 UIKit.OpenPanel<UIMazeMapPanel>();
             });
 
-            phaseService.RegisterCallBack((GamePhase.MazeMap, PhaseStage.LeaveNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.MazeMap, PhaseStage.EnterLate), e =>
+            {
+                var task = _SceneTransitionEffectService.EndTransition();
+                _PhaseService.AddAwait(task);
+            });
+
+            _PhaseService.RegisterCallBack((GamePhase.MazeMap, PhaseStage.LeaveEarly), e =>
+            {
+                var task = _SceneTransitionEffectService.PlayTransitionAsync();
+                _PhaseService.AddAwait(task);
+            });
+
+            _PhaseService.RegisterCallBack((GamePhase.MazeMap, PhaseStage.LeaveNormal), e =>
             {
                 UIKit.ClosePanel<UIMazeMapPanel>();
                 ActionKit.Sequence()
@@ -81,9 +97,9 @@ namespace TPL.PVZR.Systems
                     .Callback(() => _MazeMapSceneHandle.Release())
                     .StartGlobal();
             });
-            phaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.LeaveLate), e =>
+            _PhaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.LeaveLate), e =>
             {
-                //
+                _MazeMapController.TempReleaseHandles();
                 _MazeMapController = null;
             });
         }

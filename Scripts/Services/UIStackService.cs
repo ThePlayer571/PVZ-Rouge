@@ -39,6 +39,7 @@ namespace TPL.PVZR.Services
                 var top = _stack.Peek();
                 if (top == null || top is MonoBehaviour monoBehaviour && monoBehaviour == null)
                 {
+                    // todo 暂时保留方便查看报错信息，以后删除了也无所谓
                     $"发现错误：UIStackService 栈顶有 null，已自动清理".LogError();
                     _stack.Pop();
                 }

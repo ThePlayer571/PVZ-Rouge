@@ -21,14 +21,18 @@ namespace TPL.PVZR.Systems
         private IPhaseModel _PhaseModel;
         private IGameModel _GameModel;
 
+        private IPhaseService _PhaseService;
+        private ISceneTransitionEffectService _SceneTransitionEffectService;
+
         protected override void OnInit()
         {
             _PhaseModel = this.GetModel<IPhaseModel>();
             _GameModel = this.GetModel<IGameModel>();
+            
+            _PhaseService = this.GetService<IPhaseService>();
+            _SceneTransitionEffectService = this.GetService<ISceneTransitionEffectService>();
 
-            var phaseService = this.GetService<IPhaseService>();
-
-            phaseService.RegisterCallBack((GamePhase.GameInitialization, PhaseStage.EnterEarly), e =>
+            _PhaseService.RegisterCallBack((GamePhase.GameInitialization, PhaseStage.EnterEarly), e =>
             {
                 // 数据设置
                 _GameModel.GameData = e.Paras["GameData"] as IGameData;
@@ -37,17 +41,20 @@ namespace TPL.PVZR.Systems
                 RandomHelper.SetGame(_GameModel.GameData);
                 // 常驻Panel
                 UIKit.OpenPanel<UIGamePausePanel>(UILevel.PopUI);
+                // 过场动画
+                var task = _SceneTransitionEffectService.PlayTransitionAsync();
+                _PhaseService.AddAwait(task);
                 //
-                phaseService.ChangePhase(GamePhase.MazeMapInitialization);
+                _PhaseService.ChangePhase(GamePhase.MazeMapInitialization);
             });
 
-            phaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.EnterNormal), e =>
             {
                 // 回到主菜单
-                phaseService.ChangePhase(GamePhase.MainMenu);
+                _PhaseService.ChangePhase(GamePhase.MainMenu);
             });
 
-            phaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.LeaveNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.GameExiting, PhaseStage.LeaveNormal), e =>
             {
                 // 卸载数据
                 _GameModel.Reset();
@@ -66,7 +73,7 @@ namespace TPL.PVZR.Systems
                 var panel = UIKit.GetPanel<UIGamePausePanel>();
                 panel.ShowUI();
             });
-            
+
             this.RegisterEvent<OnGameResumed>(_ =>
             {
                 // 时间

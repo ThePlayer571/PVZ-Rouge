@@ -28,6 +28,9 @@ namespace TPL.PVZR.Classes.MazeMap
         // 过程阶段
         void BreakTomb(ITombData tombData);
         void SetUpView();
+        
+        // 结束阶段
+        void TempReleaseHandles();
 
         #endregion
 
@@ -237,7 +240,7 @@ namespace TPL.PVZR.Classes.MazeMap
             TempTombStoneHandle = Addressables.LoadAssetAsync<GameObject>("Tombstone");
         }
 
-        ~MazeMapController()
+        public void TempReleaseHandles()
         {
             TempTileHandle.Release();
             TempTombStoneHandle.Release();

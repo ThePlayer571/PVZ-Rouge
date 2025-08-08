@@ -42,6 +42,7 @@ namespace TPL.PVZR.Systems.Level_Data
         private IPlantService _PlantService;
         private IZombieService _ZombieService;
         private IProjectileService _ProjectileService;
+        private ISceneTransitionEffectService _SceneTransitionEffectService;
 
         private AsyncOperationHandle<SceneInstance> _levelSceneHandle;
         private AsyncOperationHandle<GameObject> _daveHandle;
@@ -59,6 +60,7 @@ namespace TPL.PVZR.Systems.Level_Data
             _PlantService = this.GetService<IPlantService>();
             _ZombieService = this.GetService<IZombieService>();
             _ProjectileService = this.GetService<IProjectileService>();
+            _SceneTransitionEffectService = this.GetService<ISceneTransitionEffectService>();
 
 
             #region 初始化阶段
@@ -121,6 +123,13 @@ namespace TPL.PVZR.Systems.Level_Data
 
             _PhaseService.RegisterCallBack((GamePhase.ChooseSeeds, PhaseStage.EnterNormal),
                 e => { UIKit.OpenPanel<UIChooseSeedPanel>(); });
+
+            _PhaseService.RegisterCallBack((GamePhase.ChooseSeeds, PhaseStage.EnterLate), e =>
+            {
+                // 过场动画 - 放到这里是因为需要等UI生成
+                var task = _SceneTransitionEffectService.EndTransition();
+                _PhaseService.AddAwait(task);
+            });
 
             _PhaseService.RegisterCallBack((GamePhase.ChooseSeeds, PhaseStage.LeaveNormal), e =>
             {
@@ -190,13 +199,20 @@ namespace TPL.PVZR.Systems.Level_Data
 
             _PhaseService.RegisterCallBack((GamePhase.LevelDefeat, PhaseStage.EnterNormal), e =>
             {
-                //
+                // 切换阶段
                 _PhaseService.ChangePhase(GamePhase.LevelExiting, ("NextPhase", GamePhase.LevelDefeatPanel));
             });
 
             #endregion
 
             #region 退出阶段
+
+            _PhaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterEarly), e =>
+            {
+                // 播放过场动画
+                var task = _SceneTransitionEffectService.PlayTransitionAsync();
+                _PhaseService.AddAwait(task);
+            });
 
             _PhaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterNormal), e =>
             {
@@ -234,6 +250,18 @@ namespace TPL.PVZR.Systems.Level_Data
                 _levelDefeatSceneHandle = Addressables.LoadSceneAsync("LevelDefeatScene");
                 UIKit.OpenPanel<UILevelDefeatPanel>();
                 _PhaseService.AddAwait(_levelDefeatSceneHandle.Task);
+            });
+
+            _PhaseService.RegisterCallBack((GamePhase.LevelDefeatPanel, PhaseStage.EnterLate), e =>
+            {
+                var task = _SceneTransitionEffectService.EndTransition();
+                _PhaseService.AddAwait(task);
+            });
+
+            _PhaseService.RegisterCallBack((GamePhase.LevelDefeatPanel, PhaseStage.LeaveEarly), _ =>
+            {
+                var task = _SceneTransitionEffectService.PlayTransitionAsync();
+                _PhaseService.AddAwait(task);
             });
 
             _PhaseService.RegisterCallBack((GamePhase.LevelDefeatPanel, PhaseStage.LeaveNormal), e =>
