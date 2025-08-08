@@ -46,14 +46,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                 {
                     var direction_1 = Direction.ToVector2();
                     var factor = -Direction.ToInt();
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Star, direction_1, FirePoint_1.position);
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Star, direction_1.Rotate(90 * factor),
+                    _ProjectileService.CreatePea(ProjectileId.Star, direction_1, FirePoint_1.position);
+                    _ProjectileService.CreatePea(ProjectileId.Star, direction_1.Rotate(90 * factor),
                         FirePoint_2.position);
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Star, direction_1.Rotate(180 * factor),
+                    _ProjectileService.CreatePea(ProjectileId.Star, direction_1.Rotate(180 * factor),
                         FirePoint_3.position);
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Star, direction_1.Rotate(270 * factor),
+                    _ProjectileService.CreatePea(ProjectileId.Star, direction_1.Rotate(270 * factor),
                         FirePoint_4.position);
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Star, direction_1.Rotate(315 * factor),
+                    _ProjectileService.CreatePea(ProjectileId.Star, direction_1.Rotate(315 * factor),
                         FirePoint_5.position);
                     _timer.Reset();
                 }

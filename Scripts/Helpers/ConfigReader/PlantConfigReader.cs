@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes;
@@ -10,56 +11,26 @@ using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Classes.ZombieAI.Public;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace TPL.PVZR.Helpers.New.DataReader
 {
-    public static class ZombieConfigReader
-    {
-        #region 数据存储
-
-        static ZombieConfigReader()
-        {
-            ResKit.Init();
-            var _resLoader = ResLoader.Allocate();
-        }
-
-        #endregion
-
-        #region 数据读取
-
-        #endregion
-    }
-
     public static class PlantConfigReader
     {
         #region 数据存储
 
-        private static readonly Dictionary<PlantDef, CardDefinition> _cardDefinitionDict;
-        private static readonly Dictionary<PlantDef, GameObject> _plantPrefabDict;
+        private static Dictionary<PlantDef, CardDefinition> _cardDefinitionDict;
+        private static Dictionary<PlantDef, AssetReference> _plantPrefabDict;
 
-
-        private static readonly Dictionary<ZombieId, ZombieConfig> _zombieConfigs;
-
-        public static GameObject GetZombiePrefab(ZombieId zombieId)
+        public static async Task InitializeAsync()
         {
-            if (_zombieConfigs.TryGetValue(zombieId, out var config))
-            {
-                return config.prefab;
-            }
+            var plantConfigListHandle = Addressables.LoadAssetAsync<PlantConfigList>("PlantConfigList");
+            await plantConfigListHandle.Task;
 
-            throw new ArgumentException($"找不到对应的ZombiePrefab: {zombieId}");
-        }
-
-        static PlantConfigReader()
-        {
-            ResKit.Init();
-            var _resLoader = ResLoader.Allocate();
-            var plantConfigList =
-                _resLoader.LoadSync<PlantConfigList>(Configlist.BundleName, Configlist.PlantConfigList);
-
+            var plantConfigList = plantConfigListHandle.Result;
             // CardDefinition | PlantPrefab
             _cardDefinitionDict = new Dictionary<PlantDef, CardDefinition>();
-            _plantPrefabDict = new Dictionary<PlantDef, GameObject>();
+            _plantPrefabDict = new Dictionary<PlantDef, AssetReference>();
             foreach (var config in plantConfigList.Dave)
             {
                 _cardDefinitionDict[config.def] = config.card;
@@ -89,15 +60,6 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 _cardDefinitionDict[config.def] = config.card;
                 _plantPrefabDict[config.def] = config.prefab;
             }
-            //
-
-            var zombieConfigList = _resLoader.LoadSync<ZombieConfigList>(Configlist.ZombieConfigList);
-
-            _zombieConfigs = new Dictionary<ZombieId, ZombieConfig>();
-            foreach (var config in zombieConfigList.Dave)
-            {
-                _zombieConfigs[config.id] = config;
-            }
         }
 
         #endregion
@@ -114,7 +76,7 @@ namespace TPL.PVZR.Helpers.New.DataReader
             throw new ArgumentException($"找不到对应的CardDefinition: {plantDef.Id}, {plantDef.Variant}");
         }
 
-        public static GameObject GetPlantPrefab(PlantDef def)
+        public static AssetReference GetPlantPrefab(PlantDef def)
         {
             if (_plantPrefabDict.TryGetValue(def, out var prefab))
             {
@@ -175,6 +137,43 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 PlantId.CoffeeBean => PlacementSlot.Air,
                 _ => PlacementSlot.Normal,
             };
+        }
+
+        #endregion
+    }
+
+    public static class ProjectileConfigReader
+    {
+        #region 数据存储
+
+        private static Dictionary<ProjectileId, AssetReference> _projectilePrefabDict;
+
+        public static async Task InitializeAsync()
+        {
+            var projectileConfigListHandle = Addressables.LoadAssetAsync<ProjectileConfigList>("ProjectileConfigList");
+            await projectileConfigListHandle.Task;
+
+            var projectileConfigList = projectileConfigListHandle.Result;
+            _projectilePrefabDict = new Dictionary<ProjectileId, AssetReference>();
+            
+            foreach (var config in projectileConfigList.Default)
+            {
+                _projectilePrefabDict[config.id] = config.prefab;
+            }
+        }
+
+        #endregion
+
+        #region 数据读取
+
+        public static AssetReference GetProjectilePrefab(ProjectileId id)
+        {
+            if (_projectilePrefabDict.TryGetValue(id, out var prefab))
+            {
+                return prefab;
+            }
+
+            throw new ArgumentException($"找不到对应的ProjectilePrefab: {id}");
         }
 
         #endregion

@@ -668,6 +668,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 
         public void DebugDisplayMatrix()
         {
+            // 仅在Debug模式下使用
             var resLoader = ResLoader.Allocate();
             var tilemap = LevelTilemapNode.Instance.Debug;
             var OneHeight = resLoader.LoadSync<Tile>(Leveldebug.BundleName, Leveldebug.DebugOneHeight);
@@ -692,7 +693,6 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                 }
             }
 
-            resLoader.Recycle2Cache();
         }
 
         public void DebugLogCluster(Vector2Int pos)

@@ -54,7 +54,7 @@ namespace TPL.PVZR.Systems.Level_Event
                 if (_sunTimer.Ready)
                 {
                     var pos = LevelGridHelper.CellToWorld(_LevelModel.LevelData.GetRandomSunFallCellPos());
-                    EntityFactory.SunFactory.SpawnSunWithFall(SunId.Sun, pos);
+                    SunFactory.SpawnSunWithFall(SunId.Sun, pos);
                     _sunTimer.Reset();
                 }
             }

@@ -144,11 +144,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             this.SendCommand<OnZombieDeathCommand>(new OnZombieDeathCommand(this));
         }
 
-        public override void Remove()
-        {
-            throw new NotSupportedException("僵尸的移除应该交给ZombieFactory");
-        }
-
         #endregion
 
         #region 字段

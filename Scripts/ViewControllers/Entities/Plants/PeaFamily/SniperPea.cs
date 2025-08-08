@@ -62,7 +62,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             {
                 _timer.Reset();
                 var direction = (_target.ZombieNode.HeadPos.position - FirePoint.position);
-                EntityFactory.ProjectileFactory.CreatePea(ProjectileId.SnipePea, direction, FirePoint.position);
+                _ProjectileService.CreatePea(ProjectileId.SnipePea, direction, FirePoint.position);
             }
         }
     }

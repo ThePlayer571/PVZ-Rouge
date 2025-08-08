@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using QAssetBundle;
 using QFramework;
@@ -13,6 +14,7 @@ using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Classes.LootPool;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace TPL.PVZR.Helpers.New.DataReader
 {
@@ -25,15 +27,12 @@ namespace TPL.PVZR.Helpers.New.DataReader
         private static readonly Dictionary<PlantBookId, int> _plantBookStandardValue = new();
 
 
-        static EconomyConfigReader()
+        public static async Task InitializeAsync()
         {
-            ResKit.Init();
-            var resLoader = ResLoader.Allocate();
-
             // 设置PlantStandardValue
-            var plantStandardValueJson =
-                resLoader.LoadSync<TextAsset>(Jsonconfigs.BundleName, Jsonconfigs.PlantValueList).text;
-            JObject plantValueList = JObject.Parse(plantStandardValueJson);
+            var plantStandardValueJsonHandle = Addressables.LoadAssetAsync<TextAsset>("PlantValueList");
+            await plantStandardValueJsonHandle.Task;
+            JObject plantValueList = JObject.Parse(plantStandardValueJsonHandle.Result.text);
             foreach (var plantValueConfig in plantValueList)
             {
                 if (Enum.TryParse<PlantId>(plantValueConfig.Key, out var plantId))
@@ -47,9 +46,9 @@ namespace TPL.PVZR.Helpers.New.DataReader
             }
 
             // 设置PlantBookStandardValue
-            var plantBookStandardValueJson =
-                resLoader.LoadSync<TextAsset>(Jsonconfigs.BundleName, Jsonconfigs.PlantBookValueList).text;
-            JObject plantBookValueList = JObject.Parse(plantBookStandardValueJson);
+            var plantBookStandardValueJsonHandle = Addressables.LoadAssetAsync<TextAsset>("PlantBookValueList");
+            await plantBookStandardValueJsonHandle.Task;
+            JObject plantBookValueList = JObject.Parse(plantBookStandardValueJsonHandle.Result.text);
             foreach (var plantBookValueConfig in plantBookValueList)
             {
                 if (Enum.TryParse<PlantBookId>(plantBookValueConfig.Key, out var plantBookId))
@@ -62,6 +61,9 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 }
             }
 
+
+            plantStandardValueJsonHandle.Release();
+            plantBookStandardValueJsonHandle.Release();
         }
 
         #endregion

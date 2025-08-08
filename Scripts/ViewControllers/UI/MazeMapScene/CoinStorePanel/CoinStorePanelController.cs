@@ -61,20 +61,6 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
             toggle.onValueChanged.AddListener(Display);
             mainToggle.onValueChanged.AddListener(Display);
 
-            _GameModel.GameData.InventoryData.Coins.RegisterWithInitValue(coin =>
-            {
-                RefreshBtn.interactable = coin >= _CoinStoreSystem.CurrentRefreshCost;
-            }).UnRegisterWhenGameObjectDestroyed(this);
-
-            // todo 不精确，应该是订阅刷新的事件，现在的代码只能说是暂时不出错
-            _CoinStoreSystem.OnRewrite.Register(() =>
-            {
-                RefreshBtn.interactable =
-                    _GameModel.GameData.InventoryData.Coins.Value >= _CoinStoreSystem.CurrentRefreshCost;
-                // 这个也是，应该订阅RefreshCost才对
-                RefreshCostText.text = "Cost: " + _CoinStoreSystem.CurrentRefreshCost.ToString();
-            }).UnRegisterWhenGameObjectDestroyed(this);
-
             RefreshBtn.onClick.AddListener(() => { this.SendCommand<CoinStoreRefreshCommand>(); });
 
             for (int index = 0; index < 10; index++)
@@ -93,6 +79,11 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                 lootView.transform.SetParent(trade.ForSale, false);
                 trade.CoinText.text = tradeData.CoinAmount.ToString();
                 trade.TradeBtn.interactable = ShouldBeAvailable(tradeData);
+
+                if (tradeData.Used)
+                {
+                    lootView.Hide();
+                }
 
                 // UI变化事件
                 _CoinStoreSystem.OnRewrite.Register(() =>
@@ -141,6 +132,20 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                     }
                 );
             }
+
+            _GameModel.GameData.InventoryData.Coins.RegisterWithInitValue(coin =>
+            {
+                RefreshBtn.interactable = coin >= _CoinStoreSystem.CurrentRefreshCost;
+            }).UnRegisterWhenGameObjectDestroyed(this);
+
+            // todo 不精确，应该是订阅刷新的事件，现在的代码只能说是暂时不出错
+            _CoinStoreSystem.OnRewrite.Register(() =>
+            {
+                RefreshBtn.interactable =
+                    _GameModel.GameData.InventoryData.Coins.Value >= _CoinStoreSystem.CurrentRefreshCost;
+                // 这个也是，应该订阅RefreshCost才对
+                RefreshCostText.text = "Cost: " + _CoinStoreSystem.CurrentRefreshCost.ToString();
+            }).UnRegisterWhenGameObjectDestroyed(this);
         }
 
         private void OnDestroy()

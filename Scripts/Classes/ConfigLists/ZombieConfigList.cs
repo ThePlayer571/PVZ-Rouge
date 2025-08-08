@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TPL.PVZR.Classes.InfoClasses;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace TPL.PVZR.Classes.ConfigLists
 {
@@ -9,7 +10,7 @@ namespace TPL.PVZR.Classes.ConfigLists
     public class ZombieConfig
     {
         public ZombieId id;
-        public GameObject prefab;
+        public AssetReference prefab;
     }
 
     [CreateAssetMenu(fileName = "ZombieConfigList", menuName = "PVZR_Config/ZombieConfigList")]

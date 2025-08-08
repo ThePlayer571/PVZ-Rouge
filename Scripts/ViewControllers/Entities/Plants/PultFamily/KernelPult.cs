@@ -53,11 +53,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                     OnThrow.Trigger();
                     if (RandomHelper.Default.NextBool(GlobalEntityData.Plant_KernelPult_ButterChance))
                     {
-                        EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Butter, _direction, FirePoint.position);
+                        _ProjectileService.CreatePea(ProjectileId.Butter, _direction, FirePoint.position);
                     }
                     else
                     {
-                        EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Kernel, _direction, FirePoint.position);
+                        _ProjectileService.CreatePea(ProjectileId.Kernel, _direction, FirePoint.position);
                     }
                 }
             }

@@ -16,6 +16,7 @@ namespace TPL.PVZR.Models
     {
         // Data
         BindableProperty<int> SunPoint { get; }
+        BindableProperty<int> EarnedCoin { get; }
         List<SeedData> ChosenSeeds { get; }
         BindableProperty<int> CurrentWave { get; }
         BindableProperty<DayPhaseType> CurrentDayPhase { get; }
@@ -34,6 +35,7 @@ namespace TPL.PVZR.Models
     public class LevelModel : AbstractModel, ILevelModel
     {
         public BindableProperty<int> SunPoint { get; private set; }
+        public BindableProperty<int> EarnedCoin { get; private set; }
 
         public List<SeedData> ChosenSeeds { get; private set; }
         public BindableProperty<int> CurrentWave { get; private set; }
@@ -55,6 +57,7 @@ namespace TPL.PVZR.Models
             this.LevelData = levelData;
 
             this.SunPoint.SetValueWithoutEvent(levelData.InitialSunPoint);
+            this.EarnedCoin.SetValueWithoutEvent(0);
             CurrentWave.Value = 0;
             CurrentDayPhase.SetValueWithoutEvent(levelData.InitialDayPhase);
             CurrentWeather.SetValueWithoutEvent(levelData.InitialWeather);
@@ -65,9 +68,10 @@ namespace TPL.PVZR.Models
             LevelData = null;
             ChosenSeeds.Clear();
             SunPoint.SetValueWithoutEvent(0);
+            EarnedCoin.SetValueWithoutEvent(0);
             CurrentWave.SetValueWithoutEvent(0);
             CurrentDayPhase.SetValueWithoutEvent(DayPhaseType.NotSet);
-             CurrentWeather.SetValueWithoutEvent(WeatherType.NotSet);
+            CurrentWeather.SetValueWithoutEvent(WeatherType.NotSet);
         }
 
 
@@ -76,8 +80,9 @@ namespace TPL.PVZR.Models
             ChosenSeeds = new List<SeedData>();
             CurrentWave = new BindableProperty<int>(0);
             CurrentDayPhase = new BindableProperty<DayPhaseType>(DayPhaseType.NotSet);
-            CurrentWeather = new  BindableProperty<WeatherType>(WeatherType.NotSet);
+            CurrentWeather = new BindableProperty<WeatherType>(WeatherType.NotSet);
             SunPoint = new BindableProperty<int>(0);
+            EarnedCoin = new BindableProperty<int>(0);
         }
     }
 }

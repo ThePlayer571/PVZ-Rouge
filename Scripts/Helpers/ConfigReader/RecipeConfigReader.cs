@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using QAssetBundle;
 using QFramework;
@@ -9,18 +10,17 @@ using TPL.PVZR.Classes.DataClasses.Loot;
 using TPL.PVZR.Classes.DataClasses.Recipe;
 using TPL.PVZR.Classes.InfoClasses;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace TPL.PVZR.Helpers.New.DataReader
 {
-    public class RecipeConfigReader
+    public static class RecipeConfigReader
     {
-        static RecipeConfigReader()
+        public static async Task InitializeAsync()
         {
-            var resLoader = ResLoader.Allocate();
-            // 配置Recipes
-            var recipeConfigJson =
-                resLoader.LoadSync<TextAsset>(Jsonconfigs.BundleName, Jsonconfigs.RecipeConfigs).text;
-            JArray recipeConfigList = JArray.Parse(recipeConfigJson);
+            var handle = Addressables.LoadAssetAsync<TextAsset>("RecipeConfigs");
+            await handle.Task;
+            JArray recipeConfigList = JArray.Parse(handle.Result.text);
 
 
             foreach (JObject recipeConfig in recipeConfigList)

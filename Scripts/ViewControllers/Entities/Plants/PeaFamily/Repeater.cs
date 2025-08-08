@@ -43,11 +43,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                 {
                     ActionKit.Sequence()
                         .Callback(() =>
-                            EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
+                            _ProjectileService.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
                                 FirePoint.position))
                         .Delay(GlobalEntityData.Plant_Repeater_PeaInterval)
                         .Callback(() =>
-                            EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
+                            _ProjectileService.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
                                 FirePoint.position))
                         .Start(this);
 

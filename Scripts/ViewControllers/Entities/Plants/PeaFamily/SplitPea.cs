@@ -51,16 +51,16 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
                 if (pass)
                 {
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
+                    _ProjectileService.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
                         FirePointForward.position);
 
                     ActionKit.Sequence()
                         .Callback(() =>
-                            EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.Reverse().ToVector2(),
+                            _ProjectileService.CreatePea(ProjectileId.Pea, Direction.Reverse().ToVector2(),
                                 FirePointBackward.position))
                         .Delay(GlobalEntityData.Plant_Repeater_PeaInterval)
                         .Callback(() =>
-                            EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.Reverse().ToVector2(),
+                            _ProjectileService.CreatePea(ProjectileId.Pea, Direction.Reverse().ToVector2(),
                                 FirePointBackward.position))
                         .Start(this);
 

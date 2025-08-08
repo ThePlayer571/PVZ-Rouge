@@ -5,6 +5,7 @@ using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase;
 using UnityEngine;
@@ -32,6 +33,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
 
         //
         protected Animator _Animator;
+        protected IProjectileService _ProjectileService;
 
         #endregion
 
@@ -59,12 +61,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
 
         public override void DieWith(AttackData attackData)
         {
-            this.SendCommand<RemovePlantCommand>(new RemovePlantCommand(this));
-        }
-
-        public override void Remove()
-        {
-            throw new NotSupportedException($"植物的移除操作应该通过命令来处理");
+            var plantService = this.GetService<IPlantService>();
+            plantService.RemovePlant(this);
         }
 
         public void Initialize(Direction2 direction)
@@ -81,6 +79,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants.Base
         {
             base.Awake();
             _Animator = this.GetComponent<Animator>();
+            _ProjectileService = this.GetService<IProjectileService>();
         }
 
         protected override void Update()

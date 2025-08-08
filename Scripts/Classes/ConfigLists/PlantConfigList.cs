@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
 using TPL.PVZR.Classes.InfoClasses;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace TPL.PVZR.Classes.ConfigLists
 {
@@ -11,7 +12,7 @@ namespace TPL.PVZR.Classes.ConfigLists
     {
         public PlantDef def;
         public CardDefinition card;
-        public GameObject prefab;
+        public AssetReference prefab;
     }
 
 
@@ -24,5 +25,4 @@ namespace TPL.PVZR.Classes.ConfigLists
         public List<PlantConfig> PeaFamily;
         public List<PlantConfig> PultFamily;
     }
-
 }

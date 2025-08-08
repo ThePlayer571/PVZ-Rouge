@@ -30,7 +30,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
                 other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
             }
 
-            this.Remove();
+            Kill();
         }
     }
 }

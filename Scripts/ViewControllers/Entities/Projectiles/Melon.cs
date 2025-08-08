@@ -41,7 +41,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
                 target.GetComponent<IAttackable>().TakeAttack(aoeAttackData);
             }
 
-            this.Remove();
+            Kill();
         }
     }
 }

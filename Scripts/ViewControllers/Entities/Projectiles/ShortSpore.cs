@@ -27,7 +27,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             base.Update();
             if (Mathf.Abs(_Rigidbody2D.position.x - _initialPosX) > GlobalEntityData.Plant_PuffShroom_ShootDistance)
             {
-                this.Remove();
+                Kill();
             }
         }
 
@@ -42,7 +42,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
                 other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
             }
 
-            this.Remove();
+            Kill();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using QFramework;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
@@ -9,9 +10,10 @@ namespace TPL.PVZR.Services
 {
     public interface IZombieService : IService
     {
-        void SpawnZombie(ZombieId id, Vector2 pos);
+        Task SpawnZombie(ZombieId id, Vector2 pos);
         void RemoveZombie(Zombie zombie);
         void RemoveAllZombies();
+        void ClearCache();
 
         IReadOnlyCollection<Zombie> ActiveZombies { get; }
     }
@@ -25,9 +27,9 @@ namespace TPL.PVZR.Services
             _zombieFactory = new ZombieFactory();
         }
 
-        public void SpawnZombie(ZombieId id, Vector2 pos)
+        public async Task SpawnZombie(ZombieId id, Vector2 pos)
         {
-            _zombieFactory.SpawnZombie(id, pos);
+            await _zombieFactory.SpawnZombie(id, pos);
         }
 
         public void RemoveZombie(Zombie zombie)
@@ -38,6 +40,11 @@ namespace TPL.PVZR.Services
         public void RemoveAllZombies()
         {
             _zombieFactory.RemoveAllZombies();
+        }
+
+        public void ClearCache()
+        {
+            _zombieFactory.ClearCache();
         }
 
         public IReadOnlyCollection<Zombie> ActiveZombies => _zombieFactory.ActiveZombies;

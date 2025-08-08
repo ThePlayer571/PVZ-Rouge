@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using QFramework;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.CommandEvents.Level_Gameplay.PlantSpawn;
@@ -10,8 +11,9 @@ namespace TPL.PVZR.Services
 {
     public interface IPlantService : IService
     {
-        void SpawnPlant(PlantDef def, Vector2Int cellPos, Direction2 direction);
+        Task SpawnPlant(PlantDef def, Vector2Int cellPos, Direction2 direction);
         void RemovePlant(Plant plant);
+        void ClearCache();
     }
 
     public class PlantService : AbstractService, IPlantService
@@ -23,9 +25,9 @@ namespace TPL.PVZR.Services
             _plantFactory = new PlantFactory();
         }
 
-        public void SpawnPlant(PlantDef def, Vector2Int cellPos, Direction2 direction)
+        public async Task SpawnPlant(PlantDef def, Vector2Int cellPos, Direction2 direction)
         {
-            var go = _plantFactory.SpawnPlant(def, direction, cellPos);
+            var go = await _plantFactory.SpawnPlant(def, direction, cellPos);
             this.SendEvent<OnPlantSpawned>(new OnPlantSpawned { CellPos = cellPos, Plant = go });
         }
 
@@ -33,6 +35,11 @@ namespace TPL.PVZR.Services
         {
             plant.OnRemoved();
             plant.gameObject.DestroySelf();
+        }
+
+        public void ClearCache()
+        {
+            _plantFactory.ClearCache();
         }
     }
 }

@@ -46,7 +46,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                         .Callback(() =>
                         {
                             var position = FirePoint.position + new Vector3(0, RandomHelper.Default.Range(-0.3f, 0.3f));
-                            EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
+                            _ProjectileService.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
                                 position);
                         })
                         .Delay(GlobalEntityData.Plant_GatlingPea_PeaInterval)

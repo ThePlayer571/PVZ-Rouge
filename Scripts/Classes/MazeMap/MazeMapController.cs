@@ -10,6 +10,9 @@ using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.Random;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.Tilemaps;
 
 namespace TPL.PVZR.Classes.MazeMap
 {
@@ -193,7 +196,8 @@ namespace TPL.PVZR.Classes.MazeMap
         #region 字段
 
         // 
-        protected ResLoader resLoader;
+        protected AsyncOperationHandle<IList<Tile>> TempTileHandle;
+        protected AsyncOperationHandle<GameObject> TempTombStoneHandle;
         // 基本数据结构
 
         protected IMazeMapWiseData MazeMapData { get; }
@@ -229,12 +233,14 @@ namespace TPL.PVZR.Classes.MazeMap
             MazeMapData = mazeMapData as IMazeMapWiseData;
             Random = DeterministicRandom.Create(MazeMapData.GenerateSeed);
 
-            resLoader = ResLoader.Allocate();
+            TempTileHandle = Addressables.LoadAssetsAsync<Tile>("MazeMapTile", null);
+            TempTombStoneHandle = Addressables.LoadAssetAsync<GameObject>("Tombstone");
         }
 
         ~MazeMapController()
         {
-            resLoader.Recycle2Cache();
+            TempTileHandle.Release();
+            TempTombStoneHandle.Release();
         }
 
         public static IMazeMapController Create(IMazeMapData mazeMapData)

@@ -39,7 +39,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
                 if (hit.collider && hit.collider.CompareTag("Zombie"))
                 {
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.MungBean, Direction.ToVector2(), FirePoint.position);
+                    _ProjectileService.CreatePea(ProjectileId.MungBean, Direction.ToVector2(), FirePoint.position);
                     _timer.Reset();
                 }
                 else

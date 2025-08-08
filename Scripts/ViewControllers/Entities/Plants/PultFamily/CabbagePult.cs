@@ -47,7 +47,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                 if (target)
                 {
                     _timer.Reset();
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Cabbage, _direction, FirePoint.position);
+                    _ProjectileService.CreatePea(ProjectileId.Cabbage, _direction, FirePoint.position);
                 }
             }
         }

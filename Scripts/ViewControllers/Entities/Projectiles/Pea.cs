@@ -3,6 +3,7 @@ using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
+using TPL.PVZR.Services;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using UnityEngine;
 
@@ -30,7 +31,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
                 other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
             }
 
-            this.Remove();
+            Kill();
         }
 
         public void Ignite(IgnitionType ignitionType)
@@ -41,15 +42,15 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             {
                 case IgnitionType.Fire:
                     _attacked = true;
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.FirePea, _Rigidbody2D.velocity,
+                    this.GetService<ProjectileService>().CreatePea(ProjectileId.FirePea, _Rigidbody2D.velocity,
                         _Rigidbody2D.position);
-                    this.Remove();
+                    Kill();
                     break;
                 case IgnitionType.GhostFire:
                     _attacked = true;
-                    EntityFactory.ProjectileFactory.CreatePea(ProjectileId.GhostFirePea, _Rigidbody2D.velocity,
+                    this.GetService<ProjectileService>().CreatePea(ProjectileId.GhostFirePea, _Rigidbody2D.velocity,
                         _Rigidbody2D.position);
-                    this.Remove();
+                    Kill();
                     break;
                 default:
                     break;

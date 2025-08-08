@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using QAssetBundle;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
@@ -8,25 +9,32 @@ using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.DataReader;
 using TPL.PVZR.ViewControllers.Others.UI.ItemView;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace TPL.PVZR.Helpers.New.GameObjectFactory
 {
     public static class ItemViewFactory
     {
-        static ItemViewFactory()
+        public static async Task InitializeAsync()
         {
-            var resLoader = ResLoader.Allocate();
-
-            _cardViewPrefab = resLoader.LoadSync<GameObject>(Items.BundleName, Items.CardView);
-            _coinViewPrefab = resLoader.LoadSync<GameObject>(Items.BundleName, Items.CoinView);
-            _plantBookViewPrefab = resLoader.LoadSync<GameObject>(Items.BundleName, Items.PlantBookView);
-            _seedSlotViewPrefab = resLoader.LoadSync<GameObject>(Items.BundleName, Items.SeedSlotView);
+            var seedSlotViewHandle = Addressables.LoadAssetAsync<GameObject>("SeedSlotView");
+            var cardViewHandle = Addressables.LoadAssetAsync<GameObject>("CardView");
+            var coinViewHandle = Addressables.LoadAssetAsync<GameObject>("CoinView");
+            var plantBookViewHandle = Addressables.LoadAssetAsync<GameObject>("PlantBookView");
+            await Task.WhenAll(seedSlotViewHandle.Task
+                , cardViewHandle.Task
+                , coinViewHandle.Task
+                , plantBookViewHandle.Task);
+            _seedSlotViewPrefab = seedSlotViewHandle.Result;
+            _cardViewPrefab = cardViewHandle.Result;
+            _coinViewPrefab = coinViewHandle.Result;
+            _plantBookViewPrefab = plantBookViewHandle.Result;
         }
 
-        private static readonly GameObject _cardViewPrefab;
-        private static readonly GameObject _coinViewPrefab;
-        private static readonly GameObject _plantBookViewPrefab;
-        private static readonly GameObject _seedSlotViewPrefab;
+        private static GameObject _cardViewPrefab;
+        private static GameObject _coinViewPrefab;
+        private static GameObject _plantBookViewPrefab;
+        private static GameObject _seedSlotViewPrefab;
 
 
         public static GameObject CreateItemView(LootData lootData)

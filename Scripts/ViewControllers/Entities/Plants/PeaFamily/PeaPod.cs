@@ -64,7 +64,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                     _timer.Reset();
                     for (int i = 0; i < _level; i++)
                     {
-                        EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
+                        _ProjectileService.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
                             _firePoints[i].position);
                     }
                 }

@@ -299,14 +299,11 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
         protected override async Task SetUpTiles()
         {
             // 准备
-            var handle_dirtTile = Addressables.LoadAssetAsync<Tile>("MazeMapTileDirt");
-            var handle_grassTile = Addressables.LoadAssetAsync<Tile>("MazeMapTileGrass");
-            var handle_stoneTile = Addressables.LoadAssetAsync<Tile>("MazeMapTileStone");
-            await Task.WhenAll(handle_stoneTile.Task, handle_dirtTile.Task, handle_grassTile.Task);
+            await TempTileHandle.Task;
 
-            var dirtTile = handle_dirtTile.Result;
-            var grassTile = handle_grassTile.Result;
-            var stoneTile = handle_stoneTile.Result;
+            var dirtTile = TempTileHandle.Result.First(tile => tile.name == "MazeMapDirtTile");
+            var grassTile = TempTileHandle.Result.First(tile => tile.name == "MazeMapGrassTile");
+            var stoneTile = TempTileHandle.Result.First(tile => tile.name == "MazeMapStoneTile");
 
             var GroundTilemap = MazeMapTilemapController.Instance.Ground;
             Matrix<Tile> tileMatrix = new(mazeMatrix.Rows * 3 - 2, mazeMatrix.Columns * 3 - 2);
@@ -356,11 +353,9 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
 
         protected override async Task SetUpTombs()
         {
-            var handle = Addressables.LoadAssetAsync<GameObject>("Tombstone");
+            await TempTombStoneHandle.Task;
 
-            await handle.Task;
-
-            var tombstonePrefab = handle.Result;
+            var tombstonePrefab = TempTombStoneHandle.Result;
             foreach (var node in mazeMatrix)
             {
                 if (node == null || !node.isKey || node == startNode) continue;

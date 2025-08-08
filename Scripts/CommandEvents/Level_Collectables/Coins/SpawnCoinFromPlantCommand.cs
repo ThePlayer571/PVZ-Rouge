@@ -26,7 +26,7 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.Coins
             if (_plant == null)
                 throw new ArgumentException("尝试调用SpawnCoinFromPlantCommand，但Plant对象为null"); // Plant对象不为null
 
-            EntityFactory.CoinFactory.SpawnCoinWithJump(_coinId, _plant.transform.position);
+            CoinFactory.SpawnCoinWithJump(_coinId, _plant.transform.position);
         }
     }
 }

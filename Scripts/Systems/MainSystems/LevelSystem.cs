@@ -33,13 +33,15 @@ namespace TPL.PVZR.Systems.Level_Data
 
     public class LevelSystem : AbstractSystem, ILevelSystem
     {
-        private ResLoader _ResLoader;
         private IPhaseModel _PhaseModel;
         private IGameModel _GameModel;
         private ILevelModel _LevelModel;
         private ILevelGridModel _LevelGridModel;
+
+        private IPhaseService _PhaseService;
         private IPlantService _PlantService;
         private IZombieService _ZombieService;
+        private IProjectileService _ProjectileService;
 
         private AsyncOperationHandle<SceneInstance> _levelSceneHandle;
         private AsyncOperationHandle<GameObject> _daveHandle;
@@ -52,15 +54,16 @@ namespace TPL.PVZR.Systems.Level_Data
             _GameModel = this.GetModel<IGameModel>();
             _LevelModel = this.GetModel<ILevelModel>();
             _LevelGridModel = this.GetModel<ILevelGridModel>();
+
+            _PhaseService = this.GetService<IPhaseService>();
             _PlantService = this.GetService<IPlantService>();
             _ZombieService = this.GetService<IZombieService>();
+            _ProjectileService = this.GetService<IProjectileService>();
 
-            var phaseService = this.GetService<IPhaseService>();
-            var gamePhaseChangeService = this.GetService<IGamePhaseChangeService>();
 
             #region 初始化阶段
 
-            phaseService.RegisterCallBack((GamePhase.LevelPreInitialization, PhaseStage.EnterEarly), e =>
+            _PhaseService.RegisterCallBack((GamePhase.LevelPreInitialization, PhaseStage.EnterEarly), e =>
             {
                 // 数据设置
                 var tombData = e.Paras["TombData"] as ITombData;
@@ -72,19 +75,19 @@ namespace TPL.PVZR.Systems.Level_Data
                 _daveHandle = Addressables.LoadAssetAsync<GameObject>("Dave");
                 _levelSetHandle = Addressables.LoadAssetAsync<GameObject>(levelData.LevelPrefab);
 
-                phaseService.AddAwait(_levelSceneHandle.Task);
-                phaseService.AddAwait(_daveHandle.Task);
-                phaseService.AddAwait(_levelSetHandle.Task);
+                _PhaseService.AddAwait(_levelSceneHandle.Task);
+                _PhaseService.AddAwait(_daveHandle.Task);
+                _PhaseService.AddAwait(_levelSetHandle.Task);
             });
 
-            phaseService.RegisterCallBack((GamePhase.LevelPreInitialization, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.LevelPreInitialization, PhaseStage.EnterNormal), e =>
             {
                 var levelSet = _levelSetHandle.Result.Instantiate();
                 // 等待场景物体Start/Awake执行
-                phaseService.AddAwait(ActionTask.WaitForFrame(1));
+                _PhaseService.AddAwait(ActionTask.WaitForFrame(1));
             });
 
-            phaseService.RegisterCallBack((GamePhase.LevelPreInitialization, PhaseStage.EnterLate), e =>
+            _PhaseService.RegisterCallBack((GamePhase.LevelPreInitialization, PhaseStage.EnterLate), e =>
             {
                 // LevelPrefab加载 TODO 地图生成算法
                 // 时序：需要根据地图Tilemap生成数据
@@ -97,10 +100,10 @@ namespace TPL.PVZR.Systems.Level_Data
                 VirtualCamera.PreviousStateIsValid = false;
                 //
                 this.SendEvent<OnLevelGameObjectPrepared>();
-                phaseService.ChangePhase(GamePhase.LevelInitialization);
+                _PhaseService.ChangePhase(GamePhase.LevelInitialization);
             });
 
-            phaseService.RegisterCallBack((GamePhase.LevelInitialization, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.LevelInitialization, PhaseStage.EnterNormal), e =>
             {
                 // 初始化初始植物
                 foreach (InitialPlantConfig config in _LevelModel.LevelData.InitialPlants)
@@ -109,17 +112,17 @@ namespace TPL.PVZR.Systems.Level_Data
                 }
 
                 //
-                phaseService.ChangePhase(GamePhase.ChooseSeeds);
+                _PhaseService.ChangePhase(GamePhase.ChooseSeeds);
             });
 
             #endregion
 
             #region 选卡阶段
 
-            phaseService.RegisterCallBack((GamePhase.ChooseSeeds, PhaseStage.EnterNormal),
+            _PhaseService.RegisterCallBack((GamePhase.ChooseSeeds, PhaseStage.EnterNormal),
                 e => { UIKit.OpenPanel<UIChooseSeedPanel>(); });
 
-            phaseService.RegisterCallBack((GamePhase.ChooseSeeds, PhaseStage.LeaveNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.ChooseSeeds, PhaseStage.LeaveNormal), e =>
             {
                 // 将选卡数据转录
                 var chosenSeedOptions = UIKit.GetPanel<UIChooseSeedPanel>().chosenSeedOptions;
@@ -142,7 +145,7 @@ namespace TPL.PVZR.Systems.Level_Data
 
             #region 核心阶段
 
-            phaseService.RegisterCallBack((GamePhase.ReadyToStart, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.ReadyToStart, PhaseStage.EnterNormal), e =>
             {
                 // 加载UI面板
                 var panel = UIKit.OpenPanel<UILevelGameplayPanel>();
@@ -152,24 +155,24 @@ namespace TPL.PVZR.Systems.Level_Data
                 //
                 ActionKit.Sequence()
                     .Delay(1)
-                    .Callback(() => phaseService.ChangePhase(GamePhase.Gameplay))
+                    .Callback(() => _PhaseService.ChangePhase(GamePhase.Gameplay))
                     .StartGlobal();
             });
-            phaseService.RegisterCallBack((GamePhase.Gameplay, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.Gameplay, PhaseStage.EnterNormal), e =>
             {
                 var panel = UIKit.GetPanel<UILevelGameplayPanel>();
                 panel._allowChangeUI = true;
                 panel.ShowUI();
             });
 
-            phaseService.RegisterCallBack((GamePhase.AllEnemyKilled, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.AllEnemyKilled, PhaseStage.EnterNormal), e =>
             {
                 var panel = UIKit.GetPanel<UILevelGameplayPanel>();
                 panel._allowChangeUI = false;
                 panel.HideUISlotPanel();
             });
 
-            phaseService.RegisterCallBack((GamePhase.AllEnemyKilled, PhaseStage.LeaveNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.AllEnemyKilled, PhaseStage.LeaveNormal), e =>
             {
                 //
                 UIKit.ClosePanel<UILevelGameplayPanel>();
@@ -179,35 +182,39 @@ namespace TPL.PVZR.Systems.Level_Data
 
             #region 结算阶段
 
-            phaseService.RegisterCallBack((GamePhase.LevelPassed, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.LevelPassed, PhaseStage.EnterNormal), e =>
             {
-                //
-                phaseService.ChangePhase(GamePhase.LevelExiting, ("NextPhase", GamePhase.MazeMapInitialization));
+                _GameModel.GameData.InventoryData.Coins.Value += _LevelModel.EarnedCoin.Value;
+                _PhaseService.ChangePhase(GamePhase.LevelExiting, ("NextPhase", GamePhase.MazeMapInitialization));
             });
 
-            phaseService.RegisterCallBack((GamePhase.LevelDefeat, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.LevelDefeat, PhaseStage.EnterNormal), e =>
             {
                 //
-                phaseService.ChangePhase(GamePhase.LevelExiting, ("NextPhase", GamePhase.LevelDefeatPanel));
+                _PhaseService.ChangePhase(GamePhase.LevelExiting, ("NextPhase", GamePhase.LevelDefeatPanel));
             });
 
             #endregion
 
             #region 退出阶段
 
-            phaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterNormal), e =>
             {
-                // 卸载场景内容（部分，仅卸载了会报错的）
+                // 卸载场景内容（仅卸载了部分东西，这些东西是会引起报错的）
                 _ZombieService.RemoveAllZombies();
                 //
                 var nextPhase = (GamePhase)e.Paras["NextPhase"];
-                phaseService.ChangePhase(nextPhase);
+                _PhaseService.ChangePhase(nextPhase);
             });
 
-            phaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.LeaveNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.LeaveNormal), e =>
             {
                 _LevelModel.Reset();
                 _LevelGridModel.Reset();
+
+                _PlantService.ClearCache();
+                _ZombieService.ClearCache();
+                _ProjectileService.ClearCache();
 
                 ActionKit.Sequence()
                     .Condition(() => SceneManager.GetSceneByName("LevelScene") == null)
@@ -222,14 +229,14 @@ namespace TPL.PVZR.Systems.Level_Data
                 UIKit.ClosePanel<UILevelGameplayPanel>();
             });
 
-            phaseService.RegisterCallBack((GamePhase.LevelDefeatPanel, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.LevelDefeatPanel, PhaseStage.EnterNormal), e =>
             {
                 _levelDefeatSceneHandle = Addressables.LoadSceneAsync("LevelDefeatScene");
                 UIKit.OpenPanel<UILevelDefeatPanel>();
-                phaseService.AddAwait(_levelDefeatSceneHandle.Task);
+                _PhaseService.AddAwait(_levelDefeatSceneHandle.Task);
             });
 
-            phaseService.RegisterCallBack((GamePhase.LevelDefeatPanel, PhaseStage.LeaveNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.LevelDefeatPanel, PhaseStage.LeaveNormal), e =>
             {
                 UIKit.ClosePanel<UILevelDefeatPanel>();
                 ActionKit.Sequence()

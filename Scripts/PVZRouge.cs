@@ -49,6 +49,7 @@ namespace TPL.PVZR
             this.RegisterService<IZombieService>(new ZombieService());
             this.RegisterService<IUIStackService>(new UIStackService());
             this.RegisterService<IHandService>(new HandService());
+            this.RegisterService<IProjectileService>(new ProjectileService());
         }
     }
 }

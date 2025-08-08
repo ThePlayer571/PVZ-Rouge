@@ -26,14 +26,14 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay.Coins
         protected override void OnExecute()
         {
             var _PhaseModel = this.GetModel<IPhaseModel>();
-            var _GameModel = this.GetModel<IGameModel>();
+            var _LevelModel = this.GetModel<ILevelModel>();
 
             if (_PhaseModel.GamePhase is not (GamePhase.Gameplay or GamePhase.AllEnemyKilled))
                 throw new Exception($"尝试调用CollectCoinCommand，但GameState: {_PhaseModel.GamePhase}"); // 游戏阶段正确
             if (_collectedCoin == null)
                 throw new ArgumentException("尝试调用CollectCoinCommand，但Sun对象为null"); // Sun对象不为null
 
-            _GameModel.GameData.InventoryData.Coins.Value += _collectedCoin.value;
+            _LevelModel.EarnedCoin.Value += _collectedCoin.value;
             _collectedCoin.OnCollected();
         }
     }

@@ -65,6 +65,10 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                 // 初始化UI
                 trade.TradeBtn.interactable =
                     !recipeData.used && _GameModel.GameData.InventoryData.CanAfford(recipeData);
+                if (recipeData.used)
+                {
+                    outputCard.Hide();
+                }
 
                 // == 事件订阅
                 // 交易事件

@@ -16,8 +16,6 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
 
         private bool _following;
 
-        private ResLoader _resLoader;
-
         private void Update()
         {
             if (_following)
@@ -40,7 +38,6 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
 
         private void Awake()
         {
-            _resLoader = ResLoader.Allocate();
             _Image = this.GetComponent<Image>();
 
 
@@ -69,11 +66,6 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
                         break;
                 }
             }).UnRegisterWhenGameObjectDestroyed(this);
-        }
-
-        private void OnDestroy()
-        {
-            _resLoader.Recycle2Cache();
         }
 
         public IArchitecture GetArchitecture()

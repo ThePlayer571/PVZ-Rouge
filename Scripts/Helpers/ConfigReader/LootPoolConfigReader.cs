@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using QAssetBundle;
 using QFramework;
@@ -7,19 +8,18 @@ using TPL.PVZR.Classes.DataClasses.Item.PlantBook;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Classes.LootPool;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace TPL.PVZR.Helpers.New.DataReader
 {
     public static class LootPoolConfigReader
     {
-        static LootPoolConfigReader()
+        public static async Task InitializeAsync()
         {
-            var resLoader = ResLoader.Allocate();
-
-            string lootPoolJson = resLoader.LoadSync<TextAsset>(Jsonconfigs.BundleName, Jsonconfigs.LootPoolList).text;
+            var lootPoolJsonHandle = Addressables.LoadAssetAsync<TextAsset>("LootPoolList");
+            await lootPoolJsonHandle.Task;
             // 初始化_lootPoolDict，从JSON文件解析
-            JArray lootPoolArray = JArray.Parse(lootPoolJson);
-
+            JArray lootPoolArray = JArray.Parse(lootPoolJsonHandle.Result.text);
             foreach (JObject lootPoolConfig in lootPoolArray)
             {
                 var lootPoolInfo = new LootPoolInfo();
@@ -95,9 +95,10 @@ namespace TPL.PVZR.Helpers.New.DataReader
                     _lootPoolDict[lootPoolInfo.lootPoolDef.Id] = lootPoolInfo;
                 }
             }
-
+            
+            //
+            lootPoolJsonHandle.Release();
         }
-
 
         private static readonly Dictionary<LootPoolId, LootPoolInfo> _lootPoolDict = new();
 

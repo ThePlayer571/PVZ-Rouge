@@ -48,20 +48,7 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
         /// <summary>
         /// 将实体致死（自然的死亡，与Spawn对应）
         /// </summary>
-        public virtual void DieWith(AttackData attackData)
-        {
-            Remove();
-        }
-
-        // todo 应该：实体不具备remove函数（实体只处理形象的逻辑，比如Diewith）
-        // 尽量放到Factory里面处理（不过暂时不需要）
-        /// <summary>
-        /// 将实体从场景中移除（不包含动画/事件等）
-        /// </summary>
-        public virtual void Remove()
-        {
-            gameObject.DestroySelf();
-        }
+        public abstract void DieWith(AttackData attackData);
 
         #endregion
 
@@ -69,8 +56,8 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
 
         protected virtual void Update()
         {
+            // 以后可能会把OnUpdate等放到这里
         }
-        // 以后可能会把OnUpdate等放到这里
 
         #endregion
 

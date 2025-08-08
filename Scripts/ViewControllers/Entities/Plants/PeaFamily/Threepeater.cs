@@ -62,7 +62,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                         {
                             var cell = _levelGridModel.GetCell(fp.position);
                             if (cell.Is(CellTypeId.Block)) continue;
-                            EntityFactory.ProjectileFactory.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
+                            _ProjectileService.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
                                 fp.position);
                         }
 
