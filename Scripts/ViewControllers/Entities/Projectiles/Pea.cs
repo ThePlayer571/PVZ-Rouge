@@ -42,14 +42,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             {
                 case IgnitionType.Fire:
                     _attacked = true;
-                    this.GetService<ProjectileService>().CreatePea(ProjectileId.FirePea, _Rigidbody2D.velocity,
-                        _Rigidbody2D.position);
+                    _ProjectileService.CreatePea(ProjectileId.FirePea, _Rigidbody2D.velocity, _Rigidbody2D.position,
+                        this.EntityId);
                     Kill();
                     break;
                 case IgnitionType.GhostFire:
                     _attacked = true;
-                    this.GetService<ProjectileService>().CreatePea(ProjectileId.GhostFirePea, _Rigidbody2D.velocity,
-                        _Rigidbody2D.position);
+                    _ProjectileService.CreatePea(ProjectileId.GhostFirePea, _Rigidbody2D.velocity,
+                        _Rigidbody2D.position, this.EntityId);
                     Kill();
                     break;
                 default:

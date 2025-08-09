@@ -10,6 +10,7 @@ namespace TPL.PVZR.Classes.MazeMap
     [Serializable]
     public enum GameDifficulty
     {
+        Test = -1,
         NotSet = 0,
         N0 = 1,
         N1 = 2,

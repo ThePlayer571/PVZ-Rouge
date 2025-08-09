@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using QFramework;
+using TPL.PVZR.Helpers.New;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using TPL.PVZR.ViewControllers.Entities.Zombies.States;
 using TPL.PVZR.ViewControllers.Entities.Zombies.View.Components;
@@ -57,7 +58,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
             SetUpFSM();
 
             // 分配SortingLayer
-            var baseOrder = Zombie.AllocateSortingLayer();
+            var baseOrder = EntityIdHelper.AllocateZombieSortingLayer();
             foreach (var zombieComponentView in zombieComponentViews)
                 zombieComponentView.SpriteRenderer.sortingOrder += baseOrder;
             foreach (var zombieArmorView in zombieArmorViews.Where(z => z != null))

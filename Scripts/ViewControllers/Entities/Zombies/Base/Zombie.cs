@@ -8,6 +8,7 @@ using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Classes.ZombieAI.Public;
 using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.CommandEvents.New.Level_Shit;
+using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Systems.Level_Data;
 using TPL.PVZR.Tools;
@@ -103,7 +104,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             // AI
             this.RegisterEvent<OnPlayerChangeCluster>(_ => _timeToFindPath = true)
                 .UnRegisterWhenGameObjectDestroyed(this);
-            HumanLadderPriority = Zombie.AllocateHumanLadderPriority();
+            HumanLadderPriority = EntityIdHelper.AllocateHumanLadderPriority();
 
             // 朝向
             this.Direction
@@ -207,7 +208,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         // 变量
         public BindableProperty<Direction2> Direction;
         public BindableProperty<float> Health;
-        public int HumanLadderPriority;
+        [NonSerialized] public int HumanLadderPriority;
 
         // 事件
         public EasyEvent<AttackData> OnDieFrom = new();
@@ -546,30 +547,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         /// 存在盔甲则必须放到这里面，用于与外界数据交换
         /// </summary>
         public readonly List<ZombieArmorData> ZombieArmorList = new();
-
-        #endregion
-
-        #region Shit
-
-        private static int sortingLayer { get; set; } = 0;
-
-        public static int AllocateSortingLayer()
-        {
-            sortingLayer += 10;
-            if (sortingLayer > 30000) sortingLayer = 0;
-            return sortingLayer;
-        }
-
-        /// <summary>
-        /// 数字大的把数字小的举起来
-        /// </summary>
-        private static int humanLadderPriority = 0;
-
-        private static int AllocateHumanLadderPriority()
-        {
-            humanLadderPriority++;
-            return humanLadderPriority;
-        }
 
         #endregion
     }

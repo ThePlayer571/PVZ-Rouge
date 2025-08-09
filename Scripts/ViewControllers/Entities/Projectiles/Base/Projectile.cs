@@ -10,9 +10,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
     {
         public abstract ProjectileId Id { get; }
         
+        protected IProjectileService _ProjectileService { get; private set; }
+        
         protected override void Awake()
         {
             base.Awake();
+            _ProjectileService = this.GetService<IProjectileService>();
         }
 
         public override void DieWith(AttackData attackData)

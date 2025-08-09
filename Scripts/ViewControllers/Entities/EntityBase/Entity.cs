@@ -2,6 +2,7 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Classes.DataClasses.Level;
+using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
@@ -21,6 +22,8 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
 
         //
         public Rigidbody2D _Rigidbody2D { get; private set; }
+        // TODO 绝对不能让id这么轻易被更改，但是Factory要用（以后改成initialize统一设置）
+        public int EntityId { get; set; } = EntityIdHelper.AllocateId();
 
         #endregion
 

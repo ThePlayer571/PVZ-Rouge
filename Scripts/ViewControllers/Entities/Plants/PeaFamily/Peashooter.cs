@@ -1,3 +1,4 @@
+using QFramework;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Helpers.New.Methods;
@@ -40,6 +41,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
                 if (hit.collider && hit.collider.CompareTag("Zombie"))
                 {
+                    "try create".LogInfo();
                     _ProjectileService.CreatePea(ProjectileId.Pea, Direction.ToVector2(), FirePoint.position);
                     _timer.Reset();
                 }

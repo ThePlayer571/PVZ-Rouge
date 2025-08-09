@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using QFramework;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.Services;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using TPL.PVZR.ViewControllers.Entities.Projectiles;
@@ -11,15 +13,30 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
     {
         public override PlantDef Def { get; } = new PlantDef(PlantId.Torchwood, PlantVariant.V0);
 
+        private IProjectileService _ProjectileService;
+        private HashSet<int> _ignitedProjectiles = new();
+
         protected override void OnInit()
         {
+            _ProjectileService = this.GetService<IProjectileService>();
             this.HealthPoint = GlobalEntityData.Plant_Default_Health;
+            ProjectileDetector.TargetPredicate = collider2D =>
+            {
+                return collider2D.GetComponent<ICanBeIgnited>() != null;
+            };
 
             ProjectileDetector.OnTargetEnter.Register(collider2D =>
             {
-                var canBeIgnited = collider2D.GetComponent<ICanBeIgnited>();
-                canBeIgnited?.Ignite(IgnitionType.Fire);
-                
+                var projectile = collider2D.GetComponent<Projectile>();
+                var id = projectile.EntityId;
+                $"find id : {id}".LogInfo();
+
+                if (_ignitedProjectiles.Contains(id)) return;
+                _ignitedProjectiles.Add(id);
+
+                _ProjectileService.Ignite((ICanBeIgnited)projectile, IgnitionType.Fire);
+
+                ActionKit.Delay(1f, () => _ignitedProjectiles.Remove(id)).Start(this);
             }).UnRegisterWhenGameObjectDestroyed(this);
         }
 

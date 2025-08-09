@@ -30,9 +30,10 @@ namespace TPL.PVZR.Systems
                 var task_11 = ZombieConfigReader.InitializeAsync();
                 var task_12 = PlantBookConfigReader.InitializeAsync();
                 var task_13 = ItemViewFactory.InitializeAsync();
+                var task_14 = ProjectileConfigReader.InitializeAsync();
 
                 phaseService.AddAwait(Task.WhenAll(task_1, task_2, task_3, task_4, task_5, task_6, task_7, task_8,
-                    task_9, task_10, task_11, task_12, task_13));
+                    task_9, task_10, task_11, task_12, task_13, task_14));
             });
         }
     }
