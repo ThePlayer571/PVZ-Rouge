@@ -5,10 +5,30 @@ using UnityEngine;
 
 namespace TPL.PVZR.Tools.Save
 {
+    public enum SavePathId
+    {
+        GameData,
+        CurrentGameStats,
+        PlayerStats_LevelEndedInfo,
+    }
+
     public class SaveManager
     {
-        public const string GAME_DATA_FILE_NAME = "GameData";
-        public const string PLAYER_STATS_SUNPOINT_FILE_NAME = "PlayerStats/PlayerStatsSunPoint";
+        public const string GAME_DATA_FILE_NAME = "Save/GameData";
+        public const string CURRENT_GAME_STATS_FILE_NAME = "Save/PlayerStats/CurrentGameStats";
+        public const string PLAYER_STATS_LEVEL_ENDED_INFO_FILE_NAME = "Save/PlayerStats/LevelEndedInfo";
+
+        public static string GetFileName(SavePathId pathId)
+        {
+            return pathId switch
+            {
+                SavePathId.GameData => GAME_DATA_FILE_NAME,
+                SavePathId.CurrentGameStats => CURRENT_GAME_STATS_FILE_NAME,
+                SavePathId.PlayerStats_LevelEndedInfo =>
+                    $"{SaveManager.PLAYER_STATS_LEVEL_ENDED_INFO_FILE_NAME}_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}",
+                _ => throw new ArgumentOutOfRangeException(nameof(pathId), pathId, null)
+            };
+        }
 
         /// <summary>
         /// 加载存档数据，支持异常处理和默认值

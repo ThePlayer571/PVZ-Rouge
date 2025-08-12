@@ -17,7 +17,7 @@ MonoBehaviour:
     Variant: 0
   SunpointCost: 200
   ColdTime: 7.5
-  InitialColdTime: 7.5
+  InitialColdTime: 0
   PlantSprite: {fileID: 21300000, guid: 2410eaa254579d24ab840869d11ba724, type: 3}
   FollowingSprite: {fileID: 21300000, guid: 2410eaa254579d24ab840869d11ba724, type: 3}
   Quality: 2

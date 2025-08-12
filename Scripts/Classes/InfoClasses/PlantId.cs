@@ -50,7 +50,7 @@ namespace TPL.PVZR.Classes.InfoClasses
         SeasonalPult = 42,
         PepperPult = 43,
         WinterMelon = 44,
-        DurianPult = 45,
+        OakArcher = 45,
         PlaceHolder_46 = 46,
         PlaceHolder_47 = 47,
         PlaceHolder_48 = 48,

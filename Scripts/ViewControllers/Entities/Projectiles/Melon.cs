@@ -31,13 +31,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
                 other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
             }
 
+            var aoeAttackDataTemplate = AttackCreator.CreateAttackData(AttackId.MelonAOE)
+                .WithPunchDirection(_Rigidbody2D.velocity);
             var targets =
                 Physics2D.OverlapCircleAll(_Rigidbody2D.position, GlobalEntityData.Projectile_Melon_AOERadius,
                     LayerMask.GetMask("Zombie"));
             foreach (var target in targets)
             {
-                var aoeAttackData = AttackCreator.CreateAttackData(AttackId.MelonAOE)
-                    .WithPunchDirection(_Rigidbody2D.velocity);
+                var aoeAttackData = new AttackData(aoeAttackDataTemplate);
                 target.GetComponent<IAttackable>().TakeAttack(aoeAttackData);
             }
 

@@ -305,7 +305,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
             var grassTile = TempTileHandle.Result.First(tile => tile.name == "MazeMapGrassTile");
             var stoneTile = TempTileHandle.Result.First(tile => tile.name == "MazeMapStoneTile");
 
-            var GroundTilemap = MazeMapTilemapController.Instance.Ground;
+            var GroundTilemap = MazeMapTilemapNode.Instance.Ground;
             Matrix<Tile> tileMatrix = new(mazeMatrix.Rows * 3 - 2, mazeMatrix.Columns * 3 - 2);
             //
             tileMatrix.Fill(grassTile);
@@ -372,7 +372,7 @@ namespace TPL.PVZR.Classes.MazeMap.Controllers
             var finalMatrixPos = new Vector2Int(mazeMatrix.Rows + 1, mazeMatrix.Columns / 2);
             var finalTilemapPos = MatrixToTilemapPosition(finalMatrixPos);
             var finalWorldPos =
-                MazeMapTilemapController.Instance.Ground.CellToWorld(new Vector3Int(finalTilemapPos.x,
+                MazeMapTilemapNode.Instance.Ground.CellToWorld(new Vector3Int(finalTilemapPos.x,
                     finalTilemapPos.y, 0));
             var handle = Addressables.LoadAssetAsync<GameObject>("FinalObject");
             await handle.Task;

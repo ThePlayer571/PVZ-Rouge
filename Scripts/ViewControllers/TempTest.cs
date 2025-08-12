@@ -1,3 +1,5 @@
+using System;
+using FMODUnity;
 using QFramework;
 using TPL.PVZR.CommandEvents.Level_Gameplay.Coins;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
@@ -9,5 +11,9 @@ namespace TPL.PVZR.ViewControllers
 {
     public class TempTest : MonoBehaviour
     {
+        private void Start()
+        {
+            FMODUnity.RuntimeManager.PlayOneShot("event:/TestEvent");
+        }
     }
 }

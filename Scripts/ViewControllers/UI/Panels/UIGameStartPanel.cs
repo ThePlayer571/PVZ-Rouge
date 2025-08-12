@@ -1,6 +1,7 @@
 using System;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Game;
+using TPL.PVZR.Classes.MazeMap;
 using TPL.PVZR.CommandEvents._NotClassified_;
 using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Services;
@@ -23,7 +24,7 @@ namespace TPL.PVZR.ViewControllers.UI
 
             var saveService = this.GetService<ISaveService>();
             var gamePhaseChangeService = this.GetService<IGamePhaseChangeService>();
-            
+
             if (!saveService.SaveManager.Exists(SaveManager.GAME_DATA_FILE_NAME))
             {
                 ContinueBtn.interactable = false;
@@ -32,14 +33,19 @@ namespace TPL.PVZR.ViewControllers.UI
             ContinueBtn.onClick.AddListener(() =>
             {
                 // 加载数据并开始游戏
-                var savedGameData = new GameData(saveService.SaveManager.Load<GameSaveData>(SaveManager.GAME_DATA_FILE_NAME));
+                var savedGameData =
+                    new GameData(saveService.SaveManager.Load<GameSaveData>(SaveManager.GAME_DATA_FILE_NAME));
                 gamePhaseChangeService.StartGame(savedGameData, false);
             });
 
             StartBtn.onClick.AddListener(() =>
             {
                 // 开始随机新游戏（史山，怎么一会儿service一会儿command的）
-                this.SendCommand<StartNewGameCommand>(new StartNewGameCommand(_inputSeed));
+                var gameDef = new GameDef
+                {
+                    GameDifficulty = GameDifficulty.Test // 默认难度为N0
+                };
+                this.SendCommand<StartNewGameCommand>(new StartNewGameCommand(gameDef, _inputSeed));
             });
 
             SeedInputField.onValueChanged.AddListener(str =>

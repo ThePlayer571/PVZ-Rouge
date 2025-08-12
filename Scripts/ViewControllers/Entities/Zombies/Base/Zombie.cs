@@ -234,8 +234,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         {
             // 如果出现bug：力的生成和实际位置不一致。请看这里：质心不是Rigidbody2D
             if (attackData == null || FSM.CurrentStateId == ZombieState.Dead) return null;
-
-            Health.Value = Mathf.Clamp(Health.Value - attackData.Damage, 0, Mathf.Infinity);
+            // 
+            var takenDamage = Mathf.Min(Health.Value, attackData.Damage);
+            Health.Value -= takenDamage;
 
             _Rigidbody2D.AddForce(attackData.Punch(ZombieNode.MassCenter.position), ForceMode2D.Impulse);
 
@@ -245,8 +246,10 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             }
 
             if (Health.Value <= 0) DieWith(attackData);
+            //
+            attackData.SubDamage(takenDamage);
 
-            return null;
+            return attackData;
         }
 
         #endregion

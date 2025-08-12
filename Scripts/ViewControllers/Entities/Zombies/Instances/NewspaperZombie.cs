@@ -54,9 +54,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
         public AttackData ShieldTakeAttack(AttackData attackData)
         {
             attackData = armorData.TakeAttack(attackData);
-            base.TakeAttack(attackData.OnlyPunch());
+            base.TakeAttack(new AttackData(attackData).OnlyPunch());
 
-            return null;
+            return attackData;
         }
 
         public ZombieArmorData ShieldArmorData => armorData;

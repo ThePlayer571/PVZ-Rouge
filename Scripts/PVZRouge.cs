@@ -51,6 +51,7 @@ namespace TPL.PVZR
             this.RegisterService<IHandService>(new HandService());
             this.RegisterService<IProjectileService>(new ProjectileService());
             this.RegisterService<ISceneTransitionEffectService>(new SceneTransitionEffectService());
+            this.RegisterService<IAudioService>(new AudioService());
         }
     }
 }

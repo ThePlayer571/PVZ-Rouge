@@ -21,5 +21,13 @@ namespace TPL.PVZR.Classes.InfoClasses
         FrozenMelon = 13,
         ShortSpore = 14,
         Spore = 15,
+        Seasonal_ChineseCabbage = 16,
+        Seasonal_Carrot = 17,
+        Seasonal_Tomato = 18,
+        Seasonal_Eggplant = 19,
+        Seasonal_Broccoli = 20,
+        Seasonal_Potato = 21,
+        Pepper = 22,
+        OakArcherArrow = 23,
     }
 }

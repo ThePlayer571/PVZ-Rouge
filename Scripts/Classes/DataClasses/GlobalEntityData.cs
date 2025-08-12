@@ -30,6 +30,8 @@ namespace TPL.PVZR.Classes.DataClasses
         public float Plant_PuffShroom_ShootDistance = 4f;
         public float Plant_SunShroom_GrowTime = 120f;
         public float Plant_Chomper_ChewTime = 30f;
+        public float Plant_SeasonalPult_ThrowInterval = 0.7f;
+        public float Plant_OakArcher_ShootInterval = 5.5f;
 
         public float Projectile_Pea_Speed = 10f;
         public float Projectile_SnipePea_Speed = 20f;
@@ -38,6 +40,9 @@ namespace TPL.PVZR.Classes.DataClasses
         public float Projectile_Cabbage_Speed = 12f;
         public float Projectile_Cabbage_AngularSpeed = 150f;
         public float Projectile_Melon_AOERadius = 0.5f;
+        public float Projectile_SeasonalChineseCabbage_AngularSpeed = 300f;
+        public float Projectile_SeasonalCarrot_AngularSpeed = 600f;
+        public float Projectile_SeasonalBroccoli_SpeedOffset = 1f;
 
         public float Zombie_Default_Health = 181f;
         public float Zombie_Default_ClimbSpeed = 1.5f;

@@ -63,10 +63,10 @@ namespace TPL.PVZR.Systems
                 // 设置摄像头位置
                 var matrixPos = _MazeMapController.GetCurrentMatrixPos();
                 var tilemapPos = _MazeMapController.MatrixToTilemapPosition(matrixPos);
-                var worldPos = MazeMapTilemapController.Instance.Ground.CellToWorld(
+                var worldPos = MazeMapTilemapNode.Instance.Ground.CellToWorld(
                     new Vector3Int(tilemapPos.x, tilemapPos.y, 0));
 
-                Camera.main.Position2D(worldPos);
+                MazeMapTilemapNode.Instance.cameraTarget.Position2D(worldPos);
                 // 切换状态
                 _PhaseService.ChangePhase(GamePhase.MazeMap);
             });

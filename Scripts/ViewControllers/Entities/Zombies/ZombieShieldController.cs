@@ -27,8 +27,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies
 
         public AttackData TakeAttack(AttackData attackData)
         {
-            target.ShieldTakeAttack(attackData);
-            return null;
+            return target.ShieldTakeAttack(attackData);
         }
     }
 }

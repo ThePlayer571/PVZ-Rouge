@@ -23,7 +23,7 @@ namespace TPL.PVZR.ViewControllers.Others.MazeMap
         {
             var controller = this.GetSystem<IMazeMapSystem>()._MazeMapController;
             var _ = controller.MatrixToTilemapPosition(position);
-            transform.position = MazeMapTilemapController.Instance.Ground.CellToWorld(new Vector3Int(_.x, _.y, 0));
+            transform.position = MazeMapTilemapNode.Instance.Ground.CellToWorld(new Vector3Int(_.x, _.y, 0));
 
 
             _state = controller.GetTombState(position);

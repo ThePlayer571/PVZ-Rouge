@@ -2,6 +2,16 @@
 
 分场景记录对象所在的SortingLayer
 
+### MainMenu
+
+| Id           | Layer     | Order   |
+| ------------ | --------- | ------- |
+| Objects      | MidGround | 200~299 |
+| Tile(Ground) | MidGround | 100     |
+|              |           |         |
+
+
+
 ### MazeMap
 
 | Id    | Layer     | Order |

@@ -121,7 +121,8 @@ namespace TPL.PVZR.Helpers.New.DataReader
                 return value;
             }
 
-            throw new ArgumentException($"未找到PlantId: {plantId}，请检查配置文件");
+            $"未找到PlantId: {plantId}，请检查配置文件".LogError();
+            return 0;
         }
 
         public static int GetValueOf(PlantBookId plantBookId)

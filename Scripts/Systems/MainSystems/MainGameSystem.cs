@@ -39,7 +39,7 @@ namespace TPL.PVZR.Systems
             phaseService.RegisterCallBack((GamePhase.MainMenu, PhaseStage.EnterNormal), e =>
             {
                 _mainMenuSceneHandle = Addressables.LoadSceneAsync("MainMenu");
-                UIKit.OpenPanel<UIGameStartPanel>();
+                UIKit.OpenPanel<UIMainMenuPanel>();
             });
             
             phaseService.RegisterCallBack((GamePhase.MainMenu, PhaseStage.EnterLate), e =>
@@ -50,7 +50,7 @@ namespace TPL.PVZR.Systems
             phaseService.RegisterCallBack((GamePhase.MainMenu, PhaseStage.LeaveNormal),
                 e =>
                 {
-                    UIKit.ClosePanel<UIGameStartPanel>();
+                    UIKit.ClosePanel<UIMainMenuPanel>();
                     ActionKit.Sequence()
                         .Condition(() => SceneManager.GetSceneByName("MainMenu") == null)
                         .Callback(() => { _mainMenuSceneHandle.Release(); }).StartGlobal();

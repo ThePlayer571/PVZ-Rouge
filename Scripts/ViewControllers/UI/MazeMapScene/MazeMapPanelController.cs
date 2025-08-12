@@ -85,7 +85,11 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
         private void Display(bool show)
         {
             if (show) View.Show();
-            else View.Hide();
+            else
+            {
+                HideUIInstantly();
+                View.Hide();
+            }
         }
 
         private void OnDestroy()

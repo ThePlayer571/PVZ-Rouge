@@ -19,7 +19,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
         private List<EffectData> effects;
 
 
-        #region 初始化函数
+        #region 修改数据的方法
 
         public AttackData MultiplyDamage(float factor)
         {
@@ -60,7 +60,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
 
         #endregion
 
-        #region 读取数据的函数
+        #region 读取数据的方法
 
         public float Damage
         {
@@ -118,6 +118,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
             this.punchForce = other.punchForce;
             this.punchType = other.punchType;
             this.punchFrom = other.punchFrom;
+            this.punchDirection = other.punchDirection;
             this.isFrameDamage = other.isFrameDamage;
             this.effects = other.effects.Select(data => new EffectData(data)).ToList();
         }

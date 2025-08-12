@@ -67,8 +67,11 @@ namespace TPL.PVZR.Services
             return false;
         }
 
+
         public async void ChangePhase(GamePhase phase, params (string, object)[] paras)
         {
+            // $"call change phase: current:{_PhaseModel.GamePhase}, next:{phase}, cache:{(_nextPhase.HasValue ? _nextPhase.Value.phase.ToString() : "")}"
+            //     .LogWarning();
             var leaveFrom = _PhaseModel.GamePhase;
             var changeTo = phase;
             var para = new ReadOnlyDictionary<string, object>(paras.ToDictionary(p => p.Item1, p => p.Item2));
@@ -98,7 +101,6 @@ namespace TPL.PVZR.Services
                 return;
             }
 
-
             _changingPhase = true;
             // 离开阶段
             if (TryExecute((leaveFrom, PhaseStage.LeaveEarly), _lastChangeParameters)) await WaitForAllTasks();
@@ -106,6 +108,7 @@ namespace TPL.PVZR.Services
             if (TryExecute((leaveFrom, PhaseStage.LeaveLate), _lastChangeParameters)) await WaitForAllTasks();
             // 进入阶段
             _PhaseModel.GamePhase = changeTo;
+            // $"change phase: {leaveFrom} -> {changeTo}".LogWarning();
             if (TryExecute((changeTo, PhaseStage.EnterEarly), para)) await WaitForAllTasks();
             if (TryExecute((changeTo, PhaseStage.EnterNormal), para)) await WaitForAllTasks();
             if (TryExecute((changeTo, PhaseStage.EnterLate), para)) await WaitForAllTasks();

@@ -170,6 +170,20 @@ namespace TPL.PVZR.ViewControllers.Managers
 
             #endregion
 
+            #region MainMenu
+
+            InputActions.MainMenu.Esc.performed += _ =>
+            {
+                if (!_PhaseModel.IsInRoughPhase(RoughPhase.Process)) return;
+
+                if (uiStackService.HasPanelInStack())
+                {
+                    uiStackService.PopTop();
+                }
+            };
+
+            #endregion
+
             // _inputActions的开关
             var phaseService = this.GetService<IPhaseService>();
             phaseService.RegisterCallBack((GamePhase.LevelInitialization, PhaseStage.LeaveLate),
@@ -194,6 +208,10 @@ namespace TPL.PVZR.ViewControllers.Managers
                     InputActions.Level.Enable();
                 }
             });
+            phaseService.RegisterCallBack((GamePhase.MainMenu, PhaseStage.EnterLate),
+                _ => { InputActions.MainMenu.Enable(); });
+            phaseService.RegisterCallBack((GamePhase.MainMenu, PhaseStage.LeaveEarly),
+                _ => { InputActions.MainMenu.Disable(); });
         }
 
 

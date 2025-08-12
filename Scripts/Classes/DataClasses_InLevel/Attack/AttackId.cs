@@ -31,6 +31,16 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
         FrozenMelon = 23,
         Spore = 24,
         TangleKelp = 25,
-        ChomperDevour = 26
+        ChomperDevour = 26,
+        Seasonal_ChineseCabbage = 27,
+        Seasonal_Carrot = 28,
+        Seasonal_Tomato = 29,
+        Seasonal_Eggplant = 30,
+        Seasonal_Broccoli = 31,
+        Seasonal_Potato = 32,
+        Seasonal_TomatoAOE = 33,
+        Pepper = 34,
+        FrozenMelonAOE = 35,
+        OakArcherArrow = 36,
     }
 }
