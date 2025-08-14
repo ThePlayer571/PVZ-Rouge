@@ -144,6 +144,30 @@ namespace TPL.PVZR.Tools
 
             return min;
         }
+
+        // 兼容老环境自定义 MaxBy
+        public static TSource MaxBy<TSource, TKey>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> selector)
+            where TKey : IComparable<TKey>
+        {
+            using var e = source.GetEnumerator();
+            if (!e.MoveNext())
+                throw new InvalidOperationException("Sequence contains no elements");
+            var max = e.Current;
+            var maxKey = selector(max);
+            while (e.MoveNext())
+            {
+                var key = selector(e.Current);
+                if (key.CompareTo(maxKey) > 0)
+                {
+                    max = e.Current;
+                    maxKey = key;
+                }
+            }
+
+            return max;
+        }
     }
 
     public static class Physics2DExtensions

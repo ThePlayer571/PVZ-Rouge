@@ -16,6 +16,7 @@ namespace TPL.PVZR.Services
         void ClearCache();
 
         IReadOnlyCollection<Zombie> ActiveZombies { get; }
+        EasyEvent<int> OnZombieCountChanged { get; }
     }
 
     public class ZombieService : AbstractService, IZombieService
@@ -29,17 +30,20 @@ namespace TPL.PVZR.Services
 
         public async Task SpawnZombie(ZombieId id, Vector2 pos)
         {
-            await _zombieFactory.SpawnZombie(id, pos);
+            await _zombieFactory.SpawnZombieAsync(id, pos);
+            OnZombieCountChanged.Trigger(_zombieFactory.ActiveZombies.Count);
         }
 
         public void RemoveZombie(Zombie zombie)
         {
             _zombieFactory.RemoveZombie(zombie);
+            OnZombieCountChanged.Trigger(_zombieFactory.ActiveZombies.Count);
         }
 
         public void RemoveAllZombies()
         {
             _zombieFactory.RemoveAllZombies();
+            OnZombieCountChanged.Trigger(_zombieFactory.ActiveZombies.Count);
         }
 
         public void ClearCache()
@@ -48,5 +52,6 @@ namespace TPL.PVZR.Services
         }
 
         public IReadOnlyCollection<Zombie> ActiveZombies => _zombieFactory.ActiveZombies;
+        public EasyEvent<int> OnZombieCountChanged { get; } = new();
     }
 }

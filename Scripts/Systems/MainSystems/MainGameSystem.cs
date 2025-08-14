@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using QFramework;
 using TPL.PVZR.Models;
 using UnityEngine;
@@ -20,6 +21,8 @@ namespace TPL.PVZR.Systems
     {
         private AsyncOperationHandle<GameObject> _gameManagerHandle;
         private AsyncOperationHandle<SceneInstance> _mainMenuSceneHandle;
+        private AsyncOperationHandle<TextAsset> _masterBankHandle;
+        private AsyncOperationHandle<TextAsset> _masterStringsHandle;
 
         protected override void OnInit()
         {
@@ -27,21 +30,35 @@ namespace TPL.PVZR.Systems
 
             phaseService.RegisterCallBack((GamePhase.PreInitialization, PhaseStage.EnterEarly), e =>
             {
+                // 初始化
                 ResKit.Init();
+                UIKit.Root.SetResolution(1920, 1080, 0);
                 _gameManagerHandle = Addressables.InstantiateAsync("GameManager");
                 _gameManagerHandle.Completed += _ => { Object.DontDestroyOnLoad(_gameManagerHandle.Result); };
-                UIKit.Root.SetResolution(1920, 1080, 0);
-
+                // 加载音频
+                _masterBankHandle = Addressables.LoadAssetAsync<TextAsset>("Master");
+                _masterStringsHandle = Addressables.LoadAssetAsync<TextAsset>("Master.strings");
+                
+                phaseService.AddAwait(Task.WhenAll(_masterStringsHandle.Task, _masterBankHandle.Task));
                 phaseService.AddAwait(_gameManagerHandle.Task);
                 phaseService.ChangePhase(GamePhase.MainMenu);
+            });
+            
+            phaseService.RegisterCallBack((GamePhase.PreInitialization, PhaseStage.EnterNormal), e =>
+            {
+                // 加载音频
+                FMODUnity.RuntimeManager.LoadBank(_masterBankHandle.Result);
+                FMODUnity.RuntimeManager.LoadBank(_masterStringsHandle.Result);
             });
 
             phaseService.RegisterCallBack((GamePhase.MainMenu, PhaseStage.EnterNormal), e =>
             {
                 _mainMenuSceneHandle = Addressables.LoadSceneAsync("MainMenu");
                 UIKit.OpenPanel<UIMainMenuPanel>();
+                
+                phaseService.AddAwait(_mainMenuSceneHandle.Task);
             });
-            
+
             phaseService.RegisterCallBack((GamePhase.MainMenu, PhaseStage.EnterLate), e =>
             {
                 var _ = this.GetService<ISceneTransitionEffectService>();
