@@ -38,6 +38,7 @@ namespace TPL.PVZR
             this.RegisterSystem<IZombieSpawnSystem>(new ZombieSpawnSystem());
             this.RegisterSystem<IWaveSystem>(new WaveSystem());
             this.RegisterSystem<IEnvironmentSystem>(new EnvironmentSystem());
+            this.RegisterSystem<ILevelBgmSystem>(new LevelBgmSystem());
             this.RegisterSystem<IPlayerStatsSystem>(new PlayerStatsSystem());
 
             // ===== Others =====

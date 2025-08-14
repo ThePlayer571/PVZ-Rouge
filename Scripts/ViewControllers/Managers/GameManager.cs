@@ -84,6 +84,11 @@ namespace TPL.PVZR.ViewControllers.Managers
                 invulnerable = !invulnerable;
             }
 
+            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 460, 120, 40), "音效测试"))
+            {
+                this.GetService<IAudioService>().PlaySFX("event:/TestEvent");
+            }
+
             // if (Input.GetKeyDown(KeyCode.LeftShift))
             // {
             //     var LevelGridModel = this.GetModel<ILevelGridModel>();

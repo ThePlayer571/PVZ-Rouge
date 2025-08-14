@@ -16,7 +16,7 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
         private readonly List<AsyncOperationHandle<GameObject>> _handles = new();
         public HashSet<Zombie> ActiveZombies = new();
 
-        public async Task<Zombie> SpawnZombie(ZombieId id, Vector2 pos)
+        public async Task<Zombie> SpawnZombieAsync(ZombieId id, Vector2 pos)
         {
             GameObject zombiePrefab;
             
@@ -57,7 +57,7 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             return zombie;
         }
 
-        public Zombie SpawnZombieSync(ZombieId id, Vector2 pos)
+        public Zombie SpawnZombie(ZombieId id, Vector2 pos)
         {
             if (!_zombiePrefabDict.TryGetValue(id, out var zombiePrefab))
             {
