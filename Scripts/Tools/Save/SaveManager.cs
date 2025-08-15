@@ -10,6 +10,7 @@ namespace TPL.PVZR.Tools.Save
         GameData,
         CurrentGameStats,
         PlayerStats_LevelEndedInfo,
+        PlayerTipData
     }
 
     public class SaveManager
@@ -17,6 +18,7 @@ namespace TPL.PVZR.Tools.Save
         public const string GAME_DATA_FILE_NAME = "Save/GameData";
         public const string CURRENT_GAME_STATS_FILE_NAME = "Save/PlayerStats/CurrentGameStats";
         public const string PLAYER_STATS_LEVEL_ENDED_INFO_FILE_NAME = "Save/PlayerStats/LevelEndedInfo";
+        public const string PLAYER_TIP_DATA_FILE_NAME = "Save/PlayerTipData";
 
         public static string GetFileName(SavePathId pathId)
         {
@@ -26,8 +28,21 @@ namespace TPL.PVZR.Tools.Save
                 SavePathId.CurrentGameStats => CURRENT_GAME_STATS_FILE_NAME,
                 SavePathId.PlayerStats_LevelEndedInfo =>
                     $"{SaveManager.PLAYER_STATS_LEVEL_ENDED_INFO_FILE_NAME}_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}",
+                SavePathId.PlayerTipData => PLAYER_TIP_DATA_FILE_NAME,
                 _ => throw new ArgumentOutOfRangeException(nameof(pathId), pathId, null)
             };
+        }
+
+        /// <summary>
+        /// 加载存档数据（通过 SavePathId），支持异常处理和默认值
+        /// </summary>
+        /// <typeparam name="TSave">存档数据类型</typeparam>
+        /// <param name="pathId">存档路径标识</param>
+        /// <param name="defaultValue">加载失败时的默认值</param>
+        /// <returns>加载的数据或默认值</returns>
+        public TSave Load<TSave>(SavePathId pathId, TSave defaultValue = default(TSave)) where TSave : ISaveData
+        {
+            return Load<TSave>(GetFileName(pathId), defaultValue);
         }
 
         /// <summary>
@@ -107,6 +122,28 @@ namespace TPL.PVZR.Tools.Save
         }
 
         /// <summary>
+        /// 保存数据到文件（通过 SavePathId），带异常处理
+        /// </summary>
+        /// <typeparam name="TSave">存档数据类型</typeparam>
+        /// <param name="pathId">存档路径标识</param>
+        /// <param name="saveData">要保存的数据</param>
+        /// <returns>保存是否成功</returns>
+        public bool Save<TSave>(SavePathId pathId, TSave saveData) where TSave : ISaveData
+        {
+            return Save(GetFileName(pathId), saveData);
+        }
+
+        /// <summary>
+        /// 删除存档文件（通过 SavePathId）
+        /// </summary>
+        /// <param name="pathId">要删除的文件路径标识</param>
+        /// <returns>删除是否成功</returns>
+        public bool Delete(SavePathId pathId)
+        {
+            return Delete(GetFileName(pathId));
+        }
+
+        /// <summary>
         /// 删除存档文件
         /// </summary>
         /// <param name="fileName">要删除的文件名</param>
@@ -132,6 +169,16 @@ namespace TPL.PVZR.Tools.Save
                 Debug.LogError($"删除存档失败 - 文件: {fileName}, 错误: {ex.Message}");
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 判断存档文件是否存在（通过 SavePathId）
+        /// </summary>
+        /// <param name="pathId">文件路径标识</param>
+        /// <returns>文件是否存在</returns>
+        public bool Exists(SavePathId pathId)
+        {
+            return Exists(GetFileName(pathId));
         }
 
         public bool Exists(string fileName)

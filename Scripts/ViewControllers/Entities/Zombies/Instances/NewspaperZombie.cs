@@ -42,7 +42,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
 
             effectGroup.OnEffectAdded.Register(effectData =>
             {
-                if (effectData.effectId == EffectId.Freeze)
+                if (effectData.effectId is EffectId.Freeze or EffectId.Buttered)
                 {
                     FSM.ChangeState(ZombieState.Stunned);
                 }

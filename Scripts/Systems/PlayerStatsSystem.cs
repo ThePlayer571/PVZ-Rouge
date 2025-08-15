@@ -49,6 +49,7 @@ namespace TPL.PVZR.Systems
             _PhaseService.RegisterCallBack((GamePhase.LevelPassed, PhaseStage.EnterEarly), e =>
             {
                 _whenLevelEndedInfo.pass = true;
+                _whenLevelEndedInfo.earnedCoins = _LevelModel.EarnedCoin.Value;
                 _whenLevelEndedInfo.usedCards =
                     _LevelModel.ChosenSeeds.Select(seed => seed.CardData.CardDefinition.PlantDef).ToList();
                 _whenLevelEndedInfo.inventorySaveData = _GameModel.GameData.InventoryData.ToSaveData();
@@ -60,6 +61,7 @@ namespace TPL.PVZR.Systems
             _PhaseService.RegisterCallBack((GamePhase.LevelDefeat, PhaseStage.EnterEarly), e =>
             {
                 _whenLevelEndedInfo.pass = false;
+                _whenLevelEndedInfo.earnedCoins = _LevelModel.EarnedCoin.Value;
                 _whenLevelEndedInfo.usedCards =
                     _LevelModel.ChosenSeeds.Select(seed => seed.CardData.CardDefinition.PlantDef).ToList();
                 _whenLevelEndedInfo.inventorySaveData = _GameModel.GameData.InventoryData.ToSaveData();
@@ -80,6 +82,7 @@ namespace TPL.PVZR.Systems
         public bool pass;
 
         //
+        public int earnedCoins;
         public Dictionary<int, int> waveSunPoints = new();
         public List<PlantDef> usedCards = new();
         public InventorySaveData inventorySaveData;

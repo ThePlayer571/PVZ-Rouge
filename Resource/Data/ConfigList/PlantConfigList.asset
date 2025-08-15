@@ -422,3 +422,21 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 1
+  - def:
+      Id: 27
+      Variant: 1
+    card: {fileID: 11400000, guid: f28e46d9bbcb47748976cdd67dfc0f3b, type: 2}
+    prefab:
+      m_AssetGUID: bb488f6857f12b44f80fe82c3084b209
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 1
+  - def:
+      Id: 28
+      Variant: 1
+    card: {fileID: 11400000, guid: cce63610ddc09584880b74fc06f77286, type: 2}
+    prefab:
+      m_AssetGUID: 839c83aafec757343a1f4ff4bab7c84d
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 1

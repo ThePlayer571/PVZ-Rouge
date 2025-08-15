@@ -102,6 +102,10 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 
         [Tooltip("阳光生成的坐标（fill式）")] public List<SerializableKeyValuePair<Vector2Int, Vector2Int>> SunFallPositions;
 
+        [Header("Environment")] public DayPhaseType InitialDayPhase;
+
+        public WeatherType InitialWeather;
+
         //
         [Header("Difficulty")] [Tooltip("第一波的强度")]
         public float BaseValue;
@@ -137,8 +141,6 @@ namespace TPL.PVZR.Classes.DataClasses.Level
 //
         [Header("Award")] public AwardGenerateInfo AwardGenerateInfo;
 
-        [Header("Environment")] public DayPhaseType InitialDayPhase;
-        public WeatherType InitialWeather;
 
         [Header("Others")] public List<InitialPlantConfig> InitialPlants;
         public int InitialSunpointOffset = 0;

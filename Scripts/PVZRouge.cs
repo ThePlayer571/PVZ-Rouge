@@ -40,6 +40,7 @@ namespace TPL.PVZR
             this.RegisterSystem<IEnvironmentSystem>(new EnvironmentSystem());
             this.RegisterSystem<ILevelBgmSystem>(new LevelBgmSystem());
             this.RegisterSystem<IPlayerStatsSystem>(new PlayerStatsSystem());
+            this.RegisterSystem<ITipSystem>( new TipSystem());
 
             // ===== Others =====
             this.RegisterModel<IPhaseModel>(new PhaseModel());
@@ -53,6 +54,7 @@ namespace TPL.PVZR
             this.RegisterService<IProjectileService>(new ProjectileService());
             this.RegisterService<ISceneTransitionEffectService>(new SceneTransitionEffectService());
             this.RegisterService<IAudioService>(new AudioService());
+            this.RegisterService<ITipService>(new TipService());
         }
     }
 }

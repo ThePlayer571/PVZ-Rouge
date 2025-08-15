@@ -35,7 +35,7 @@ namespace TPL.PVZR.Services
         void ExitGameAndSave();
         void TrySpawnLevelEndObject(Vector3 position);
         void PauseGame();
-        void ResumeGame();
+        void ResumeGame(bool TEMP_stopAudio = false);
     }
 
     public class GamePhaseChangeService : AbstractService, IGamePhaseChangeService
@@ -172,12 +172,12 @@ namespace TPL.PVZR.Services
             else $"在错误的阶段PauseGame: {_PhaseModel.GamePhase}".LogError();
         }
 
-        public void ResumeGame()
+        public void ResumeGame(bool TEMP_stopAudio = false)
         {
             if (_PhaseModel.IsInRoughPhase(RoughPhase.Game))
             {
                 _GameModel.IsGamePaused = false;
-                this.SendEvent<OnGameResumed>();
+                this.SendEvent<OnGameResumed>(new OnGameResumed { TEMP_stopAudio = TEMP_stopAudio });
             }
             else $"在错误的阶段ResumeGame: {_PhaseModel.GamePhase}".LogError();
         }
@@ -189,5 +189,6 @@ namespace TPL.PVZR.Services
 
     public struct OnGameResumed : IEvent
     {
+        public bool TEMP_stopAudio;
     }
 }

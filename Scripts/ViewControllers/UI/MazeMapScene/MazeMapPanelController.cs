@@ -14,8 +14,8 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
     {
         // 引用
         [SerializeField] private Toggle toggle;
+        
         [SerializeField] private RectTransform View;
-
         [SerializeField] private CanvasGroup CanvasGroup;
 
         [SerializeField] private RectTransform PreviewPanelBg;
@@ -33,6 +33,8 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
         {
             _UIStackService = this.GetService<IUIStackService>();
             HideUIInstantly();
+            // 为了方便在editor内编辑，这个View默认是隐藏的。这里设回来
+            View.Show();
 
             this.RegisterEvent<OpenLevelPreviewPanelEvent>(e =>
             {

@@ -242,6 +242,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
             foreach (var effectData in attackData.Effects)
             {
+               $"give effect: {effectData.effectId}".LogInfo();
                 this.GiveEffect(effectData);
             }
 

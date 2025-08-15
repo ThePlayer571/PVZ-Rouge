@@ -14,9 +14,7 @@
       "LilyPad",
       "CherryBomb",
       "Squash",
-      "Jalapeno",
       "TangleKelp",
-      "IcebergLettuce",
       "Wallnut",
       "Pumpkin",
       "GraveBuster"
@@ -38,8 +36,10 @@
     "cards": [
       "PotatoMine",
       "Chomper",
+      "Jalapeno",
       "Tallnut",
       "Cactus",
+      "IcebergLettuce",
       "StarFruit",
       "BonkChoy",
       "PuffShroom",
@@ -75,11 +75,15 @@
     "lootPoolDef": {
       "lootPoolId": "PultFamily"
     },
-    "weight": 5.0,
+    "weight": 10.0,
     "cards": [
       "CabbagePult",
       "KernelPult",
-      "MelonPult"
+      "SeasonalPult",
+      "MelonPult",
+      "PepperPult",
+      "WinterMelon",
+      "OakArcher"
     ],
     "plantBooks": [],
     "seedSlot": false

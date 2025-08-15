@@ -303,13 +303,289 @@
     }
   },
   {
-    "weight": 5,
+    "weight": 10,
     "output": {
       "card": "PuffShroom"
     },
     "input": {
       "cards": [
         "PeaShooter"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "CabbagePult"
+    },
+    "input": {
+      "cards": [
+        "PeaShooter"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "CabbagePult"
+    },
+    "input": {
+      "cards": [
+        "KernelPult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "CabbagePult"
+    },
+    "input": {
+      "cards": [
+        "KernelPult",
+        "KernelPult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "KernelPult"
+    },
+    "input": {
+      "cards": [
+        "CabbagePult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "SeasonalPult"
+    },
+    "input": {
+      "cards": [
+        "CabbagePult",
+        "KernelPult",
+        "CabbagePult",
+        "KernelPult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "SeasonalPult"
+    },
+    "input": {
+      "cards": [
+        "CabbagePult",
+        "KernelPult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 2,
+    "output": {
+      "card": "SeasonalPult"
+    },
+    "input": {
+      "cards": [
+        "Starfruit",
+        "PeaShooter",
+        "CabbagePult",
+        "KernelPult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "SeasonalPult"
+    },
+    "input": {
+      "cards": [
+        "CabbagePult",
+        "KernelPult",
+        "CabbagePult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "SeasonalPult"
+    },
+    "input": {
+      "cards": [
+        "KernelPult",
+        "CabbagePult",
+        "KernelPult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "MelonPult"
+    },
+    "input": {
+      "cards": [
+        "SeasonalPult",
+        "SeasonalPult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "MelonPult"
+    },
+    "input": {
+      "cards": [
+        "SeasonalPult",
+        "CabbagePult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "PepperPult"
+    },
+    "input": {
+      "cards": [
+        "SeasonalPult",
+        "SeasonalPult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "PepperPult"
+    },
+    "input": {
+      "cards": [
+        "SeasonalPult",
+        "KernelPult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "WinterMelon"
+    },
+    "input": {
+      "cards": [
+        "MelonPult",
+        "IcebergLettuce"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "WinterMelon"
+    },
+    "input": {
+      "cards": [
+        "MelonPult",
+        "IcebergLettuce",
+        "IcebergLettuce",
+        "IcebergLettuce"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "WinterMelon"
+    },
+    "input": {
+      "cards": [
+        "MelonPult",
+        "SnowPea"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 2,
+    "output": {
+      "card": "OakArcher"
+    },
+    "input": {
+      "cards": [
+        "SniperPea"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "OakArcher"
+    },
+    "input": {
+      "cards": [
+        "MelonPult",
+        "MelonPult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "OakArcher"
+    },
+    "input": {
+      "cards": [
+        "Flowerpot",
+        "SniperPea",
+        "Cactus"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 5,
+    "output": {
+      "card": "PeaShooter"
+    },
+    "input": {
+      "cards": [
+        "CabbagePult"
+      ],
+      "coinRange": null
+    }
+  },
+  {
+    "weight": 10,
+    "output": {
+      "card": "SniperPea"
+    },
+    "input": {
+      "cards": [
+        "OakArcher"
       ],
       "coinRange": null
     }

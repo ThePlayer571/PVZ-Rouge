@@ -34,7 +34,7 @@ namespace TPL.PVZR.Classes.MazeMap
 
         // 奖励池
         IReadOnlyList<LootPoolDef> LootPools { get; }
-        
+
         AwardGenerateInfo InitialAwards { get; }
 
 
@@ -98,7 +98,7 @@ namespace TPL.PVZR.Classes.MazeMap
             return new LevelDef
             {
                 Id = selectedLevelId,
-                Difficulty = Def.Difficulty,
+                Difficulty = Def.Difficulty == GameDifficulty.Test ? GameDifficulty.N0 : Def.Difficulty,
                 StageDifficulty = tombContentConfig.StageDifficulty,
             };
         }

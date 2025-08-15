@@ -33,11 +33,21 @@ namespace TPL.PVZR.Systems
 
             // Main
             _PhaseService.RegisterCallBack((GamePhase.Gameplay, PhaseStage.EnterLate), e => { StartRunning(); });
-            _PhaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterNormal), e => { StopRunning(); });
+            _PhaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterEarly), e => { StopRunning(); });
 
             // 暂停
-            this.RegisterEvent<OnGamePaused>(_ => { _AudioService.PauseLevelBGM(); });
-            this.RegisterEvent<OnGameResumed>(_ => { _AudioService.ResumeLevelBGM(); });
+            this.RegisterEvent<OnGamePaused>(_ =>
+            {
+                // todo 未思考清楚解决方案：加if in level 或 合并关卡与外界的pause按钮
+                _AudioService.PauseLevelBGM();
+            });
+            this.RegisterEvent<OnGameResumed>(e =>
+            {
+                if (!e.TEMP_stopAudio)
+                {
+                    _AudioService.ResumeLevelBGM();
+                }
+            });
 
             // Tension设置
             _ZombieService.OnZombieCountChanged.Register(count =>

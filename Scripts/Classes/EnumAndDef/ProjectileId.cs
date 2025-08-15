@@ -30,5 +30,6 @@ namespace TPL.PVZR.Classes.InfoClasses
         Pepper = 22,
         OakArcherArrow = 23,
         FrostSpike = 24,
+        SpringCabbage = 25,
     }
 }

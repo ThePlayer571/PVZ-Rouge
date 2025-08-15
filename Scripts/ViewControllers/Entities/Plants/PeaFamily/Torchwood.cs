@@ -13,12 +13,10 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
     {
         public override PlantDef Def { get; } = new PlantDef(PlantId.Torchwood, PlantVariant.V0);
 
-        private IProjectileService _ProjectileService;
         private HashSet<int> _ignitedProjectiles = new();
 
         protected override void OnInit()
         {
-            _ProjectileService = this.GetService<IProjectileService>();
             this.HealthPoint = GlobalEntityData.Plant_Default_Health;
             ProjectileDetector.TargetPredicate = collider2D =>
             {
@@ -29,7 +27,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             {
                 var projectile = collider2D.GetComponent<Projectile>();
                 var id = projectile.EntityId;
-                $"find id : {id}".LogInfo();
 
                 if (_ignitedProjectiles.Contains(id)) return;
                 _ignitedProjectiles.Add(id);

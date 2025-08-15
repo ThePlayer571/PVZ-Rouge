@@ -2,6 +2,7 @@ using System;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Game;
 using TPL.PVZR.Classes.DataClasses.Item.Card;
+using TPL.PVZR.CommandEvents.Game_EventsForTip;
 using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Models;
 using TPL.PVZR.Services;
@@ -94,7 +95,7 @@ namespace TPL.PVZR.Systems
                 _UIStackService.Clear();
                 if (_GameModel.IsGamePaused)
                 {
-                    _GamePhaseChangeService.ResumeGame();
+                    _GamePhaseChangeService.ResumeGame(true);
                 }
             });
 

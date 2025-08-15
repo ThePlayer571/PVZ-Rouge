@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using DG.Tweening;
 using QFramework;
@@ -54,7 +55,8 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             var sunPrefab = sunId switch
             {
                 SunId.Sun => _sunPrefab,
-                SunId.SmallSun => _smallSunPrefab
+                SunId.SmallSun => _smallSunPrefab,
+                _ => throw new ArgumentOutOfRangeException()
             };
             const float topOffset = 1f;
             // 从屏幕顶端之上开始

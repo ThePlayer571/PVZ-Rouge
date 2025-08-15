@@ -34,6 +34,7 @@ namespace TPL.PVZR.Classes.DataClasses
         public float Plant_OakArcher_ShootInterval = 5.5f;
         public float Plant_GrowthPod_GrowTime = 60f;
 
+        public float Projectile_Default_AutoKillSelfTime = 10f;
         public float Projectile_Pea_Speed = 10f;
         public float Projectile_SnipePea_Speed = 20f;
         public int Projectile_Spike_MaxAttackCount = 3;
@@ -44,6 +45,8 @@ namespace TPL.PVZR.Classes.DataClasses
         public float Projectile_SeasonalChineseCabbage_AngularSpeed = 300f;
         public float Projectile_SeasonalCarrot_AngularSpeed = 600f;
         public float Projectile_SeasonalBroccoli_SpeedOffset = 1f;
+        public int Projectile_SpringCabbage_MaxBounceCount = 3;
+        // public float Projectile_SpringCabbage_AutoKillSelfTime = 5f;
 
         public float Zombie_Default_Health = 181f;
         public float Zombie_Default_ClimbSpeed = 1.5f;

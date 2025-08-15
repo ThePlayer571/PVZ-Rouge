@@ -51,6 +51,8 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                 case LootType.Card:
                     cardCount ??= inventory.Cards.Count;
                     return cardCount < inventory.MaxCardCount;
+                case LootType.PlantBook:
+                    return !inventory.HasPlantBook(tradeData.LootData.PlantBookId);
                 default:
                     return true;
             }
@@ -119,6 +121,18 @@ namespace TPL.PVZR.ViewControllers.Others.UI.MazeMap
                             trade.TradeBtn.interactable = ShouldBeAvailable(tradeData, cardCount: val);
                         })
                         .UnRegisterWhenGameObjectDestroyed(this);
+                }
+                else if (tradeData.LootData.LootType == LootType.PlantBook)
+                {
+                    _GameModel.GameData.InventoryData.OnPlantBookAdded.Register(plantBook =>
+                        {
+                            // 史山：未使用ShouldBeAvailable函数
+                            if (plantBook.Id == tradeData.LootData.PlantBookId)
+                            {
+                                trade.TradeBtn.interactable = false;
+                            }
+                        }
+                    ).UnRegisterWhenGameObjectDestroyed(this);
                 }
 
 
