@@ -1,4 +1,7 @@
+using System.Linq;
 using QFramework;
+using TPL.PVZR.CommandEvents.Level_Gameplay.Waves;
+using TPL.PVZR.Models;
 using TPL.PVZR.Services;
 using TPL.PVZR.Tools;
 using TPL.PVZR.Tools.SoyoFramework;
@@ -16,10 +19,12 @@ namespace TPL.PVZR.Systems
         private IAudioService _AudioService;
         private IPhaseService _PhaseService;
         private IZombieService _ZombieService;
+        private ILevelModel _LevelModel;
         private Tension _tension;
 
         protected override void OnInit()
         {
+            _LevelModel = this.GetModel<ILevelModel>();
             _AudioService = this.GetService<IAudioService>();
             _PhaseService = this.GetService<IPhaseService>();
             _ZombieService = this.GetService<IZombieService>();
@@ -28,16 +33,43 @@ namespace TPL.PVZR.Systems
 
             // Main
             _PhaseService.RegisterCallBack((GamePhase.Gameplay, PhaseStage.EnterLate), e => { StartRunning(); });
+            _PhaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterNormal), e => { StopRunning(); });
 
             // 暂停
-            this.RegisterEvent<OnGamePaused>(_ => { _AudioService.PauseLevelMusic(); });
-            this.RegisterEvent<OnGameResumed>(_ => { _AudioService.ResumeLevelMusic(); });
+            this.RegisterEvent<OnGamePaused>(_ => { _AudioService.PauseLevelBGM(); });
+            this.RegisterEvent<OnGameResumed>(_ => { _AudioService.ResumeLevelBGM(); });
 
             // Tension设置
             _ZombieService.OnZombieCountChanged.Register(count =>
             {
                 var tension = Mathf.Clamp01(count / 11f);
-                _tension.Reset(tension);
+                _tension.SetTarget(tension);
+                if (_tension.Intensity < tension)
+                {
+                    _tension.SetTension(tension);
+                }
+            });
+            this.RegisterEvent<OnWaveStart>(e =>
+            {
+                if (_LevelModel.LevelData.HugeWaves.Contains(e.Wave))
+                {
+                    _tension.IncreaseTension(1);
+                }
+            });
+
+            // LevelStateSFX
+            this.RegisterEvent<OnWaveStart>(e =>
+            {
+                if (e.Wave == 1)
+                {
+                    _AudioService.PlaySFX("event:/Sounds/LevelState/FirstZombieComes");
+                }
+
+                if (_LevelModel.LevelData.HugeWaves.Contains(e.Wave))
+                {
+                    ActionKit.Delay(1f, () => _AudioService.PlaySFX("event:/Sounds/LevelState/FlagRise"))
+                        .StartGlobal();
+                }
             });
         }
 
@@ -49,8 +81,9 @@ namespace TPL.PVZR.Systems
 
         private void StopRunning()
         {
-            GameManager.StopOnUpdate(Update);
             _tension.Reset();
+            _AudioService.StopLevelBGM();
+            GameManager.StopOnUpdate(Update);
         }
 
         private void Update()
@@ -68,7 +101,7 @@ namespace TPL.PVZR.Systems
 
             private float _currentIntensity = 0f;
             private float _targetIntensity = 0f;
-            private const float MOVE_SPEED = 0.01f; // 每秒移动的速度
+            private const float MOVE_SPEED = 0.1f; // 每秒移动的速度
 
             /// <summary>
             /// 设置目标紧张值
@@ -77,6 +110,11 @@ namespace TPL.PVZR.Systems
             public void SetTarget(float target)
             {
                 _targetIntensity = Mathf.Clamp01(target);
+            }
+
+            public void SetTension(float tension)
+            {
+                _currentIntensity = Mathf.Clamp01(tension);
             }
 
             /// <summary>

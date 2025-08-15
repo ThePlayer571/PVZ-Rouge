@@ -1,17 +1,16 @@
-using QFramework;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using UnityEngine;
-using Time = UnityEngine.Time;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public sealed class Peashooter : Plant
+    public sealed class FrostSpikePea : Plant
     {
-        public override PlantDef Def { get; } = new PlantDef(PlantId.PeaShooter, PlantVariant.V0);
+        public override PlantDef Def { get; } = new PlantDef(PlantId.SnowPea, PlantVariant.V1);
+
 
         protected override void OnInit()
         {
@@ -41,8 +40,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
                 if (hit.collider && hit.collider.CompareTag("Zombie"))
                 {
-                    _AudioService.PlaySFX("event:/Sounds/Plants/PeaShooter_Shoot");
-                    _ProjectileService.CreatePea(ProjectileId.Pea, Direction.ToVector2(), FirePoint.position);
+                    _ProjectileService.CreatePea(ProjectileId.FrostSpike, Direction.ToVector2(), FirePoint.position);
                     _timer.Reset();
                 }
             }

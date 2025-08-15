@@ -6,6 +6,7 @@ using TPL.PVZR.Helpers.New;
 using TPL.PVZR.Helpers.New.ClassCreator;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Models;
+using TPL.PVZR.Services;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using UnityEngine;
 
@@ -19,9 +20,11 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
         protected ILevelData LevelData => _LevelModel.LevelData;
         protected IPhaseModel _PhaseModel { get; private set; }
         protected GlobalEntityData GlobalEntityData => _LevelModel.LevelData.GlobalEntityData;
+        protected IAudioService _AudioService { get; private set; }
 
         //
         public Rigidbody2D _Rigidbody2D { get; private set; }
+
         // TODO 绝对不能让id这么轻易被更改，但是Factory要用（以后改成initialize统一设置）
         public int EntityId { get; set; } = EntityIdHelper.AllocateId();
 
@@ -33,6 +36,7 @@ namespace TPL.PVZR.ViewControllers.Entities.EntityBase
         {
             _LevelModel = this.GetModel<ILevelModel>();
             _PhaseModel = this.GetModel<IPhaseModel>();
+            _AudioService = this.GetService<IAudioService>();
 
             _Rigidbody2D = this.GetComponent<Rigidbody2D>();
         }

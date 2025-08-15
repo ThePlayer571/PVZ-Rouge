@@ -24,5 +24,10 @@ namespace TPL.PVZR.Tools
         {
             return direction == Direction2.Left ? -1 : 1;
         }
+
+        public static bool ToBool(this Direction2 direction)
+        {
+            return direction != Direction2.Left;
+        }
     }
 }

@@ -269,6 +269,15 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
   - def:
+      Id: 5
+      Variant: 1
+    card: {fileID: 11400000, guid: ce809041c347f0c4097f8786554bbba6, type: 2}
+    prefab:
+      m_AssetGUID: 45d32e8fddc5024439185e2352d6de56
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - def:
       Id: 7
       Variant: 0
     card: {fileID: 11400000, guid: 2634606d5946dfd4192cb57b469f8faf, type: 2}
@@ -286,6 +295,15 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+  - def:
+      Id: 10
+      Variant: 1
+    card: {fileID: 11400000, guid: a34521128c894ba4d97eab14457c67e7, type: 2}
+    prefab:
+      m_AssetGUID: fa2a8eb299a130e43a8ca23368e6ece5
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 1
   - def:
       Id: 17
       Variant: 0
@@ -328,6 +346,15 @@ MonoBehaviour:
     card: {fileID: 11400000, guid: d0a253a6d3749d741a58df7209dbb978, type: 2}
     prefab:
       m_AssetGUID: dfa555e08784c19469211808eb552a7b
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - def:
+      Id: 20
+      Variant: 1
+    card: {fileID: 11400000, guid: 2e9d12c0b07f8944e8d9bf5013acfd37, type: 2}
+    prefab:
+      m_AssetGUID: 69c2c1253f5fed64bbf7e7bc98cf1d5f
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0

@@ -38,24 +38,25 @@ namespace TPL.PVZR.Systems
                 // 加载音频
                 _masterBankHandle = Addressables.LoadAssetAsync<TextAsset>("Master");
                 _masterStringsHandle = Addressables.LoadAssetAsync<TextAsset>("Master.strings");
-                
-                phaseService.AddAwait(Task.WhenAll(_masterStringsHandle.Task, _masterBankHandle.Task));
+
                 phaseService.AddAwait(_gameManagerHandle.Task);
+                phaseService.AddAwait(Task.WhenAll(_masterStringsHandle.Task, _masterBankHandle.Task));
                 phaseService.ChangePhase(GamePhase.MainMenu);
             });
-            
+
             phaseService.RegisterCallBack((GamePhase.PreInitialization, PhaseStage.EnterNormal), e =>
             {
                 // 加载音频
                 FMODUnity.RuntimeManager.LoadBank(_masterBankHandle.Result);
                 FMODUnity.RuntimeManager.LoadBank(_masterStringsHandle.Result);
+                //
             });
 
             phaseService.RegisterCallBack((GamePhase.MainMenu, PhaseStage.EnterNormal), e =>
             {
                 _mainMenuSceneHandle = Addressables.LoadSceneAsync("MainMenu");
                 UIKit.OpenPanel<UIMainMenuPanel>();
-                
+
                 phaseService.AddAwait(_mainMenuSceneHandle.Task);
             });
 
@@ -76,7 +77,10 @@ namespace TPL.PVZR.Systems
 
         protected override void OnDeinit()
         {
+            "deinit".LogInfo();
             _gameManagerHandle.Release();
+            FMODUnity.RuntimeManager.StudioSystem.unloadAll();
+            FMODUnity.RuntimeManager.StudioSystem.release();
         }
     }
 }

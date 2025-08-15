@@ -9,7 +9,7 @@ using Time = UnityEngine.Time;
 
 namespace TPL.PVZR.ViewControllers.Entities.Plants
 {
-    public partial class PeaPod
+    public partial class GrowthPod
     {
         [SerializeField] private SpriteRenderer _SpriteRenderer;
         [SerializeField] private Sprite Level_1;
@@ -44,9 +44,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
         }
     }
 
-    public sealed partial class PeaPod : Plant, ICanBeStackedOn
+    public sealed partial class GrowthPod : Plant, ICanBeStackedOn
     {
-        public override PlantDef Def { get; } = new PlantDef(PlantId.PeaPod, PlantVariant.V0);
+        public override PlantDef Def { get; } = new PlantDef(PlantId.PeaPod, PlantVariant.V1);
 
 
         public bool CanStack(PlantDef plantDef)
@@ -65,12 +65,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
             _timer = new Timer(GlobalEntityData.Plant_Peashooter_ShootInterval);
             _detectTimer = new Timer(Global.Plant_Peashooter_DetectInterval);
+            _growthTimer = new Timer(GlobalEntityData.Plant_GrowthPod_GrowTime);
             _layerMask = LayerMask.GetMask("Zombie", "Barrier");
 
             _firePoints = new[] { FirePoint_1, FirePoint_2, FirePoint_3, FirePoint_4, FirePoint_5 };
         }
 
         private Timer _timer;
+        private Timer _growthTimer;
         private Timer _detectTimer;
         private int _layerMask;
 
@@ -86,6 +88,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
         protected override void OnUpdate()
         {
+            // 发射
             _timer.Update(Time.deltaTime);
             _detectTimer.Update(Time.deltaTime);
 
@@ -103,6 +106,16 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                         _ProjectileService.CreatePea(ProjectileId.Pea, Direction.ToVector2(),
                             _firePoints[i].position);
                     }
+                }
+            }
+            // 生长
+            _growthTimer.Update(Time.deltaTime);
+
+            if (_growthTimer.Ready)
+            {
+                if (CanStack(this.Def))
+                {
+                    StackAdd();
                 }
             }
         }

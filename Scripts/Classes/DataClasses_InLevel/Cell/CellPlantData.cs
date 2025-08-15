@@ -31,7 +31,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel
 
         public Plant GetPlant(PlantDef def)
         {
-            return this.First(plant => plant.Def == def);
+            return this.FirstOrDefault(plant => plant.Def == def);
         }
 
         public Plant GetPlant(PlacementSlot placement)

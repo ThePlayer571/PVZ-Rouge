@@ -214,7 +214,6 @@ namespace TPL.PVZR.ViewControllers.Managers
                 _ => { InputActions.MainMenu.Disable(); });
         }
 
-
         public IArchitecture GetArchitecture()
         {
             return PVZRouge.Interface;

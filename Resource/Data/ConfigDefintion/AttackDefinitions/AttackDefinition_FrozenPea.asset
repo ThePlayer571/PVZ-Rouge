@@ -20,4 +20,4 @@ MonoBehaviour:
   effects:
   - effectId: 0
     level: 5
-    duration: 2
+    duration: 5

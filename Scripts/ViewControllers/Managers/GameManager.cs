@@ -86,6 +86,7 @@ namespace TPL.PVZR.ViewControllers.Managers
 
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 460, 120, 40), "音效测试"))
             {
+                this.GetService<IAudioService>().StopLevelBGM();
                 this.GetService<IAudioService>().PlaySFX("event:/TestEvent");
             }
 

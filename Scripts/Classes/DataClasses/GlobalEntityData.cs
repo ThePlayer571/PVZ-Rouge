@@ -32,6 +32,7 @@ namespace TPL.PVZR.Classes.DataClasses
         public float Plant_Chomper_ChewTime = 30f;
         public float Plant_SeasonalPult_ThrowInterval = 0.7f;
         public float Plant_OakArcher_ShootInterval = 5.5f;
+        public float Plant_GrowthPod_GrowTime = 60f;
 
         public float Projectile_Pea_Speed = 10f;
         public float Projectile_SnipePea_Speed = 20f;

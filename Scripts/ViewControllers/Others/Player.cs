@@ -25,8 +25,17 @@ namespace TPL.PVZR.ViewControllers
         [SerializeField] private Transform _View;
         [SerializeField] private SpriteRenderer _SpriteRenderer;
 
+        private IAudioService _AudioService;
+        //todo step音效
+        private FMOD.Studio.EventInstance _stepEventInstance;
+
+        private EasyEvent OnJumped = new();
+
         private void OnViewInit()
         {
+            _AudioService = this.GetService<IAudioService>();
+            // _stepEventInstance = _AudioService.CreateEventInstance();
+
             _direction.Register(dir => { transform.LocalScaleX(dir.ToInt() * 0.7f); }
             ).UnRegisterWhenGameObjectDestroyed(this);
 
@@ -56,6 +65,7 @@ namespace TPL.PVZR.ViewControllers
 
         private void OnViewUpdate()
         {
+            // 倾斜
             if (!Mathf.Approximately(_movementInput.x, 0))
             {
                 _targetRotationZ = -5f;
@@ -73,6 +83,14 @@ namespace TPL.PVZR.ViewControllers
                     _View.LocalEulerAnglesZ(_currentRotationZ);
                 }
             }
+
+            // // 音效 - 走路
+            // if (!Mathf.Approximately(_movementInput.x, 0))
+            // {
+            //     if (JumpDetector.HasTarget)
+            //     {
+            //     }
+            // }
         }
     }
 
@@ -90,6 +108,7 @@ namespace TPL.PVZR.ViewControllers
         public static Player Instance { get; private set; }
         private PlayerInputControl _inputActions;
         private IPhaseModel _PhaseModel;
+        private ILevelGridModel _LevelGridModel;
 
         [SerializeField] private TriggerDetector JumpDetector;
         [SerializeField] private TriggerDetector LadderDetector;
@@ -164,6 +183,7 @@ namespace TPL.PVZR.ViewControllers
             Player.Instance = this;
 
             _PhaseModel = this.GetModel<IPhaseModel>();
+            _LevelGridModel = this.GetModel<ILevelGridModel>();
 
             _Rigidbody2D = this.GetComponent<Rigidbody2D>();
 

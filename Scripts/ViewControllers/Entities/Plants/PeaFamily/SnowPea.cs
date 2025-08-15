@@ -21,7 +21,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             _layerMask = LayerMask.GetMask("Zombie", "Barrier");
         }
 
-        [SerializeField] private Timer _timer;
+        private Timer _timer;
         private Timer _detectTimer;
         private int _layerMask;
 

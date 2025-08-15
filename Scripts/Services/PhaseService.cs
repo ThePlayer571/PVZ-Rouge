@@ -67,6 +67,7 @@ namespace TPL.PVZR.Services
             return false;
         }
 
+        private int callCount = 0;
 
         public async void ChangePhase(GamePhase phase, params (string, object)[] paras)
         {
@@ -75,6 +76,7 @@ namespace TPL.PVZR.Services
             var leaveFrom = _PhaseModel.GamePhase;
             var changeTo = phase;
             var para = new ReadOnlyDictionary<string, object>(paras.ToDictionary(p => p.Item1, p => p.Item2));
+
             // 检查错误
             if (!allowedPhaseToFrom.ContainsKey(changeTo))
             {
@@ -92,16 +94,19 @@ namespace TPL.PVZR.Services
             {
                 if (_nextPhase.HasValue)
                 {
-                    $"通道堵塞，无法处理新的阶段变更请求: current:{_PhaseModel.GamePhase}, cache:{_nextPhase.Value.phase}, next:{phase}"
-                        .LogError();
-                    return;
+                    $"通道堵塞，因此覆盖了原本的设置: current:{_PhaseModel.GamePhase}, cache:{_nextPhase.Value.phase}, next:{phase}"
+                        .LogWarning();
                 }
 
                 _nextPhase = (phase, paras);
                 return;
             }
 
+
             _changingPhase = true;
+            // var count = callCount;
+            // callCount++;
+            // $"main, {count} , to: {phase}".LogInfo();
             // 离开阶段
             if (TryExecute((leaveFrom, PhaseStage.LeaveEarly), _lastChangeParameters)) await WaitForAllTasks();
             if (TryExecute((leaveFrom, PhaseStage.LeaveNormal), _lastChangeParameters)) await WaitForAllTasks();

@@ -29,5 +29,6 @@ namespace TPL.PVZR.Classes.InfoClasses
         Seasonal_Potato = 21,
         Pepper = 22,
         OakArcherArrow = 23,
+        FrostSpike = 24,
     }
 }

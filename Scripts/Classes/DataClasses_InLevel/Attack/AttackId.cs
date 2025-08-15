@@ -42,5 +42,6 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
         Pepper = 34,
         FrozenMelonAOE = 35,
         OakArcherArrow = 36,
+        FrostSpike = 37,
     }
 }
