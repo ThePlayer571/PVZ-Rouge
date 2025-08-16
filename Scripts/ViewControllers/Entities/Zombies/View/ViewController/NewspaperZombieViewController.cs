@@ -38,19 +38,22 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
                     _Animator.SetTrigger("EnterOnNewspaperDestroyed");
                 });
             ViewFSM.State(ZombieState.Stunned)
-                .OnEnter(() =>
-                {
-                    _Animator.SetInteger("ZombieState", (int)ZombieState.Stunned);
-                    currentRotation = 0;
-                });
+                .OnEnter(() => { _Animator.speed = 0; })
+                .OnExit(() => { _Animator.speed = 1; });
 
             ViewFSM.StartState(ZombieState.DefaultTargeting);
         }
 
-        // todo 屎山：让动画控制器决定逻辑
-        public void Shit_OnNewspaperDestroyedPlayFinished()
+        public void Trigger_OnNewspaperDestroyedPlayFinished()
         {
-            Zombie.FSM.ChangeState(ZombieState.DefaultTargeting);
+            if (Zombie.FSM.CurrentState is OnNewspaperDestroyedState current)
+            {
+                current.Trigger_OnAnimationFinished();
+            }
+            else
+            {
+                $"报纸破碎时，FSM State并非OnNewspaperDestroyedState，而是：{Zombie.FSM.CurrentStateId}".LogError();
+            }
         }
 
         protected override void OnInit()

@@ -1,3 +1,4 @@
+using System;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Effect;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
@@ -17,9 +18,18 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         private void Soyo(EffectData effectData)
         {
-            if (!mTarget.effectGroup.ContainsEffectOR(EffectId.Buttered, EffectId.Freeze))
+            if (!mTarget.effectGroup.CanMakeZombieStunned())
             {
-                mFSM.ChangeState(ZombieState.DefaultTargeting);
+                var previous = mFSM.PreviousStateId;
+                var next = previous switch
+                {
+                    ZombieState.DefaultTargeting => ZombieState.DefaultTargeting,
+                    ZombieState.Attacking => ZombieState.DefaultTargeting,
+                    ZombieState.Stunned => ZombieState.DefaultTargeting,
+                    ZombieState.OnNewspaperDestroyed => ZombieState.OnNewspaperDestroyed,
+                    _ => throw new ArgumentOutOfRangeException(nameof(previous), previous, null)
+                };
+                mFSM.ChangeState(next);
             }
         }
 

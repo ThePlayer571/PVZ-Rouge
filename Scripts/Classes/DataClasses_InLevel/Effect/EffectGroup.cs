@@ -31,7 +31,7 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
         {
             return effectIds.Any(id => _effects.Any(effect => effect.effectId == id));
         }
-        
+
         public bool ContainsEffectAND(params EffectId[] effectIds)
         {
             return effectIds.All(id => _effects.Any(effect => effect.effectId == id));
@@ -100,6 +100,14 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Effect
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+    }
+
+    public static class EffectGroupExtensions
+    {
+        public static bool CanMakeZombieStunned(this EffectGroup effectGroup)
+        {
+            return effectGroup.ContainsEffectOR(EffectId.Freeze, EffectId.Buttered);
         }
     }
 }

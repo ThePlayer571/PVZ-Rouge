@@ -13,9 +13,9 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
     {
         #region 字段
 
-        [SerializeField] protected Zombie Zombie;
-        [SerializeField] protected List<ZombieComponentView> zombieComponentViews;
-        [SerializeField] protected List<ZombieArmorView> zombieArmorViews;
+        protected Zombie Zombie;
+        protected List<ZombieComponentView> zombieComponentViews = new();
+        protected List<ZombieArmorView> zombieArmorViews = new();
 
         protected FSM<ZombieState> ViewFSM;
         protected Animator _Animator;
@@ -28,6 +28,16 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
         {
             _Animator = GetComponent<Animator>();
             ViewFSM = new FSM<ZombieState>();
+
+            Zombie = GetComponentInParent<Zombie>();
+
+            foreach (var view in GetComponentsInChildren<ZombieComponentView>(true))
+            {
+                if (view is ZombieArmorView armor)
+                    zombieArmorViews.Add(armor);
+                else
+                    zombieComponentViews.Add(view);
+            }
         }
 
         private void Start()
@@ -63,8 +73,11 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
                 zombieComponentView.SpriteRenderer.sortingOrder += baseOrder;
             foreach (var zombieArmorView in zombieArmorViews.Where(z => z != null))
                 zombieArmorView.SpriteRenderer.sortingOrder += baseOrder;
+            // 冰冻效果显示
 
-            //
+            // 黄油效果显示
+
+
             OnInit();
         }
 
@@ -85,5 +98,13 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
         }
 
         #endregion
+
+        private SpriteRenderer[] _spriteRenderersCache;
+
+        protected SpriteRenderer[] GetAllSpriteRenderers()
+        {
+            _spriteRenderersCache ??= transform.GetComponentsInChildren<SpriteRenderer>(true);
+            return _spriteRenderersCache;
+        }
     }
 }

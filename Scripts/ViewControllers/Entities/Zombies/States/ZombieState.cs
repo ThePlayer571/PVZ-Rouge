@@ -7,5 +7,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
         OnNewspaperDestroyed = 3,
         Stunned = 4,
         Dead = 5,
+        PoleVaulting = 6,
     }
 }

@@ -27,7 +27,10 @@ namespace TPL.PVZR.CommandEvents._NotClassified_
 
             // 异常处理
             if (_PhaseModel.GamePhase != GamePhase.Gameplay)
-                throw new System.Exception($"在不正确的阶段执行OnZombieDeathCommand：{_PhaseModel.GamePhase}");
+            {
+                $"在不正确的阶段执行OnZombieDeathCommand：{_PhaseModel.GamePhase}".LogError();
+                return;
+            }
 
             // 移除僵尸
             var zombieService = this.GetService<IZombieService>();

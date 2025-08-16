@@ -36,16 +36,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
 
             armorData.OnDestroyed.Register(() =>
             {
-                if (!effectGroup.ContainsEffect(EffectId.Freeze))
+                if (!effectGroup.CanMakeZombieStunned())
                     FSM.ChangeState(ZombieState.OnNewspaperDestroyed);
-            }).UnRegisterWhenGameObjectDestroyed(this);
-
-            effectGroup.OnEffectAdded.Register(effectData =>
-            {
-                if (effectData.effectId is EffectId.Freeze or EffectId.Buttered)
-                {
-                    FSM.ChangeState(ZombieState.Stunned);
-                }
             }).UnRegisterWhenGameObjectDestroyed(this);
 
             FSM.StartState(ZombieState.DefaultTargeting);

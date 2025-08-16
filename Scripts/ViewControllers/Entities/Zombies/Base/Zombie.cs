@@ -67,9 +67,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
         {
             FSM.FixedUpdate();
             // 水平方向的拉力
-            var dragForce = new Vector2(-10 * _Rigidbody2D.velocity.x, 0);
-            _Rigidbody2D.AddForce(dragForce);
+            if (!_banDrag)
+            {
+                var dragForce = new Vector2(-10 * _Rigidbody2D.velocity.x, 0);
+                _Rigidbody2D.AddForce(dragForce);
+            }
         }
+
+        public bool _banDrag = false;
 
         #endregion
 
@@ -87,14 +92,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             FSM.AddState(ZombieState.Attacking, new AttackingState(FSM, this));
             FSM.AddState(ZombieState.Stunned, new StunnedState(FSM, this));
             FSM.AddState(ZombieState.Dead, new DeadState(FSM, this));
-
-            effectGroup.OnEffectAdded.Register(effectData =>
-            {
-                if (effectData.effectId is EffectId.Freeze or EffectId.Buttered)
-                {
-                    FSM.ChangeState(ZombieState.Stunned);
-                }
-            }).UnRegisterWhenGameObjectDestroyed(this);
 
             FSM.StartState(ZombieState.DefaultTargeting);
         }
@@ -122,7 +119,17 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             //
             OnInit();
             // ↓需要等待OnInit设置armorData
+            // Region FSM
             SetUpFSM();
+
+            effectGroup.OnEffectAdded.Register(effectData =>
+            {
+                if (effectData.effectId is EffectId.Freeze or EffectId.Buttered)
+                {
+                    FSM.ChangeState(ZombieState.Stunned);
+                }
+            }).UnRegisterWhenGameObjectDestroyed(this);
+            // FSM END
             ActionKit.DelayFrame(1, OnInitialized.Trigger).Start(this);
         }
 
@@ -182,7 +189,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             return attackData.WithPunchFrom(CoreWorldPos);
         }
 
-        public float GetSpeed()
+        public virtual float GetSpeed()
         {
             var speed = baseSpeed;
             foreach (var effectData in effectGroup)
@@ -239,10 +246,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             Health.Value -= takenDamage;
 
             _Rigidbody2D.AddForce(attackData.Punch(ZombieNode.MassCenter.position), ForceMode2D.Impulse);
+            var punch = attackData.Punch(ZombieNode.MassCenter.position);
+            $"punch: {punch}".LogInfo();
 
             foreach (var effectData in attackData.Effects)
             {
-               $"give effect: {effectData.effectId}".LogInfo();
+                $"give effect: {effectData.effectId}".LogInfo();
                 this.GiveEffect(effectData);
             }
 

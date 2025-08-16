@@ -25,40 +25,43 @@ namespace TPL.PVZR.Helpers.New.DataReader
         public static async Task InitializeAsync()
         {
             var plantConfigListHandle = Addressables.LoadAssetAsync<PlantConfigList>("PlantConfigList");
-            await plantConfigListHandle.Task;
+            var cardDefinitionHandle = Addressables.LoadAssetsAsync<CardDefinition>("CardDefinition", null);
+
+            await Task.WhenAll(plantConfigListHandle.Task, cardDefinitionHandle.Task);
 
             var plantConfigList = plantConfigListHandle.Result;
-            // CardDefinition | PlantPrefab
+            // CardDefinition
             _cardDefinitionDict = new Dictionary<PlantDef, CardDefinition>();
+            foreach (var cardDefinition in cardDefinitionHandle.Result)
+            {
+                _cardDefinitionDict.Add(cardDefinition.PlantDef, cardDefinition);
+            }
+
+            // PlantPrefab
             _plantPrefabDict = new Dictionary<PlantDef, AssetReference>();
             foreach (var config in plantConfigList.Dave)
             {
-                _cardDefinitionDict[config.def] = config.card;
-                _plantPrefabDict[config.def] = config.prefab;
+                _plantPrefabDict.Add(config.def, config.prefab);
             }
 
             foreach (var config in plantConfigList.General)
             {
-                _cardDefinitionDict[config.def] = config.card;
-                _plantPrefabDict[config.def] = config.prefab;
+                _plantPrefabDict.Add(config.def, config.prefab);
             }
 
             foreach (var config in plantConfigList.GeneralMushroom)
             {
-                _cardDefinitionDict[config.def] = config.card;
-                _plantPrefabDict[config.def] = config.prefab;
+                _plantPrefabDict.Add(config.def, config.prefab);
             }
 
             foreach (var config in plantConfigList.PeaFamily)
             {
-                _cardDefinitionDict[config.def] = config.card;
-                _plantPrefabDict[config.def] = config.prefab;
+                _plantPrefabDict.Add(config.def, config.prefab);
             }
 
             foreach (var config in plantConfigList.PultFamily)
             {
-                _cardDefinitionDict[config.def] = config.card;
-                _plantPrefabDict[config.def] = config.prefab;
+                _plantPrefabDict.Add(config.def, config.prefab);
             }
         }
 
@@ -155,7 +158,7 @@ namespace TPL.PVZR.Helpers.New.DataReader
 
             var projectileConfigList = projectileConfigListHandle.Result;
             _projectilePrefabDict = new Dictionary<ProjectileId, AssetReference>();
-            
+
             foreach (var config in projectileConfigList.Default)
             {
                 _projectilePrefabDict[config.id] = config.prefab;

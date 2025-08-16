@@ -1,7 +1,10 @@
+using System;
+using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
 using Unity.IO.LowLevel.Unsafe;
 
 namespace TPL.PVZR.Classes.DataClasses
 {
+    // [Serializable]
     public class GlobalEntityData
     {
         public float Plant_Default_Health = 300f;
@@ -46,10 +49,14 @@ namespace TPL.PVZR.Classes.DataClasses
         public float Projectile_SeasonalCarrot_AngularSpeed = 600f;
         public float Projectile_SeasonalBroccoli_SpeedOffset = 1f;
         public int Projectile_SpringCabbage_MaxBounceCount = 3;
-        // public float Projectile_SpringCabbage_AutoKillSelfTime = 5f;
 
-        public float Zombie_Default_Health = 181f;
+        public float Zombie_Default_Health = 200f;
         public float Zombie_Default_ClimbSpeed = 1.5f;
         public float Zombie_DuckyTubeZombie_SwimSpeedMultiplier = 3f;
+        public float Zombie_ImpZombie_Health = 60f;
+        public float Zombie_ImpZombie_SpeedMultiplier = 2f;
+        public float Zombie_PoleVaultingZombie_Health = 430f;
+        public float Zombie_PoleVaultingZombie_VaultingForce = 8f;
+        public float Zombie_PoleVaultingZombie_SpeedMultiplier = 2.5f;
     }
 }

@@ -44,5 +44,10 @@ namespace TPL.PVZR.Classes.InfoClasses
         {
             return def.Id;
         }
+
+        public override string ToString()
+        {
+            return $"{Id} - {Variant}";
+        }
     }
 }

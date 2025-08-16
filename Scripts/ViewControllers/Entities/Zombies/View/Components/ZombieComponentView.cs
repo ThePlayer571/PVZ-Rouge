@@ -22,7 +22,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.Components
             Rigidbody2D.simulated = true;
             Collider2D.enabled = true;
 
-            transform.parent = null;
+            transform.SetParent(null);
+
             Rigidbody2D.AddForce(force * factor, ForceMode2D.Impulse);
 
             ActionKit.Sequence()
