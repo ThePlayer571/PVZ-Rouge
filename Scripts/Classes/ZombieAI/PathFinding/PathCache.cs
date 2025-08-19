@@ -10,6 +10,8 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
         void AddPath(PathKey pathKey, Path path);
         void AddPathRange(PathKey pathKey, IEnumerable<Path> paths);
         int Count { get; }
+
+        void Clear();
     }
 
     public class PathCache : IPathCache
@@ -33,6 +35,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                 pathList = new List<Path>();
                 _pathDict[pathKey] = pathList;
             }
+
             pathList.Add(path);
         }
 
@@ -43,15 +46,19 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                 pathList = new List<Path>();
                 _pathDict[pathKey] = pathList;
             }
+
             pathList.AddRange(paths);
         }
 
         public int Count => _pathDict.Count;
 
+        public void Clear()
+        {
+            _pathDict.Clear();
+        }
+
         #endregion
 
-        private readonly Dictionary<PathKey, List<Path>> _pathDict = new Dictionary<PathKey, List<Path>>();
+        private readonly Dictionary<PathKey, List<Path>> _pathDict = new();
     }
-
-    
 }

@@ -111,7 +111,7 @@ namespace TPL.PVZR.ViewControllers.UI
             }
 
             // 创建LevelStateBarPanelController
-            LevelStateBarPanelController.SpawnFlags();
+            _ = LevelStateBarPanelController.SpawnFlags();
         }
 
         protected override void OnShow()

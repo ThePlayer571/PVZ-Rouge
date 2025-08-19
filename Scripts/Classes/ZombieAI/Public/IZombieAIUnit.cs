@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Classes.DataClasses;
 using TPL.PVZR.Classes.ZombieAI.Class;
@@ -9,7 +10,7 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
     public interface IZombieAIUnit
     {
         // 初始化
-        void InitializeFrom(Matrix<Cell> levelMatrix);
+        Task InitializeFromAsync(Matrix<Cell> levelMatrix);
         // 获取路径
         IZombiePath FindPath(Vector2Int start, Vector2Int end, AITendency aiTendency);
         Cluster GetClusterSafely(Vector2Int pos);

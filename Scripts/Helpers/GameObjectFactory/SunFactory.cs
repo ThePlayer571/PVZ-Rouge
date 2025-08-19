@@ -30,7 +30,8 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             var sunPrefab = sunId switch
             {
                 SunId.Sun => _sunPrefab,
-                SunId.SmallSun => _smallSunPrefab
+                SunId.SmallSun => _smallSunPrefab,
+                _ => throw new ArgumentOutOfRangeException(nameof(sunId), sunId, null)
             };
             var go = sunPrefab.Instantiate(position, Quaternion.identity).GetComponent<Sun>();
             var spriteRenderer = go.GetComponent<SpriteRenderer>();

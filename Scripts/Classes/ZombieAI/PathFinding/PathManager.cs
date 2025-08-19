@@ -10,12 +10,9 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
     public interface IPathManager
     {
         Path GetOnePath(Vertex startVertex, Vertex endVertex, AITendency aiTendency);
+        void ClearCache();
     }
 
-    /*
-     * 缓存路径
-     * 路径不一定是最短路径（启发函数导致，无需在意），但一定包括最短的
-     */
     public class PathManager : IPathManager
     {
         #region 公有方法
@@ -24,6 +21,11 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
         {
             var paths = GetMultiPaths(startVertex, endVertex, aiTendency);
             return aiTendency.ChooseOnePath(paths);
+        }
+
+        public void ClearCache()
+        {
+            _pathCache.Clear();
         }
 
         #endregion

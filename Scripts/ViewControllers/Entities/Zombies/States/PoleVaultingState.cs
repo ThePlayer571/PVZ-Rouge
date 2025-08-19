@@ -12,8 +12,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
         {
         }
 
-        private bool _inTheAir = false;
-        
         public void Trigger_OnPoleTouchGround()
         {
             mTarget.Vaulting();

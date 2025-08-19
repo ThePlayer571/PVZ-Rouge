@@ -97,7 +97,7 @@ namespace TPL.PVZR.Classes.DataClasses
                 case LootType.Card:
                     var cardData = ItemCreator.CreateCardData(lootData.PlantId.ToDef(), lootData.Locked);
                     this.AddCard(cardData);
-                    $" 添加卡牌成功: {lootData.PlantId}, 锁定状态: {lootData.Locked}".LogInfo();
+                    // $" 添加卡牌成功: {lootData.PlantId}, 锁定状态: {lootData.Locked}".LogInfo();
                     break;
                 case LootType.PlantBook:
                     var plantBookData = ItemCreator.CreatePlantBookData(lootData.PlantBookId);

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Threading.Tasks;
 using QFramework;
 using TPL.PVZR.Classes.ZombieAI.Class;
 using TPL.PVZR.Classes.ZombieAI.PathFinding;
@@ -26,6 +27,7 @@ namespace TPL.PVZR.Systems.Level_Data
 
         public IZombieAIUnit ZombieAIUnit { get; private set; }
         private ILevelGridModel _LevelGridModel;
+        private IPhaseService _PhaseService;
         public Vector2Int PlayerVertexPos => new Vector2Int(_playerVertexOnLastFrame.x, _playerVertexOnLastFrame.y);
 
         private Vertex _playerVertexOnLastFrame;
@@ -72,14 +74,14 @@ namespace TPL.PVZR.Systems.Level_Data
             if (playerCurrentVertex != null) _playerVertexOnLastFrame = playerCurrentVertex;
         }
 
-        private void StartRunning()
+        private async Task StartRunning()
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            GameManager.ExecuteOnUpdate(UpdatePlayerCluster);
             ZombieAIUnit = new ZombieAIUnit();
-            ZombieAIUnit.InitializeFrom(_LevelGridModel.LevelMatrix);
+            await ZombieAIUnit.InitializeFromAsync(_LevelGridModel.LevelMatrix);
+            GameManager.ExecuteOnUpdate(UpdatePlayerCluster);
 
             stopwatch.Stop();
             $"算法耗时：{stopwatch.ElapsedMilliseconds} ms".LogInfo();
@@ -98,14 +100,14 @@ namespace TPL.PVZR.Systems.Level_Data
         protected override void OnInit()
         {
             _LevelGridModel = this.GetModel<ILevelGridModel>();
+            _PhaseService = this.GetService<IPhaseService>();
 
-            var phaseService = this.GetService<IPhaseService>();
-            phaseService.RegisterCallBack((GamePhase.LevelInitialization, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.LevelInitialization, PhaseStage.EnterNormal), e =>
             {
                 //
-                StartRunning();
+                _PhaseService.AddAwait(StartRunning());
             });
-            phaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterNormal), e =>
+            _PhaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.EnterNormal), e =>
             {
                 //
                 StopRunning();

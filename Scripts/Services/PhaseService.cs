@@ -67,7 +67,6 @@ namespace TPL.PVZR.Services
             return false;
         }
 
-        private int callCount = 0;
 
         public async void ChangePhase(GamePhase phase, params (string, object)[] paras)
         {
