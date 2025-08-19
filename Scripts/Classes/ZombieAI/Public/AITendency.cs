@@ -13,7 +13,8 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
     /// </summary>
     public class AITendency
     {
-        public const int PASSABLE_HEIGHT_最大值 = 3; // 请至少设为“游戏内最大僵尸高度+1”，不然存在“高度差”的地形都无法正确处理
+        public const int PASSABLE_HEIGHT_CEILING = 3; // 请至少设为“游戏内最大僵尸高度+1”，不然存在“高度差”的地形都无法正确处理
+        public const int PASSABLE_HEIGHT_CEILING_WITH_OFFSET = 4;
 
         public readonly MainAI mainAI;
         public readonly int minPassableHeight;

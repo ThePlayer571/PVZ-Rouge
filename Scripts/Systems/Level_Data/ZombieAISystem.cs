@@ -83,8 +83,7 @@ namespace TPL.PVZR.Systems.Level_Data
 
             stopwatch.Stop();
             $"算法耗时：{stopwatch.ElapsedMilliseconds} ms".LogInfo();
-            // ZombieAIUnit.DebugDisplayMatrix();
-            // ZombieAIUnit.DebugLogCluster(new Vector2Int(11, 14));
+            ZombieAIUnit.DebugDisplayMatrix();
         }
 
         private void StopRunning()

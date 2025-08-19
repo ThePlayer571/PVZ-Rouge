@@ -229,7 +229,7 @@ namespace TPL.PVZR.Services
         [RoughPhase(RoughPhase.Process, RoughPhase.Game, RoughPhase.Level)]
         ChooseSeeds = 1203,
 
-        [RoughPhase(RoughPhase.Process, RoughPhase.Game, RoughPhase.Level)]
+        [RoughPhase(RoughPhase.ShortProcess, RoughPhase.Game, RoughPhase.Level)]
         ReadyToStart = 1204,
 
         [RoughPhase(RoughPhase.Process, RoughPhase.Game, RoughPhase.Level)]

@@ -42,10 +42,6 @@ namespace TPL.PVZR.ViewControllers.UI
             StartGameBtn.onClick.AddListener(() =>
             {
                 if (_PhaseModel.GamePhase != GamePhase.ChooseSeeds) return;
-                ActionKit.Sequence()
-                    .Callback(HideAllUI)
-                    .Delay(0.3f)
-                    .Callback(CloseSelf).Start(this);
                 this.SendCommand<OnStartGameBtnPressedCommand>();
             });
         }

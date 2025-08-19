@@ -51,7 +51,7 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
             this.x = x;
             this.y = y;
             this.VertexType = vertexType;
-            this.PassableHeight = Math.Min(passableHeight, AITendency.PASSABLE_HEIGHT_最大值);
+            this.PassableHeight = passableHeight;
             this.isKey = isKey;
         }
 

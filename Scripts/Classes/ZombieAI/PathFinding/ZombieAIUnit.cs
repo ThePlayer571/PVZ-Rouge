@@ -252,7 +252,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                         int GetMinPassableHeight(int x, int y)
                         {
                             int heightOffset = 1;
-                            for (; heightOffset < AITendency.PASSABLE_HEIGHT_最大值; heightOffset++)
+                            for (; heightOffset < AITendency.PASSABLE_HEIGHT_CEILING_WITH_OFFSET; heightOffset++)
                             {
                                 var currentCell = levelMatrix[x, y + heightOffset];
                                 if (currentCell.Is(CellTypeId.Block)) break;
@@ -433,7 +433,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
                     var y = from.y;
 
                     int offsetY = 0;
-                    for (; offsetY < AITendency.PASSABLE_HEIGHT_最大值; offsetY++)
+                    for (; offsetY < AITendency.PASSABLE_HEIGHT_CEILING_WITH_OFFSET; offsetY++)
                     {
                         if (levelMatrix[x, y + offsetY].Is(CellTypeId.Block)) break;
                     }

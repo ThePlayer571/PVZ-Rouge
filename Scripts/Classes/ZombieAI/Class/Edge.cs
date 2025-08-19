@@ -1,3 +1,4 @@
+using System;
 using TPL.PVZR.Classes.ZombieAI.Public;
 
 namespace TPL.PVZR.Classes.ZombieAI.Class
@@ -21,7 +22,7 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
             this.From = from;
             this.To = to;
             this.moveType = moveType;
-            this.passableHeight = passableHeight;
+            this.passableHeight = Math.Min(passableHeight, AITendency.PASSABLE_HEIGHT_CEILING);
         }
     }
 }

@@ -200,19 +200,24 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         private List<SerializableKeyValuePair<ZombieSpawnPosId, List<ZombieSpawnPosId>>> PosGroupDef;
         private List<ZombieSpawnConfig> ZombieSpawnConfigs;
 
+        public Vector2 GetZombieSpawnPos(ZombieSpawnPosId posId)
+        {
+            return PosDef.First(item => item.Key == posId).Value;
+        }
+
         public IReadOnlyList<ZombieSpawnInfo> ZombieSpawnInfosOfWave(int wave)
         {
             var result = new List<ZombieSpawnInfo>();
             foreach (var activeConfig in ZombieSpawnConfigs.Where(item =>
                          item.ActiveWaves.x <= wave && item.ActiveWaves.y >= wave))
             {
-                if ((int)activeConfig.SpawnPos > 100)
+                if ((int)activeConfig.SpawnPos > 100 && (int)activeConfig.SpawnPos <= 200)
                 {
                     foreach (var posId in PosGroupDef.First(item => item.Key == activeConfig.SpawnPos).Value)
                     {
                         var info = new ZombieSpawnInfo(
                             zombieId: activeConfig.Zombie,
-                            spawnPosition: PosDef.First(item => item.Key == posId).Value,
+                            spawnPosition: GetZombieSpawnPos(posId),
                             weight: activeConfig.Weight,
                             value: activeConfig.Value
                         );

@@ -18,13 +18,6 @@ namespace TPL.PVZR.ViewControllers.Managers
     {
         private void OnGUI()
         {
-            if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 10, 120, 40), "Pos1生成僵尸"))
-            {
-                var pos = LevelGridHelper.CellToWorldBottom(new Vector2Int(22, 9));
-                var zombieService = this.GetService<IZombieService>();
-                zombieService.SpawnZombie(ZombieId.ImpZombie, pos);
-            }
-
             if (UnityEngine.GUI.Button(new UnityEngine.Rect(10, 60, 120, 40), "获取500阳光"))
             {
                 this.GetModel<ILevelModel>().SunPoint.Value += 500;

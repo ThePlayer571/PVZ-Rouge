@@ -93,7 +93,7 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
         {
             includeEdges = new List<Edge>();
             this.moveType = moveType;
-            this.passableHeight = AITendency.PASSABLE_HEIGHT_最大值;
+            this.passableHeight = AITendency.PASSABLE_HEIGHT_CEILING;
         }
 
         public KeyEdge(Edge startEdge)

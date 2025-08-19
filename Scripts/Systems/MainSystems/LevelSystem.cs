@@ -142,10 +142,11 @@ namespace TPL.PVZR.Systems.Level_Data
                     _LevelModel.ChosenSeeds[i] =
                         SeedData.Create(i + 1, chosenSeedOptions[i].CardData);
                 }
-
-                //
+                // 关闭UI界面
+                var panel = UIKit.GetPanel<UIChooseSeedPanel>();
                 ActionKit.Sequence()
-                    .Delay(1f)
+                    .Callback(panel.HideAllUI)
+                    .Delay(0.4f)
                     .Callback(UIKit.ClosePanel<UIChooseSeedPanel>)
                     .StartGlobal();
             });
