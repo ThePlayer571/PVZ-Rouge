@@ -213,7 +213,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             {
                 if ((int)activeConfig.SpawnPos > 100 && (int)activeConfig.SpawnPos <= 200)
                 {
-                    foreach (var posId in PosGroupDef.First(item => item.Key == activeConfig.SpawnPos).Value)
+                    var posGroup = PosGroupDef.First(item => item.Key == activeConfig.SpawnPos).Value;
+                    foreach (var posId in posGroup)
                     {
                         var info = new ZombieSpawnInfo(
                             zombieId: activeConfig.Zombie,

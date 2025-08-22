@@ -4,7 +4,9 @@ using System.Linq;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.CommandEvents.Level_Gameplay.HandInputs;
 using TPL.PVZR.CommandEvents.Level_Gameplay.Waves;
+using TPL.PVZR.Helpers.New.DataReader;
 using TPL.PVZR.Models;
 using TPL.PVZR.Services;
 using TPL.PVZR.Tools.Save;
@@ -25,6 +27,10 @@ namespace TPL.PVZR.Systems
 
         private WhenLevelEndedInfo _whenLevelEndedInfo;
 
+        // Sunpoint
+        private int _sunflowerConsume = 0;
+        private int _otherPlantConsume = 0;
+
         protected override void OnInit()
         {
             _PhaseService = this.GetService<IPhaseService>();
@@ -37,13 +43,31 @@ namespace TPL.PVZR.Systems
                 _whenLevelEndedInfo = new WhenLevelEndedInfo
                 {
                     levelDef = _LevelModel.LevelData.LevelDef,
+                    maxValue = GameConfigReader.GetLevelDefinition(_LevelModel.LevelData.LevelDef).maxValue,
                     stage = _GameModel.ActiveTombData.Stage,
                 };
+                _sunflowerConsume = 0;
+                _otherPlantConsume = 0;
+            });
+
+            this.RegisterEvent<OnSeedInHandPlanted>(e =>
+            {
+                var plantId = e.PlantedSeed.CardData.CardDefinition.PlantDef.Id;
+                if (plantId is PlantId.Sunflower or PlantId.TwinSunflower or PlantId.TripletSunflower
+                    or PlantId.SunShroom or PlantId.GoldBloom)
+                {
+                    _sunflowerConsume += e.PlantedSeed.CardData.CardDefinition.SunpointCost;
+                }
+                else
+                {
+                    _otherPlantConsume += e.PlantedSeed.CardData.CardDefinition.SunpointCost;
+                }
             });
 
             this.RegisterEvent<OnWaveStart>(e =>
             {
-                _whenLevelEndedInfo.waveSunPoints[e.Wave] = _LevelModel.SunPoint.Value;
+                _whenLevelEndedInfo.waveSunPoints[e.Wave] = _otherPlantConsume + _LevelModel.SunPoint.Value;
+                _whenLevelEndedInfo.waveZombieCount[e.Wave] = this.GetService<IZombieService>().ActiveZombies.Count;
             });
 
             _PhaseService.RegisterCallBack((GamePhase.LevelPassed, PhaseStage.EnterEarly), e =>
@@ -76,8 +100,11 @@ namespace TPL.PVZR.Systems
     public class WhenLevelEndedInfo : ISaveData
     {
         // 基础信息
+        public string comments = "";
+        public float maxValue;
         public LevelDef levelDef;
         public int stage;
+
 
         public bool pass;
 
@@ -85,6 +112,10 @@ namespace TPL.PVZR.Systems
         public int earnedCoins;
         public Dictionary<int, int> waveSunPoints = new();
         public List<PlantDef> usedCards = new();
+
         public InventorySaveData inventorySaveData;
+
+        // 闲置数据
+        public Dictionary<int, int> waveZombieCount = new();
     }
 }

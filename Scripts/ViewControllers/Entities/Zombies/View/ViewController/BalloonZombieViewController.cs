@@ -8,10 +8,11 @@ using UnityEngine;
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
 {
     /// <summary>
-    /// 仅适用：撑杆僵尸
+    /// 仅适用：气球僵尸
     /// </summary>
-    public class PoleVaultingZombieViewController : ZombieViewController
+    public class BalloonZombieViewController : ZombieViewController
     {
+        [SerializeField] private SpriteRenderer Balloon;
         private float currentRotation;
         private float targetRotation;
         private const float rotationChangeFactor = 5f;
@@ -32,11 +33,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
                     _Animator.SetInteger("ZombieState", (int)ZombieState.Attacking);
                     currentRotation = 0;
                 });
-            ViewFSM.State(ZombieState.PoleVaulting)
+            ViewFSM.State(ZombieState.Flying_BallonZombie)
                 .OnEnter(() =>
                 {
-                    _Animator.SetInteger("ZombieState", (int)ZombieState.PoleVaulting);
-                    currentRotation = 0;
+                    _Animator.SetInteger("ZombieState", (int)ZombieState.Flying_BallonZombie);
+                })
+                .OnExit(() =>
+                {
+                    Balloon.enabled = false;
                 });
             ViewFSM.State(ZombieState.Stunned)
                 .OnEnter(() => { _Animator.speed = 0; })
@@ -54,33 +58,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
                     zombieComponentView.DisassembleWithForce(
                         attackData.Punch(zombieComponentView.transform.position));
                 }
-
-                foreach (var zombieArmorView in zombieArmorViews.Where(z => z != null))
-                {
-                    zombieArmorView.DisassembleWithForce(attackData.Punch(zombieArmorView.transform.position));
-                }
             }).UnRegisterWhenGameObjectDestroyed(this);
         }
 
         protected override void OnUpdate()
         {
             this.transform.LocalEulerAnglesZ(-currentRotation);
-        }
-
-        // 命名不佳：应该是起跳时
-        public void Trigger_OnTriggerTouchingGround()
-        {
-            if (Zombie.FSM.CurrentState is PoleVaultingState current)
-            {
-                current.Trigger_OnPoleTouchGround();
-                var pole = zombieComponentViews.First(component => component.gameObject.name == "Pole");
-                zombieComponentViews.Remove(pole);
-                pole.DisassembleWithForce(Vector2.down);
-            }
-            else
-            {
-                $"FSM State并非PoleVaultingState，而是：{Zombie.FSM.CurrentStateId}".LogError();
-            }
         }
     }
 }

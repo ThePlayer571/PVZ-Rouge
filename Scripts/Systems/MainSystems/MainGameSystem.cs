@@ -49,7 +49,10 @@ namespace TPL.PVZR.Systems
                 // 加载音频
                 FMODUnity.RuntimeManager.LoadBank(_masterBankHandle.Result);
                 FMODUnity.RuntimeManager.LoadBank(_masterStringsHandle.Result);
-                //
+                // 加载过渡界面
+                var t = UIKit.OpenPanel<UITransitionEffect>();
+                var transitionService = this.GetService<ISceneTransitionEffectService>();
+                transitionService.InitWith(t);
             });
 
             phaseService.RegisterCallBack((GamePhase.MainMenu, PhaseStage.EnterNormal), e =>

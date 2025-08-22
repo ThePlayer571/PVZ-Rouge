@@ -9,6 +9,7 @@ namespace TPL.PVZR.ViewControllers.Managers
     {
         private void Start()
         {
+            Debug.Log("GameStarter Start");
             var _ = this.GetModel<IPhaseModel>();
             ActionKit.Sequence()
                 .Delay(0.1f)
@@ -17,13 +18,6 @@ namespace TPL.PVZR.ViewControllers.Managers
                     var phaseService = this.GetService<IPhaseService>();
                     phaseService.ChangePhase(GamePhase.PreInitialization);
                 }).Start(this);
-
-            // ActionKit.Sequence()
-            //     .Delay(0.5f)
-            //     .Callback(() =>
-            //     {
-            //         PlantHelper.CreatePlant(PlantId.PeaShooter, Direction2.Right);
-            //     }).Start(this);
         }
 
         public IArchitecture GetArchitecture()

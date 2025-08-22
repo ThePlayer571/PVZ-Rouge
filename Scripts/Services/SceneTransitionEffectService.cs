@@ -17,7 +17,11 @@ namespace TPL.PVZR.Services
     {
         Task PlayTransitionAsync(TransitionEffectType transitionEffectType = TransitionEffectType.Slide);
         Task EndTransition(bool ignoreDebug = false);
+
         TransitionState CurrentTransitionState { get; }
+
+        // QF史山
+        void InitWith(UITransitionEffect panel);
     }
 
     public class SceneTransitionEffectService : AbstractService, ISceneTransitionEffectService
@@ -70,6 +74,12 @@ namespace TPL.PVZR.Services
 
         public TransitionState CurrentTransitionState => _transitionState;
 
+        public void InitWith(UITransitionEffect panel)
+        {
+            panel.transform.SetParent(UIKit.Root.transform.Find("Transition"));
+            _transitionEffectNode = panel.GetComponent<TransitionEffectNode>();
+        }
+
         #endregion
 
         #region 实现细节
@@ -105,9 +115,6 @@ namespace TPL.PVZR.Services
 
         protected override void OnInit()
         {
-            var panel = UIKit.OpenPanel<UITransitionEffect>();
-            panel.transform.SetParent(UIKit.Root.transform.Find("Transition"));
-            _transitionEffectNode = panel.GetComponent<TransitionEffectNode>();
         }
     }
 

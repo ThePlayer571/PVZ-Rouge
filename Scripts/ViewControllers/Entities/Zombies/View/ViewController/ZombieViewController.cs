@@ -19,6 +19,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
 
         protected FSM<ZombieState> ViewFSM;
         protected Animator _Animator;
+        protected 
 
         #endregion
 
@@ -73,7 +74,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.View.ViewController
                 zombieComponentView.SpriteRenderer.sortingOrder += baseOrder;
             foreach (var zombieArmorView in zombieArmorViews.Where(z => z != null))
                 zombieArmorView.SpriteRenderer.sortingOrder += baseOrder;
-            // 冰冻效果显示
+            // todo 冰冻效果显示
 
             // 黄油效果显示
 

@@ -50,5 +50,13 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
 
             moveQueue.Enqueue(new MoveData(moveType, Vector2Int.zero, Vector2Int.zero, MoveStage.FindDave));
         }
+
+        // 史山：这是为气球僵尸特别设置，不应该占用默认构造函数
+        public ZombiePath()
+        {
+            moveQueue.Enqueue(new MoveData(MoveType.WalkJump, Vector2Int.zero, Vector2Int.zero, MoveStage.FindDave));
+        }
+
+        public static IZombiePath BallonZombie => new ZombiePath();
     }
 }

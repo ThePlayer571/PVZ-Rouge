@@ -16,6 +16,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
 
         protected override void OnInit()
         {
+            _LevelGridModel = this.GetModel<ILevelGridModel>();
+            
             HealthPoint = GlobalEntityData.Plant_Default_Health;
         }
 

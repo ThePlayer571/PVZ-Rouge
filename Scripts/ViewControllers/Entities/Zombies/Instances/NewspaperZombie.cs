@@ -37,7 +37,10 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
             armorData.OnDestroyed.Register(() =>
             {
                 if (!effectGroup.CanMakeZombieStunned())
+                {
                     FSM.ChangeState(ZombieState.OnNewspaperDestroyed);
+                    // todo 在这里写发问号的代码
+                }
             }).UnRegisterWhenGameObjectDestroyed(this);
 
             FSM.StartState(ZombieState.DefaultTargeting);

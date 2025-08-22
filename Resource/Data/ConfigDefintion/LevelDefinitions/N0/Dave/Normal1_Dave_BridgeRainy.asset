@@ -27,6 +27,8 @@ MonoBehaviour:
   SunFallPositions:
   - Key: {x: 30, y: 20}
     Value: {x: 37, y: 20}
+  InitialDayPhase: 1
+  InitialWeather: 2
   BaseValue: 10
   maxValue: 104
   LevelValueDetail:
@@ -34,7 +36,7 @@ MonoBehaviour:
     ValidCellCount: 26
     MultiplierOfCell: 0.4
     ValidSunpointWhenFinalWave: 4400
-    MultiplierOfSunpoint: 0.4
+    MultiplierOfSunpoint: 0.2
   DifficultyGrowthType: 0
   TotalWaveCount: 20
   HugeWaves: 0a00000014000000
@@ -100,8 +102,6 @@ MonoBehaviour:
     specialLoots: []
     totalValue: 100
     choiceCount: 3
-  InitialDayPhase: 1
-  InitialWeather: 2
   InitialPlants:
   - PlantDef:
       Id: 4

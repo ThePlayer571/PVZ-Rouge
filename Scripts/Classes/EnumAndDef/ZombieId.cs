@@ -16,5 +16,6 @@ namespace TPL.PVZR.Classes.InfoClasses
         DuckyTubeBucketHeadZombie = 8,
         ImpZombie = 9,
         PoleVaultingZombie = 10,
+        BallonZombie = 11,
     }
 }

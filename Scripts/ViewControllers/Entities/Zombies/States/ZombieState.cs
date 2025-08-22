@@ -8,5 +8,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
         Stunned = 4,
         Dead = 5,
         PoleVaulting = 6,
+        Flying_BallonZombie = 7,
     }
 }

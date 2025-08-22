@@ -81,6 +81,26 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public Vector2Int ActiveWaves;
     }
 
+    [Serializable]
+    public class SpecialZombieSpawnConfig
+    {
+        public ZombieId Zombie;
+        public ZombieSpawnPosId SpawnPos;
+        public float Weight;
+        public float Value;
+        public Vector2Int ActiveWaves;
+        public List<string> Parameters;
+    }
+
+    [Serializable]
+    public class ZombieSpawnEventConfig
+    {
+        public ZombieId Zombie;
+        public ZombieSpawnPosId SpawnPos;
+        public Vector2Int ActiveWaves;
+        public List<string> Parameters;
+    }
+
     #endregion
 
     [CreateAssetMenu(fileName = "LevelDefinition_", menuName = "PVZR/LevelDefinition", order = 2)]
@@ -135,6 +155,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public List<SerializableKeyValuePair<ZombieSpawnPosId, List<ZombieSpawnPosId>>> PosGroupDef;
 
         public List<ZombieSpawnConfig> ZombieSpawnConfigs;
+        public List<SpecialZombieSpawnConfig> SpecialZombieSpawnConfigs;
+        public List<ZombieSpawnEventConfig> ZombieSpawnEventConfigs;
 
 //
         [Header("Award")] public AwardGenerateInfo AwardGenerateInfo;
@@ -198,5 +220,12 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         NotSet = 0,
         Sunny = 1,
         Rainy = 2,
+    }
+
+    public enum LevelBgmId
+    {
+        NotSet = 0,
+        Lawn = 1,
+        Night = 2,
     }
 }
