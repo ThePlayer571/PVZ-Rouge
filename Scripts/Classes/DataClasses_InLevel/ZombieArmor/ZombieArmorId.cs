@@ -7,5 +7,6 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.ZombieArmor
         Bucket = 2,
         ScreenDoor = 3,
         Newspaper = 4,
+        Ladder = 5,
     }
 }

@@ -8,5 +8,6 @@ namespace TPL.PVZR.Helpers.New.Methods
         public const float Zombie_Default_JumpInterval = 1f;
         
         public const float Zombie_Default_PathFindStopMinDistance = 0.05f;
+        public const float Zombie_Default_TryGetDirtyTime = 5f;
     }
 }

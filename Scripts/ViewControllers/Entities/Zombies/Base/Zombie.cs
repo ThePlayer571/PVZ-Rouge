@@ -74,7 +74,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             }
         }
 
-        public bool _banDrag = false;
+        [NonSerialized] public bool _banDrag = false;
 
         #endregion
 
@@ -96,11 +96,10 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             FSM.StartState(ZombieState.DefaultTargeting);
         }
 
-        public void Initialize()
+        public void Initialize(IList<string> paras)
         {
             // AI
-            this.RegisterEvent<OnPlayerChangeCluster>(_ => _timeToFindPath = true)
-                .UnRegisterWhenGameObjectDestroyed(this);
+            this.zombieAIController = new ZombieAIController(this);
             HumanLadderPriority = EntityIdHelper.AllocateHumanLadderPriority();
 
             // 朝向
@@ -117,7 +116,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
             }).UnRegisterWhenGameObjectDestroyed(this);
 
             //
-            OnInit();
+            OnInit(paras);
             // ↓需要等待OnInit设置armorData
             // Region FSM
             SetUpFSM();
@@ -137,7 +136,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #region 实体生命周期
 
-        public abstract void OnInit();
+        public abstract void OnInit(IList<string> paras = null);
 
         public override void DieWith(AttackData attackData)
         {
@@ -266,17 +265,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         #region 移动
 
-        public bool _timeToFindPath = false;
-        public virtual AITendency AITendency { get; } = AITendency.Default;
-        public IZombiePath CachePath = null;
-        [SerializeField, ReadOnly] public MoveData CurrentMoveData = null;
-
-        [Unsafe("调用此方法前，请确保路径百分百能被找到，不然会出错误。安全的调用方法：_timeToFindPath = true，然后让FSM自动响应")]
-        public void FindPath(Vector2Int targetPos)
-        {
-            CachePath = _ZombieAISystem.ZombieAIUnit.FindPath(CellPos, targetPos, AITendency);
-            CurrentMoveData = CachePath.NextTarget();
-        }
+        public ZombieAIController zombieAIController;
+        public virtual AITendency aiTendency { get; } = AITendency.Default;
 
         public virtual void MoveForward()
         {
@@ -310,7 +300,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
 
         public virtual void BeLifted()
         {
-            if (CurrentMoveData.moveType == MoveType.HumanLadder)
+            if (zombieAIController.currentMoveData.moveType == MoveType.HumanLadder)
             {
                 _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x,
                     GlobalEntityData.Zombie_Default_ClimbSpeed);
@@ -359,11 +349,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                 }
                 case MoveType.Fall:
                 {
-                    float distance = Mathf.Abs(transform.position.x - CurrentMoveData.targetWorldPos.x);
+                    float distance =
+                        Mathf.Abs(transform.position.x - zombieAIController.currentMoveData.targetWorldPos.x);
                     if (distance < Global.Zombie_Default_PathFindStopMinDistance) return;
 
 
-                    this.Direction.Value = transform.position.x > CurrentMoveData.targetWorldPos.x
+                    this.Direction.Value = transform.position.x > zombieAIController.currentMoveData.targetWorldPos.x
                         ? Direction2.Left
                         : Direction2.Right;
                     MoveForward();
@@ -424,10 +415,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                 }
                 case MoveType.HumanLadder:
                 {
-                    // 移动
-                    float distanceYToTarget = CurrentMoveData.targetWorldPos.y - transform.position.y;
+                    float distanceYToTarget =
+                        zombieAIController.currentMoveData.targetWorldPos.y - transform.position.y;
                     float distanceXToFrom = Mathf.Abs(transform.position.x - moveData.fromWorldPos.x);
+                    // 移动
                     if (distanceYToTarget > 1.5f)
+                        // 离得比较远
                     {
                         if (distanceXToFrom > Global.Zombie_Default_PathFindStopMinDistance)
                         {
@@ -446,6 +439,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                         }
                     }
                     else
+                        // 离得很近
                     {
                         this.Direction.Value = transform.position.x > moveData.targetWorldPos.x
                             ? Direction2.Left
@@ -457,6 +451,8 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Base
                             LayerMask.GetMask("Barrier"));
                         if (hit.collider) TryJump();
                     }
+                    // 爬楼梯
+                    ClimbLadder();
 
                     break;
                 }

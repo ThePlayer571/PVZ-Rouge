@@ -10,7 +10,7 @@ namespace TPL.PVZR.Services
 {
     public interface IZombieService : IService
     {
-        Task SpawnZombie(ZombieId id, Vector2 pos);
+        Task SpawnZombie(ZombieId id, Vector2 pos, IList<string> paras = null);
         void RemoveZombie(Zombie zombie);
         void RemoveAllZombies();
         void ClearCache();
@@ -28,9 +28,9 @@ namespace TPL.PVZR.Services
             _zombieFactory = new ZombieFactory();
         }
 
-        public async Task SpawnZombie(ZombieId id, Vector2 pos)
+        public async Task SpawnZombie(ZombieId id, Vector2 pos, IList<string> paras)
         {
-            await _zombieFactory.SpawnZombieAsync(id, pos);
+            await _zombieFactory.SpawnZombieAsync(id, pos, paras);
             OnZombieCountChanged.Trigger(_zombieFactory.ActiveZombies.Count);
         }
 

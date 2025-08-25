@@ -30,13 +30,13 @@ MonoBehaviour:
   InitialDayPhase: 1
   InitialWeather: 1
   BaseValue: 10
-  maxValue: 36
+  maxValue: 180.3
   LevelValueDetail:
     RecommendedDPS: 13.3
     ValidCellCount: 18
     MultiplierOfCell: 0.4
     ValidSunpointWhenFinalWave: 4400
-    MultiplierOfSunpoint: 0.4
+    MultiplierOfSunpoint: 0.8
   DifficultyGrowthType: 0
   TotalWaveCount: 20
   HugeWaves: 0a00000014000000
@@ -88,6 +88,8 @@ MonoBehaviour:
     Weight: 5
     Value: 24
     ActiveWaves: {x: 13, y: 20}
+  SpecialZombieSpawnConfigs: []
+  ZombieSpawnEventConfigs: []
   AwardGenerateInfo:
     basicLoots:
     - Id: 1

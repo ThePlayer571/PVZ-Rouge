@@ -16,10 +16,10 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
         private readonly List<AsyncOperationHandle<GameObject>> _handles = new();
         public HashSet<Zombie> ActiveZombies = new();
 
-        public async Task<Zombie> SpawnZombieAsync(ZombieId id, Vector2 pos)
+        public async Task<Zombie> SpawnZombieAsync(ZombieId id, Vector2 pos, IList<string> paras)
         {
             GameObject zombiePrefab;
-            
+
             if (_zombiePrefabDict.TryGetValue(id, out zombiePrefab))
             {
                 // 缓存命中，直接使用
@@ -35,10 +35,10 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
                 var zombiePrefabAsset = ZombieConfigReader.GetZombiePrefab(id);
                 var handle = zombiePrefabAsset.LoadAssetAsync<GameObject>();
                 _handles.Add(handle);
-                
+
                 var task = handle.Task;
                 _loadingTasks.Add(id, task);
-                
+
                 try
                 {
                     zombiePrefab = await task;
@@ -51,13 +51,13 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             }
 
             var zombie = zombiePrefab.Instantiate(pos, Quaternion.identity).GetComponent<Zombie>();
-            zombie.Initialize();
+            zombie.Initialize(paras);
 
             ActiveZombies.Add(zombie);
             return zombie;
         }
 
-        public Zombie SpawnZombie(ZombieId id, Vector2 pos)
+        public Zombie SpawnZombie(ZombieId id, Vector2 pos, IList<string> paras)
         {
             if (!_zombiePrefabDict.TryGetValue(id, out var zombiePrefab))
             {
@@ -70,7 +70,7 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             }
 
             var zombie = zombiePrefab.Instantiate(pos, Quaternion.identity).GetComponent<Zombie>();
-            zombie.Initialize();
+            zombie.Initialize(paras);
 
             ActiveZombies.Add(zombie);
             return zombie;
@@ -100,6 +100,7 @@ namespace TPL.PVZR.Helpers.New.GameObjectFactory
             {
                 handle.Release();
             }
+
             _handles.Clear();
         }
     }

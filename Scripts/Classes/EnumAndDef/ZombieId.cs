@@ -17,5 +17,9 @@ namespace TPL.PVZR.Classes.InfoClasses
         ImpZombie = 9,
         PoleVaultingZombie = 10,
         BallonZombie = 11,
+        FlagZombie = 12,
+        FlagBucketHeadZombie = 13,
+        DiggerZombie = 14,
+        LadderZombie = 15,
     }
 }

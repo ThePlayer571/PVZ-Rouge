@@ -1,5 +1,4 @@
 using QFramework;
-using TPL.PVZR.Classes.ZombieAI.Public;
 using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.Zombies.Base;
@@ -8,21 +7,21 @@ using UnityEngine;
 
 namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 {
-    public class FlyingState_BallonZombie : AbstractState<ZombieState, BallonZombie>
+    public class DiggingState_DiggerZombie : AbstractState<ZombieState, DiggerZombie>
     {
-        public FlyingState_BallonZombie(FSM<ZombieState> fsm, BallonZombie target) : base(fsm, target)
+        public DiggingState_DiggerZombie(FSM<ZombieState> fsm, DiggerZombie target) : base(fsm, target)
         {
         }
 
         protected override void OnEnter()
         {
-            mTarget.CachePath = ZombiePath.BallonZombie;
-            mTarget.CurrentMoveData = mTarget.CachePath.NextTarget();
+            mTarget._collider.enabled = false;
+            mTarget._Rigidbody2D.gravityScale = 0;
         }
 
         protected override void OnFixedUpdate()
         {
-            var targetX = Player.Instance.transform.position.x;
+            var targetX = mTarget._excavatePosX;
             float distance = Mathf.Abs(mTarget.transform.position.x - targetX);
 
             // 移动
@@ -33,24 +32,13 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
                     : Direction2.Right;
                 mTarget.MoveForward();
             }
-
-            // 坠落条件
+            
+            // 出土条件
             var case_1 = distance < Global.Zombie_Default_PathFindStopMinDistance;
-            var case_2 = mTarget.BarrierDetector.HasTarget;
-            if (case_1 || case_2)
+            if (case_1)
             {
-                mFSM.ChangeState(ZombieState.DefaultTargeting);
+                mFSM.ChangeState(ZombieState.Excavating_DiggerZombie);
             }
-        }
-
-        protected override void OnUpdate()
-        {
-            "call_update".LogInfo();
-        }
-
-        protected override void OnExit()
-        {
-            mTarget._Rigidbody2D.gravityScale = 1f;
         }
     }
 }

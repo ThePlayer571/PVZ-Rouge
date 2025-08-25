@@ -14,7 +14,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         protected override void OnEnter()
         {
-            mTarget._timeToFindPath = true;
+            mTarget.zombieAIController.findPathDirty = true;
             mTarget.ZombieNode.AttackArea.OnTargetStay.Register(OnAttackingAreaStay);
         }
 
@@ -25,29 +25,30 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
 
         protected override void OnUpdate()
         {
-            // 
-            bool allowRefind = mTarget._ZombieAISystem.ZombieAIUnit.GetVertexSafely(mTarget.CellPos) != null;
-            if (allowRefind && mTarget._timeToFindPath)
+            // 寻路
+            if (mTarget.zombieAIController.findPathDirty)
             {
-                mTarget._timeToFindPath = false;
-                mTarget.FindPath(mTarget._ZombieAISystem.PlayerVertexPos);
+                // 从当前位置寻路，如果正在爬人梯，从人梯起点开始寻路：否则触发(搭人梯时无法新寻路，导致上面的僵尸很慢才反应过来)的bug（还有一个想法：如果当前位置没有vertex，向下搜寻vertex，给结果加个Fall就行）
+                var fromPos = mTarget.zombieAIController.currentMoveData is not { moveType: MoveType.HumanLadder }
+                    ? mTarget.CellPos
+                    : mTarget.zombieAIController.currentMoveData.from;
+                mTarget.zombieAIController.TryFindPath(fromPos);
             }
 
             // 更新CurrentMoveData
-            if (mTarget.CurrentMoveData.moveStage == MoveStage.FollowVertex)
+            if (mTarget.zombieAIController.currentMoveData.moveStage == MoveStage.FollowVertex
+                && mTarget.CellPos == mTarget.zombieAIController.currentMoveData.target)
             {
-                if (mTarget.CellPos == mTarget.CurrentMoveData.target)
-                {
-                    mTarget.CurrentMoveData = mTarget.CachePath.NextTarget();
-                    // $"新的目标点: {mTarget.CurrentMoveData.target}, {mTarget.CurrentMoveData.moveType}, {mTarget.CurrentMoveData.moveStage}"
-                    //     .LogInfo();
-                }
+                mTarget.zombieAIController.NextTarget();
             }
         }
 
         protected override void OnFixedUpdate()
         {
-            mTarget.MoveTowards(mTarget.CurrentMoveData);
+            if (mTarget.zombieAIController.currentMoveData != null)
+            {
+                mTarget.MoveTowards(mTarget.zombieAIController.currentMoveData);
+            }
         }
 
 

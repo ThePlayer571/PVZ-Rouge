@@ -31,6 +31,7 @@ namespace TPL.PVZR.Systems.Level_Data
         public Vector2Int PlayerVertexPos => new Vector2Int(_playerVertexOnLastFrame.x, _playerVertexOnLastFrame.y);
 
         private Vertex _playerVertexOnLastFrame;
+        private Timer _rebakeColdTimeTimer = new Timer(5f);
 
         #endregion
 
@@ -66,12 +67,34 @@ namespace TPL.PVZR.Systems.Level_Data
                     // $"Cluster变化：old: {playerLastCluster}, new: {playerCurrentCluster}"
                     //     .LogInfo();
                     _playerVertexOnLastFrame = playerCurrentVertex;
-                    this.SendEvent<OnPlayerChangeCluster>();
+                    this.SendEvent<UpdateZombiePathEvent>(new UpdateZombiePathEvent
+                        { Reason = UpdateZombiePathReason.PlayerChangeCluster });
                 }
             }
 
             // 更新玩家位置
             if (playerCurrentVertex != null) _playerVertexOnLastFrame = playerCurrentVertex;
+        }
+
+        private async void Update()
+        {
+            _rebakeColdTimeTimer.Update(Time.deltaTime);
+            if (_rebakeColdTimeTimer.Ready && ZombieAIUnit.RebakeDirty)
+            {
+                var task = ZombieAIUnit.RebakeFromAsync(_LevelGridModel.LevelMatrix, out var isRebakeSuccess);
+                if (isRebakeSuccess)
+                {
+                    ZombieAIUnit.RebakeDirty = false;
+                }
+
+                await task;
+                if (isRebakeSuccess)
+                {
+                    _rebakeColdTimeTimer.Reset();
+                    this.SendEvent<UpdateZombiePathEvent>(new UpdateZombiePathEvent
+                        { Reason = UpdateZombiePathReason.MapRebake });
+                }
+            }
         }
 
         private async Task StartRunning()
@@ -82,6 +105,7 @@ namespace TPL.PVZR.Systems.Level_Data
             ZombieAIUnit = new ZombieAIUnit();
             await ZombieAIUnit.InitializeFromAsync(_LevelGridModel.LevelMatrix);
             GameManager.ExecuteOnUpdate(UpdatePlayerCluster);
+            GameManager.ExecuteOnUpdate(Update);
 
             stopwatch.Stop();
             $"算法耗时：{stopwatch.ElapsedMilliseconds} ms".LogInfo();
@@ -91,6 +115,7 @@ namespace TPL.PVZR.Systems.Level_Data
         private void StopRunning()
         {
             GameManager.StopOnUpdate(UpdatePlayerCluster);
+            GameManager.StopOnUpdate(Update);
             ZombieAIUnit = null;
             _playerVertexOnLastFrame = null;
         }
@@ -113,5 +138,16 @@ namespace TPL.PVZR.Systems.Level_Data
                 StopRunning();
             });
         }
+    }
+
+    public struct UpdateZombiePathEvent
+    {
+        public UpdateZombiePathReason Reason;
+    }
+
+    public enum UpdateZombiePathReason
+    {
+        PlayerChangeCluster,
+        MapRebake,
     }
 }

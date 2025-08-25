@@ -131,7 +131,7 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
 
         public static AITendency Default => new AITendency(MainAI.Default, 2);
         public static AITendency CanSwim => new AITendency(MainAI.CanSwim, 2);
-
+        public static AITendency CanPutLadder => new AITendency(MainAI.CanPutLadder, 2);
         public static AITendency Imp => new AITendency(MainAI.Default, 1);
 
         #endregion

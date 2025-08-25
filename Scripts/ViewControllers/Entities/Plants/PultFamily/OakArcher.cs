@@ -16,7 +16,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
         {
             this.HealthPoint = GlobalEntityData.Plant_Default_Health;
 
-            _timer = new Timer(GlobalEntityData.Plant_CabbagePult_ThrowInterval);
+            _timer = new Timer(GlobalEntityData.Plant_OakArcher_ShootInterval);
             _detectTimer = new Timer(Global.Plant_CabbagePult_DetectInterval);
             _layerMask = LayerMask.GetMask("Zombie");
 

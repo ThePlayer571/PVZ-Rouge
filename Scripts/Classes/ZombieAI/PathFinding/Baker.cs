@@ -15,6 +15,7 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
         #region 数据结构
 
         // == 过程数据
+        // todo 这个数据结构是动态的，如果在某一帧外部更改了，可能会出bug
         private readonly Matrix<Cell> levelMatrix;
 
         // == ZombieAIUnit数据

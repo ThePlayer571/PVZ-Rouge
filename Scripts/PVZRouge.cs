@@ -55,6 +55,7 @@ namespace TPL.PVZR
             this.RegisterService<ISceneTransitionEffectService>(new SceneTransitionEffectService());
             this.RegisterService<IAudioService>(new AudioService());
             this.RegisterService<ITipService>(new TipService());
+            this.RegisterService<ICellTileService>(new CellTileService());
         }
     }
 }

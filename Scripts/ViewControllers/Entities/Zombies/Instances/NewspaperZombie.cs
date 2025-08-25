@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.DataClasses_InLevel.Effect;
@@ -17,7 +18,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
         public ZombieArmorData armorData;
 
 
-        public override void OnInit()
+        public override void OnInit(IList<string> paras)
         {
             baseAttackData = AttackCreator.CreateAttackData(AttackId.NormalZombie);
             Health.Value = GlobalEntityData.Zombie_Default_Health;

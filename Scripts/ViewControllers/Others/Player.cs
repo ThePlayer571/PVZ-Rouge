@@ -26,6 +26,7 @@ namespace TPL.PVZR.ViewControllers
         [SerializeField] private SpriteRenderer _SpriteRenderer;
 
         private IAudioService _AudioService;
+
         //todo step音效
         private FMOD.Studio.EventInstance _stepEventInstance;
 
@@ -211,6 +212,15 @@ namespace TPL.PVZR.ViewControllers
 
         private void Jump()
         {
+#if UNITY_EDITOR
+            if (UnityEngine.Input.GetKey(KeyCode.LeftShift) || UnityEngine.Input.GetKey(KeyCode.RightShift))
+            {
+                // 按住shift键可以无限跳
+                _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x, jumpForce);
+                return;
+            }
+#endif
+
             if (JumpDetector.HasTarget)
             {
                 _Rigidbody2D.velocity = new Vector2(_Rigidbody2D.velocity.x, jumpForce);

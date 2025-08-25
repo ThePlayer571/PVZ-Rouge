@@ -31,10 +31,29 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 
         public async Task InitializeFromAsync(Matrix<Cell> levelMatrix)
         {
+            // 初始化
             _pathManager = new PathManager(this);
-            _initializeTcs = new TaskCompletionSource<object>();
+            // 异步支持
+            _isBaking = true;
+            _bakeTcs = new TaskCompletionSource<object>();
+            // 开始烘焙
             GameManager.Instance.StartCoroutine(BakeFrom(levelMatrix));
-            await _initializeTcs.Task;
+            await _bakeTcs.Task;
+        }
+
+        public Task RebakeFromAsync(Matrix<Cell> levelMatrix, out bool isRebakeSuccess)
+        {
+            if (_isBaking)
+            {
+                isRebakeSuccess = false;
+                return Task.CompletedTask;
+            }
+
+            _isBaking = true;
+            _bakeTcs = new TaskCompletionSource<object>();
+            GameManager.Instance.StartCoroutine(BakeFrom(levelMatrix));
+            isRebakeSuccess = true;
+            return _bakeTcs.Task;
         }
 
         // 获取路径
@@ -96,9 +115,12 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
         /// </summary>
         private IEnumerator BakeFrom(Matrix<Cell> levelMatrix)
         {
+            "start bake".LogInfo();
             // !!== 注释有重要的调试代码，请勿删除 ==!!
             // 初始化数据结构
             var baker = new Baker(levelMatrix);
+            // 记录烘焙时间
+            LastBakeTime = Time.time;
 
             // [STEP 1] 记录所有顶点
             baker.STEP_1();
@@ -164,7 +186,10 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
             this.keyVertices = baker.keyVertices;
             this._clusterCache = baker._clusterCache;
             _pathManager.ClearCache();
-            _initializeTcs?.SetResult(null);
+            // 异步支持
+            _bakeTcs?.SetResult(null);
+            _isBaking = false;
+            "end bake".LogInfo();
         }
 
         #endregion
@@ -350,7 +375,11 @@ namespace TPL.PVZR.Classes.ZombieAI.PathFinding
 
         #endregion
 
-        private TaskCompletionSource<object> _initializeTcs;
+        // 标记是否需要重新烘焙
+        public bool RebakeDirty { get; set; }
+        public float LastBakeTime { get; private set; }
+
+        private bool _isBaking = false;
+        private TaskCompletionSource<object> _bakeTcs;
     }
 }
-

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.InfoClasses;
 using TPL.PVZR.Classes.ZombieAI.Public;
@@ -10,17 +11,13 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
     {
         public override ZombieId Id { get; } = ZombieId.ImpZombie;
 
-        public override void OnInit()
+        public override void OnInit(IList<string> paras)
         {
             baseAttackData = AttackCreator.CreateAttackData(AttackId.NormalZombie);
             Health.Value = GlobalEntityData.Zombie_ImpZombie_Health;
+            baseSpeed *= GlobalEntityData.Zombie_ImpZombie_BaseSpeedMultiplier;
         }
 
-        public override float GetSpeed()
-        {
-            return base.GetSpeed() * GlobalEntityData.Zombie_ImpZombie_SpeedMultiplier;
-        }
-
-        public override AITendency AITendency { get; } = AITendency.Imp;
+        public override AITendency aiTendency { get; } = AITendency.Imp;
     }
 }

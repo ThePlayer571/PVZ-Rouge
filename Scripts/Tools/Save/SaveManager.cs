@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using UnityEngine;
 
 namespace TPL.PVZR.Tools.Save
@@ -88,8 +90,9 @@ namespace TPL.PVZR.Tools.Save
         /// <typeparam name="TSave">存档数据类型</typeparam>
         /// <param name="fileName">文件名</param>
         /// <param name="saveData">要保存的数据</param>
+        /// <param name="TEMP_SaveEnumAsString">控制enum序列化为string</param>
         /// <returns>保存是否成功</returns>
-        public bool Save<TSave>(string fileName, TSave saveData) where TSave : ISaveData
+        public bool Save<TSave>(string fileName, TSave saveData, bool TEMP_SaveEnumAsString = false) where TSave : ISaveData
         {
             try
             {
@@ -108,7 +111,20 @@ namespace TPL.PVZR.Tools.Save
                     Directory.CreateDirectory(directory);
                 }
 
-                var json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+                string json;
+                if (TEMP_SaveEnumAsString)
+                {
+                    var settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new StringEnumConverter() },
+                        Formatting = Formatting.Indented
+                    };
+                    json = JsonConvert.SerializeObject(saveData, settings);
+                }
+                else
+                {
+                    json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+                }
                 File.WriteAllText(path, json);
 
                 Debug.Log($"存档保存成功: {path}");
@@ -127,10 +143,11 @@ namespace TPL.PVZR.Tools.Save
         /// <typeparam name="TSave">存档数据类型</typeparam>
         /// <param name="pathId">存档路径标识</param>
         /// <param name="saveData">要保存的数据</param>
+        /// <param name="TEMP_SaveEnumAsString">控制enum序列化为string</param>
         /// <returns>保存是否成功</returns>
-        public bool Save<TSave>(SavePathId pathId, TSave saveData) where TSave : ISaveData
+        public bool Save<TSave>(SavePathId pathId, TSave saveData, bool TEMP_SaveEnumAsString = false) where TSave : ISaveData
         {
-            return Save(GetFileName(pathId), saveData);
+            return Save(GetFileName(pathId), saveData, TEMP_SaveEnumAsString);
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace TPL.PVZR.Helpers.New.Methods
         {
             // 新InputSystem
             var mouseScreenPos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
-
+            // todo 优化Camera.main
             var worldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
             return LevelGridHelper.WorldToCell(new Vector2(worldPos.x, worldPos.y));
         }
@@ -31,14 +31,14 @@ namespace TPL.PVZR.Helpers.New.Methods
         {
             Vector2 playerPos = Player.Instance.transform.position;
             var worldPos = LevelGridHelper.CellToWorld(cellPos);
-            
+
             return Vector2.Distance(playerPos, worldPos) < 5f;
         }
 
         public static bool DaveCanReach(Vector2 worldPos)
         {
             Vector2 playerPos = Player.Instance.transform.position;
-            
+
             return Vector2.Distance(playerPos, worldPos) < 5f;
         }
     }

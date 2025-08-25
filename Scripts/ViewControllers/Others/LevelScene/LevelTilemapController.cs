@@ -3,25 +3,35 @@ using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel;
 using TPL.PVZR.Models;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.Tilemaps;
 
 namespace TPL.PVZR.ViewControllers.Others.LevelScene
 {
     public class LevelTilemapController : MonoBehaviour, IController
     {
+        private AsyncOperationHandle<TileBase> _ladderTileHandle;
+
         private void Awake()
         {
             var _LevelGridModel = this.GetModel<ILevelGridModel>();
-            _LevelGridModel.OnTileChanged.Register((e) =>
-            {
-                switch ((e.OldState, e.NewState))
-                {
-                    case (CellTileState.Gravestone, CellTileState.Empty):
+            _ladderTileHandle = Addressables.LoadAssetAsync<TileBase>("LadderTile");
 
-                        break;
-                    case (CellTileState.Empty, CellTileState.Gravestone):
-                        break;
+            _LevelGridModel.OnTileChanged.Register(async e =>
+            {
+                if (e.NewState == CellTileState.Ladder)
+                {
+                    var tilemap = LevelTilemapNode.Instance.Ladder;
+                    await _ladderTileHandle.Task;
+                    tilemap.SetTile(new Vector3Int(e.x, e.y, 0), _ladderTileHandle.Result);
                 }
             }).UnRegisterWhenGameObjectDestroyed(this);
+        }
+
+        private void OnDestroy()
+        {
+            _ladderTileHandle.Release();
         }
 
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.DataClasses_InLevel.ZombieArmor;
 using TPL.PVZR.Classes.InfoClasses;
@@ -14,7 +15,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
 
         public ZombieArmorData armorData;
 
-        public override void OnInit()
+        public override void OnInit(IList<string> paras)
         {
             baseAttackData = AttackCreator.CreateAttackData(AttackId.NormalZombie);
             Health.Value = GlobalEntityData.Zombie_Default_Health;
@@ -35,6 +36,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.Instances
                                   (this.GetSpeed() * GlobalEntityData.Zombie_DuckyTubeZombie_SwimSpeedMultiplier));
         }
 
-        public override AITendency AITendency { get; } = AITendency.CanSwim;
+        public override AITendency aiTendency { get; } = AITendency.CanSwim;
     }
 }

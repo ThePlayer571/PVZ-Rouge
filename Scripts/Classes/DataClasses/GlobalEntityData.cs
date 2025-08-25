@@ -54,9 +54,13 @@ namespace TPL.PVZR.Classes.DataClasses
         public float Zombie_Default_ClimbSpeed = 1.5f;
         public float Zombie_DuckyTubeZombie_SwimSpeedMultiplier = 3f;
         public float Zombie_ImpZombie_Health = 60f;
-        public float Zombie_ImpZombie_SpeedMultiplier = 2f;
+        public float Zombie_ImpZombie_BaseSpeedMultiplier = 2f;
         public float Zombie_PoleVaultingZombie_Health = 430f;
         public float Zombie_PoleVaultingZombie_VaultingForce = 8f;
         public float Zombie_PoleVaultingZombie_SpeedMultiplier = 2.5f;
+        public float Zombie_FlagZombie_BaseSpeedMultiplier = 2f;
+        public float Zombie_DiggerZombie_SpeedMultiplier = 3f;
+        public float Zombie_LadderZombie_WithLadderSpeedMultiplier = 3f;
+        public float Zombie_LadderZombie_Health = 430f;
     }
 }

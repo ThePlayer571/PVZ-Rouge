@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using QFramework;
 using TPL.PVZR;
@@ -14,6 +15,8 @@ public class GameDebugPanel : EditorWindow, ICanGetModel, ICanGetService
     private ZombieId selectedZombieId = ZombieId.NormalZombie;
     private Vector2 spawnPosition = new Vector2(22, 9);
     private ZombieSpawnPosId selectedSpawnPosId = ZombieSpawnPosId.Pos_1;
+    private IList<string> paras = new List<string>();
+    private string parasInput = ""; // 新增字段用于输入参数
 
     //
     private PlantDef plantDef = new PlantDef(PlantId.PeaShooter, PlantVariant.V0);
@@ -39,6 +42,12 @@ public class GameDebugPanel : EditorWindow, ICanGetModel, ICanGetService
         EditorGUILayout.Space();
         spawnPosition = EditorGUILayout.Vector2Field("", spawnPosition);
         EditorGUILayout.Space();
+
+        // 参数输入区域
+        parasInput = EditorGUILayout.TextField("参数(;分隔)", parasInput);
+        paras = string.IsNullOrEmpty(parasInput) ? new List<string>() : parasInput.Split(';').Select(p => p.Trim()).Where(p => !string.IsNullOrEmpty(p)).ToList();
+        EditorGUILayout.Space();
+
 
         if (GUILayout.Button("生成僵尸"))
         {
@@ -114,13 +123,13 @@ public class GameDebugPanel : EditorWindow, ICanGetModel, ICanGetService
 
         if (selectedSpawnPosId == ZombieSpawnPosId.NotSet)
         {
-            this.GetService<IZombieService>().SpawnZombie(selectedZombieId, spawnPosition);
+            this.GetService<IZombieService>().SpawnZombie(selectedZombieId, spawnPosition, paras);
         }
         else
         {
             var levelData = this.GetModel<ILevelModel>().LevelData as LevelData;
             var spawnPos = levelData.GetZombieSpawnPos(selectedSpawnPosId);
-            this.GetService<IZombieService>().SpawnZombie(selectedZombieId, spawnPos);
+            this.GetService<IZombieService>().SpawnZombie(selectedZombieId, spawnPos, paras);
         }
     }
 
