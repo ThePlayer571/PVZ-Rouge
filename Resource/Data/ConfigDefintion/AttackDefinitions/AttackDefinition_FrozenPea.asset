@@ -15,7 +15,7 @@ MonoBehaviour:
   attackId: 3
   damage: 20
   punchForce: 5
-  punchType: 1
+  punchType: 4
   isFrameDamage: 0
   effects:
   - effectId: 0

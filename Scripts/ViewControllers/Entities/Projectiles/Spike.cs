@@ -24,7 +24,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             if (other.collider.IsInLayerMask(LayerMask.GetMask("Zombie")) && !_attacked.Contains(other.gameObject))
             {
                 _attacked.Add(other.gameObject);
-                var attackData = AttackCreator.CreateAttackData(AttackId.Spike).WithPunchFrom(transform.position);
+                var attackData = AttackCreator.CreateAttackData(AttackId.Spike). WithPunchDirectionX(_Rigidbody2D.velocity.x);
                 other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
                 if (_attacked.Count >= GlobalEntityData.Projectile_Spike_MaxAttackCount) Kill();
             }

@@ -10,6 +10,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
     public sealed class FirePea : Projectile, IPeaLikeInit
     {
         public override ProjectileId Id { get; } = ProjectileId.FirePea;
+
         public void Initialize(Vector2 direction)
         {
             _Rigidbody2D.velocity = GlobalEntityData.Projectile_Pea_Speed * direction;
@@ -24,20 +25,23 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             if (other.collider.IsInLayerMask(LayerMask.GetMask("Zombie")))
             {
                 _attacked = true;
-                var attackData = AttackCreator.CreateAttackData(AttackId.FirePea).WithPunchFrom(transform.position);
+                var attackData = AttackCreator.CreateAttackData(AttackId.FirePea)
+                    .WithPunchDirectionX(_Rigidbody2D.velocity.x);
                 var aoeAttackData = AttackCreator.CreateAttackData(AttackId.FirePeaAOE)
-                    .WithPunchFrom(transform.position);
-                var targets = Physics2D.OverlapCircleAll(_Rigidbody2D.position, GlobalEntityData.Projectile_FirePea_AOERadius,
+                    .WithPunchFrom(_Rigidbody2D.position);
+                
+                var targets = Physics2D.OverlapCircleAll(_Rigidbody2D.position,
+                    GlobalEntityData.Projectile_FirePea_AOERadius,
                     LayerMask.GetMask("Zombie"));
                 foreach (var zombie in targets)
                 {
                     zombie.GetComponent<IAttackable>().TakeAttack(new AttackData(aoeAttackData));
                 }
+
                 other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
             }
 
             Kill();
         }
-
     }
 }

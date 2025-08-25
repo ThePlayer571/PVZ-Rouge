@@ -8,6 +8,7 @@ namespace TPL.PVZR.Services
     public interface ICellTileService : IService
     {
         bool TryPutLadder(Vector2Int cellPos);
+        bool TryRemoveLadder(Vector2Int cellPos);
     }
 
     public class CellTileService : AbstractService, ICellTileService
@@ -27,6 +28,20 @@ namespace TPL.PVZR.Services
             if (cell.Is(CellTypeId.Empty))
             {
                 _LevelGridModel.SetTile(cellPos.x, cellPos.y, CellTileState.Ladder);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool TryRemoveLadder(Vector2Int cellPos)
+        {
+            if (!_LevelGridModel.IsValidPos(cellPos)) return false;
+
+            var cell = _LevelGridModel.GetCell(cellPos);
+            if (cell.Is(CellTypeId.Climbable))
+            {
+                _LevelGridModel.SetTile(cellPos.x, cellPos.y, CellTileState.Empty);
                 return true;
             }
 

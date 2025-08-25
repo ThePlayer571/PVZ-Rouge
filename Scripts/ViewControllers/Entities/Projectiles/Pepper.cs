@@ -25,7 +25,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
 
             // AOE
             var aoeAttackDataTemplate = AttackCreator.CreateAttackData(AttackId.Pepper)
-                .WithPunchDirection(_Rigidbody2D.velocity);
+                .WithPunchFrom(_Rigidbody2D.position);
             var targets = Physics2D.OverlapCircleAll(_Rigidbody2D.position,
                 GlobalEntityData.Projectile_Melon_AOERadius, LayerMask.GetMask("Zombie"));
             foreach (var target in targets)

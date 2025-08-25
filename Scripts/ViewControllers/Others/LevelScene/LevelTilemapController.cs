@@ -26,6 +26,11 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
                     await _ladderTileHandle.Task;
                     tilemap.SetTile(new Vector3Int(e.x, e.y, 0), _ladderTileHandle.Result);
                 }
+                else if (e is { OldState: CellTileState.Ladder, NewState: CellTileState.Empty })
+                {
+                    var tilemap = LevelTilemapNode.Instance.Ladder;
+                    tilemap.SetTile(new Vector3Int(e.x, e.y, 0), null);
+                }
             }).UnRegisterWhenGameObjectDestroyed(this);
         }
 

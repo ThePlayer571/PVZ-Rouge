@@ -32,7 +32,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             }
 
             var aoeAttackDataTemplate = AttackCreator.CreateAttackData(AttackId.FrozenMelonAOE)
-                .WithPunchDirection(_Rigidbody2D.velocity);
+                .WithPunchFrom(_Rigidbody2D.position);
             var targets =
                 Physics2D.OverlapCircleAll(_Rigidbody2D.position, GlobalEntityData.Projectile_Melon_AOERadius,
                     LayerMask.GetMask("Zombie"));

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Effect;
 using UnityEngine;
 
@@ -58,6 +59,12 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
             return this;
         }
 
+        public AttackData WithPunchDirectionX(float direction)
+        {
+            punchDirection = new Vector2(direction.Sign(), 0);
+            return this;
+        }
+
         #endregion
 
         #region 读取数据的方法
@@ -80,33 +87,25 @@ namespace TPL.PVZR.Classes.DataClasses_InLevel.Attack
         public Vector2 Punch(Vector2 punchTo)
         {
             if (punchForce == 0) return Vector2.zero;
-            // 固定方向模式
-            if (punchDirection.HasValue)
-            {
-                return punchDirection.Value * punchForce;
-            }
-
             // 
-            var direction = punchType switch
-            {
-                PunchType.Free => punchFrom.HasValue
-                    ? (punchTo - punchFrom.Value).normalized
-                    : throw new Exception("未设置 PunchFrom"),
-                PunchType.ConstrainHorizontal =>
-                    punchFrom.HasValue
-                        ? (punchTo - punchFrom.Value).x > 0
-                            ? new Vector2(1, 0)
-                            : new Vector2(-1, 0)
-                        : throw new Exception("未设置 PunchFrom"),
-                PunchType.ConstrainUp => Vector2.up,
-                PunchType.ConstrainDown => Vector2.down,
-                _ => throw new ArgumentException()
-            };
-
+            var direction = GetDirection(punchTo);
             return direction * punchForce;
         }
 
         public List<EffectData> Effects => effects;
+
+        private Vector2 GetDirection(Vector2 punchTo)
+        {
+            return punchType switch
+            {
+                PunchType.ByRelativePosition => (punchTo - punchFrom.Value).normalized,
+                PunchType.ConstrainHorizontal => new Vector2((punchTo.x - punchFrom.Value.x).Sign(), 0),
+                PunchType.ConstrainUp => Vector2.up,
+                PunchType.ConstrainDown => Vector2.down,
+                PunchType.ByPresetDirection => punchDirection.Value,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
 
         #endregion
 

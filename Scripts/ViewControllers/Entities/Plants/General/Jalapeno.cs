@@ -1,7 +1,11 @@
+using System.Collections.Generic;
 using DG.Tweening;
+using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.CommandEvents.Level_Shit;
 using TPL.PVZR.Helpers.New.ClassCreator;
+using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
@@ -32,7 +36,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                     var attackData = new AttackData(attackTemplate);
                     target.collider.GetComponent<IAttackable>().TakeAttack(attackData);
                 }
+                //
 
+                this.SendCommand<ExplodeCommand>(new ExplodeCommand(
+                    CellSelectHelper.GetCellsInRect(LevelGridHelper.WorldToCell(posLeft),
+                            LevelGridHelper.WorldToCell(posRight)) as
+                        IReadOnlyList<Vector2Int>, true));
+
+                //
                 Kill();
             };
         }

@@ -26,9 +26,10 @@ namespace TPL.PVZR.Classes.ZombieAI.Public
 
         // 属性
         /// <summary>
-        /// 需要重新烘焙的标记。设为true后，应该由System检测并调用烘焙函数
+        /// 需要重新烘焙的标记。设为true后，应该由System检测并调用烘焙函数。设为true时，认为正在或即将进行烘焙
         /// </summary>
         bool RebakeDirty { get; set; }
+
         /// <summary>
         /// 获取上次烘焙的时间（单位：秒，float，使用Unity的Time.time）
         /// </summary>

@@ -82,14 +82,11 @@ namespace TPL.PVZR.Systems.Level_Data
             if (_rebakeColdTimeTimer.Ready && ZombieAIUnit.RebakeDirty)
             {
                 var task = ZombieAIUnit.RebakeFromAsync(_LevelGridModel.LevelMatrix, out var isRebakeSuccess);
-                if (isRebakeSuccess)
-                {
-                    ZombieAIUnit.RebakeDirty = false;
-                }
-
                 await task;
                 if (isRebakeSuccess)
                 {
+                    ZombieAIUnit.RebakeDirty = false;
+                    //
                     _rebakeColdTimeTimer.Reset();
                     this.SendEvent<UpdateZombiePathEvent>(new UpdateZombiePathEvent
                         { Reason = UpdateZombiePathReason.MapRebake });

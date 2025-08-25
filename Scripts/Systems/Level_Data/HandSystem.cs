@@ -32,7 +32,11 @@ namespace TPL.PVZR.Systems.Level_Data
             HandInfo = new BindableProperty<HandInfo>(new HandInfo(HandState.Empty, null));
 
             var phaseService = this.GetService<IPhaseService>();
+            var handService = this.GetService<IHandService>();
             phaseService.RegisterCallBack((GamePhase.LevelExiting, PhaseStage.LeaveNormal), e => { Reset(); });
+
+            phaseService.RegisterCallBack((GamePhase.AllEnemyKilled, PhaseStage.EnterNormal),
+                _ => { handService.Deselect(); });
 
             this.RegisterEvent<OnShovelUsed>(e =>
             {

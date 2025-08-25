@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.CommandEvents.Level_Shit;
 using TPL.PVZR.Helpers.New.ClassCreator;
+using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.Tools;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
@@ -27,7 +30,6 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
             if (_grown && ZombieDetector.HasTarget)
             {
                 Boom();
-                Kill();
             }
         }
 
@@ -60,6 +62,14 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                 var _ = new AttackData(attackData);
                 target.GetComponent<IAttackable>().TakeAttack(_);
             }
+
+            //
+            this.SendCommand<ExplodeCommand>(new ExplodeCommand(
+                CellSelectHelper.GetCellsInRadius(AttachedCell.Position,
+                        GlobalEntityData.Plant_PotatoMine_ExplosionRadius) as
+                    IReadOnlyList<Vector2Int>, true));
+            //
+            Kill();
         }
     }
 }

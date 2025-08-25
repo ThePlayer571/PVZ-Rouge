@@ -25,7 +25,7 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
             if (other.collider.IsInLayerMask(LayerMask.GetMask("Zombie")))
             {
                 _attacked = true;
-                var attackData = AttackCreator.CreateAttackData(AttackId.MungBean).WithPunchFrom(transform.position);
+                var attackData = AttackCreator.CreateAttackData(AttackId.MungBean). WithPunchDirectionX(_Rigidbody2D.velocity.x);
                 other.collider.GetComponent<IAttackable>().TakeAttack(attackData);
             }
 

@@ -21,7 +21,8 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         Dave_HouseNight = 11,
         Dave_Basement = 12,
         Dave_BasementRainy = 13,
-        Dave_Graveyard, // 恶心的出怪点
+        Dave_Graveyard = 14,
+        Dave_Pit = 15,
         // Dave_
         Dave_Garage, // 实验室（瑞克莫迪）
         // Dave_LawnNight = 2,

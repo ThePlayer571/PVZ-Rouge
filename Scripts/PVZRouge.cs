@@ -27,6 +27,7 @@ namespace TPL.PVZR
             this.RegisterSystem<ISaveSystem>(new SaveSystem());
             this.RegisterSystem<ILevelGridSystem>(new LevelGridSystem());
             this.RegisterSystem<IGravestoneSystem>(new GravestoneSystem());
+            this.RegisterSystem<ITipSystem>(new TipSystem());
             // ===== Level =====
             this.RegisterModel<ILevelModel>(new LevelModel());
             this.RegisterModel<ILevelGridModel>(new LevelGridModel());
@@ -40,7 +41,6 @@ namespace TPL.PVZR
             this.RegisterSystem<IEnvironmentSystem>(new EnvironmentSystem());
             this.RegisterSystem<ILevelBgmSystem>(new LevelBgmSystem());
             this.RegisterSystem<IPlayerStatsSystem>(new PlayerStatsSystem());
-            this.RegisterSystem<ITipSystem>( new TipSystem());
 
             // ===== Others =====
             this.RegisterModel<IPhaseModel>(new PhaseModel());

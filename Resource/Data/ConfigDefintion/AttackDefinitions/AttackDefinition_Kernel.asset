@@ -15,6 +15,6 @@ MonoBehaviour:
   attackId: 19
   damage: 40
   punchForce: 6
-  punchType: 0
+  punchType: 4
   isFrameDamage: 0
   effects: []

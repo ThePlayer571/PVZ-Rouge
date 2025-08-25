@@ -23,12 +23,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Projectiles
         private void OnCollisionEnter2D(Collision2D other)
         {
             if (_attackDepleted) return;
-            
+
             if (other.collider.IsInLayerMask(LayerMask.GetMask("Zombie")))
             {
                 attackData =
                     other.collider.GetComponent<IAttackable>()
-                        .TakeAttack(attackData.WithPunchFrom(_Rigidbody2D.position));
+                        .TakeAttack(attackData.WithPunchDirection(_Rigidbody2D.velocity));
             }
             else if (other.collider.IsInLayerMask(LayerMask.GetMask("Barrier")))
             {

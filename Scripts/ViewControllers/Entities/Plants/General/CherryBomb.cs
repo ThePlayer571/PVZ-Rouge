@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using QFramework;
 using TPL.PVZR.Classes.DataClasses_InLevel.Attack;
 using TPL.PVZR.Classes.InfoClasses;
+using TPL.PVZR.CommandEvents.Level_Shit;
 using TPL.PVZR.Helpers.New.ClassCreator;
+using TPL.PVZR.Helpers.New.Methods;
 using TPL.PVZR.ViewControllers.Entities.EntityBase.Interfaces;
 using TPL.PVZR.ViewControllers.Entities.Plants.Base;
 using UnityEngine;
@@ -28,6 +31,12 @@ namespace TPL.PVZR.ViewControllers.Entities.Plants
                     var attackData = new AttackData(attackTemplate);
                     target.GetComponent<IAttackable>().TakeAttack(attackData);
                 }
+                //
+                this.SendCommand<ExplodeCommand>(new ExplodeCommand(
+                    CellSelectHelper.GetCellsInRadius(AttachedCell.Position, GlobalEntityData.Plant_CherryBomb_ExplosionRadius) as
+                        IReadOnlyList<Vector2Int>,
+                    true));
+                //
 
                 Kill();
             };
