@@ -24,19 +24,22 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   MapGenerationAlgorithmId: 0
-  SunFallPositions:
-  - Key: {x: 20, y: 9}
-    Value: {x: 33, y: 9}
+  SunFallPositions: []
+  SunFallPositionConfigs:
+  - PosA: {x: 20, y: 9}
+    PosB: {x: 33, y: 9}
+    SunLayerId: 0
   InitialDayPhase: 1
   InitialWeather: 1
   BaseValue: 10
-  maxValue: 180.3
+  maxValue: 79.2
   LevelValueDetail:
     RecommendedDPS: 13.3
-    ValidCellCount: 18
-    MultiplierOfCell: 0.4
+    ValidCellCount: 42
+    MultiplierOfCell: 0.45
     ValidSunpointWhenFinalWave: 4400
-    MultiplierOfSunpoint: 0.8
+    MultiplierOfSunpoint: 0.18
+    DifficultyOffset: 0
   DifficultyGrowthType: 0
   TotalWaveCount: 20
   HugeWaves: 0a00000014000000
@@ -67,12 +70,12 @@ MonoBehaviour:
     SpawnPos: 1
     Weight: 10
     Value: 25
-    ActiveWaves: {x: 6, y: 20}
+    ActiveWaves: {x: 1, y: 20}
   - Zombie: 3
     SpawnPos: 1
     Weight: 10
     Value: 65
-    ActiveWaves: {x: 16, y: 20}
+    ActiveWaves: {x: 1, y: 20}
   - Zombie: 1
     SpawnPos: 2
     Weight: 5
@@ -101,3 +104,6 @@ MonoBehaviour:
     choiceCount: 3
   InitialPlants: []
   InitialSunpointOffset: 0
+  LevelBgmId: 0
+  ZombieCountForIntensity0: 0
+  ZombieCountForIntensity1: 0

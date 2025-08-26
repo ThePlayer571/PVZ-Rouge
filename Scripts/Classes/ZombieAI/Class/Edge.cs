@@ -14,7 +14,7 @@ namespace TPL.PVZR.Classes.ZombieAI.Class
 
         public float Weight(AITendency aiTendency)
         {
-            return WeightCalculator.GetWeight(this.moveType, aiTendency.mainAI);
+            return EdgeWeightCalculator.GetWeight(this.moveType, aiTendency.mainAI, To.y - From.y);
         }
 
         public Edge(Vertex from, Vertex to, MoveType moveType, int passableHeight)

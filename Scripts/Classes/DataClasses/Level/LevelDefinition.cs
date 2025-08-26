@@ -101,6 +101,86 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public List<string> Parameters;
     }
 
+    [Serializable]
+    public class LevelValueDetail
+    {
+        [Tooltip("本关推荐植物的DPS\n参考值：\n- 豌豆射手: 13.3")]
+        public float RecommendedDPS = 13.3f;
+
+        [Tooltip("本关可放置攻击植物的格子数 - 玩家利用这么多个格子就能通关")]
+        public int ValidCellCount;
+
+        [Tooltip("推荐值：?")] public float MultiplierOfCell = 1f;
+        [Tooltip("最后一波的可支配阳光（请使用参考值）")] public int ValidSunpointWhenFinalWave;
+
+        [Tooltip("推荐值：?")] public float MultiplierOfSunpoint = 1f;
+
+        [Tooltip("本关的难度偏移(地形好守 / 机制利好 -> 难度增加)")]
+        public float DifficultyOffset = 0f;
+
+        public float DPS2Value(float dps) => dps / 13.3f * 10f;
+        public float Sunpoint2Value(float sunpoint) => sunpoint / 100f * 10f;
+
+        public float MaxValue_Cell => DPS2Value(RecommendedDPS) * ValidCellCount;
+        public float MaxValue_Sunpoint => Sunpoint2Value(ValidSunpointWhenFinalWave);
+        public float RecommendedValue_Cell => MaxValue_Cell * MultiplierOfCell;
+        public float RecommendedValue_Sunpoint => MaxValue_Sunpoint * MultiplierOfSunpoint;
+        public float RecommendedValue_WithOffset => MaxValue_Sunpoint * (MultiplierOfSunpoint + DifficultyOffset);
+    }
+
+    [Serializable]
+    public class InitialPlantConfig
+    {
+        public PlantDef PlantDef;
+        public Direction2 Direction;
+        public Vector2Int SpawnPos;
+    }
+
+    public enum DayPhaseType
+    {
+        NotSet = 0,
+        Day = 1,
+        Sunset = 2,
+        Night = 3,
+        MidNight = 4
+    }
+
+    public static class DayPhaseTypeExtensions
+    {
+        public static bool ShouldMushroomAwake(this DayPhaseType dayPhaseType)
+        {
+            return dayPhaseType is DayPhaseType.Night or DayPhaseType.MidNight;
+        }
+    }
+
+    public enum WeatherType
+    {
+        NotSet = 0,
+        Sunny = 1,
+        Rainy = 2,
+    }
+
+    public enum LevelBgmId
+    {
+        NotSet = 0,
+        Lawn = 1,
+        Night = 2,
+    }
+
+    [Serializable]
+    public class SunFallPositionConfig
+    {
+        public Vector2Int PosA;
+        public Vector2Int PosB;
+        public SunLayerId SunLayerId;
+    }
+
+    public enum SunLayerId
+    {
+        Forward = 0,
+        Backward = 1,
+    }
+
     #endregion
 
     [CreateAssetMenu(fileName = "LevelDefinition_", menuName = "PVZR/LevelDefinition", order = 2)]
@@ -118,7 +198,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         [Tooltip("地图生成算法（暂未启用）")]
         public MapGenerationAlgorithmId MapGenerationAlgorithmId = MapGenerationAlgorithmId.None;
 
-        [Tooltip("阳光生成的坐标（fill式）")] public List<SerializableKeyValuePair<Vector2Int, Vector2Int>> SunFallPositions;
+        [Tooltip("阳光掉落的位置")] public List<SunFallPositionConfig> SunFallPositionConfigs;
 
         [Header("Environment")] public DayPhaseType InitialDayPhase;
 
@@ -162,70 +242,15 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         [Header("Award")] public AwardGenerateInfo AwardGenerateInfo;
 
 
-        [Header("Others")] public List<InitialPlantConfig> InitialPlants;
+        [Header("Others")]
+        // Init Settings
+        public List<InitialPlantConfig> InitialPlants;
+
         public int InitialSunpointOffset = 0;
-    }
 
-    [Serializable]
-    public class LevelValueDetail
-    {
-        [Tooltip("本关推荐植物的DPS\n参考值：\n- 豌豆射手: 13.3")]
-        public float RecommendedDPS = 13.3f;
-
-        [Tooltip("本关可放置攻击植物的格子数 - 玩家利用这么多个格子就能通关")]
-        public int ValidCellCount;
-
-        [Tooltip("推荐值：\n- N0: 0.4")] public float MultiplierOfCell = 0.4f;
-        [Tooltip("最后一波的可支配阳光（请使用参考值）")] public int ValidSunpointWhenFinalWave;
-
-        [Tooltip("推荐值：\n- N0|白天: 0.4\n- N0|夜晚向日葵: 0.2")]
-        public float MultiplierOfSunpoint = 0.4f;
-
-        public float DPS2Value(float dps) => dps / 13.3f * 10f;
-        public float Sunpoint2Value(float sunpoint) => sunpoint / 100f * 10f;
-
-        public float MaxValue_Cell => DPS2Value(RecommendedDPS) * ValidCellCount;
-        public float MaxValue_Sunpoint => Sunpoint2Value(ValidSunpointWhenFinalWave);
-        public float RecommendedValue_Cell => MaxValue_Cell * MultiplierOfCell;
-        public float RecommendedValue_Sunpoint => MaxValue_Sunpoint * MultiplierOfSunpoint;
-    }
-
-    [Serializable]
-    public class InitialPlantConfig
-    {
-        public PlantDef PlantDef;
-        public Direction2 Direction;
-        public Vector2Int SpawnPos;
-    }
-
-    public enum DayPhaseType
-    {
-        NotSet = 0,
-        Day = 1,
-        Sunset = 2,
-        Night = 3,
-        MidNight = 4
-    }
-
-    public static class DayPhaseTypeExtensions
-    {
-        public static bool ShouldMushroomAwake(this DayPhaseType dayPhaseType)
-        {
-            return dayPhaseType is DayPhaseType.Night or DayPhaseType.MidNight;
-        }
-    }
-
-    public enum WeatherType
-    {
-        NotSet = 0,
-        Sunny = 1,
-        Rainy = 2,
-    }
-
-    public enum LevelBgmId
-    {
-        NotSet = 0,
-        Lawn = 1,
-        Night = 2,
+        // LevelBgm
+        public LevelBgmId LevelBgmId;
+        [Tooltip("僵尸数量达到此，intensity=0")] public int ZombieCountForIntensity0;
+        [Tooltip("僵尸数量达到此，intensity=1")] public int ZombieCountForIntensity1;
     }
 }

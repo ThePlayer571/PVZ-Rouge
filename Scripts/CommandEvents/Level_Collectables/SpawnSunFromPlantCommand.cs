@@ -1,5 +1,6 @@
 using System;
 using QFramework;
+using TPL.PVZR.Classes.DataClasses.Level;
 using TPL.PVZR.Helpers;
 using TPL.PVZR.Helpers.New.GameObjectFactory;
 using TPL.PVZR.Models;
@@ -30,7 +31,7 @@ namespace TPL.PVZR.CommandEvents.Level_Gameplay
                 throw new ArgumentException("尝试调用SpawnSunFromPlantCommand，但Plant对象为null"); // Plant对象不为null
 
             var go = SunFactory.SpawnSunWithJump(_sunId,
-                _plant.transform.position + new Vector3(0, 0.5f, 0));
+                _plant.transform.position + new Vector3(0, 0.5f, 0), SunLayerId.Forward);
         }
     }
 }

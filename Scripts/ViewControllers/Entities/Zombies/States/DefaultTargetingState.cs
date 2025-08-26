@@ -36,10 +36,13 @@ namespace TPL.PVZR.ViewControllers.Entities.Zombies.States
             }
 
             // 更新CurrentMoveData
-            if (mTarget.zombieAIController.currentMoveData.moveStage == MoveStage.FollowVertex
-                && mTarget.CellPos == mTarget.zombieAIController.currentMoveData.target)
+            var currentMoveData = mTarget.zombieAIController.currentMoveData;
+            if (currentMoveData != null)
             {
-                mTarget.zombieAIController.NextTarget();
+                if (currentMoveData.moveStage == MoveStage.FollowVertex && mTarget.CellPos == currentMoveData.target)
+                {
+                    mTarget.zombieAIController.NextTarget();
+                }
             }
         }
 

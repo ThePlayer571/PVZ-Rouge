@@ -32,6 +32,11 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
                     globalParallaxLightIntensity -= 0.2f;
                     playerLightEnabled = true;
                     break;
+                case DayPhaseType.MidNight:
+                    globalLightIntensity -= 1f;
+                    globalParallaxLightIntensity -= 0.2f;
+                    playerLightEnabled = true;
+                    break;
             }
 
             if (_LevelModel.CurrentWeather.Value == WeatherType.Rainy)
@@ -40,14 +45,13 @@ namespace TPL.PVZR.ViewControllers.Others.LevelScene
                 globalParallaxLightIntensity -= 0.05f;
             }
 
-            GlobalLight.intensity = globalLightIntensity;
-            GlobalParallaxLight.intensity = globalParallaxLightIntensity;
+            GlobalLight.intensity = Mathf.Clamp(globalLightIntensity, 0, Mathf.Infinity);
+            GlobalParallaxLight.intensity = Mathf.Clamp(globalParallaxLightIntensity, 0, Mathf.Infinity);
             PlayerLight.enabled = playerLightEnabled;
         }
 
         public void Awake()
         {
-            var phaseService = this.GetService<IPhaseService>();
             this.RegisterEvent<OnLevelGameObjectPrepared>(e => { SetUpLights(); })
                 .UnRegisterWhenGameObjectDestroyed(this);
         }

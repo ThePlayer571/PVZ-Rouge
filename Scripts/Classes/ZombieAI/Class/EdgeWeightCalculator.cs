@@ -1,48 +1,58 @@
 using System.Collections.Generic;
+using QFramework;
 using TPL.PVZR.Classes.ZombieAI.Public;
 
 namespace TPL.PVZR.Classes.ZombieAI.Class
 {
-    // Copilot
     public class EdgeWeightCalculator
     {
-        private static readonly Dictionary<(MoveType, AITendency.MainAI), float> _weightRules = new()
+        public static float GetWeight(MoveType edgeType, AITendency.MainAI mainAI, int heightDifference)
         {
-            // 根据文档表格填充权重规则
-            { (MoveType.WalkJump, AITendency.MainAI.Default), 10f },
-            { (MoveType.WalkJump, AITendency.MainAI.CanPutLadder), 10f },
-            { (MoveType.WalkJump, AITendency.MainAI.CanSwim), 10f },
-
-            { (MoveType.Swim, AITendency.MainAI.Default), 20f },
-            { (MoveType.Swim, AITendency.MainAI.CanPutLadder), 20f },
-            { (MoveType.Swim, AITendency.MainAI.CanSwim), 3f },
-
-            { (MoveType.Fall, AITendency.MainAI.Default), 1f },
-            { (MoveType.Fall, AITendency.MainAI.CanPutLadder), 1f },
-            { (MoveType.Fall, AITendency.MainAI.CanSwim), 1f },
-
-            { (MoveType.HumanLadder, AITendency.MainAI.Default), 10000f },
-            { (MoveType.HumanLadder, AITendency.MainAI.CanPutLadder), 1f },
-            { (MoveType.HumanLadder, AITendency.MainAI.CanSwim), 10000f },
-
-            { (MoveType.ClimbLadder, AITendency.MainAI.Default), 10f },
-            { (MoveType.ClimbLadder, AITendency.MainAI.CanPutLadder), 10f },
-            { (MoveType.ClimbLadder, AITendency.MainAI.CanSwim), 10f },
-
-            { (MoveType.Climb_WalkJump, AITendency.MainAI.Default), 10f },
-            { (MoveType.Climb_WalkJump, AITendency.MainAI.CanPutLadder), 10f },
-            { (MoveType.Climb_WalkJump, AITendency.MainAI.CanSwim), 10f },
-        };
-
-        public float GetWeight(MoveType edgeType, AITendency.MainAI aiTendency)
-        {
-            if (_weightRules.TryGetValue((edgeType, aiTendency), out var weight))
+            // 简化处理复合类型
+            edgeType = edgeType switch
             {
-                return weight;
-            }
+                MoveType.Swim_WalkJump => MoveType.WalkJump,
+                MoveType.Climb_Swim => MoveType.ClimbLadder,
+                MoveType.Climb_WalkJump => MoveType.ClimbLadder,
+                _ => edgeType
+            };
 
-            // 默认权重
-            return 1.0f;
+            switch (mainAI)
+            {
+                case AITendency.MainAI.Default:
+                    return edgeType switch
+                    {
+                        MoveType.WalkJump => 10f,
+                        MoveType.Swim => 20f,
+                        MoveType.Fall => 1f,
+                        MoveType.HumanLadder => 40f * heightDifference,
+                        MoveType.ClimbLadder => 10f,
+                        _ => 10f
+                    };
+                case AITendency.MainAI.CanPutLadder:
+                    return edgeType switch
+                    {
+                        MoveType.WalkJump => 10f,
+                        MoveType.Swim => 20f,
+                        MoveType.Fall => 1f,
+                        MoveType.HumanLadder => 1f,
+                        MoveType.ClimbLadder => 10f,
+                        _ => 10f
+                    };
+                case AITendency.MainAI.CanSwim:
+                    return edgeType switch
+                    {
+                        MoveType.WalkJump => 10f,
+                        MoveType.Swim => 3f,
+                        MoveType.Fall => 1f,
+                        MoveType.HumanLadder => 40f * heightDifference,
+                        MoveType.ClimbLadder => 10f,
+                        _ => 10f
+                    };
+                default:
+                    $"出现未考虑的AI倾向，使用默认权重: {edgeType}, {mainAI}".LogWarning();
+                    return 10f;
+            }
         }
     }
 }

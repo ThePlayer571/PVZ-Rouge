@@ -30,6 +30,7 @@ namespace TPL.PVZR.Editor
                 var multiplierOfCellProp = property.FindPropertyRelative("MultiplierOfCell");
                 var validSunpointProp = property.FindPropertyRelative("ValidSunpointWhenFinalWave");
                 var multiplierOfSunpointProp = property.FindPropertyRelative("MultiplierOfSunpoint");
+                var difficultyOffsetProp = property.FindPropertyRelative("DifficultyOffset");
                 
                 // Cell 相关配置
                 EditorGUI.LabelField(rect, "Cell Info", EditorStyles.boldLabel);
@@ -55,6 +56,9 @@ namespace TPL.PVZR.Editor
                 EditorGUI.PropertyField(rect, multiplierOfSunpointProp);
                 rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
                 
+                EditorGUI.PropertyField(rect, difficultyOffsetProp);
+                rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                
                 // 计算按钮
                 rect.y += 10;
                 rect.height = 30;
@@ -77,7 +81,8 @@ namespace TPL.PVZR.Editor
                     ValidCellCount = validCellCountProp.intValue,
                     MultiplierOfCell = multiplierOfCellProp.floatValue,
                     ValidSunpointWhenFinalWave = validSunpointProp.intValue,
-                    MultiplierOfSunpoint = multiplierOfSunpointProp.floatValue
+                    MultiplierOfSunpoint = multiplierOfSunpointProp.floatValue,
+                    DifficultyOffset = difficultyOffsetProp.floatValue
                 };
                 
                 // 显示计算结果区域
@@ -107,20 +112,25 @@ namespace TPL.PVZR.Editor
                 EditorGUI.FloatField(rect, "RecommendedValue_Sunpoint", recommendedValueSunpoint);
                 rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
                 
+                // WithOffset 计算结果
+                var recommendedValueWithOffset = tempDetail.RecommendedValue_WithOffset;
+                EditorGUI.FloatField(rect, "RecommendedValue_WithOffset", recommendedValueWithOffset);
+                rect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                
                 EditorGUI.EndDisabledGroup();
                 
-                // 显示计算公式说明
-                var helpRect = rect;
-                helpRect.height = 60;
-                EditorGUI.HelpBox(helpRect, 
-                    "计算公式:\n" +
-                    "• DPS2Value(dps) = dps ÷ 13.3 × 10\n" +
-                    "• Sunpoint2Value(sunpoint) = sunpoint ÷ 100 × 10\n" +
-                    "• MaxValue_Cell = DPS2Value(RecommendedDPS) × ValidCellCount\n" +
-                    "• RecommendedValue_Cell = MaxValue_Cell × MultiplierOfCell\n" +
-                    "• MaxValue_Sunpoint = Sunpoint2Value(ValidSunpointWhenFinalWave)\n" +
-                    "• RecommendedValue_Sunpoint = MaxValue_Sunpoint × MultiplierOfSunpoint", 
-                    MessageType.Info);
+                // // 显示计算公式说明
+                // var helpRect = rect;
+                // helpRect.height = 60;
+                // EditorGUI.HelpBox(helpRect, 
+                //     "[Obstacle]计算公式:\n" +
+                //     "• DPS2Value(dps) = dps ÷ 13.3 × 10\n" +
+                //     "• Sunpoint2Value(sunpoint) = sunpoint ÷ 100 × 10\n" +
+                //     "• MaxValue_Cell = DPS2Value(RecommendedDPS) × ValidCellCount\n" +
+                //     "• RecommendedValue_Cell = MaxValue_Cell × MultiplierOfCell\n" +
+                //     "• MaxValue_Sunpoint = Sunpoint2Value(ValidSunpointWhenFinalWave)\n" +
+                //     "• RecommendedValue_Sunpoint = MaxValue_Sunpoint × MultiplierOfSunpoint", 
+                //     MessageType.Info);
                 
                 EditorGUI.indentLevel--;
             }

@@ -24,9 +24,11 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   MapGenerationAlgorithmId: 0
-  SunFallPositions:
-  - Key: {x: 5, y: 9}
-    Value: {x: 15, y: 10}
+  SunFallPositions: []
+  SunFallPositionConfigs:
+  - PosA: {x: 5, y: 9}
+    PosB: {x: 15, y: 10}
+    SunLayerId: 1
   InitialDayPhase: 1
   InitialWeather: 1
   BaseValue: 10
@@ -37,6 +39,7 @@ MonoBehaviour:
     MultiplierOfCell: 0.4
     ValidSunpointWhenFinalWave: 4400
     MultiplierOfSunpoint: 0.2
+    DifficultyOffset: 0
   DifficultyGrowthType: 0
   TotalWaveCount: 20
   HugeWaves: 0a00000014000000
@@ -78,6 +81,8 @@ MonoBehaviour:
     Weight: 10
     Value: 65
     ActiveWaves: {x: 12, y: 20}
+  SpecialZombieSpawnConfigs: []
+  ZombieSpawnEventConfigs: []
   AwardGenerateInfo:
     basicLoots:
     - Id: 1
@@ -134,3 +139,6 @@ MonoBehaviour:
     Direction: 1
     SpawnPos: {x: 13, y: 9}
   InitialSunpointOffset: 0
+  LevelBgmId: 0
+  ZombieCountForIntensity0: 0
+  ZombieCountForIntensity1: 0

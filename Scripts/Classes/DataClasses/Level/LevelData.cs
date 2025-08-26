@@ -29,7 +29,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         Vector2Int MapSize { get; }
         Vector2 InitialPlayerPos { get; }
         AssetReference LevelPrefab { get; }
-        Vector2Int GetRandomSunFallCellPos();
+        (Vector2Int, SunLayerId) GetRandomSunFallCellPos();
 
         #endregion
 
@@ -105,14 +105,14 @@ namespace TPL.PVZR.Classes.DataClasses.Level
         public Vector2 InitialPlayerPos { get; }
         public AssetReference LevelPrefab { get; }
 
-        private IReadOnlyList<SerializableKeyValuePair<Vector2Int, Vector2Int>> SunFallPositions { get; }
+        private IReadOnlyList<SunFallPositionConfig> SunFallPositions { get; }
 
-        public Vector2Int GetRandomSunFallCellPos()
+        public (Vector2Int, SunLayerId) GetRandomSunFallCellPos()
         {
             var region = RandomHelper.Default.RandomChoose(SunFallPositions);
-            var x = RandomHelper.Default.Range(region.Key.x, region.Value.x + 1);
-            var y = RandomHelper.Default.Range(region.Key.y, region.Value.y + 1);
-            return new Vector2Int(x, y);
+            var x = RandomHelper.Default.Range(region.PosA.x, region.PosB.x + 1);
+            var y = RandomHelper.Default.Range(region.PosA.y, region.PosB.y + 1);
+            return (new Vector2Int(x, y), region.SunLayerId);
         }
 
         #endregion
@@ -273,7 +273,7 @@ namespace TPL.PVZR.Classes.DataClasses.Level
             this.MapSize = levelDefinition.MapSize;
             this.InitialPlayerPos = levelDefinition.InitialPlayerPos;
             this.LevelPrefab = levelDefinition.LevelPrefab;
-            this.SunFallPositions = levelDefinition.SunFallPositions;
+            this.SunFallPositions = levelDefinition.SunFallPositionConfigs;
 
             this.TotalWaveCount = levelDefinition.TotalWaveCount;
             this.HugeWaves = levelDefinition.HugeWaves;
